@@ -1,30 +1,84 @@
-import { useEffect } from 'react'
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  Button,
+  Container,
+  Form,
+  FormControl,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Offcanvas,
+} from "react-bootstrap";
 
 const IndexPage = () => {
-  useEffect(() => {
-    // add a listener to 'message' channel
-    global.ipcRenderer.addListener('message', (_event, args) => {
-      alert(args)
-    })
-  }, [])
-
-  const onSayHiClick = () => {
-    global.ipcRenderer.send('message', 'hi from next')
-  }
-
   return (
-    <Layout title="Home | Next.js + TypeScript + Electron Example">
-      <h1>Hello Next.js 👋</h1>
-      <button onClick={onSayHiClick}>Say hi to electron</button>
-      <p>
-        <Link href="/about">
-          <a>About</a>
-        </Link>
-      </p>
-    </Layout>
-  )
-}
+    <Container fluid className="p-0">
+      <Navbar bg="light" expand={false} className="mb-1">
+        <Container fluid>
+          <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
+          <Navbar.Toggle aria-controls="offcanvasNavbar" />
+          <Navbar.Offcanvas
+            id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel"
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title id="offcanvasNavbarLabel">
+                Offcanvas
+              </Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="justify-content-end flex-grow-1 pe-3">
+                <Nav.Link href="#action1">Home</Nav.Link>
+                <Nav.Link href="#action2">Link</Nav.Link>
+                <NavDropdown title="Dropdown" id="offcanvasNavbarDropdown">
+                  <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action4">
+                    Another action
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action5">
+                    Something else here
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+              <Form className="d-flex">
+                <FormControl
+                  type="search"
+                  placeholder="Search"
+                  className="me-2"
+                  aria-label="Search"
+                />
+                <Button variant="outline-success">Search</Button>
+              </Form>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
+        </Container>
+      </Navbar>
+      <Container fluid>
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Text className="text-muted">
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group>
 
-export default IndexPage
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="Check me out" />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Container>
+    </Container>
+  );
+};
+
+export default IndexPage;
