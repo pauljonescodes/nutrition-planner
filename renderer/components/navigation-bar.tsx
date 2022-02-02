@@ -1,27 +1,34 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { useState } from "react";
+import { Container, Navbar, Offcanvas } from "react-bootstrap";
+import { MainNavigation } from "./main-navigation";
 
-export const NavigationBar: React.FC = () => {
-  const router = useRouter();
+export const NavigationBar = () => {
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
   return (
-    <Navbar>
+    <Navbar expand="sm" bg="dark" variant="dark">
       <Container fluid>
-        <Link href="/" passHref>
-          <Navbar.Brand className="h1 pb-0">Meal Plan</Navbar.Brand>
-        </Link>
-
-        <Nav>
-          <Link href="/ingredients" passHref>
-            <Nav.Link active={router.pathname === "/ingredients"}>
-              Ingredients
-            </Nav.Link>
-          </Link>
-          <Link href="/recipes" passHref>
-            <Nav.Link active={router.pathname === "/recipes"}>Recipes</Nav.Link>
-          </Link>
-        </Nav>
+        <Navbar.Toggle
+          onClick={() => {
+            setShowOffcanvas(true);
+          }}
+        />
+        <Navbar.Offcanvas
+          placement="start"
+          show={showOffcanvas}
+          onHide={() => {
+            setShowOffcanvas(false);
+          }}
+        >
+          <Offcanvas.Header closeButton></Offcanvas.Header>
+          <Offcanvas.Body>
+            <MainNavigation
+              onNavLinkClick={() => {
+                setShowOffcanvas(false);
+              }}
+            />
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
+        <MainNavigation className="d-none d-sm-flex" />
       </Container>
     </Navbar>
   );

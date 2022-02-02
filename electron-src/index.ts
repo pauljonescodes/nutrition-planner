@@ -11,8 +11,8 @@ app.on("ready", async () => {
   await prepareNext("./renderer");
 
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 576,
+    height: 768,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,

@@ -18,10 +18,12 @@
         "dexie": "^3.2.0",
         "electron-is-dev": "^1.1.0",
         "electron-next": "^3.1.5",
+        "formik": "^2.2.9",
         "nanoid": "^3.2.0",
         "react": "^17.0.2",
         "react-bootstrap": "^2.1.2",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "yup": "^0.32.11"
     },
     "devDependencies": {
         "@types/node": "^14.14.6",

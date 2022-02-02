@@ -19,9 +19,15 @@ export class Database extends Dexie {
       ingredients: Ingredient.schema,
       recipes: Recipe.schema,
       ingredientsToRecipes: IngredientsToRecipes.schema,
-      mealPlan: MealPlan.schema,
+      mealPlans: MealPlan.schema,
       recipesToMealPlans: RecipesToMealPlans.schema,
     });
+
+    this.ingredients.mapToClass(Ingredient);
+    this.recipes.mapToClass(Recipe);
+    this.ingredientsToRecipes.mapToClass(IngredientsToRecipes);
+    this.mealPlans.mapToClass(MealPlan);
+    this.recipesToMealPlans.mapToClass(RecipesToMealPlans);
   }
 
   private static database: Database;
