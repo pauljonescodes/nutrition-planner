@@ -173,6 +173,11 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@tabler/icons@^1.53.0":
+  version "1.53.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.53.0.tgz#51536e01b343cfaf26b701df306b2c0369769e3c"
+  integrity sha512-Skk1BqXEOEhiRsXJgZBYtjFa/+4dMSFA5UyzTUW20oyyUSd3iizhEWrYt0jT87iFu771gWoqVV2/OGobBcGjgQ==
+
 "@types/debug@^4.1.6":
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.7.tgz#7cc0ea761509124709b8b2d1090d8f6c17aadb82"
@@ -1517,7 +1522,7 @@ ms@2.1.2:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-nanoid@^3.1.30:
+nanoid@^3.1.30, nanoid@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.2.0.tgz#62667522da6673971cca916a6d3eff3f415ff80c"
   integrity sha512-fmsZYa9lpn69Ad5eDn7FMcnnSR+8R34W9qJEijxYhTbfOWzr22n1QxCMzXLK+ODyW2973V3Fux959iQoUxzUIA==
