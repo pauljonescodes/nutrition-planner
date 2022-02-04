@@ -1,4 +1,4 @@
-import { exportDB } from "dexie-export-import";
+import { exportDB, importInto } from "dexie-export-import";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
 import { Database } from "../data/database";
 
 const DataPage = () => {
-  const [blobText, setBlobText] = useState<string | undefined>(undefined);
+  const [blobText, setBlobText] = useState<string>("");
 
   async function refreshState() {
     const blob = await exportDB(Database.shared());
@@ -25,13 +25,27 @@ const DataPage = () => {
   }, []);
 
   return (
-    <Fade in={blobText !== undefined}>
+    <Fade in={blobText.length > 0}>
       <Container fluid className="py-2 mp-vh-100">
         <Row>
           <Col>
             <ButtonGroup className="w-100">
-              <Button>Copy</Button>
-              <Button>Apply</Button>
+              <Button
+                onClick={() => {
+                  navigator.clipboard.writeText(blobText);
+                }}
+              >
+                Copy
+              </Button>
+              <Button
+                onClick={async () => {
+                  await Database.shared().delete();
+                  await Database.shared().open();
+                  importInto(Database.shared(), new Blob([blobText]));
+                }}
+              >
+                Apply
+              </Button>
             </ButtonGroup>
           </Col>
         </Row>
@@ -40,6 +54,9 @@ const DataPage = () => {
             <Form.Control
               as="textarea"
               value={blobText}
+              onChange={(event) => {
+                setBlobText(event.target.value);
+              }}
               spellCheck={false}
               className="h-100"
             />

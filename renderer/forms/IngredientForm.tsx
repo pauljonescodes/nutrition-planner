@@ -42,14 +42,10 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
             }}
           >
-            <Form.Group>
-              <FloatingLabel
-                label={validationSchema.fields.name.spec.label}
-                className="mb-2"
-              >
+            <Form.Group className="mb-2">
+              <FloatingLabel label={validationSchema.fields.name.spec.label}>
                 <Form.Control
                   type="text"
-                  autoFocus
                   onChange={formikProps.handleChange}
                   onBlur={formikProps.handleBlur}
                   name="name"
@@ -70,7 +66,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             <Form.Group className="mb-2">
               <FloatingLabel
                 label={validationSchema.fields.priceCents.spec.label}
-                className="mb-2"
               >
                 <Form.Control
                   type="number"
@@ -95,7 +90,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             <Form.Group className="mb-2">
               <FloatingLabel
                 label={validationSchema.fields.servingCount.spec.label}
-                className="mb-2"
               >
                 <Form.Control
                   type="number"
@@ -120,7 +114,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             <Form.Group className="mb-2">
               <FloatingLabel
                 label={validationSchema.fields.servingMassGrams.spec.label}
-                className="mb-2"
               >
                 <Form.Control
                   type="number"
@@ -151,7 +144,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 label={
                   validationSchema.fields.servingEnergyKilocalorie.spec.label
                 }
-                className="mb-2"
               >
                 <Form.Control
                   type="number"
@@ -184,7 +176,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             <Form.Group className="mb-2">
               <FloatingLabel
                 label={validationSchema.fields.servingFatGrams.spec.label}
-                className="mb-2"
               >
                 <Form.Control
                   type="number"
@@ -215,7 +206,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 label={
                   validationSchema.fields.servingCarbohydrateGrams.spec.label
                 }
-                className="mb-2"
               >
                 <Form.Control
                   type="number"
@@ -245,10 +235,9 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 {formikProps.errors.servingCarbohydrateGrams}
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-2">
               <FloatingLabel
                 label={validationSchema.fields.servingProteinGrams.spec.label}
-                className="mb-2"
               >
                 <Form.Control
                   type="number"
@@ -277,7 +266,9 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="text-center d-grid">
-              <Button type="submit">Submit</Button>
+              <Button type="submit" size="lg">
+                Submit
+              </Button>
             </Form.Group>
           </Form>
         );

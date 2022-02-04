@@ -40,18 +40,6 @@ const IngredientsPage = () => {
               <Table responsive striped>
                 <thead>
                   <tr>
-                    <th className="align-middle text-center">
-                      <Button
-                        size="sm"
-                        variant="link"
-                        className="p-0 m-0"
-                        onClick={() => {
-                          setShowAdd(true);
-                        }}
-                      >
-                        <IconCirclePlus />
-                      </Button>
-                    </th>
                     <th className="align-middle">Name</th>
                     <th className="align-middle text-center">Price</th>
                     <th className="align-middle text-center">Servings</th>
@@ -70,6 +58,18 @@ const IngredientsPage = () => {
                     <th className="align-middle text-center d-none d-sm-table-cell">
                       Protein
                     </th>
+                    <th className="align-middle text-center">
+                      <Button
+                        size="sm"
+                        variant="link"
+                        className="p-0 m-0"
+                        onClick={() => {
+                          setShowAdd(true);
+                        }}
+                      >
+                        <IconCirclePlus />
+                      </Button>
+                    </th>
                   </tr>
                 </thead>
 
@@ -78,6 +78,28 @@ const IngredientsPage = () => {
                     ingredients.map((value) => {
                       return (
                         <tr key={value.id}>
+                          <td className="align-middle">{value.name}</td>
+                          <td className="align-middle text-center">
+                            {value.priceCents}
+                          </td>
+                          <td className="align-middle text-center">
+                            {value.servingCount}
+                          </td>
+                          <td className="align-middle text-center d-none d-md-table-cell">
+                            {value.servingMassGrams}
+                          </td>
+                          <td className="align-middle text-center d-none d-md-table-cell">
+                            {value.servingEnergyKilocalorie}
+                          </td>
+                          <td className="align-middle text-center d-none d-sm-table-cell">
+                            {value.servingFatGrams}
+                          </td>
+                          <td className="align-middle text-center d-none d-sm-table-cell">
+                            {value.servingCarbohydrateGrams}
+                          </td>
+                          <td className="align-middle text-center d-none d-sm-table-cell">
+                            {value.servingProteinGrams}
+                          </td>
                           <td className="align-middle text-center">
                             <Button
                               size="sm"
@@ -100,28 +122,6 @@ const IngredientsPage = () => {
                             >
                               <IconCircleMinus />
                             </Button>
-                          </td>
-                          <td className="align-middle">{value.name}</td>
-                          <td className="align-middle text-center">
-                            {value.priceCents}
-                          </td>
-                          <td className="align-middle text-center">
-                            {value.servingCount}
-                          </td>
-                          <td className="align-middle text-center d-none d-md-table-cell">
-                            {value.servingMassGrams}
-                          </td>
-                          <td className="align-middle text-center d-none d-md-table-cell">
-                            {value.servingEnergyKilocalorie}
-                          </td>
-                          <td className="align-middle text-center d-none d-sm-table-cell">
-                            {value.servingFatGrams}
-                          </td>
-                          <td className="align-middle text-center d-none d-sm-table-cell">
-                            {value.servingCarbohydrateGrams}
-                          </td>
-                          <td className="align-middle text-center d-none d-sm-table-cell">
-                            {value.servingProteinGrams}
                           </td>
                         </tr>
                       );

@@ -35,18 +35,6 @@ const RecipesPage = () => {
           <Table responsive striped>
             <thead>
               <tr>
-                <th className="align-middle text-center">
-                  <Button
-                    size="sm"
-                    variant="link"
-                    className="p-0 m-0"
-                    onClick={() => {
-                      setShowAdd(true);
-                    }}
-                  >
-                    <IconCirclePlus />
-                  </Button>
-                </th>
                 <th className="align-middle">Name</th>
                 <th className="align-middle text-center">Cost</th>
                 <th className="align-middle text-center">Servings</th>
@@ -65,6 +53,18 @@ const RecipesPage = () => {
                 <th className="align-middle text-center d-none d-sm-table-cell">
                   Protein
                 </th>
+                <th className="align-middle text-center">
+                  <Button
+                    size="sm"
+                    variant="link"
+                    className="p-0 m-0"
+                    onClick={() => {
+                      setShowAdd(true);
+                    }}
+                  >
+                    <IconCirclePlus />
+                  </Button>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -72,6 +72,26 @@ const RecipesPage = () => {
                 recipes.map((value) => {
                   return (
                     <tr key={value.id}>
+                      <td className="align-middle">{value.name}</td>
+                      <td className="align-middle text-center">0</td>
+                      <td className="align-middle text-center">
+                        {value.servingCount}
+                      </td>
+                      <td className="align-middle text-center d-none d-md-table-cell">
+                        0
+                      </td>
+                      <td className="align-middle text-center d-none d-md-table-cell">
+                        0
+                      </td>
+                      <td className="align-middle text-center d-none d-sm-table-cell">
+                        0
+                      </td>
+                      <td className="align-middle text-center d-none d-sm-table-cell">
+                        0
+                      </td>
+                      <td className="align-middle text-center d-none d-sm-table-cell">
+                        0
+                      </td>
                       <td className="align-middle text-center">
                         <Button
                           size="sm"
@@ -94,26 +114,6 @@ const RecipesPage = () => {
                         >
                           <IconCircleMinus />
                         </Button>
-                      </td>
-                      <td className="align-middle">{value.name}</td>
-                      <td className="align-middle text-center">2343</td>
-                      <td className="align-middle text-center">
-                        {value.servingCount}
-                      </td>
-                      <td className="align-middle text-center d-none d-md-table-cell">
-                        0
-                      </td>
-                      <td className="align-middle text-center d-none d-md-table-cell">
-                        0
-                      </td>
-                      <td className="align-middle text-center d-none d-sm-table-cell">
-                        0
-                      </td>
-                      <td className="align-middle text-center d-none d-sm-table-cell">
-                        0
-                      </td>
-                      <td className="align-middle text-center d-none d-sm-table-cell">
-                        0
                       </td>
                     </tr>
                   );
@@ -142,9 +142,15 @@ const RecipesPage = () => {
         </Offcanvas.Header>
         <Offcanvas.Body className="pt-0">
           <RecipeForm
-            onSubmit={(recipe) => {
+            onSubmit={async (recipe) => {
               recipe.id = nanoid();
-              Database.shared().recipes.put(recipe).then(refreshState);
+              for (const ingredientInRecipe of recipe.ingredientsInRecipe) {
+                ingredientInRecipe.recipeId = recipe.id;
+                ingredientInRecipe.id = nanoid();
+                Database.shared().ingredientInRecipes.put(ingredientInRecipe);
+              }
+              await Database.shared().recipes.put(recipe);
+              refreshState();
               setShowAdd(false);
             }}
           />

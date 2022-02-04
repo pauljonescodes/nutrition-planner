@@ -39,7 +39,7 @@ export const NavigationBar = () => {
       </Navbar>
       <MainNavigation
         navProps={{
-          className: "d-none d-sm-inline flex-column p-2 bg-dark text-center",
+          className: "d-none d-sm-inline px-2  flex-column bg-dark text-center",
           variant: "pills",
         }}
         navLinkClassName="text-light"

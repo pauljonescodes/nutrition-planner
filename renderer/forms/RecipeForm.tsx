@@ -1,13 +1,20 @@
-import { IconX } from "@tabler/icons";
+import { IconPlus, IconX } from "@tabler/icons";
 import { ErrorMessage, FieldArray, Formik } from "formik";
-import React, { FormEvent, Fragment } from "react";
+import React, { FormEvent, Fragment, useState } from "react";
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import * as Yup from "yup";
+import { Database } from "../data/database";
+import { Ingredient } from "../data/models/ingredient";
 import { Recipe } from "../data/models/recipe";
 
 export interface CreateRecipeFormProps {
   recipe?: Recipe;
   onSubmit: (recipe: Recipe) => void;
+}
+
+interface IngredientSearch {
+  results?: Ingredient[];
 }
 
 export function RecipeForm(props: CreateRecipeFormProps) {
@@ -24,16 +31,21 @@ export function RecipeForm(props: CreateRecipeFormProps) {
       .label("Ingredients"),
   });
 
+  const [ingredientSearchs, setIngredientSearches] = useState<
+    IngredientSearch[]
+  >([{}]);
+
   return (
     <Formik<Partial<Recipe>>
       initialValues={{
         name: props.recipe?.name,
         servingCount: props.recipe?.servingCount,
-        ingredientsInRecipe: props.recipe?.ingredientsInRecipe ?? [],
+        ingredientsInRecipe: props.recipe?.ingredientsInRecipe,
       }}
       validationSchema={validationSchema}
       onSubmit={(values, helpers) => {
         props.onSubmit(values as Recipe);
+        console.log(values);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -45,7 +57,7 @@ export function RecipeForm(props: CreateRecipeFormProps) {
               formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
             }}
           >
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-2">
               <FloatingLabel label={validationSchema.fields.name.spec.label}>
                 <Form.Control
                   type="text"
@@ -67,7 +79,7 @@ export function RecipeForm(props: CreateRecipeFormProps) {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-2">
               <FloatingLabel
                 label={validationSchema.fields.servingCount.spec.label}
               >
@@ -96,29 +108,34 @@ export function RecipeForm(props: CreateRecipeFormProps) {
             <FieldArray name="ingredientsInRecipe">
               {(fieldArrayHelpers) => (
                 <Fragment>
-                  <Form.Group className="mb-3">
+                  <Form.Group className="mb-2">
                     <Form.Label>
                       {validationSchema.fields.ingredientsInRecipe.spec.label}
                     </Form.Label>
-                    {formikProps.values.ingredientsInRecipe!.length > 0 &&
-                      formikProps.values.ingredientsInRecipe!.map(
-                        (ingredientInRecipe, index) => (
-                          <Row
-                            key={index}
-                            className="align-items-center text-center gx-1"
-                          >
-                            <Col xs={3}>
-                              <Form.Group>
-                                <FloatingLabel
-                                  label={
-                                    validationSchema.fields.ingredientsInRecipe
-                                      .innerType?.fields.servingCount.spec.label
+                    {(formikProps.values.ingredientsInRecipe?.length ?? 0) >
+                      0 &&
+                      formikProps.values.ingredientsInRecipe?.map(
+                        (_value, index) => {
+                          const options =
+                            index <= ingredientSearchs.length
+                              ? ingredientSearchs[index].results?.map(
+                                  (value) => {
+                                    return value.name;
                                   }
-                                >
+                                ) ?? []
+                              : [];
+                          return (
+                            <Row
+                              key={index}
+                              className="align-items-center text-center gx-1 mb-1"
+                            >
+                              <Col xs={3}>
+                                <Form.Group>
                                   <Form.Control
                                     type="number"
                                     step={1}
                                     defaultValue={1}
+                                    min={1}
                                     onChange={formikProps.handleChange}
                                     onBlur={formikProps.handleBlur}
                                     placeholder={
@@ -128,65 +145,93 @@ export function RecipeForm(props: CreateRecipeFormProps) {
                                     }
                                     name={`ingredientsInRecipe.${index}.servingCount`}
                                   />
-                                </FloatingLabel>
-                              </Form.Group>
-                            </Col>
-                            <Col>
-                              <Form.Group>
-                                <FloatingLabel
-                                  label={
-                                    validationSchema.fields.ingredientsInRecipe
-                                      .innerType?.fields.ingredientId.spec.label
-                                  }
-                                >
-                                  <Form.Control
-                                    type="text"
-                                    onChange={formikProps.handleChange}
-                                    onBlur={formikProps.handleBlur}
+                                </Form.Group>
+                              </Col>
+                              <Col>
+                                <Form.Group>
+                                  <AsyncTypeahead
                                     placeholder={
                                       validationSchema.fields
                                         .ingredientsInRecipe.innerType?.fields
                                         .ingredientId.spec.label
                                     }
-                                    name={`ingredientsInRecipe.${index}.ingredientId`}
+                                    onBlur={() => {
+                                      formikProps.handleBlur(
+                                        `ingredientsInRecipe.${index}.ingredientId`
+                                      );
+                                    }}
+                                    id={`ingredientsInRecipe.${index}.ingredientId`}
+                                    isLoading={false}
+                                    onSearch={async (query) => {
+                                      let theIngredientSearchs =
+                                        ingredientSearchs;
+                                      const results = await Database.shared()
+                                        .ingredients.where("name")
+                                        .startsWithAnyOfIgnoreCase(query)
+                                        .toArray();
+                                      theIngredientSearchs[index].results =
+                                        results;
+                                      setIngredientSearches(
+                                        theIngredientSearchs
+                                      );
+                                    }}
+                                    options={options}
+                                    filterBy={() => true}
+                                    onChange={(e) => {
+                                      const ingredient = ingredientSearchs[
+                                        index
+                                      ].results?.find(
+                                        (value) => value.name === e[0]
+                                      );
+                                      formikProps.setFieldValue(
+                                        `ingredientsInRecipe.${index}.ingredientId`,
+                                        ingredient?.id
+                                      );
+                                    }}
                                   />
-                                </FloatingLabel>
 
-                                <ErrorMessage
-                                  name={`ingredientsInRecipe.${index}.ingredientId`}
-                                  component={Form.Control.Feedback}
-                                  className="invalid"
-                                />
-                              </Form.Group>
-                            </Col>
-                            <Col xs={1}>
-                              <Button
-                                size="sm"
-                                variant="link"
-                                className="text-danger p-0 m-0"
-                                onClick={() => fieldArrayHelpers.remove(index)}
-                              >
-                                <IconX />
-                              </Button>
-                            </Col>
-                          </Row>
-                        )
+                                  <ErrorMessage
+                                    name={`ingredientsInRecipe.${index}.ingredientId`}
+                                    component={Form.Control.Feedback}
+                                    className="invalid"
+                                  />
+                                </Form.Group>
+                              </Col>
+                              <Col xs={1}>
+                                <Button
+                                  size="sm"
+                                  variant="link"
+                                  className="text-danger p-0 m-0"
+                                  onClick={() => {
+                                    fieldArrayHelpers.remove(index);
+                                  }}
+                                >
+                                  <IconX />
+                                </Button>
+                              </Col>
+                            </Row>
+                          );
+                        }
                       )}
                   </Form.Group>
-                  <Form.Group className="text-center d-grid mb-3">
+                  <Form.Group className="text-center mb-2">
                     <Button
                       type="button"
-                      variant="secondary"
-                      className="text-center"
+                      variant="outline"
+                      size="sm"
+                      className="text-success p-0"
                       onClick={() => {
                         fieldArrayHelpers.push({
-                          servingCount: "",
+                          servingCount: 1,
                           ingredientId: "",
                         });
-                        console.log(formikProps.values);
+                        let theIngredientSearchs = ingredientSearchs;
+                        theIngredientSearchs.push({});
+                        setIngredientSearches(theIngredientSearchs);
+                        console.log(theIngredientSearchs);
                       }}
                     >
-                      Add Ingredient
+                      <IconPlus />
                     </Button>
                   </Form.Group>
                 </Fragment>
@@ -194,7 +239,13 @@ export function RecipeForm(props: CreateRecipeFormProps) {
             </FieldArray>
 
             <Form.Group className="text-center d-grid">
-              <Button type="submit" size="lg">
+              <Button
+                type="submit"
+                size="lg"
+                onClick={() => {
+                  console.log(formikProps.errors);
+                }}
+              >
                 Submit
               </Button>
             </Form.Group>
