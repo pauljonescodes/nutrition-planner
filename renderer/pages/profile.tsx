@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap";
 
-const RecipesPage = () => {
+const ProfilePage = () => {
   return (
     <Container fluid className="pt-2">
-      <h1>Hello, World!</h1>
+      <h1>Profile</h1>
     </Container>
   );
 };
 
-export default RecipesPage;
+export default ProfilePage;

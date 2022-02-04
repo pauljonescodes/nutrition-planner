@@ -1,7 +1,15 @@
 import { IconCircleMinus, IconCirclePlus, IconEditCircle } from "@tabler/icons";
 import { nanoid } from "nanoid";
-import { useEffect, useState } from "react";
-import { Button, Container, Offcanvas, Spinner, Table } from "react-bootstrap";
+import { Fragment, useEffect, useState } from "react";
+import {
+  Button,
+  Col,
+  Container,
+  Fade,
+  Offcanvas,
+  Row,
+  Table,
+} from "react-bootstrap";
 import { Database } from "../data/database";
 import { Ingredient } from "../data/models/ingredient";
 import { IngredientForm } from "../forms/IngredientForm";
@@ -24,96 +32,109 @@ const IngredientsPage = () => {
   }, []);
 
   return (
-    <Container fluid className="p-0">
-      <Table responsive striped>
-        <thead>
-          <tr>
-            <th className="align-middle text-end ">
-              <Button
-                size="sm"
-                variant="link"
-                className="p-0 m-0"
-                onClick={() => {
-                  setShowAdd(true);
-                }}
-              >
-                <IconCirclePlus />
-              </Button>
-            </th>
-            <th className="align-middle">Name</th>
-            <th className="align-middle text-center">Price</th>
-            <th className="align-middle text-center">Servings</th>
-            <th className="align-middle text-center">Mass</th>
-            <th className="align-middle text-center">Energy</th>
-            <th className="align-middle text-center">Fat</th>
-            <th className="align-middle text-center">Carb</th>
-            <th className="align-middle text-center">Protein</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ingredients &&
-            ingredients.map((value) => {
-              return (
-                <tr key={value.id}>
-                  <td className="align-middle text-end">
-                    <Button
-                      size="sm"
-                      variant="link"
-                      className="text-info p-0 m-0"
-                      onClick={() => {
-                        setUpdateIngredient(value);
-                      }}
-                    >
-                      <IconEditCircle />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="link"
-                      className="text-danger p-0 m-0"
-                      onClick={() => {
-                        Database.shared().ingredients.delete(value.id!);
-                        refreshState();
-                      }}
-                    >
-                      <IconCircleMinus />
-                    </Button>
-                  </td>
-                  <td className="align-middle">{value.name}</td>
-                  <td className="align-middle text-center">
-                    {value.priceCents}
-                  </td>
-                  <td className="align-middle text-center">
-                    {value.servingCount}
-                  </td>
-                  <td className="align-middle text-center">
-                    {value.servingMassGrams}
-                  </td>
-                  <td className="align-middle text-center">
-                    {value.servingEnergyKilocalorie}
-                  </td>
-                  <td className="align-middle text-center">
-                    {value.servingFatGrams}
-                  </td>
-                  <td className="align-middle text-center">
-                    {value.servingCarbohydrateGrams}
-                  </td>
-                  <td className="align-middle text-center">
-                    {value.servingProteinGrams}
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
-      {!ingredients && (
-        <Spinner
-          animation="border"
-          size="sm"
-          className="position-absolute top-50 start-50"
-        />
-      )}
+    <Fragment>
+      <Fade in={ingredients !== undefined}>
+        <Container fluid className="gx-0">
+          <Row className="gx-0">
+            <Col>
+              <Table responsive striped>
+                <thead>
+                  <tr>
+                    <th className="align-middle text-center">
+                      <Button
+                        size="sm"
+                        variant="link"
+                        className="p-0 m-0"
+                        onClick={() => {
+                          setShowAdd(true);
+                        }}
+                      >
+                        <IconCirclePlus />
+                      </Button>
+                    </th>
+                    <th className="align-middle">Name</th>
+                    <th className="align-middle text-center">Price</th>
+                    <th className="align-middle text-center">Servings</th>
+                    <th className="align-middle text-center d-none d-md-table-cell">
+                      Mass
+                    </th>
+                    <th className="align-middle text-center d-none d-md-table-cell">
+                      Energy
+                    </th>
+                    <th className="align-middle text-center d-none d-sm-table-cell">
+                      Fat
+                    </th>
+                    <th className="align-middle text-center d-none d-sm-table-cell">
+                      Carb
+                    </th>
+                    <th className="align-middle text-center d-none d-sm-table-cell">
+                      Protein
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {ingredients &&
+                    ingredients.map((value) => {
+                      return (
+                        <tr key={value.id}>
+                          <td className="align-middle text-center">
+                            <Button
+                              size="sm"
+                              variant="link"
+                              className="text-info p-0 m-0"
+                              onClick={() => {
+                                setUpdateIngredient(value);
+                              }}
+                            >
+                              <IconEditCircle />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="link"
+                              className="text-danger p-0 m-0"
+                              onClick={() => {
+                                Database.shared().ingredients.delete(value.id!);
+                                refreshState();
+                              }}
+                            >
+                              <IconCircleMinus />
+                            </Button>
+                          </td>
+                          <td className="align-middle">{value.name}</td>
+                          <td className="align-middle text-center">
+                            {value.priceCents}
+                          </td>
+                          <td className="align-middle text-center">
+                            {value.servingCount}
+                          </td>
+                          <td className="align-middle text-center d-none d-md-table-cell">
+                            {value.servingMassGrams}
+                          </td>
+                          <td className="align-middle text-center d-none d-md-table-cell">
+                            {value.servingEnergyKilocalorie}
+                          </td>
+                          <td className="align-middle text-center d-none d-sm-table-cell">
+                            {value.servingFatGrams}
+                          </td>
+                          <td className="align-middle text-center d-none d-sm-table-cell">
+                            {value.servingCarbohydrateGrams}
+                          </td>
+                          <td className="align-middle text-center d-none d-sm-table-cell">
+                            {value.servingProteinGrams}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </Container>
+      </Fade>
       <Offcanvas
         show={showAdd}
+        placement="end"
         onHide={() => {
           setShowAdd(false);
         }}
@@ -121,7 +142,7 @@ const IngredientsPage = () => {
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Create ingredient</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
+        <Offcanvas.Body className="pt-0">
           <IngredientForm
             onSubmit={(ingredient) => {
               ingredient.id = nanoid();
@@ -133,6 +154,7 @@ const IngredientsPage = () => {
       </Offcanvas>
       <Offcanvas
         show={updateIngredient !== undefined}
+        placement="end"
         onHide={() => {
           setUpdateIngredient(undefined);
         }}
@@ -140,7 +162,7 @@ const IngredientsPage = () => {
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Update ingredient</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
+        <Offcanvas.Body className="pt-0">
           <IngredientForm
             ingredient={updateIngredient}
             onSubmit={(ingredient) => {
@@ -152,7 +174,7 @@ const IngredientsPage = () => {
           />
         </Offcanvas.Body>
       </Offcanvas>
-    </Container>
+    </Fragment>
   );
 };
 

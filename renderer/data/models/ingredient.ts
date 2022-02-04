@@ -1,7 +1,7 @@
 import { AbstractEntity } from "./abstract-entity";
 
 export class Ingredient extends AbstractEntity {
-  static schema =
+  static dexieSchema =
     "&id, name, priceCents, servingCount, servingMassGrams, servingEnergyKilocalorie, servingFatGrams, servingCarbohydrateGrams, servingProteinGrams";
 
   constructor(
