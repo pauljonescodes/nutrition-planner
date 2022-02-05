@@ -11,20 +11,22 @@ import {
 } from "react-bootstrap";
 import { Database } from "../../data/database";
 import { yupIngredientInRecipeSchema } from "../../data/models/ingredient-in-recipe";
-import { RecipeInterface, yupRecipeSchema } from "../../data/models/recipe";
-import { RecipeForm } from "../../forms/RecipeForm";
+import { Recipe, yupRecipeSchema } from "../../data/models/recipe";
+import {
+  RecipeForm,
+  RecipeFormIngredientInRecipe,
+  RecipeFormValue,
+} from "../../forms/RecipeForm";
 
 const RecipesPage = () => {
-  const [recipes, setRecipes] = useState<RecipeInterface[] | undefined>(
-    undefined
-  );
+  const [recipes, setRecipes] = useState<Recipe[] | undefined>(undefined);
   const [showAdd, setShowAdd] = useState(false);
-  const [updateRecipe, setUpdateRecipe] = useState<RecipeInterface | undefined>(
+  const [updateRecipe, setUpdateRecipe] = useState<RecipeFormValue | undefined>(
     undefined
   );
 
-  function refreshState() {
-    Database.shared().recipes.toArray().then(setRecipes);
+  async function refreshState() {
+    setRecipes(await Database.shared().arrayOfRecipes());
   }
 
   useEffect(() => {
@@ -100,8 +102,34 @@ const RecipesPage = () => {
                           size="sm"
                           variant="link"
                           className="text-info p-0 m-0"
-                          onClick={() => {
-                            setUpdateRecipe(value);
+                          onClick={async () => {
+                            const ingredientsInRecipe =
+                              await Database.shared().ingredientsInRecipeArray(
+                                value.id
+                              );
+                            [];
+
+                            const recipeFormIngredientsInRecipe: RecipeFormIngredientInRecipe[] =
+                              [];
+
+                            for (const ingredientInRecipe of ingredientsInRecipe) {
+                              const ingredient =
+                                await Database.shared().getIngredient(
+                                  ingredientInRecipe.ingredientId
+                                );
+                              recipeFormIngredientsInRecipe.push({
+                                ...ingredientInRecipe,
+                                ingredient: ingredient,
+                              });
+                            }
+
+                            const recipeFormValue: RecipeFormValue = {
+                              ...value,
+                              ingredientsInRecipe:
+                                recipeFormIngredientsInRecipe,
+                            };
+
+                            setUpdateRecipe(recipeFormValue);
                           }}
                         >
                           <IconEditCircle />
@@ -111,11 +139,6 @@ const RecipesPage = () => {
                           variant="link"
                           className="text-danger p-0 m-0"
                           onClick={async () => {
-                            await Database.shared().recipes.delete(value.id);
-                            await Database.shared()
-                              .ingredientInRecipes.where("recipeId")
-                              .equals(value.id)
-                              .delete();
                             refreshState();
                           }}
                         >
@@ -154,7 +177,7 @@ const RecipesPage = () => {
                 ingredientInRecipe.recipeId = formValue.id;
                 ingredientInRecipe.id = nanoid();
 
-                Database.shared().ingredientInRecipes.put(
+                Database.shared().putIngredientInRecipe(
                   await yupIngredientInRecipeSchema.validate(
                     ingredientInRecipe,
                     { stripUnknown: true }
@@ -162,7 +185,7 @@ const RecipesPage = () => {
                 );
               }
 
-              await Database.shared().recipes.put(
+              await Database.shared().putRecipe(
                 await yupRecipeSchema.validate(formValue, {
                   stripUnknown: true,
                 })
@@ -187,9 +210,7 @@ const RecipesPage = () => {
           <RecipeForm
             recipe={updateRecipe}
             onSubmit={(recipe) => {
-              Database.shared()
-                .recipes.update(recipe, recipe)
-                .then(refreshState);
+              Database.shared().updateRecipe(recipe).then(refreshState);
               setUpdateRecipe(undefined);
             }}
           />

@@ -2,35 +2,45 @@ import { Formik } from "formik";
 import { nanoid } from "nanoid";
 import React, { FormEvent } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
+import {
+  IngredientInterface,
+  yupIngredientSchema,
+} from "../data/models/ingredient";
 import { IngredientInRecipeInterface } from "../data/models/ingredient-in-recipe";
 import { RecipeInterface, yupRecipeSchema } from "../data/models/recipe";
 import IngredientsInRecipeFieldArray from "./IngredientsInRecipeFieldArray";
 
-export interface CreateRecipeFormProps {
-  recipe?: RecipeInterface;
-  onSubmit: (formValue: CreateRecipeFormValue) => void;
+export interface RecipeFormIngredientInRecipe
+  extends IngredientInRecipeInterface {
+  ingredient: IngredientInterface;
 }
 
-export interface CreateRecipeFormValue extends RecipeInterface {
-  ingredientsInRecipe: Array<IngredientInRecipeInterface>;
+export interface RecipeFormValue extends RecipeInterface {
+  ingredientsInRecipe: Array<RecipeFormIngredientInRecipe>;
+}
+
+export interface CreateRecipeFormProps {
+  recipe?: RecipeFormValue;
+  onSubmit: (formValue: RecipeFormValue) => void;
 }
 
 export function RecipeForm(props: CreateRecipeFormProps) {
   const thisRecipeId = props.recipe?.id ?? nanoid();
+
   return (
-    <Formik<CreateRecipeFormValue>
+    <Formik<RecipeFormValue>
       initialValues={{
-        id: thisRecipeId,
-        name: props.recipe?.name ?? "",
-        servingCount: props.recipe?.servingCount ?? 1,
+        ...yupRecipeSchema.getDefault(),
         ingredientsInRecipe: [
           {
             servingCount: 1,
             recipeId: thisRecipeId,
             id: nanoid(),
             ingredientId: "",
+            ingredient: yupIngredientSchema.getDefault(),
           },
         ],
+        ...props.recipe,
       }}
       validationSchema={yupRecipeSchema}
       onSubmit={(values, helpers) => {

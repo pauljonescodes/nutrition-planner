@@ -1,12 +1,11 @@
 import * as Yup from "yup";
-import { Database } from "../database";
 
 export const dexieRecipeSchema = "&id, name, servingCount";
 
 export const yupRecipeSchema = Yup.object({
-  id: Yup.string().required(),
-  name: Yup.string().required().label("Recipe name"),
-  servingCount: Yup.number().required().label("Servings in recipe"),
+  id: Yup.string().required().default(""),
+  name: Yup.string().required().default("").label("Recipe name"),
+  servingCount: Yup.number().required().default(0).label("Servings in recipe"),
 });
 
 export interface RecipeInterface
@@ -18,10 +17,4 @@ export class Recipe implements RecipeInterface {
     public name: string,
     public servingCount: number
   ) {}
-
-  async getIngredientsInRecipe() {
-    return await Database.shared()
-      .ingredientInRecipes.where({ recipeId: this.id })
-      .toArray();
-  }
 }

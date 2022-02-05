@@ -7,7 +7,7 @@ import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Database } from "../data/database";
 import { Ingredient } from "../data/models/ingredient";
 import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";
-import { CreateRecipeFormValue } from "./RecipeForm";
+import { RecipeFormValue } from "./RecipeForm";
 
 interface IngredientSearch {
   results?: Ingredient[];
@@ -15,17 +15,16 @@ interface IngredientSearch {
 
 interface IngredientInRecipeFieldArrayProps {
   thisRecipeId: string;
-  formikProps: FormikProps<CreateRecipeFormValue>;
+  formikProps: FormikProps<RecipeFormValue>;
 }
 
 export default function IngredientsInRecipeFieldArray(
   props: IngredientInRecipeFieldArrayProps
 ) {
+  const formikProps = props.formikProps;
   const [ingredientSearchsState, setIngredientSearchesState] = useState<
     IngredientSearch[]
   >([{ results: [] }]);
-
-  const formikProps = props.formikProps;
 
   return (
     <FieldArray name="ingredientsInRecipe">
@@ -51,13 +50,16 @@ export default function IngredientsInRecipeFieldArray(
                         <Form.Control
                           type="number"
                           step={1}
-                          defaultValue={1}
                           min={1}
                           onChange={formikProps.handleChange}
                           onBlur={formikProps.handleBlur}
                           placeholder={
                             yupIngredientInRecipeSchema.fields.servingCount.spec
                               .label
+                          }
+                          value={
+                            formikProps.values.ingredientsInRecipe[index]
+                              .servingCount
                           }
                           name={`ingredientsInRecipe.${index}.servingCount`}
                         />
@@ -70,6 +72,10 @@ export default function IngredientsInRecipeFieldArray(
                             yupIngredientInRecipeSchema.fields.ingredientId.spec
                               .label
                           }
+                          defaultInputValue={
+                            formikProps.values.ingredientsInRecipe[index]
+                              .ingredient.name
+                          }
                           onBlur={() => {
                             formikProps.handleBlur(
                               `ingredientsInRecipe.${index}.ingredientId`
@@ -79,15 +85,10 @@ export default function IngredientsInRecipeFieldArray(
                           isLoading={false}
                           onSearch={async (query) => {
                             let theIngredientSearchs = ingredientSearchsState;
-                            const results = await Database.shared()
-                              .ingredients.filter((obj) => {
-                                const pattern =
-                                  ".*" + query.split("").join(".*") + ".*";
-                                const re = new RegExp(pattern);
-                                return re.test(obj.name);
-                              })
-                              .toArray();
-                            theIngredientSearchs[index].results = results;
+                            theIngredientSearchs[index].results =
+                              await Database.shared().filterIngredientsBy(
+                                query
+                              );
                             setIngredientSearchesState([
                               ...theIngredientSearchs,
                             ]);

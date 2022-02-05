@@ -23,8 +23,8 @@ const IngredientsPage = () => {
     Ingredient | undefined
   >(undefined);
 
-  function refreshState() {
-    Database.shared().ingredients.toArray().then(setIngredients);
+  async function refreshState() {
+    setIngredients(await Database.shared().arrayOfIngredients());
   }
 
   useEffect(() => {
@@ -116,13 +116,9 @@ const IngredientsPage = () => {
                               variant="link"
                               className="text-danger p-0 m-0"
                               onClick={async () => {
-                                await Database.shared().ingredients.delete(
-                                  value.id!
+                                await Database.shared().deleteIngredient(
+                                  value.id
                                 );
-                                await Database.shared()
-                                  .ingredientInRecipes.where("ingredientId")
-                                  .equals(value.id)
-                                  .delete();
                                 refreshState();
                               }}
                             >
@@ -150,9 +146,9 @@ const IngredientsPage = () => {
         </Offcanvas.Header>
         <Offcanvas.Body className="pt-0">
           <IngredientForm
-            onSubmit={(ingredient) => {
+            onSubmit={async (ingredient) => {
               ingredient.id = nanoid();
-              Database.shared().ingredients.put(ingredient).then(refreshState);
+              await Database.shared().putIngredient(ingredient);
               setShowAdd(false);
             }}
           />
@@ -172,9 +168,7 @@ const IngredientsPage = () => {
           <IngredientForm
             ingredient={updateIngredient}
             onSubmit={(ingredient) => {
-              Database.shared()
-                .ingredients.update(ingredient, ingredient)
-                .then(refreshState);
+              Database.shared().updateIngredient(ingredient);
               setUpdateIngredient(undefined);
             }}
           />
