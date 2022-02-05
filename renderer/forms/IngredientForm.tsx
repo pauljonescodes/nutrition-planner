@@ -1,8 +1,7 @@
 import { Formik } from "formik";
 import React, { FormEvent } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
-import * as Yup from "yup";
-import { Ingredient } from "../data/models/ingredient";
+import { Ingredient, yupIngredientSchema } from "../data/models/ingredient";
 
 export interface CreateIngredientFormProps {
   ingredient?: Ingredient;
@@ -10,25 +9,10 @@ export interface CreateIngredientFormProps {
 }
 
 export function IngredientForm(props: CreateIngredientFormProps) {
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().label("Ingredient name").required(),
-    priceCents: Yup.number().label("Price in cents").required(),
-    servingCount: Yup.number().label("Number of servings").required(),
-    servingMassGrams: Yup.number().label("Serving size (g or mL)").required(),
-    servingEnergyKilocalorie: Yup.number()
-      .label("Serving energy (kcal)")
-      .required(),
-    servingFatGrams: Yup.number().label("Serving fat (g)").required(),
-    servingCarbohydrateGrams: Yup.number()
-      .label("Serving carbohydrates (g)")
-      .required(),
-    servingProteinGrams: Yup.number().label("Serving protein (g)").required(),
-  });
-
   return (
     <Formik<Partial<Ingredient>>
       initialValues={{ ...props.ingredient }}
-      validationSchema={validationSchema}
+      validationSchema={yupIngredientSchema}
       onSubmit={(values, helpers) => {
         props.onSubmit(values as Ingredient);
         helpers.resetForm();
@@ -43,13 +27,13 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             }}
           >
             <Form.Group className="mb-2">
-              <FloatingLabel label={validationSchema.fields.name.spec.label}>
+              <FloatingLabel label={yupIngredientSchema.fields.name.spec.label}>
                 <Form.Control
                   type="text"
                   onChange={formikProps.handleChange}
                   onBlur={formikProps.handleBlur}
                   name="name"
-                  placeholder={validationSchema.fields.name.spec.label}
+                  placeholder={yupIngredientSchema.fields.name.spec.label}
                   value={formikProps.values.name as string | undefined}
                   isInvalid={formikProps.errors.name ? true : false}
                   isValid={
@@ -65,7 +49,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             </Form.Group>
             <Form.Group className="mb-2">
               <FloatingLabel
-                label={validationSchema.fields.priceCents.spec.label}
+                label={yupIngredientSchema.fields.priceCents.spec.label}
               >
                 <Form.Control
                   type="number"
@@ -73,7 +57,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   onChange={formikProps.handleChange}
                   onBlur={formikProps.handleBlur}
                   name="priceCents"
-                  placeholder={validationSchema.fields.priceCents.spec.label}
+                  placeholder={yupIngredientSchema.fields.priceCents.spec.label}
                   value={formikProps.values.priceCents as number | undefined}
                   isInvalid={formikProps.errors.priceCents ? true : false}
                   isValid={
@@ -89,7 +73,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             </Form.Group>
             <Form.Group className="mb-2">
               <FloatingLabel
-                label={validationSchema.fields.servingCount.spec.label}
+                label={yupIngredientSchema.fields.servingCount.spec.label}
               >
                 <Form.Control
                   type="number"
@@ -97,7 +81,9 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   onChange={formikProps.handleChange}
                   onBlur={formikProps.handleBlur}
                   name="servingCount"
-                  placeholder={validationSchema.fields.servingCount.spec.label}
+                  placeholder={
+                    yupIngredientSchema.fields.servingCount.spec.label
+                  }
                   value={formikProps.values.servingCount as number | undefined}
                   isInvalid={formikProps.errors.servingCount ? true : false}
                   isValid={
@@ -113,7 +99,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             </Form.Group>
             <Form.Group className="mb-2">
               <FloatingLabel
-                label={validationSchema.fields.servingMassGrams.spec.label}
+                label={yupIngredientSchema.fields.servingMassGrams.spec.label}
               >
                 <Form.Control
                   type="number"
@@ -122,7 +108,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   onBlur={formikProps.handleBlur}
                   name="servingMassGrams"
                   placeholder={
-                    validationSchema.fields.servingMassGrams.spec.label
+                    yupIngredientSchema.fields.servingMassGrams.spec.label
                   }
                   value={
                     formikProps.values.servingMassGrams as number | undefined
@@ -142,14 +128,15 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             <Form.Group className="mb-2">
               <FloatingLabel
                 label={
-                  validationSchema.fields.servingEnergyKilocalorie.spec.label
+                  yupIngredientSchema.fields.servingEnergyKilocalorie.spec.label
                 }
               >
                 <Form.Control
                   type="number"
                   step={1}
                   placeholder={
-                    validationSchema.fields.servingEnergyKilocalorie.spec.label
+                    yupIngredientSchema.fields.servingEnergyKilocalorie.spec
+                      .label
                   }
                   onChange={formikProps.handleChange}
                   onBlur={formikProps.handleBlur}
@@ -175,13 +162,13 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             </Form.Group>
             <Form.Group className="mb-2">
               <FloatingLabel
-                label={validationSchema.fields.servingFatGrams.spec.label}
+                label={yupIngredientSchema.fields.servingFatGrams.spec.label}
               >
                 <Form.Control
                   type="number"
                   step={1}
                   placeholder={
-                    validationSchema.fields.servingFatGrams.spec.label
+                    yupIngredientSchema.fields.servingFatGrams.spec.label
                   }
                   onChange={formikProps.handleChange}
                   onBlur={formikProps.handleBlur}
@@ -204,7 +191,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             <Form.Group className="mb-2">
               <FloatingLabel
                 label={
-                  validationSchema.fields.servingCarbohydrateGrams.spec.label
+                  yupIngredientSchema.fields.servingCarbohydrateGrams.spec.label
                 }
               >
                 <Form.Control
@@ -214,7 +201,8 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   onBlur={formikProps.handleBlur}
                   name="servingCarbohydrateGrams"
                   placeholder={
-                    validationSchema.fields.servingCarbohydrateGrams.spec.label
+                    yupIngredientSchema.fields.servingCarbohydrateGrams.spec
+                      .label
                   }
                   value={
                     formikProps.values.servingCarbohydrateGrams as
@@ -237,7 +225,9 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             </Form.Group>
             <Form.Group className="mb-2">
               <FloatingLabel
-                label={validationSchema.fields.servingProteinGrams.spec.label}
+                label={
+                  yupIngredientSchema.fields.servingProteinGrams.spec.label
+                }
               >
                 <Form.Control
                   type="number"
@@ -245,7 +235,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   onChange={formikProps.handleChange}
                   onBlur={formikProps.handleBlur}
                   placeholder={
-                    validationSchema.fields.servingProteinGrams.spec.label
+                    yupIngredientSchema.fields.servingProteinGrams.spec.label
                   }
                   name="servingProteinGrams"
                   value={

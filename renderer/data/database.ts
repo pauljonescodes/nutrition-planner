@@ -1,36 +1,33 @@
 import Dexie, { Table } from "dexie";
-import { Ingredient } from "./models/ingredient";
-import { IngredientInRecipe } from "./models/ingredient-in-recipe";
-import { MealPlan } from "./models/meal-plan";
-import { Recipe } from "./models/recipe";
-import { RecipeInMealPlan } from "./models/recipe-in-meal-plan";
-import { RecipeInRecipe } from "./models/recipe-in-recipe";
+import {
+  dexieIngredientSchema,
+  Ingredient,
+  IngredientInterface,
+} from "./models/ingredient";
+import {
+  dexieIngredientInRecipeSchema,
+  IngredientInRecipe,
+  IngredientInRecipeInterface,
+} from "./models/ingredient-in-recipe";
+import { dexieRecipeSchema, Recipe, RecipeInterface } from "./models/recipe";
 
 export class Database extends Dexie {
-  public ingredients!: Table<Ingredient, string>;
-  public recipes!: Table<Recipe, string>;
-  public ingredientInRecipes!: Table<IngredientInRecipe, string>;
-  public mealPlans!: Table<MealPlan, string>;
-  public recipesInMealPlans!: Table<RecipeInMealPlan, string>;
-  public recipeInRecipes!: Table<RecipeInRecipe, string>;
+  public ingredients!: Table<IngredientInterface, string>;
+  public recipes!: Table<RecipeInterface, string>;
+  public ingredientInRecipes!: Table<IngredientInRecipeInterface, string>;
 
   constructor() {
     super("MealPlannerDatabase");
 
-    this.version(11).stores({
-      ingredients: Ingredient.dexieSchema,
-      recipes: Recipe.dexieSchema,
-      ingredientInRecipes: IngredientInRecipe.dexieSchema,
-      mealPlans: MealPlan.dexieSchema,
-      recipesInMealPlans: RecipeInMealPlan.dexieSchema,
-      recipeInRecipes: RecipeInRecipe.dexieSchema,
+    this.version(12).stores({
+      ingredients: dexieIngredientSchema,
+      recipes: dexieRecipeSchema,
+      ingredientInRecipes: dexieIngredientInRecipeSchema,
     });
 
     this.ingredients.mapToClass(Ingredient);
     this.recipes.mapToClass(Recipe);
     this.ingredientInRecipes.mapToClass(IngredientInRecipe);
-    this.mealPlans.mapToClass(MealPlan);
-    this.recipesInMealPlans.mapToClass(RecipeInMealPlan);
   }
 
   private static database: Database;

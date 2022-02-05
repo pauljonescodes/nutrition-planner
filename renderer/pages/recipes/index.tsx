@@ -10,13 +10,16 @@ import {
   Table,
 } from "react-bootstrap";
 import { Database } from "../../data/database";
-import { Recipe } from "../../data/models/recipe";
+import { yupIngredientInRecipeSchema } from "../../data/models/ingredient-in-recipe";
+import { RecipeInterface, yupRecipeSchema } from "../../data/models/recipe";
 import { RecipeForm } from "../../forms/RecipeForm";
 
 const RecipesPage = () => {
-  const [recipes, setRecipes] = useState<Recipe[] | undefined>(undefined);
+  const [recipes, setRecipes] = useState<RecipeInterface[] | undefined>(
+    undefined
+  );
   const [showAdd, setShowAdd] = useState(false);
-  const [updateRecipe, setUpdateRecipe] = useState<Recipe | undefined>(
+  const [updateRecipe, setUpdateRecipe] = useState<RecipeInterface | undefined>(
     undefined
   );
 
@@ -107,8 +110,12 @@ const RecipesPage = () => {
                           size="sm"
                           variant="link"
                           className="text-danger p-0 m-0"
-                          onClick={() => {
-                            Database.shared().recipes.delete(value.id!);
+                          onClick={async () => {
+                            await Database.shared().recipes.delete(value.id);
+                            await Database.shared()
+                              .ingredientInRecipes.where("recipeId")
+                              .equals(value.id)
+                              .delete();
                             refreshState();
                           }}
                         >
@@ -142,14 +149,24 @@ const RecipesPage = () => {
         </Offcanvas.Header>
         <Offcanvas.Body className="pt-0">
           <RecipeForm
-            onSubmit={async (recipe) => {
-              recipe.id = nanoid();
-              for (const ingredientInRecipe of recipe.ingredientsInRecipe) {
-                ingredientInRecipe.recipeId = recipe.id;
+            onSubmit={async (formValue) => {
+              for (const ingredientInRecipe of formValue.ingredientsInRecipe) {
+                ingredientInRecipe.recipeId = formValue.id;
                 ingredientInRecipe.id = nanoid();
-                Database.shared().ingredientInRecipes.put(ingredientInRecipe);
+
+                Database.shared().ingredientInRecipes.put(
+                  await yupIngredientInRecipeSchema.validate(
+                    ingredientInRecipe,
+                    { stripUnknown: true }
+                  )
+                );
               }
-              await Database.shared().recipes.put(recipe);
+
+              await Database.shared().recipes.put(
+                await yupRecipeSchema.validate(formValue, {
+                  stripUnknown: true,
+                })
+              );
               refreshState();
               setShowAdd(false);
             }}
