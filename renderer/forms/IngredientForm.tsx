@@ -1,20 +1,26 @@
 import { Formik } from "formik";
 import React, { FormEvent } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
-import { Ingredient, yupIngredientSchema } from "../data/models/ingredient";
+import {
+  IngredientInterface,
+  yupIngredientSchema,
+} from "../data/models/ingredient";
 
 export interface CreateIngredientFormProps {
-  ingredient?: Ingredient;
-  onSubmit: (ingredient: Ingredient) => void;
+  ingredient?: IngredientInterface;
+  onSubmit: (ingredient: IngredientInterface) => void;
 }
 
 export function IngredientForm(props: CreateIngredientFormProps) {
   return (
-    <Formik<Partial<Ingredient>>
-      initialValues={{ ...props.ingredient }}
+    <Formik<IngredientInterface>
+      initialValues={{
+        ...yupIngredientSchema.getDefault(),
+        ...props.ingredient,
+      }}
       validationSchema={yupIngredientSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit(values as Ingredient);
+        props.onSubmit(values);
         helpers.resetForm();
       }}
       validateOnChange={false}

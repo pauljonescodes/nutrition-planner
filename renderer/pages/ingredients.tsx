@@ -115,8 +115,14 @@ const IngredientsPage = () => {
                               size="sm"
                               variant="link"
                               className="text-danger p-0 m-0"
-                              onClick={() => {
-                                Database.shared().ingredients.delete(value.id!);
+                              onClick={async () => {
+                                await Database.shared().ingredients.delete(
+                                  value.id!
+                                );
+                                await Database.shared()
+                                  .ingredientInRecipes.where("ingredientId")
+                                  .equals(value.id)
+                                  .delete();
                                 refreshState();
                               }}
                             >
