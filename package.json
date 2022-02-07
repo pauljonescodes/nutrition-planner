@@ -24,12 +24,13 @@
         "electron-is-dev": "^1.1.0",
         "electron-next": "^3.1.5",
         "formik": "^2.2.9",
+        "grommet": "^2.20.1",
         "nanoid": "^3.2.0",
         "react": "^17.0.2",
-        "react-bootstrap": "^2.1.2",
-        "react-bootstrap-typeahead": "^6.0.0-alpha.6",
+        "react-data-table-component": "^7.4.7",
         "react-dom": "^17.0.2",
-        "sass": "^1.49.7",
+        "styled-components": "^5.3.3",
+        "styled-normalize": "^8.0.7",
         "yup": "^0.32.11"
     },
     "devDependencies": {

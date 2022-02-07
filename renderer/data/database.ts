@@ -41,6 +41,18 @@ export class Database extends Dexie {
     this.ingredientsTable?.mapToClass(Ingredient);
     this.recipesTable?.mapToClass(Recipe);
     this.ingredientInRecipesTable?.mapToClass(IngredientInRecipe);
+
+    // this.putIngredient({
+    //   id: nanoid(),
+    //   name: "test",
+    //   priceCents: 0,
+    //   servingCount: 0,
+    //   servingMassGrams: 0,
+    //   servingEnergyKilocalorie: 0,
+    //   servingFatGrams: 0,
+    //   servingCarbohydrateGrams: 0,
+    //   servingProteinGrams: 0,
+    // });
   }
 
   /* Ingredients CRUD */
@@ -53,8 +65,12 @@ export class Database extends Dexie {
     return await this.ingredientsTable?.get(ingredientId);
   }
 
-  async arrayOfIngredients() {
-    return await this.ingredientsTable?.toArray();
+  async countOfIngredients() {
+    return (await this.ingredientsTable?.count()) ?? 0;
+  }
+
+  async arrayOfIngredients(limit: number, offset: number) {
+    return await this.ingredientsTable?.limit(limit).offset(offset).toArray();
   }
 
   async filteredIngredients(query: string) {

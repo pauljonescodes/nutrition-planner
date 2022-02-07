@@ -1,7 +1,6 @@
 import { Formik } from "formik";
 import { nanoid } from "nanoid";
 import React, { FormEvent } from "react";
-import { Button, FloatingLabel, Form } from "react-bootstrap";
 import {
   IngredientInterface,
   yupIngredientSchema,

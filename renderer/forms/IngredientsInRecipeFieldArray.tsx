@@ -2,8 +2,6 @@ import { IconPlus, IconX } from "@tabler/icons";
 import { ErrorMessage, FieldArray, FormikProps } from "formik";
 import { nanoid } from "nanoid";
 import React, { Fragment, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Database } from "../data/database";
 import { Ingredient } from "../data/models/ingredient";
 import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";

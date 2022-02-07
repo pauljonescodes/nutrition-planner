@@ -1,14 +1,20 @@
+import { Box, Grommet } from "grommet";
+import { grommet } from "grommet/themes";
 import type { AppProps } from "next/app";
-import { Container } from "react-bootstrap";
-import { NavigationBar } from "../components/navigation-bar";
-import "../scss/style.scss";
+import { Fragment } from "react";
+import { Normalize } from "styled-normalize";
+import { NavHeader } from "../components/nav-header";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Container fluid className="p-0 d-sm-flex min-vh-100">
-      <NavigationBar />
-      <Component {...pageProps} className="h-100" />
-      {/* <FooterComponent /> */}
-    </Container>
+    <Fragment>
+      <Normalize />
+      <Grommet full theme={grommet}>
+        <Box fill>
+          <NavHeader />
+          <Component {...pageProps} className="h-100" />
+        </Box>
+      </Grommet>
+    </Fragment>
   );
 }
