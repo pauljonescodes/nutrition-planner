@@ -9,15 +9,15 @@ import {
   Spinner,
   Table,
 } from "react-bootstrap";
-import { Database } from "../../data/database";
-import { Ingredient } from "../../data/models/ingredient";
-import { yupIngredientInRecipeSchema } from "../../data/models/ingredient-in-recipe";
-import { Recipe, yupRecipeSchema } from "../../data/models/recipe";
+import { Database } from "../data/database";
+import { Ingredient } from "../data/models/ingredient";
+import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";
+import { Recipe, yupRecipeSchema } from "../data/models/recipe";
 import {
   RecipeForm,
   RecipeFormIngredientInRecipe,
   RecipeFormValue,
-} from "../../forms/RecipeForm";
+} from "../forms/RecipeForm";
 
 const RecipesPage = () => {
   const [recipes, setRecipes] = useState<Recipe[] | undefined>(undefined);
