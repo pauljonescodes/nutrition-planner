@@ -9,28 +9,9 @@ import {
   IngredientInRecipe,
   IngredientInRecipeInterface,
 } from "./models/ingredient-in-recipe";
-import { MacronutrientInterface } from "./models/macronutrient-interface";
 import { dexieRecipeSchema, Recipe, RecipeInterface } from "./models/recipe";
 
 export class Database extends Dexie {
-  private ingredients!: Table<IngredientInterface, string>;
-  private recipes!: Table<RecipeInterface, string>;
-  private ingredientInRecipes!: Table<IngredientInRecipeInterface, string>;
-
-  constructor() {
-    super("MealPlannerDatabase");
-
-    this.version(12).stores({
-      ingredients: dexieIngredientSchema,
-      recipes: dexieRecipeSchema,
-      ingredientInRecipes: dexieIngredientInRecipeSchema,
-    });
-
-    this.ingredients.mapToClass(Ingredient);
-    this.recipes.mapToClass(Recipe);
-    this.ingredientInRecipes.mapToClass(IngredientInRecipe);
-  }
-
   private static database: Database;
 
   public static shared(): Database {
@@ -41,108 +22,133 @@ export class Database extends Dexie {
     return Database.database;
   }
 
-  async arrayOfRecipes() {
-    return (await this.recipes.toArray()) as Array<Recipe>;
+  constructor(
+    private ingredientsTable?: Table<IngredientInterface, string>,
+    private recipesTable?: Table<RecipeInterface, string>,
+    private ingredientInRecipesTable?: Table<
+      IngredientInRecipeInterface,
+      string
+    >
+  ) {
+    super("MealPlannerDatabase");
+
+    this.version(13).stores({
+      ingredientsTable: dexieIngredientSchema,
+      recipesTable: dexieRecipeSchema,
+      ingredientInRecipesTable: dexieIngredientInRecipeSchema,
+    });
+
+    this.ingredientsTable?.mapToClass(Ingredient);
+    this.recipesTable?.mapToClass(Recipe);
+    this.ingredientInRecipesTable?.mapToClass(IngredientInRecipe);
   }
 
-  async ingredientsInRecipeArray(recipeId: string) {
-    return (await this.ingredientInRecipes
-      .where({ recipeId })
-      .toArray()) as Array<IngredientInRecipe>;
-  }
+  /* Ingredients CRUD */
 
-  async deleteRecipe(recipeId: string) {
-    await Database.shared().recipes.delete(recipeId);
-    await Database.shared()
-      .ingredientInRecipes.where("recipeId")
-      .equals(recipeId)
-      .delete();
-  }
-
-  async arrayOfIngredients() {
-    return (await this.ingredients.toArray()) as Array<Ingredient>;
+  async putIngredient(ingredient: IngredientInterface) {
+    return await this.ingredientsTable?.put(ingredient);
   }
 
   async getIngredient(ingredientId: string) {
-    return (await this.ingredients.get(ingredientId)) as Ingredient;
+    return await this.ingredientsTable?.get(ingredientId);
   }
 
-  async getRecipe(recipeId: string) {
-    return (await this.recipes.get(recipeId)) as Recipe;
+  async arrayOfIngredients() {
+    return await this.ingredientsTable?.toArray();
   }
 
-  async getRecipeMacronutrients(
-    recipeId: string
-  ): Promise<MacronutrientInterface> {
-    const ingredientsInRecipe = await this.ingredientsInRecipeArray(recipeId);
-    const ingredients = (await this.ingredients.bulkGet(
-      ingredientsInRecipe.map((value) => {
-        return value.ingredientId;
-      })
-    )) as Array<Ingredient>;
-
-    const macros = ingredients.reduce(
-      (previousValue, currentValue) => {
-        return {
-          massGrams: previousValue.massGrams + currentValue.servingMassGrams,
-          energyKilocalorie:
-            previousValue.energyKilocalorie +
-            currentValue.servingEnergyKilocalorie,
-          fatGrams: previousValue.fatGrams + currentValue.servingFatGrams,
-          carbohydrateGrams:
-            previousValue.carbohydrateGrams +
-            currentValue.servingCarbohydrateGrams,
-          proteinGrams:
-            previousValue.proteinGrams + currentValue.servingProteinGrams,
-        };
-      },
-      {
-        massGrams: 0,
-        energyKilocalorie: 0,
-        fatGrams: 0,
-        carbohydrateGrams: 0,
-        proteinGrams: 0,
-      } as MacronutrientInterface
-    );
-
-    return macros;
-  }
-
-  async deleteIngredient(ingredientId: string) {
-    await this.ingredients.delete(ingredientId);
-    await this.ingredientInRecipes
-      .where("ingredientId")
-      .equals(ingredientId)
-      .delete();
-  }
-
-  async putIngredient(ingredient: IngredientInterface) {
-    return await this.ingredients.put(ingredient);
-  }
-
-  async putRecipe(recipe: RecipeInterface) {
-    return await this.recipes.put(recipe);
-  }
-
-  async putIngredientInRecipe(ingredientInRecipe: IngredientInRecipeInterface) {
-    return await this.ingredientInRecipes.put(ingredientInRecipe);
-  }
-
-  async updateIngredient(ingredient: IngredientInterface) {
-    return await this.ingredients.update(ingredient.id, ingredient);
-  }
-
-  async updateRecipe(recipe: RecipeInterface) {
-    return await this.recipes.update(recipe.id, recipe);
-  }
-
-  async filterIngredientsBy(query: string) {
-    return this.ingredients
-      .filter((obj) => {
+  async filteredIngredients(query: string) {
+    return this.ingredientsTable
+      ?.filter((obj) => {
         return new RegExp(".*" + query.split("").join(".*") + ".*").test(
           obj.name
         );
       })
       .toArray();
   }
+
+  async updateIngredient(ingredient: IngredientInterface) {
+    return await this.ingredientsTable?.update(ingredient.id, ingredient);
+  }
+
+  async deleteIngredient(ingredientId: string) {
+    await this.ingredientsTable?.delete(ingredientId);
+    await this.ingredientInRecipesTable
+      ?.where("ingredientId")
+      .equals(ingredientId)
+      .delete();
+  }
+
+  /* Recipes CRUD */
+
+  async putRecipe(recipe: RecipeInterface) {
+    return await this.recipesTable?.put(recipe);
+  }
+
+  async getRecipe(recipeId: string) {
+    return await this.recipesTable?.get(recipeId);
+  }
+
+  async arrayOfRecipes() {
+    return await this.recipesTable?.toArray();
+  }
+
+  async updateRecipe(recipe: RecipeInterface) {
+    return await this.recipesTable?.update(recipe.id, recipe);
+  }
+
+  async deleteRecipe(recipeId: string) {
+    await Database.shared().recipesTable?.delete(recipeId);
+    await Database.shared()
+      .ingredientInRecipesTable?.where("recipeId")
+      .equals(recipeId)
+      .delete();
+  }
+
+  /* Ingredient in recipe CRUD */
+
+  async putIngredientInRecipe(ingredientInRecipe: IngredientInRecipeInterface) {
+    return await this.ingredientInRecipesTable?.put(ingredientInRecipe);
+  }
+
+  async ingredientsInRecipeArray(recipeId: string) {
+    return await this.ingredientInRecipesTable?.where({ recipeId }).toArray();
+  }
 }
+
+// async getRecipeMacronutrients(
+//   recipeId: string
+// ): Promise<MacronutrientInterface> {
+//   const ingredientsInRecipe = await this.ingredientsInRecipeArray(recipeId);
+//   const ingredients = (await this.ingredientsTable?.bulkGet(
+//     ingredientsInRecipe.map((value) => {
+//       return value.ingredientId;
+//     })
+//   )) as Array<Ingredient>;
+
+//   const macros = ingredients.reduce(
+//     (previousValue, currentValue) => {
+//       return {
+//         massGrams: previousValue.massGrams + currentValue.servingMassGrams,
+//         energyKilocalorie:
+//           previousValue.energyKilocalorie +
+//           currentValue.servingEnergyKilocalorie,
+//         fatGrams: previousValue.fatGrams + currentValue.servingFatGrams,
+//         carbohydrateGrams:
+//           previousValue.carbohydrateGrams +
+//           currentValue.servingCarbohydrateGrams,
+//         proteinGrams:
+//           previousValue.proteinGrams + currentValue.servingProteinGrams,
+//       };
+//     },
+//     {
+//       massGrams: 0,
+//       energyKilocalorie: 0,
+//       fatGrams: 0,
+//       carbohydrateGrams: 0,
+//       proteinGrams: 0,
+//     } as MacronutrientInterface
+//   );
+
+//   return macros;
+// }

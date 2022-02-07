@@ -86,7 +86,7 @@ export default function IngredientsInRecipeFieldArray(
                           onSearch={async (query) => {
                             let theIngredientSearchs = ingredientSearchsState;
                             theIngredientSearchs[index].results =
-                              await Database.shared().filterIngredientsBy(
+                              await Database.shared().filteredIngredients(
                                 query
                               );
                             setIngredientSearchesState([

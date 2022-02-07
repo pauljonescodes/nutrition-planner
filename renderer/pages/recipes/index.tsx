@@ -10,6 +10,7 @@ import {
   Table,
 } from "react-bootstrap";
 import { Database } from "../../data/database";
+import { Ingredient } from "../../data/models/ingredient";
 import { yupIngredientInRecipeSchema } from "../../data/models/ingredient-in-recipe";
 import { Recipe, yupRecipeSchema } from "../../data/models/recipe";
 import {
@@ -112,14 +113,15 @@ const RecipesPage = () => {
                             const recipeFormIngredientsInRecipe: RecipeFormIngredientInRecipe[] =
                               [];
 
-                            for (const ingredientInRecipe of ingredientsInRecipe) {
+                            for (const ingredientInRecipe of ingredientsInRecipe ??
+                              []) {
                               const ingredient =
                                 await Database.shared().getIngredient(
-                                  ingredientInRecipe.ingredientId
+                                  ingredientInRecipe.ingredientId!
                                 );
                               recipeFormIngredientsInRecipe.push({
                                 ...ingredientInRecipe,
-                                ingredient: ingredient,
+                                ingredient: ingredient as Ingredient, // todo,
                               });
                             }
 
