@@ -4,43 +4,19 @@ export const dexieIngredientSchema =
   "&id, name, priceCents, servingCount, servingMassGrams, servingEnergyKilocalorie, servingFatGrams, servingCarbohydrateGrams, servingProteinGrams";
 
 export const yupIngredientSchema = Yup.object({
-  id: Yup.string().required().default(""),
-  name: Yup.string().label("Ingredient name").default("").required(),
+  id: Yup.string().required(),
+  name: Yup.string().label("Name").default("").required(),
   priceCents: Yup.number()
-    .label("Price in cents")
+    .label("Price")
+    .meta({ description: "This is a test" })
     .required()
-    .default(0)
-    .positive(),
-  servingCount: Yup.number()
-    .label("Number of servings")
-    .required()
-    .default(1)
-    .positive(),
-  servingMassGrams: Yup.number()
-    .label("Serving size (g or mL)")
-    .required()
-    .default(0)
-    .positive(),
-  servingEnergyKilocalorie: Yup.number()
-    .label("Serving energy (kcal)")
-    .required()
-    .default(0)
-    .positive(),
-  servingFatGrams: Yup.number()
-    .label("Serving fat (g)")
-    .required()
-    .default(0)
-    .positive(),
-  servingCarbohydrateGrams: Yup.number()
-    .label("Serving carbohydrates (g)")
-    .required()
-    .default(0)
-    .positive(),
-  servingProteinGrams: Yup.number()
-    .label("Serving protein (g)")
-    .default(0)
-    .positive()
-    .required(),
+    .default(0),
+  servingCount: Yup.number().label("Servings").required().default(1),
+  servingMassGrams: Yup.number().label("Size").required().default(0),
+  servingEnergyKilocalorie: Yup.number().label("Energy").required().default(0),
+  servingFatGrams: Yup.number().label("Fat").required().default(0),
+  servingCarbohydrateGrams: Yup.number().label("Carb").required().default(0),
+  servingProteinGrams: Yup.number().label("Protein").default(0).required(),
 });
 
 export interface IngredientInterface

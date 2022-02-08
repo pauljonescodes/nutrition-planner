@@ -81,7 +81,13 @@ export class Database extends Dexie {
   }
 
   async updateIngredient(ingredient: IngredientInterface) {
-    return await this.ingredientsTable?.update(ingredient.id, ingredient);
+    console.log(`${ingredient.id} ${ingredient.name}`);
+    const number = await this.ingredientsTable?.update(
+      ingredient.id,
+      ingredient
+    );
+    console.log(number);
+    return number;
   }
 
   async deleteIngredient(ingredientId: string) {
