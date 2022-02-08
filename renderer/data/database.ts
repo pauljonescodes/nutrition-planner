@@ -11,6 +11,11 @@ import {
 } from "./models/ingredient-in-recipe";
 import { dexieRecipeSchema, Recipe, RecipeInterface } from "./models/recipe";
 
+export interface QueryParameters {
+  limit: number;
+  offset: number;
+}
+
 export class Database extends Dexie {
   private static database: Database;
 
@@ -41,18 +46,6 @@ export class Database extends Dexie {
     this.ingredientsTable?.mapToClass(Ingredient);
     this.recipesTable?.mapToClass(Recipe);
     this.ingredientInRecipesTable?.mapToClass(IngredientInRecipe);
-
-    // this.putIngredient({
-    //   id: nanoid(),
-    //   name: "test",
-    //   priceCents: 0,
-    //   servingCount: 0,
-    //   servingMassGrams: 0,
-    //   servingEnergyKilocalorie: 0,
-    //   servingFatGrams: 0,
-    //   servingCarbohydrateGrams: 0,
-    //   servingProteinGrams: 0,
-    // });
   }
 
   /* Ingredients CRUD */
@@ -69,8 +62,12 @@ export class Database extends Dexie {
     return (await this.ingredientsTable?.count()) ?? 0;
   }
 
-  async arrayOfIngredients(limit: number, offset: number) {
-    return await this.ingredientsTable?.limit(limit).offset(offset).toArray();
+  async arrayOfIngredients(parameters: QueryParameters) {
+    console.log(parameters);
+    return await this.ingredientsTable
+      ?.offset(parameters.offset)
+      .limit(parameters.limit)
+      .toArray();
   }
 
   async filteredIngredients(query: string) {

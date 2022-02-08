@@ -53,6 +53,9 @@ const DataPage = () => {
         <TextArea
           placeholder="type here"
           value={blobText}
+          onChange={(event) => {
+            setBlobText(event.target.value);
+          }}
           spellCheck={false}
           fill
         />

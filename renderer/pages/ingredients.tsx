@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { Database } from "../data/database";
+import { Database, QueryParameters } from "../data/database";
 import {
   Ingredient,
   IngredientInterface,
@@ -9,24 +9,47 @@ import {
 
 const IngredientsPage = () => {
   const [data, setData] = useState<Array<IngredientInterface>>([]);
-  const [progressPending, setProgressPending] = useState(false);
-  const [count, setCount] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [totalRows, setTotalRows] = useState(0);
+  const [queryParams, setQueryParams] = useState<QueryParameters>({
+    offset: 0,
+    limit: 10,
+  });
 
-  async function queryData(page: number) {
-    setProgressPending(true);
-    setData((await Database.shared().arrayOfIngredients(limit, page)) ?? []);
-    setCount(await Database.shared().countOfIngredients());
-    setProgressPending(false);
-  }
+  const queryData = async () => {
+    setLoading(true);
+    console.log(
+      `query data limit ${queryParams.limit} offset ${queryParams.offset}`
+    );
+    setData((await Database.shared().arrayOfIngredients(queryParams)) ?? []);
+    setTotalRows(await Database.shared().countOfIngredients());
+    setLoading(false);
+  };
 
   useEffect(() => {
-    queryData(0);
+    queryData();
   }, []);
 
   return (
     <DataTable
       fixedHeader
+      customStyles={{
+        headRow: {
+          style: {
+            fontSize: "18px",
+          },
+        },
+        rows: {
+          style: {
+            fontSize: "18px",
+          },
+        },
+        pagination: {
+          style: {
+            fontSize: "18px",
+          },
+        },
+      }}
       columns={[
         {
           name: yupIngredientSchema.fields.name.spec.label,
@@ -62,15 +85,23 @@ const IngredientsPage = () => {
         },
       ]}
       data={data}
-      progressPending={progressPending}
+      progressPending={loading}
       pagination
       paginationServer
-      paginationTotalRows={count}
-      onChangeRowsPerPage={async (newPerPage: number, page: number) => {
-        setLimit(newPerPage);
-        queryData(page);
+      paginationTotalRows={totalRows}
+      onChangeRowsPerPage={async (currentRowsPerPage: number) => {
+        console.log(`onChangeRowsPerPage ${currentRowsPerPage}`);
+        setQueryParams({
+          limit: currentRowsPerPage,
+          offset: queryParams.offset,
+        });
+        queryData();
       }}
-      onChangePage={queryData}
+      onChangePage={(page: number, totalRows: number) => {
+        console.log(`change page ${page - 1}`);
+        setQueryParams({ limit: queryParams.limit, offset: page - 1 });
+        queryData();
+      }}
     />
   );
 };
