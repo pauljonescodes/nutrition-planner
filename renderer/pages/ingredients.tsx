@@ -36,17 +36,17 @@ const IngredientsPage = () => {
       customStyles={{
         headRow: {
           style: {
-            fontSize: "18px",
+            fontSize: "16px",
           },
         },
         rows: {
           style: {
-            fontSize: "18px",
+            fontSize: "16px",
           },
         },
         pagination: {
           style: {
-            fontSize: "18px",
+            fontSize: "16px",
           },
         },
       }}

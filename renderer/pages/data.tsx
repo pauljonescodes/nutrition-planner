@@ -1,6 +1,5 @@
-import { exportDB, importInto } from "dexie-export-import";
-import { Box, Button, TextArea } from "grommet";
-import { useEffect, useRef, useState } from "react";
+import { exportDB } from "dexie-export-import";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Database } from "../data/database";
 
 const DataPage = () => {
@@ -20,15 +19,8 @@ const DataPage = () => {
   }, []);
 
   return (
-    <Box fill>
-      <Box
-        direction="row"
-        justify="center"
-        align="center"
-        gap="small"
-        margin="small"
-      >
-        <Button
+    <Fragment>
+      {/* <Button
           fill="horizontal"
           label="Copy"
           onClick={() => {
@@ -47,10 +39,9 @@ const DataPage = () => {
             await Database.shared().open();
             importInto(Database.shared(), new Blob([blobText]));
           }}
-        />
-      </Box>
-      <Box fill>
-        <TextArea
+        /> */}
+
+      {/* <TextArea
           placeholder="type here"
           value={blobText}
           onChange={(event) => {
@@ -58,9 +49,8 @@ const DataPage = () => {
           }}
           spellCheck={false}
           fill
-        />
-      </Box>
-    </Box>
+        /> */}
+    </Fragment>
   );
 };
 
