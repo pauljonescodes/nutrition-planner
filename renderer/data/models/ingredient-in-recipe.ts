@@ -25,7 +25,12 @@ export const yupIngredientInRecipeSchema = Yup.object({
     .required()
     .default(0),
   recipeId: Yup.string().required(),
-}).label("Ingredients");
+})
+  .label("Ingredients")
+  .meta({
+    helperText: "An ingredient in this recipe.",
+    key: "ingredientsInRecipe",
+  });
 
 export interface IngredientInRecipeInterface
   extends Yup.InferType<typeof yupIngredientInRecipeSchema> {}

@@ -282,7 +282,7 @@ const RecipesPage = () => {
           setFormDrawerIsOpen(false);
         }}
         finalFocusRef={undefined}
-        size="md"
+        size="lg"
       >
         <DrawerOverlay />
         <DrawerContent>

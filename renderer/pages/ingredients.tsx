@@ -295,7 +295,7 @@ const IngredientsPage = () => {
         placement="right"
         onClose={() => setFormDrawerIsOpen(false)}
         finalFocusRef={undefined}
-        size="md"
+        size="lg"
       >
         <DrawerOverlay />
         <DrawerContent>

@@ -150,6 +150,16 @@ export class Database extends Dexie {
     return (await this.recipesTable?.count()) ?? 0;
   }
 
+  async filteredRecipes(query: string) {
+    return this.recipesTable
+      ?.filter((obj) => {
+        return new RegExp(".*" + query.split("").join(".*") + ".*").test(
+          obj.name
+        );
+      })
+      .toArray();
+  }
+
   async deleteRecipe(recipeId: string) {
     await Database.shared().recipesTable?.delete(recipeId);
     await Database.shared()
@@ -179,40 +189,3 @@ export class Database extends Dexie {
     );
   }
 }
-
-// async getRecipeMacronutrients(
-//   recipeId: string
-// ): Promise<MacronutrientInterface> {
-//   const ingredientsInRecipe = await this.ingredientsInRecipeArray(recipeId);
-//   const ingredients = (await this.ingredientsTable?.bulkGet(
-//     ingredientsInRecipe.map((value) => {
-//       return value.ingredientId;
-//     })
-//   )) as Array<Ingredient>;
-
-//   const macros = ingredients.reduce(
-//     (previousValue, currentValue) => {
-//       return {
-//         massGrams: previousValue.massGrams + currentValue.servingMassGrams,
-//         energyKilocalorie:
-//           previousValue.energyKilocalorie +
-//           currentValue.servingEnergyKilocalorie,
-//         fatGrams: previousValue.fatGrams + currentValue.servingFatGrams,
-//         carbohydrateGrams:
-//           previousValue.carbohydrateGrams +
-//           currentValue.servingCarbohydrateGrams,
-//         proteinGrams:
-//           previousValue.proteinGrams + currentValue.servingProteinGrams,
-//       };
-//     },
-//     {
-//       massGrams: 0,
-//       energyKilocalorie: 0,
-//       fatGrams: 0,
-//       carbohydrateGrams: 0,
-//       proteinGrams: 0,
-//     } as MacronutrientInterface
-//   );
-
-//   return macros;
-// }
