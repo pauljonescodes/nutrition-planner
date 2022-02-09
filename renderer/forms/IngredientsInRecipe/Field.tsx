@@ -3,11 +3,11 @@ import { Box, Button, Center, FormControl, FormLabel } from "@chakra-ui/react";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
-import { Database } from "../data/database";
-import { Ingredient } from "../data/models/ingredient";
-import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";
-import { Recipe } from "../data/models/recipe";
-import { IngredientsInRecipeFieldInput } from "./IngredientsInRecipeFieldInput";
+import { Database } from "../../data/database";
+import { Ingredient } from "../../data/models/ingredient";
+import { yupIngredientInRecipeSchema } from "../../data/models/ingredient-in-recipe";
+import { Recipe } from "../../data/models/recipe";
+import { IngredientsInRecipeFieldInput } from "./FieldInput";
 
 interface IngredientSearchResults {
   results: Array<Ingredient>;

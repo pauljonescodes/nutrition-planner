@@ -1,7 +1,7 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Box, Center, Heading, HStack, IconButton } from "@chakra-ui/react";
 import React from "react";
-import { MainMenu } from "../components/main-menu";
+import { MainMenu } from "../components/MainMenu";
 
 export default function IndexPage() {
   return (

@@ -25,7 +25,7 @@ import {
 import { useEffect, useState } from "react";
 import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
-import { MainMenu } from "../components/main-menu";
+import { MainMenu } from "../components/MainMenu";
 import { Database, QueryParameters } from "../data/database";
 import { IngredientInRecipe } from "../data/models/ingredient-in-recipe";
 import { Recipe, yupRecipeSchema } from "../data/models/recipe";

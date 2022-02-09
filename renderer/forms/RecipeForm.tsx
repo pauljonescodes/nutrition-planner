@@ -11,7 +11,7 @@ import { Form, Formik } from "formik";
 import { nanoid } from "nanoid";
 import React, { FormEvent } from "react";
 import { Recipe, yupRecipeSchema } from "../data/models/recipe";
-import IngredientsInRecipeFieldArray from "./IngredientsInRecipeFieldArray";
+import { IngredientsInRecipeFieldArray } from "./IngredientsInRecipe/FieldArray";
 
 export interface RecipeFormProps {
   recipe?: Recipe;

@@ -20,13 +20,13 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
-import { Ingredient } from "../data/models/ingredient";
+import { Ingredient } from "../../data/models/ingredient";
 import {
   IngredientInRecipe,
   yupIngredientInRecipeSchema,
-} from "../data/models/ingredient-in-recipe";
-import { Recipe } from "../data/models/recipe";
-import { nutritionInfoDescription } from "../data/nutrition-info";
+} from "../../data/models/ingredient-in-recipe";
+import { Recipe } from "../../data/models/recipe";
+import { nutritionInfoDescription } from "../../data/nutrition-info";
 
 interface IngredientsInRecipeFieldInputProps {
   value: IngredientInRecipe;

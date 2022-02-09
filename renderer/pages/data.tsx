@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { exportDB, importInto } from "dexie-export-import";
 import { useEffect, useRef, useState } from "react";
-import { MainMenu } from "../components/main-menu";
+import { MainMenu } from "../components/MainMenu";
 import { Database } from "../data/database";
 
 const DataPage = () => {

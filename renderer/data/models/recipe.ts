@@ -105,8 +105,8 @@ export class Recipe implements RecipeInterface {
     return recipe;
   }
 
-  static nutritionInfo(recipe: Recipe, perServing: boolean = false) {
-    const ingredientsInRecipe = recipe.ingredientsInRecipe ?? [];
+  static nutritionInfo(recipe?: Recipe, perServing: boolean = false) {
+    const ingredientsInRecipe = recipe?.ingredientsInRecipe ?? [];
     const nutritionInfo = ingredientsInRecipe.reduce(
       (previousValue, currentValue) => {
         return addNutritionInfo(
@@ -126,7 +126,7 @@ export class Recipe implements RecipeInterface {
 
     return divideNutritionInfo(
       nutritionInfo,
-      perServing ? recipe.servingCount : 1
+      perServing ? recipe?.servingCount ?? 1 : 1
     );
   }
 }
