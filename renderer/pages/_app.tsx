@@ -1,7 +1,6 @@
 import { Box, ChakraProvider, extendTheme, VStack } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { Fragment } from "react";
-import { NavHeader } from "../components/nav-header";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -24,8 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
         })}
       >
         <VStack align={"stretch"} spacing="0">
-          <NavHeader />
-          <Box height={"calc(100vh - 64px)"}>
+          <Box height={"100vh"}>
             <Component {...pageProps} />
           </Box>
         </VStack>

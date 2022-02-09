@@ -4,7 +4,7 @@ export const dexieIngredientSchema =
   "&id, name, priceCents, servingCount, servingMassGrams, servingEnergyKilocalorie, servingFatGrams, servingCarbohydrateGrams, servingProteinGrams";
 
 export const yupIngredientSchema = Yup.object({
-  id: Yup.string().required(),
+  id: Yup.string().label("ID").required(),
   name: Yup.string().label("Name").default("").required(),
   priceCents: Yup.number()
     .label("Price")

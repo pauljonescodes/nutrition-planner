@@ -1,5 +1,8 @@
+import { AddIcon } from "@chakra-ui/icons";
+import { Box, Center, Heading, HStack, IconButton } from "@chakra-ui/react";
 import { exportDB } from "dexie-export-import";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { MainMenu } from "../components/main-menu";
 import { Database } from "../data/database";
 
 const DataPage = () => {
@@ -19,8 +22,25 @@ const DataPage = () => {
   }, []);
 
   return (
-    <Fragment>
-      {/* <Button
+    <Box>
+      <HStack p="4">
+        <Box>
+          <MainMenu />
+        </Box>
+        <Box flex="1">
+          <Center>
+            <Heading size="md">Data</Heading>
+          </Center>
+        </Box>
+        <Box>
+          <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
+        </Box>
+      </HStack>
+    </Box>
+  );
+  {
+    /*<Fragment>
+       <Button
           fill="horizontal"
           label="Copy"
           onClick={() => {
@@ -39,9 +59,11 @@ const DataPage = () => {
             await Database.shared().open();
             importInto(Database.shared(), new Blob([blobText]));
           }}
-        /> */}
+        /> */
+  }
 
-      {/* <TextArea
+  {
+    /* <TextArea
           placeholder="type here"
           value={blobText}
           onChange={(event) => {
@@ -49,9 +71,9 @@ const DataPage = () => {
           }}
           spellCheck={false}
           fill
-        /> */}
-    </Fragment>
-  );
+        /> 
+    </Fragment>*/
+  }
 };
 
 export default DataPage;

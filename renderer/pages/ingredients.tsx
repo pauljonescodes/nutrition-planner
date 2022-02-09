@@ -25,6 +25,7 @@ import {
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
+import { MainMenu } from "../components/main-menu";
 import { Database, QueryParameters } from "../data/database";
 import {
   Ingredient,
@@ -49,6 +50,7 @@ const IngredientsPage = () => {
   const [queryParameters, setQueryParameters] = useState<QueryParameters>({
     offset: 0,
     limit: 10,
+    reverse: false,
   });
   const [numberOfCellsForUsableHeight, setNumberOfCellsForUsableHeight] =
     useState<number | undefined>(undefined);
@@ -63,7 +65,7 @@ const IngredientsPage = () => {
   }
 
   function handleResize() {
-    const usableHeight = (window.innerHeight ?? 0) - 64 - 75 - 56;
+    const usableHeight = (window.innerHeight ?? 0) - 72 - 56;
     const cellHeight = 48;
     const numberOfCellsForUsableHeight =
       Math.round(usableHeight / cellHeight) - 2;
@@ -98,8 +100,13 @@ const IngredientsPage = () => {
   return (
     <Box>
       <HStack p="4">
+        <Box>
+          <MainMenu />
+        </Box>
         <Box flex="1">
-          <Heading>Ingredients</Heading>
+          <Center>
+            <Heading size="md">Ingredients</Heading>
+          </Center>
         </Box>
         <Box>
           <IconButton
@@ -111,13 +118,13 @@ const IngredientsPage = () => {
       </HStack>
 
       <DataTable
-        fixedHeader
         theme={colorMode === "light" ? "default" : "dark"}
         responsive
+        sortServer
         customStyles={{
           table: {
             style: {
-              height: `calc(100vh - 64px - 75px - 56px - ${height}px)`,
+              height: `calc(100vh - 72px - 56px - ${height}px)`,
             },
           },
         }}
@@ -155,43 +162,59 @@ const IngredientsPage = () => {
           {
             name: yupIngredientSchema.fields.name.spec.label,
             selector: (row: Ingredient) => row.name,
+            sortField: "name",
+            sortable: true,
           },
           {
             name: yupIngredientSchema.fields.priceCents.spec.label,
             selector: (row: Ingredient) => row.priceCents,
             center: true,
+            sortField: "priceCents",
+            sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingCount.spec.label,
             selector: (row: Ingredient) => row.servingCount,
             center: true,
+            sortField: "servingCount",
+            sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingMassGrams.spec.label,
             selector: (row: Ingredient) => row.servingMassGrams,
             center: true,
+            sortField: "servingMassGrams",
+            sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingEnergyKilocalorie.spec
               .label,
             selector: (row: Ingredient) => row.servingEnergyKilocalorie,
             center: true,
+            sortField: "servingEnergyKilocalorie",
+            sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingFatGrams.spec.label,
             selector: (row: Ingredient) => row.servingFatGrams,
             center: true,
+            sortField: "servingFatGrams",
+            sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingCarbohydrateGrams.spec
               .label,
             selector: (row: Ingredient) => row.servingCarbohydrateGrams,
             center: true,
+            sortField: "servingCarbohydrateGrams",
+            sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingProteinGrams.spec.label,
             selector: (row: Ingredient) => row.servingProteinGrams,
             center: true,
+            sortField: "servingProteinGrams",
+            sortable: true,
           },
         ]}
         data={data}
@@ -213,9 +236,16 @@ const IngredientsPage = () => {
           }
         }
         paginationRowsPerPageOptions={[numberOfCellsForUsableHeight ?? 1]}
+        onSort={(selectedColumn) => {
+          setQueryParameters({
+            ...queryParameters,
+            sortBy: selectedColumn.sortField,
+            reverse: !queryParameters.reverse,
+          });
+        }}
         onChangePage={(page: number) => {
           setQueryParameters({
-            limit: queryParameters.limit,
+            ...queryParameters,
             offset: (page - 1) * queryParameters.limit,
           });
         }}
