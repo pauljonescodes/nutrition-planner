@@ -30,7 +30,7 @@
                         "servingEnergyKilocalorie": 130,
                         "servingMassGrams": 30,
                         "servingCount": 15,
-                        "priceCents": 799,
+                        "totalPriceCents": 799,
                         "name": "Just FreshDirect Chocolate Raisins",
                         "id": "-aZA_Qg_d_mXzEmA2UufT",
                         "$types": {
@@ -44,7 +44,7 @@
                         "servingEnergyKilocalorie": 110,
                         "servingMassGrams": 15,
                         "servingCount": 8,
-                        "priceCents": 399,
+                        "totalPriceCents": 399,
                         "name": "Just FreshDirect Coconut Chips",
                         "id": "6C07Hhy3h0rHbNaKjd065",
                         "$types": {
@@ -58,7 +58,7 @@
                         "servingEnergyKilocalorie": 200,
                         "servingMassGrams": 30,
                         "servingCount": 9,
-                        "priceCents": 699,
+                        "totalPriceCents": 699,
                         "name": "Just FreshDirect Raw Hazelnuts",
                         "id": "7W9L2G_Kqq2aFXFzPvygj",
                         "$types": {
@@ -72,7 +72,7 @@
                         "servingEnergyKilocalorie": 130,
                         "servingMassGrams": 30,
                         "servingCount": 11,
-                        "priceCents": 449,
+                        "totalPriceCents": 449,
                         "name": "Sun-Maid California Golden Raisins",
                         "id": "C4jElO5Uw3natazjHu5Bk",
                         "$types": {
@@ -86,7 +86,7 @@
                         "servingEnergyKilocalorie": 140,
                         "servingMassGrams": 30,
                         "servingCount": 11,
-                        "priceCents": 699,
+                        "totalPriceCents": 699,
                         "name": "Just FreshDirect Raisins",
                         "id": "I8UmIOlPsGarIl_iP3rY4",
                         "$types": {
@@ -100,7 +100,7 @@
                         "servingEnergyKilocalorie": 120,
                         "servingMassGrams": 15,
                         "servingCount": 66,
-                        "priceCents": 1099,
+                        "totalPriceCents": 1099,
                         "name": "Just FreshDirect Olive Oil",
                         "id": "MHkgK42OBmasyA7sd7Isw",
                         "$types": {
@@ -114,7 +114,7 @@
                         "servingEnergyKilocalorie": 200,
                         "servingMassGrams": 30,
                         "servingCount": 15,
-                        "priceCents": 499,
+                        "totalPriceCents": 499,
                         "name": "Just FreshDirect Roasted Salted Peanutes",
                         "id": "QpndscrN3ApnHDMhusqMi",
                         "$types": {
@@ -128,7 +128,7 @@
                         "servingEnergyKilocalorie": 180,
                         "servingMassGrams": 30,
                         "servingCount": 11,
-                        "priceCents": 699,
+                        "totalPriceCents": 699,
                         "name": "Just FreshDirect Raw Pumpkin Seeds",
                         "id": "SaHss3nS9rkwKVdCqzG4E",
                         "$types": {
@@ -142,7 +142,7 @@
                         "servingEnergyKilocalorie": 210,
                         "servingMassGrams": 30,
                         "servingCount": 9,
-                        "priceCents": 999,
+                        "totalPriceCents": 999,
                         "name": "Just FreshDirect Raw Pecans",
                         "id": "Tb3PlSgmw9n_tbwAG2ydv",
                         "$types": {
@@ -156,7 +156,7 @@
                         "servingEnergyKilocalorie": 150,
                         "servingMassGrams": 40,
                         "servingCount": 30,
-                        "priceCents": 599,
+                        "totalPriceCents": 599,
                         "name": "Quaker Oats",
                         "id": "WFZuqLokEsiZvGwx8SdDD",
                         "$types": {
@@ -170,7 +170,7 @@
                         "servingEnergyKilocalorie": 210,
                         "servingMassGrams": 30,
                         "servingCount": 10,
-                        "priceCents": 1499,
+                        "totalPriceCents": 1499,
                         "name": "Just FreshDirect Raw Brazil Nuts",
                         "id": "Y4vbz5_--FOAqyJpZnyIE",
                         "$types": {
@@ -184,7 +184,7 @@
                         "servingEnergyKilocalorie": 140,
                         "servingMassGrams": 40,
                         "servingCount": 11,
-                        "priceCents": 699,
+                        "totalPriceCents": 699,
                         "name": "Just FreshDirect Cranberries",
                         "id": "eerYiwJ7EN4x1TUkEfcCD",
                         "$types": {
@@ -198,7 +198,7 @@
                         "servingEnergyKilocalorie": 180,
                         "servingMassGrams": 30,
                         "servingCount": 15,
-                        "priceCents": 399,
+                        "totalPriceCents": 399,
                         "name": "Just FreshDirect Raw Sunflower Seeds",
                         "id": "nyp5iMqn9Z97vlxakSrGn",
                         "$types": {
@@ -212,7 +212,7 @@
                         "servingEnergyKilocalorie": 60,
                         "servingMassGrams": 21,
                         "servingCount": 43,
-                        "priceCents": 1099,
+                        "totalPriceCents": 1099,
                         "name": "Just FreshDirect Honey",
                         "id": "o8xSKDm5cfmST36znrIb_",
                         "$types": {
@@ -226,7 +226,7 @@
                         "servingEnergyKilocalorie": 200,
                         "servingMassGrams": 30,
                         "servingCount": 9,
-                        "priceCents": 899,
+                        "totalPriceCents": 899,
                         "name": "Just FreshDirect Raw Walnuts",
                         "id": "vY0rP9GL-L0m7RRkob5HA",
                         "$types": {

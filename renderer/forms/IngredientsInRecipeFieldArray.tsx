@@ -1,8 +1,7 @@
 import { FieldArray, FormikProps } from "formik";
-import React from "react";
 import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";
 import { Recipe } from "../data/models/recipe";
-import IngredientInRecipeField from "./IngredientInRecipeField";
+import { IngredientsInRecipeField } from "./IngredientsInRecipeField";
 
 interface IngredientInRecipeFieldArrayProps {
   thisRecipeId: string;
@@ -15,7 +14,7 @@ export default function IngredientsInRecipeFieldArray(
   return (
     <FieldArray name={yupIngredientInRecipeSchema.spec.meta["key"]}>
       {(fieldArrayHelpers) => (
-        <IngredientInRecipeField
+        <IngredientsInRecipeField
           thisRecipeId={props.thisRecipeId}
           formikProps={props.formikProps}
           fieldArrayHelpers={fieldArrayHelpers}

@@ -2,26 +2,24 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Box, Button, Center, FormControl, FormLabel } from "@chakra-ui/react";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { nanoid } from "nanoid";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Database } from "../data/database";
 import { Ingredient } from "../data/models/ingredient";
 import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";
 import { Recipe } from "../data/models/recipe";
-import IngredientInRecipeInput from "./IngredientInRecipeInput";
+import { IngredientsInRecipeFieldInput } from "./IngredientsInRecipeFieldInput";
 
 interface IngredientSearchResults {
   results: Array<Ingredient>;
 }
 
-interface IngredientInRecipeFieldProps {
+interface IngredientsInRecipeFieldProps {
   thisRecipeId: string;
   formikProps: FormikProps<Recipe>;
   fieldArrayHelpers: FieldArrayRenderProps;
 }
 
-export default function IngredientInRecipeField(
-  props: IngredientInRecipeFieldProps
-) {
+export function IngredientsInRecipeField(props: IngredientsInRecipeFieldProps) {
   const [ingredientSearchsState, setIngredientSearchesState] = useState<
     IngredientSearchResults[]
   >([]);
@@ -46,7 +44,7 @@ export default function IngredientInRecipeField(
                 }) ?? []
               : [];
           return (
-            <IngredientInRecipeInput
+            <IngredientsInRecipeFieldInput
               autoCompleteOnChange={async (value) => {
                 let theIngredientSearchs = ingredientSearchsState;
                 theIngredientSearchs[index].results =

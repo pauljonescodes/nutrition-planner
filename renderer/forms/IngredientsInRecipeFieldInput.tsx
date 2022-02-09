@@ -19,7 +19,7 @@ import {
   Item,
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Ingredient } from "../data/models/ingredient";
 import {
   IngredientInRecipe,
@@ -28,7 +28,7 @@ import {
 import { Recipe } from "../data/models/recipe";
 import { nutritionInfoDescription } from "../data/nutrition-info";
 
-interface IngredientInRecipeInputProps {
+interface IngredientsInRecipeFieldInputProps {
   value: IngredientInRecipe;
   index: number;
   thisRecipeId: string;
@@ -38,8 +38,8 @@ interface IngredientInRecipeInputProps {
   autoCompleteOnChange: (value: string) => void;
 }
 
-export default function IngredientInRecipeInput(
-  props: IngredientInRecipeInputProps
+export function IngredientsInRecipeFieldInput(
+  props: IngredientsInRecipeFieldInputProps
 ) {
   const [selectedFieldValueName, setSelectedFieldValueName] = useState<
     string | undefined
