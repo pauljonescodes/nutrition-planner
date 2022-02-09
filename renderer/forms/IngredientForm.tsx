@@ -30,7 +30,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
       }}
       validationSchema={yupIngredientSchema}
       onSubmit={async (values, helpers) => {
-        console.log("subbmitting");
         await props.onSubmit(values);
         helpers.resetForm();
       }}
@@ -57,7 +56,13 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 value={formikProps.values.name as string | undefined}
                 isInvalid={formikProps.errors.name ? true : false}
               />
-              <FormErrorMessage>{formikProps.errors.name}</FormErrorMessage>
+              {formikProps.errors.name ? (
+                <FormErrorMessage>{formikProps.errors.name}</FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {yupIngredientSchema.fields.name.spec.meta["helperText"]}
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl mb={3} isRequired>
               <FormLabel htmlFor="priceCents">
@@ -73,7 +78,6 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 value={formikProps.values.priceCents as number | undefined}
                 isInvalid={formikProps.errors.priceCents ? true : false}
               />
-
               {formikProps.errors.priceCents ? (
                 <FormErrorMessage>
                   {formikProps.errors.priceCents}
@@ -102,9 +106,19 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 value={formikProps.values.servingCount as number | undefined}
                 isInvalid={formikProps.errors.servingCount ? true : false}
               />
-              <FormErrorMessage>
-                {formikProps.errors.servingCount}
-              </FormErrorMessage>
+              {formikProps.errors.servingCount ? (
+                <FormErrorMessage>
+                  {formikProps.errors.servingCount}
+                </FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {
+                    yupIngredientSchema.fields.servingCount.spec.meta[
+                      "helperText"
+                    ]
+                  }
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl mb={3} isRequired>
               <FormLabel htmlFor="servingMassGrams">
@@ -124,9 +138,19 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 }
                 isInvalid={formikProps.errors.servingMassGrams ? true : false}
               />
-              <FormErrorMessage>
-                {formikProps.errors.servingMassGrams}
-              </FormErrorMessage>
+              {formikProps.errors.servingMassGrams ? (
+                <FormErrorMessage>
+                  {formikProps.errors.servingMassGrams}
+                </FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {
+                    yupIngredientSchema.fields.servingMassGrams.spec.meta[
+                      "helperText"
+                    ]
+                  }
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl mb={3} isRequired>
               <FormLabel htmlFor="servingEnergyKilocalorie">
@@ -150,9 +174,18 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   formikProps.errors.servingEnergyKilocalorie ? true : false
                 }
               />
-              <FormErrorMessage>
-                {formikProps.errors.servingEnergyKilocalorie}
-              </FormErrorMessage>
+              {formikProps.errors.servingEnergyKilocalorie ? (
+                <FormErrorMessage>
+                  {formikProps.errors.servingEnergyKilocalorie}
+                </FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {
+                    yupIngredientSchema.fields.servingEnergyKilocalorie.spec
+                      .meta["helperText"]
+                  }
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl mb={3} isRequired>
               <FormLabel htmlFor="servingFatGrams">
@@ -170,9 +203,19 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 value={formikProps.values.servingFatGrams as number | undefined}
                 isInvalid={formikProps.errors.servingFatGrams ? true : false}
               />
-              <FormErrorMessage>
-                {formikProps.errors.servingFatGrams}
-              </FormErrorMessage>
+              {formikProps.errors.servingFatGrams ? (
+                <FormErrorMessage>
+                  {formikProps.errors.servingFatGrams}
+                </FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {
+                    yupIngredientSchema.fields.servingFatGrams.spec.meta[
+                      "helperText"
+                    ]
+                  }
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl mb={3} isRequired>
               <FormLabel htmlFor="servingCarbohydrateGrams">
@@ -196,10 +239,18 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   formikProps.errors.servingCarbohydrateGrams ? true : false
                 }
               />
-
-              <FormErrorMessage>
-                {formikProps.errors.servingCarbohydrateGrams}
-              </FormErrorMessage>
+              {formikProps.errors.servingCarbohydrateGrams ? (
+                <FormErrorMessage>
+                  {formikProps.errors.servingCarbohydrateGrams}
+                </FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {
+                    yupIngredientSchema.fields.servingCarbohydrateGrams.spec
+                      .meta["helperText"]
+                  }
+                </FormHelperText>
+              )}
             </FormControl>
             <FormControl mb={3} isRequired>
               <FormLabel htmlFor="servingProteinGrams">
@@ -221,9 +272,19 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                   formikProps.errors.servingProteinGrams ? true : false
                 }
               />
-              <FormErrorMessage>
-                {formikProps.errors.servingProteinGrams}
-              </FormErrorMessage>
+              {formikProps.errors.servingProteinGrams ? (
+                <FormErrorMessage>
+                  {formikProps.errors.servingProteinGrams}
+                </FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {
+                    yupIngredientSchema.fields.servingProteinGrams.spec.meta[
+                      "helperText"
+                    ]
+                  }
+                </FormHelperText>
+              )}
             </FormControl>
             <Center>
               <Button type="submit" mt={4} isLoading={formikProps.isSubmitting}>

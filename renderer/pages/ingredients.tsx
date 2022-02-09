@@ -22,6 +22,7 @@ import {
   Spinner,
   useColorMode,
 } from "@chakra-ui/react";
+import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
@@ -153,6 +154,13 @@ const IngredientsPage = () => {
                   size={"xs"}
                   icon={<CopyIcon />}
                   aria-label="Duplicate"
+                  onClick={async () => {
+                    const newIngredient = row;
+                    newIngredient.id = nanoid();
+                    newIngredient.name = `${newIngredient.name} (copy)`;
+                    await Database.shared().putIngredient(newIngredient);
+                    queryData();
+                  }}
                 />
               </ButtonGroup>
             ),
@@ -162,28 +170,29 @@ const IngredientsPage = () => {
           {
             name: yupIngredientSchema.fields.name.spec.label,
             selector: (row: Ingredient) => row.name,
-            sortField: "name",
+            sortField: yupIngredientSchema.fields.name.spec.meta["key"],
             sortable: true,
           },
           {
             name: yupIngredientSchema.fields.priceCents.spec.label,
             selector: (row: Ingredient) => row.priceCents,
             center: true,
-            sortField: "priceCents",
+            sortField: yupIngredientSchema.fields.priceCents.spec.meta["key"],
             sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingCount.spec.label,
             selector: (row: Ingredient) => row.servingCount,
             center: true,
-            sortField: "servingCount",
+            sortField: yupIngredientSchema.fields.servingCount.spec.meta["key"],
             sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingMassGrams.spec.label,
             selector: (row: Ingredient) => row.servingMassGrams,
             center: true,
-            sortField: "servingMassGrams",
+            sortField:
+              yupIngredientSchema.fields.servingMassGrams.spec.meta["key"],
             sortable: true,
           },
           {
@@ -191,14 +200,18 @@ const IngredientsPage = () => {
               .label,
             selector: (row: Ingredient) => row.servingEnergyKilocalorie,
             center: true,
-            sortField: "servingEnergyKilocalorie",
+            sortField:
+              yupIngredientSchema.fields.servingEnergyKilocalorie.spec.meta[
+                "key"
+              ],
             sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingFatGrams.spec.label,
             selector: (row: Ingredient) => row.servingFatGrams,
             center: true,
-            sortField: "servingFatGrams",
+            sortField:
+              yupIngredientSchema.fields.servingFatGrams.spec.meta["key"],
             sortable: true,
           },
           {
@@ -206,14 +219,18 @@ const IngredientsPage = () => {
               .label,
             selector: (row: Ingredient) => row.servingCarbohydrateGrams,
             center: true,
-            sortField: "servingCarbohydrateGrams",
+            sortField:
+              yupIngredientSchema.fields.servingCarbohydrateGrams.spec.meta[
+                "key"
+              ],
             sortable: true,
           },
           {
             name: yupIngredientSchema.fields.servingProteinGrams.spec.label,
             selector: (row: Ingredient) => row.servingProteinGrams,
             center: true,
-            sortField: "servingProteinGrams",
+            sortField:
+              yupIngredientSchema.fields.servingProteinGrams.spec.meta["key"],
             sortable: true,
           },
         ]}
@@ -230,11 +247,9 @@ const IngredientsPage = () => {
           setQueryParameters({ ...queryParameters, limit: currentRowsPerPage });
         }}
         paginationPerPage={queryParameters.limit}
-        paginationComponentOptions={
-          {
-            // noRowsPerPage: true,
-          }
-        }
+        paginationComponentOptions={{
+          noRowsPerPage: true,
+        }}
         paginationRowsPerPageOptions={[numberOfCellsForUsableHeight ?? 1]}
         onSort={(selectedColumn) => {
           setQueryParameters({
@@ -255,6 +270,7 @@ const IngredientsPage = () => {
         placement="right"
         onClose={() => setFormDrawerIsOpen(false)}
         finalFocusRef={undefined}
+        size="md"
       >
         <DrawerOverlay />
         <DrawerContent>

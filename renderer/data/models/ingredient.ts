@@ -5,18 +5,72 @@ export const dexieIngredientSchema =
 
 export const yupIngredientSchema = Yup.object({
   id: Yup.string().label("ID").required(),
-  name: Yup.string().label("Name").default("").required(),
+  name: Yup.string()
+    .label("Name")
+    .default("")
+    .meta({
+      helperText: "Display name of ingredient.",
+      key: "name",
+    })
+    .required(),
   priceCents: Yup.number()
     .label("Price")
-    .meta({ description: "This is a test" })
+    .meta({
+      helperText:
+        "Cost of the ingredient in the lowest denomination of your currency (i.e. cents)",
+      key: "priceCents",
+    })
     .required()
     .default(0),
-  servingCount: Yup.number().label("Servings").required().default(1),
-  servingMassGrams: Yup.number().label("Size").required().default(0),
-  servingEnergyKilocalorie: Yup.number().label("Energy").required().default(0),
-  servingFatGrams: Yup.number().label("Fat").required().default(0),
-  servingCarbohydrateGrams: Yup.number().label("Carb").required().default(0),
-  servingProteinGrams: Yup.number().label("Protein").default(0).required(),
+  servingCount: Yup.number()
+    .label("Servings")
+    .meta({
+      helperText: "Total number of servings for the price.",
+      key: "servingCount",
+    })
+    .required()
+    .default(1),
+  servingMassGrams: Yup.number()
+    .label("Size")
+    .meta({
+      helperText:
+        "Mass or volume of a single serving, usually grams or milliliters.",
+      key: "servingMassGrams",
+    })
+    .required()
+    .default(0),
+  servingEnergyKilocalorie: Yup.number()
+    .label("Energy")
+    .meta({
+      helperText: "Kilocalories of a single serving.",
+      key: "servingEnergyKilocalorie",
+    })
+    .required()
+    .default(0),
+  servingFatGrams: Yup.number()
+    .label("Fat")
+    .meta({
+      helperText: "Fat grams in single serving.",
+      key: "servingFatGrams",
+    })
+    .required()
+    .default(0),
+  servingCarbohydrateGrams: Yup.number()
+    .label("Carb")
+    .meta({
+      helperText: "Carboyhydrate grams in single serving.",
+      key: "servingCarbohydrateGrams",
+    })
+    .required()
+    .default(0),
+  servingProteinGrams: Yup.number()
+    .label("Protein")
+    .meta({
+      helperText: "Protein grams in single serving.",
+      key: "servingProteinGrams",
+    })
+    .default(0)
+    .required(),
 });
 
 export interface IngredientInterface
