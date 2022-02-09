@@ -193,6 +193,7 @@ const IngredientsPage = () => {
             sortField:
               yupIngredientSchema.fields.totalPriceCents.spec.meta["key"],
             sortable: true,
+            hide: Media.SM,
           },
           {
             name: yupIngredientSchema.fields.servingCount.spec.label,
@@ -200,7 +201,7 @@ const IngredientsPage = () => {
             center: true,
             sortField: yupIngredientSchema.fields.servingCount.spec.meta["key"],
             sortable: true,
-            hide: Media.SM,
+            hide: Media.MD,
           },
           {
             name: yupIngredientSchema.fields.servingMassGrams.spec.label,
