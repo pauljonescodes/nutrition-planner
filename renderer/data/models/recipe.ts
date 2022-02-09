@@ -1,5 +1,10 @@
 import * as Yup from "yup";
 import { Database } from "../database";
+import {
+  addNutritionInfo,
+  divideNutritionInfo,
+  NutritionInfo,
+} from "../nutrition-info";
 import { IngredientInRecipe } from "./ingredient-in-recipe";
 
 export const dexieRecipeSchema = "&id, name, servingCount";
@@ -98,5 +103,30 @@ export class Recipe implements RecipeInterface {
     }
 
     return recipe;
+  }
+
+  static nutritionInfo(recipe: Recipe, perServing: boolean = false) {
+    const ingredientsInRecipe = recipe.ingredientsInRecipe ?? [];
+    const nutritionInfo = ingredientsInRecipe.reduce(
+      (previousValue, currentValue) => {
+        return addNutritionInfo(
+          previousValue,
+          IngredientInRecipe.nutritionInfo(currentValue)
+        );
+      },
+      {
+        priceCents: 0,
+        massGrams: 0,
+        energyKilocalorie: 0,
+        fatGrams: 0,
+        carbohydrateGrams: 0,
+        proteinGrams: 0,
+      } as NutritionInfo
+    );
+
+    return divideNutritionInfo(
+      nutritionInfo,
+      perServing ? recipe.servingCount : 1
+    );
   }
 }

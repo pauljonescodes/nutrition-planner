@@ -106,7 +106,6 @@ export default function IngredientsInRecipeFieldArray(
                         value={value.ingredient?.name}
                         onChange={async (event) => {
                           let theIngredientSearchs = ingredientSearchsState;
-                          console.log(`length ${theIngredientSearchs.length}`);
                           theIngredientSearchs[index].results =
                             (await Database.shared().filteredIngredients(
                               event.target.value

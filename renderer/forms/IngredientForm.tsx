@@ -66,7 +66,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             </FormControl>
             <FormControl mb={3} isRequired>
               <FormLabel htmlFor="priceCents">
-                {yupIngredientSchema.fields.priceCents.spec.label}
+                {yupIngredientSchema.fields.totalPriceCents.spec.label}
               </FormLabel>
               <Input
                 type="number"
@@ -74,18 +74,20 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 onChange={formikProps.handleChange}
                 onBlur={formikProps.handleBlur}
                 name="priceCents"
-                placeholder={yupIngredientSchema.fields.priceCents.spec.label}
-                value={formikProps.values.priceCents as number | undefined}
-                isInvalid={formikProps.errors.priceCents ? true : false}
+                placeholder={
+                  yupIngredientSchema.fields.totalPriceCents.spec.label
+                }
+                value={formikProps.values.totalPriceCents as number | undefined}
+                isInvalid={formikProps.errors.totalPriceCents ? true : false}
               />
-              {formikProps.errors.priceCents ? (
+              {formikProps.errors.totalPriceCents ? (
                 <FormErrorMessage>
-                  {formikProps.errors.priceCents}
+                  {formikProps.errors.totalPriceCents}
                 </FormErrorMessage>
               ) : (
                 <FormHelperText>
                   {
-                    yupIngredientSchema.fields.priceCents.spec.meta[
+                    yupIngredientSchema.fields.totalPriceCents.spec.meta[
                       "helperText"
                     ]
                   }

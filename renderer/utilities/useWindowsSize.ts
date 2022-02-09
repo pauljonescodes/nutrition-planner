@@ -21,11 +21,9 @@ export function useWindowSize() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", handleResize);
-
       handleResize();
-
       return () => window.removeEventListener("resize", handleResize);
     }
-  }, []); // Empty array ensures that effect is only run on mount
+  }, []);
   return windowSize;
 }

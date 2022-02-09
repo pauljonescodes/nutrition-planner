@@ -1,0 +1,392 @@
+{
+    "formatName": "dexie",
+    "formatVersion": 1,
+    "data": {
+        "databaseName": "MealPlannerDatabase",
+        "databaseVersion": 13,
+        "tables": [{
+                "name": "ingredientsTable",
+                "schema": "id,name,priceCents,servingCount,servingMassGrams,servingEnergyKilocalorie,servingFatGrams,servingCarbohydrateGrams,servingProteinGrams",
+                "rowCount": 15
+            },
+            {
+                "name": "recipesTable",
+                "schema": "id,name,servingCount",
+                "rowCount": 1
+            },
+            {
+                "name": "ingredientInRecipesTable",
+                "schema": "id,recipeId,servingCount,ingredientId",
+                "rowCount": 15
+            }
+        ],
+        "data": [{
+                "tableName": "ingredientsTable",
+                "inbound": true,
+                "rows": [{
+                        "servingProteinGrams": 1,
+                        "servingCarbohydrateGrams": 20,
+                        "servingFatGrams": 7,
+                        "servingEnergyKilocalorie": 130,
+                        "servingMassGrams": 30,
+                        "servingCount": 15,
+                        "priceCents": 799,
+                        "name": "Just FreshDirect Chocolate Raisins",
+                        "id": "-aZA_Qg_d_mXzEmA2UufT",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 1,
+                        "servingCarbohydrateGrams": 3,
+                        "servingFatGrams": 10,
+                        "servingEnergyKilocalorie": 110,
+                        "servingMassGrams": 15,
+                        "servingCount": 8,
+                        "priceCents": 399,
+                        "name": "Just FreshDirect Coconut Chips",
+                        "id": "6C07Hhy3h0rHbNaKjd065",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 5,
+                        "servingCarbohydrateGrams": 5,
+                        "servingFatGrams": 18,
+                        "servingEnergyKilocalorie": 200,
+                        "servingMassGrams": 30,
+                        "servingCount": 9,
+                        "priceCents": 699,
+                        "name": "Just FreshDirect Raw Hazelnuts",
+                        "id": "7W9L2G_Kqq2aFXFzPvygj",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 1,
+                        "servingCarbohydrateGrams": 31,
+                        "servingFatGrams": 0,
+                        "servingEnergyKilocalorie": 130,
+                        "servingMassGrams": 30,
+                        "servingCount": 11,
+                        "priceCents": 449,
+                        "name": "Sun-Maid California Golden Raisins",
+                        "id": "C4jElO5Uw3natazjHu5Bk",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 0,
+                        "servingCarbohydrateGrams": 33,
+                        "servingFatGrams": 0,
+                        "servingEnergyKilocalorie": 140,
+                        "servingMassGrams": 30,
+                        "servingCount": 11,
+                        "priceCents": 699,
+                        "name": "Just FreshDirect Raisins",
+                        "id": "I8UmIOlPsGarIl_iP3rY4",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 0,
+                        "servingCarbohydrateGrams": 0,
+                        "servingFatGrams": 14,
+                        "servingEnergyKilocalorie": 120,
+                        "servingMassGrams": 15,
+                        "servingCount": 66,
+                        "priceCents": 1099,
+                        "name": "Just FreshDirect Olive Oil",
+                        "id": "MHkgK42OBmasyA7sd7Isw",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 7,
+                        "servingCarbohydrateGrams": 4,
+                        "servingFatGrams": 17,
+                        "servingEnergyKilocalorie": 200,
+                        "servingMassGrams": 30,
+                        "servingCount": 15,
+                        "priceCents": 499,
+                        "name": "Just FreshDirect Roasted Salted Peanutes",
+                        "id": "QpndscrN3ApnHDMhusqMi",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 10,
+                        "servingCarbohydrateGrams": 3,
+                        "servingFatGrams": 13,
+                        "servingEnergyKilocalorie": 180,
+                        "servingMassGrams": 30,
+                        "servingCount": 11,
+                        "priceCents": 699,
+                        "name": "Just FreshDirect Raw Pumpkin Seeds",
+                        "id": "SaHss3nS9rkwKVdCqzG4E",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 5,
+                        "servingCarbohydrateGrams": 3,
+                        "servingFatGrams": 20,
+                        "servingEnergyKilocalorie": 210,
+                        "servingMassGrams": 30,
+                        "servingCount": 9,
+                        "priceCents": 999,
+                        "name": "Just FreshDirect Raw Pecans",
+                        "id": "Tb3PlSgmw9n_tbwAG2ydv",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 5,
+                        "servingCarbohydrateGrams": 27,
+                        "servingFatGrams": 3,
+                        "servingEnergyKilocalorie": 150,
+                        "servingMassGrams": 40,
+                        "servingCount": 30,
+                        "priceCents": 599,
+                        "name": "Quaker Oats",
+                        "id": "WFZuqLokEsiZvGwx8SdDD",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 3,
+                        "servingCarbohydrateGrams": 4,
+                        "servingFatGrams": 20,
+                        "servingEnergyKilocalorie": 210,
+                        "servingMassGrams": 30,
+                        "servingCount": 10,
+                        "priceCents": 1499,
+                        "name": "Just FreshDirect Raw Brazil Nuts",
+                        "id": "Y4vbz5_--FOAqyJpZnyIE",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 0,
+                        "servingCarbohydrateGrams": 33,
+                        "servingFatGrams": 0,
+                        "servingEnergyKilocalorie": 140,
+                        "servingMassGrams": 40,
+                        "servingCount": 11,
+                        "priceCents": 699,
+                        "name": "Just FreshDirect Cranberries",
+                        "id": "eerYiwJ7EN4x1TUkEfcCD",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 6,
+                        "servingCarbohydrateGrams": 6,
+                        "servingFatGrams": 15,
+                        "servingEnergyKilocalorie": 180,
+                        "servingMassGrams": 30,
+                        "servingCount": 15,
+                        "priceCents": 399,
+                        "name": "Just FreshDirect Raw Sunflower Seeds",
+                        "id": "nyp5iMqn9Z97vlxakSrGn",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 0,
+                        "servingCarbohydrateGrams": 17,
+                        "servingFatGrams": 0,
+                        "servingEnergyKilocalorie": 60,
+                        "servingMassGrams": 21,
+                        "servingCount": 43,
+                        "priceCents": 1099,
+                        "name": "Just FreshDirect Honey",
+                        "id": "o8xSKDm5cfmST36znrIb_",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingProteinGrams": 4,
+                        "servingCarbohydrateGrams": 4,
+                        "servingFatGrams": 19,
+                        "servingEnergyKilocalorie": 200,
+                        "servingMassGrams": 30,
+                        "servingCount": 9,
+                        "priceCents": 899,
+                        "name": "Just FreshDirect Raw Walnuts",
+                        "id": "vY0rP9GL-L0m7RRkob5HA",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    }
+                ]
+            },
+            {
+                "tableName": "recipesTable",
+                "inbound": true,
+                "rows": [{
+                    "id": "Sb8mQ_d2C548EIWiLRVeg",
+                    "name": "Granola",
+                    "servingCount": 165,
+                    "$types": {
+                        "": "userObject"
+                    }
+                }]
+            },
+            {
+                "tableName": "ingredientInRecipesTable",
+                "inbound": true,
+                "rows": [{
+                        "id": "AblrTWsrSK227v5iEdwIq",
+                        "ingredientId": "SaHss3nS9rkwKVdCqzG4E",
+                        "servingCount": "11",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "BaWERdhqFjGEa8IGcvjlm",
+                        "ingredientId": "Y4vbz5_--FOAqyJpZnyIE",
+                        "servingCount": "3",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "D9-UBtXk8nNxWEhq8Iz8J",
+                        "ingredientId": "Tb3PlSgmw9n_tbwAG2ydv",
+                        "servingCount": "3",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "DLjDJGZEZAYqKAtdMDWeN",
+                        "ingredientId": "6C07Hhy3h0rHbNaKjd065",
+                        "servingCount": "8",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "HDEwyZFc3wo_a2PRggtNx",
+                        "ingredientId": "QpndscrN3ApnHDMhusqMi",
+                        "servingCount": "15",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "HeZGZOdbzCWpDsimLejVr",
+                        "ingredientId": "eerYiwJ7EN4x1TUkEfcCD",
+                        "servingCount": "4",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "Myba5sTu5b3XonbqfiNS8",
+                        "ingredientId": "MHkgK42OBmasyA7sd7Isw",
+                        "servingCount": "15",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "Zb6EcNbM5pS7Ugr2xk2Oo",
+                        "ingredientId": "7W9L2G_Kqq2aFXFzPvygj",
+                        "servingCount": "3",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "kDlHUJUoIkyXVoGcCjXLJ",
+                        "ingredientId": "C4jElO5Uw3natazjHu5Bk",
+                        "servingCount": "4",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "servingCount": "15",
+                        "id": "lSKDltMfwq3Ebkay-F7kn",
+                        "ingredientId": "o8xSKDm5cfmST36znrIb_",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "mCEB2rrMKzPGKqLpIbcoz",
+                        "ingredientId": "vY0rP9GL-L0m7RRkob5HA",
+                        "servingCount": "3",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "mtRLaoldF2qhQSPUtREer",
+                        "ingredientId": "-aZA_Qg_d_mXzEmA2UufT",
+                        "servingCount": "5",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "tA4Jy7UbYrZ2tDwP5gxMJ",
+                        "ingredientId": "nyp5iMqn9Z97vlxakSrGn",
+                        "servingCount": "15",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "tQTjG9NMormbb1Tl4V9pt",
+                        "ingredientId": "I8UmIOlPsGarIl_iP3rY4",
+                        "servingCount": "4",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "xNK-Ak7Bg0bme4dxJFQ9U",
+                        "ingredientId": "WFZuqLokEsiZvGwx8SdDD",
+                        "servingCount": "45",
+                        "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

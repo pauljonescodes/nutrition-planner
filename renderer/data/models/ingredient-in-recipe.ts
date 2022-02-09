@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import { Database } from "../database";
+import { multiplyNutritionInfo, NutritionInfo } from "../nutrition-info";
 import { Ingredient } from "./ingredient";
 import { Recipe } from "./recipe";
 
@@ -41,10 +42,16 @@ export class IngredientInRecipe implements IngredientInRecipeInterface {
   ) {}
 
   static async loadIngredient(ingredientInRecipe: IngredientInRecipe) {
-    console.log(`loading ${ingredientInRecipe.id}`);
     ingredientInRecipe.ingredient = await Database.shared().getIngredient(
       ingredientInRecipe.ingredientId
     );
     return ingredientInRecipe;
+  }
+
+  static nutritionInfo(ingredientInRecipe: IngredientInRecipe): NutritionInfo {
+    return multiplyNutritionInfo(
+      Ingredient.nutritionInfo(ingredientInRecipe.ingredient),
+      ingredientInRecipe.servingCount
+    );
   }
 }

@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
+import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
 import { MainMenu } from "../components/main-menu";
 import { Database, QueryParameters } from "../data/database";
@@ -37,6 +37,7 @@ const RecipesPage = () => {
   const { height } = useScrollbarSize();
   const [data, setData] = useState<Array<Recipe> | undefined>(undefined);
   const [formDrawerIsOpen, setFormDrawerIsOpen] = useState(false);
+  const [perServingTotals, setPerServingTotals] = useState(false);
   const [updateEntity, setUpdateEntity] = useState<Recipe | undefined>(
     undefined
   );
@@ -54,6 +55,11 @@ const RecipesPage = () => {
   });
   const [numberOfCellsForUsableHeight, setNumberOfCellsForUsableHeight] =
     useState<number | undefined>(undefined);
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   async function queryData() {
     setProgressPending(true);
@@ -83,13 +89,15 @@ const RecipesPage = () => {
   function handleResize() {
     const usableHeight = (window.innerHeight ?? 0) - 72 - 56;
     const cellHeight = 48;
-    const numberOfCellsForUsableHeight =
+    const newNumberOfCellsForUsableHeight =
       Math.round(usableHeight / cellHeight) - 2;
-    setNumberOfCellsForUsableHeight(numberOfCellsForUsableHeight);
-    setQueryParameters({
-      ...queryParameters,
-      limit: numberOfCellsForUsableHeight,
-    });
+    if (newNumberOfCellsForUsableHeight !== numberOfCellsForUsableHeight) {
+      setNumberOfCellsForUsableHeight(newNumberOfCellsForUsableHeight);
+      setQueryParameters({
+        ...queryParameters,
+        limit: newNumberOfCellsForUsableHeight,
+      });
+    }
   }
 
   useEffect(() => {
@@ -125,11 +133,20 @@ const RecipesPage = () => {
           </Center>
         </Box>
         <Box>
-          <IconButton
-            onClick={() => setFormDrawerIsOpen(true)}
-            icon={<AddIcon />}
-            aria-label="Add"
-          />
+          <ButtonGroup>
+            <Button
+              onClick={() => {
+                setPerServingTotals(!perServingTotals);
+              }}
+            >
+              {perServingTotals ? "Serving" : "Totals"}
+            </Button>
+            <IconButton
+              onClick={() => setFormDrawerIsOpen(true)}
+              icon={<AddIcon />}
+              aria-label="Add"
+            />
+          </ButtonGroup>
         </Box>
       </HStack>
       <DataTable
@@ -186,83 +203,46 @@ const RecipesPage = () => {
             selector: (row: Recipe) => row.name,
             sortField: yupRecipeSchema.fields.name.spec.meta["key"],
             sortable: true,
-          },
-          {
-            name: yupRecipeSchema.fields.servingCount.spec.label,
-            selector: (row: Recipe) => row.servingCount,
-            sortField: yupRecipeSchema.fields.servingCount.spec.meta["key"],
-            sortable: true,
+            grow: 4,
           },
           {
             name: "Price",
-            selector: (row: Recipe) => {
-              return Math.round(
-                (row.ingredientsInRecipe?.reduce(
-                  (previousValue, currentValue) =>
-                    previousValue +
-                    (currentValue.servingCount *
-                      (currentValue.ingredient?.priceCents ?? 0)) /
-                      (currentValue.ingredient?.servingCount ?? 1),
-                  0
-                ) ?? 0) / row.servingCount
-              );
-            },
+            selector: (row: Recipe) =>
+              formatter.format(
+                (Recipe.nutritionInfo(row, perServingTotals)?.priceCents ?? 0) /
+                  100
+              ),
+            center: true,
           },
           {
             name: "Calories",
-            selector: (row: Recipe) => {
-              return Math.round(
-                (row.ingredientsInRecipe?.reduce(
-                  (previousValue, currentValue) =>
-                    previousValue +
-                    currentValue.servingCount *
-                      (currentValue.ingredient?.servingEnergyKilocalorie ?? 0),
-                  0
-                ) ?? 0) / row.servingCount
-              );
-            },
+            selector: (row: Recipe) =>
+              Recipe.nutritionInfo(row, perServingTotals)?.energyKilocalorie ??
+              0,
+            center: true,
+            hide: Media.SM,
           },
           {
             name: "Fat",
-            selector: (row: Recipe) => {
-              return Math.round(
-                (row.ingredientsInRecipe?.reduce(
-                  (previousValue, currentValue) =>
-                    previousValue +
-                    currentValue.servingCount *
-                      (currentValue.ingredient?.servingFatGrams ?? 0),
-                  0
-                ) ?? 0) / row.servingCount
-              );
-            },
+            selector: (row: Recipe) =>
+              Recipe.nutritionInfo(row, perServingTotals)?.fatGrams ?? 0,
+            center: true,
+            hide: Media.MD,
           },
           {
             name: "Carb",
-            selector: (row: Recipe) => {
-              return Math.round(
-                (row.ingredientsInRecipe?.reduce(
-                  (previousValue, currentValue) =>
-                    previousValue +
-                    currentValue.servingCount *
-                      (currentValue.ingredient?.servingCarbohydrateGrams ?? 0),
-                  0
-                ) ?? 0) / row.servingCount
-              );
-            },
+            selector: (row: Recipe) =>
+              Recipe.nutritionInfo(row, perServingTotals)?.carbohydrateGrams ??
+              0,
+            center: true,
+            hide: Media.MD,
           },
           {
             name: "Protein",
-            selector: (row: Recipe) => {
-              return Math.round(
-                (row.ingredientsInRecipe?.reduce(
-                  (previousValue, currentValue) =>
-                    previousValue +
-                    currentValue.servingCount *
-                      (currentValue.ingredient?.servingProteinGrams ?? 0),
-                  0
-                ) ?? 0) / row.servingCount
-              );
-            },
+            selector: (row: Recipe) =>
+              Recipe.nutritionInfo(row, perServingTotals)?.proteinGrams ?? 0,
+            center: true,
+            hide: Media.MD,
           },
         ]}
         data={data ?? []}

@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { NutritionInfo } from "../nutrition-info";
 
 export const dexieIngredientSchema =
   "&id, name, priceCents, servingCount, servingMassGrams, servingEnergyKilocalorie, servingFatGrams, servingCarbohydrateGrams, servingProteinGrams";
@@ -13,12 +14,12 @@ export const yupIngredientSchema = Yup.object({
       key: "name",
     })
     .required(),
-  priceCents: Yup.number()
+  totalPriceCents: Yup.number()
     .label("Price")
     .meta({
       helperText:
         "Cost of the ingredient in the lowest denomination of your currency (i.e. cents)",
-      key: "priceCents",
+      key: "totalPriceCents",
     })
     .required()
     .default(0),
@@ -80,7 +81,7 @@ export class Ingredient implements IngredientInterface {
   constructor(
     public id: string,
     public name: string,
-    public priceCents: number,
+    public totalPriceCents: number,
     public servingCount: number,
     public servingMassGrams: number,
     public servingEnergyKilocalorie: number,
@@ -88,4 +89,17 @@ export class Ingredient implements IngredientInterface {
     public servingCarbohydrateGrams: number,
     public servingProteinGrams: number
   ) {}
+
+  static nutritionInfo(ingredient?: Ingredient): NutritionInfo {
+    return {
+      priceCents: Math.round(
+        (ingredient?.totalPriceCents ?? 0) / (ingredient?.servingCount ?? 1)
+      ),
+      massGrams: ingredient?.servingMassGrams ?? 0,
+      energyKilocalorie: ingredient?.servingEnergyKilocalorie ?? 0,
+      fatGrams: ingredient?.servingFatGrams ?? 0,
+      carbohydrateGrams: ingredient?.servingCarbohydrateGrams ?? 0,
+      proteinGrams: ingredient?.servingProteinGrams ?? 0,
+    };
+  }
 }

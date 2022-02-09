@@ -53,7 +53,17 @@ export class Database extends Dexie {
   /* Ingredients CRUD */
 
   async putIngredient(ingredient: IngredientInterface) {
-    return await this.ingredientsTable?.put(ingredient);
+    return await this.ingredientsTable?.put({
+      id: ingredient.id,
+      name: ingredient.name,
+      totalPriceCents: ingredient.totalPriceCents,
+      servingCount: ingredient.servingCount,
+      servingMassGrams: ingredient.servingMassGrams,
+      servingEnergyKilocalorie: ingredient.servingEnergyKilocalorie,
+      servingFatGrams: ingredient.servingFatGrams,
+      servingCarbohydrateGrams: ingredient.servingCarbohydrateGrams,
+      servingProteinGrams: ingredient.servingProteinGrams,
+    });
   }
 
   async getIngredient(ingredientId: string) {
@@ -108,7 +118,11 @@ export class Database extends Dexie {
   /* Recipes CRUD */
 
   async putRecipe(recipe: RecipeInterface) {
-    return await this.recipesTable?.put(recipe);
+    return await this.recipesTable?.put({
+      id: recipe.id,
+      name: recipe.name,
+      servingCount: recipe.servingCount,
+    });
   }
 
   async getRecipe(recipeId: string) {
@@ -147,7 +161,12 @@ export class Database extends Dexie {
   /* Ingredient in recipe CRUD */
 
   async putIngredientInRecipe(ingredientInRecipe: IngredientInRecipeInterface) {
-    return await this.ingredientInRecipesTable?.put(ingredientInRecipe);
+    return await this.ingredientInRecipesTable?.put({
+      id: ingredientInRecipe.id,
+      ingredientId: ingredientInRecipe.ingredientId,
+      servingCount: ingredientInRecipe.servingCount,
+      recipeId: ingredientInRecipe.recipeId,
+    });
   }
 
   async ingredientsInRecipeArray(recipeId: string) {

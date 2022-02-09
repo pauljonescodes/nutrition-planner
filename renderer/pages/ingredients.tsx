@@ -1,4 +1,4 @@
-import { AddIcon, CopyIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -22,9 +22,8 @@ import {
   Spinner,
   useColorMode,
 } from "@chakra-ui/react";
-import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
+import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
 import { MainMenu } from "../components/main-menu";
 import { Database, QueryParameters } from "../data/database";
@@ -50,6 +49,7 @@ const IngredientsPage = () => {
   >(undefined);
   const [progressPending, setProgressPending] = useState(false);
   const [dataCount, setDataCount] = useState(0);
+  const [perServingTotals, setPerServingTotals] = useState(false);
   const [queryParameters, setQueryParameters] = useState<
     QueryParameters<IngredientInterface>
   >({
@@ -59,6 +59,10 @@ const IngredientsPage = () => {
   });
   const [numberOfCellsForUsableHeight, setNumberOfCellsForUsableHeight] =
     useState<number | undefined>(undefined);
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   async function queryData() {
     setProgressPending(true);
@@ -72,13 +76,15 @@ const IngredientsPage = () => {
   function handleResize() {
     const usableHeight = (window.innerHeight ?? 0) - 72 - 56;
     const cellHeight = 48;
-    const numberOfCellsForUsableHeight =
+    const newNumberOfCellsForUsableHeight =
       Math.round(usableHeight / cellHeight) - 2;
-    setNumberOfCellsForUsableHeight(numberOfCellsForUsableHeight);
-    setQueryParameters({
-      ...queryParameters,
-      limit: numberOfCellsForUsableHeight,
-    });
+    if (newNumberOfCellsForUsableHeight !== queryParameters.limit) {
+      setNumberOfCellsForUsableHeight(newNumberOfCellsForUsableHeight);
+      setQueryParameters({
+        ...queryParameters,
+        limit: newNumberOfCellsForUsableHeight,
+      });
+    }
   }
 
   useEffect(() => {
@@ -114,11 +120,20 @@ const IngredientsPage = () => {
           </Center>
         </Box>
         <Box>
-          <IconButton
-            onClick={() => setFormDrawerIsOpen(true)}
-            icon={<AddIcon />}
-            aria-label="Add"
-          />
+          <ButtonGroup>
+            <Button
+              onClick={() => {
+                setPerServingTotals(!perServingTotals);
+              }}
+            >
+              {perServingTotals ? "Serving" : "Totals"}
+            </Button>
+            <IconButton
+              onClick={() => setFormDrawerIsOpen(true)}
+              icon={<AddIcon />}
+              aria-label="Add"
+            />
+          </ButtonGroup>
         </Box>
       </HStack>
 
@@ -154,18 +169,6 @@ const IngredientsPage = () => {
                     setDeleteIngredient(row);
                   }}
                 />
-                <IconButton
-                  size={"xs"}
-                  icon={<CopyIcon />}
-                  aria-label="Duplicate"
-                  onClick={async () => {
-                    const newIngredient = row;
-                    newIngredient.id = nanoid();
-                    newIngredient.name = `${newIngredient.name} (copy)`;
-                    await Database.shared().putIngredient(newIngredient);
-                    queryData();
-                  }}
-                />
               </ButtonGroup>
             ),
 
@@ -176,12 +179,19 @@ const IngredientsPage = () => {
             selector: (row: Ingredient) => row.name,
             sortField: yupIngredientSchema.fields.name.spec.meta["key"],
             sortable: true,
+            grow: 3,
           },
           {
-            name: yupIngredientSchema.fields.priceCents.spec.label,
-            selector: (row: Ingredient) => row.priceCents,
+            name: yupIngredientSchema.fields.totalPriceCents.spec.label,
+            selector: (row: Ingredient) =>
+              formatter.format(
+                row.totalPriceCents /
+                  (perServingTotals ? row.servingCount : 1) /
+                  100
+              ),
             center: true,
-            sortField: yupIngredientSchema.fields.priceCents.spec.meta["key"],
+            sortField:
+              yupIngredientSchema.fields.totalPriceCents.spec.meta["key"],
             sortable: true,
           },
           {
@@ -190,6 +200,7 @@ const IngredientsPage = () => {
             center: true,
             sortField: yupIngredientSchema.fields.servingCount.spec.meta["key"],
             sortable: true,
+            hide: Media.SM,
           },
           {
             name: yupIngredientSchema.fields.servingMassGrams.spec.label,
@@ -198,6 +209,7 @@ const IngredientsPage = () => {
             sortField:
               yupIngredientSchema.fields.servingMassGrams.spec.meta["key"],
             sortable: true,
+            hide: Media.MD,
           },
           {
             name: yupIngredientSchema.fields.servingEnergyKilocalorie.spec
@@ -209,6 +221,7 @@ const IngredientsPage = () => {
                 "key"
               ],
             sortable: true,
+            hide: Media.MD,
           },
           {
             name: yupIngredientSchema.fields.servingFatGrams.spec.label,
@@ -217,6 +230,7 @@ const IngredientsPage = () => {
             sortField:
               yupIngredientSchema.fields.servingFatGrams.spec.meta["key"],
             sortable: true,
+            hide: Media.LG,
           },
           {
             name: yupIngredientSchema.fields.servingCarbohydrateGrams.spec
@@ -228,6 +242,7 @@ const IngredientsPage = () => {
                 "key"
               ],
             sortable: true,
+            hide: Media.LG,
           },
           {
             name: yupIngredientSchema.fields.servingProteinGrams.spec.label,
@@ -236,6 +251,7 @@ const IngredientsPage = () => {
             sortField:
               yupIngredientSchema.fields.servingProteinGrams.spec.meta["key"],
             sortable: true,
+            hide: Media.LG,
           },
         ]}
         data={data ?? []}
