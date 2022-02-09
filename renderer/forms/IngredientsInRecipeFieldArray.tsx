@@ -1,9 +1,11 @@
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
   Center,
   Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   IconButton,
   NumberDecrementStepper,
@@ -24,8 +26,12 @@ import { nanoid } from "nanoid";
 import React, { Fragment, useEffect, useState } from "react";
 import { Database } from "../data/database";
 import { Ingredient } from "../data/models/ingredient";
-import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";
+import {
+  IngredientInRecipe,
+  yupIngredientInRecipeSchema,
+} from "../data/models/ingredient-in-recipe";
 import { Recipe } from "../data/models/recipe";
+import { nutritionInfoDescription } from "../data/nutrition-info";
 
 interface IngredientSearch {
   results: Ingredient[];
@@ -67,80 +73,87 @@ export default function IngredientsInRecipeFieldArray(
                       return value!;
                     }) ?? []
                   : [];
+              const nutritionInfo = IngredientInRecipe.nutritionInfo(value);
+              const description = nutritionInfoDescription(nutritionInfo);
               return (
-                <Flex key={index} mb={3}>
-                  <NumberInput defaultValue={value.servingCount}>
-                    <NumberInputField
-                      name={`ingredientsInRecipe.${index}.servingCount`}
-                      value={value.servingCount}
-                      onChange={formikProps.handleChange}
-                      onBlur={formikProps.handleBlur}
-                      placeholder={
-                        yupIngredientInRecipeSchema.fields.servingCount.spec
-                          .label
-                      }
-                    />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                  <FormControl mx={2}>
-                    <AutoComplete
-                      openOnFocus
-                      onChange={(_value, item) => {
-                        const ingredient = (item as Item)
-                          .originalValue as Ingredient;
-                        formikProps.setFieldValue(
-                          `ingredientsInRecipe.${index}.ingredientId`,
-                          ingredient.id
-                        );
-                        value.ingredient = ingredient;
-                      }}
-                    >
-                      <AutoCompleteInput
+                <Box key={index} mb={3}>
+                  <Flex>
+                    <NumberInput defaultValue={value.servingCount}>
+                      <NumberInputField
+                        name={`ingredientsInRecipe.${index}.servingCount`}
+                        value={value.servingCount}
+                        onChange={formikProps.handleChange}
+                        onBlur={formikProps.handleBlur}
                         placeholder={
-                          yupIngredientInRecipeSchema.fields.ingredientId.spec
+                          yupIngredientInRecipeSchema.fields.servingCount.spec
                             .label
                         }
-                        value={value.ingredient?.name}
-                        onChange={async (event) => {
-                          let theIngredientSearchs = ingredientSearchsState;
-                          theIngredientSearchs[index].results =
-                            (await Database.shared().filteredIngredients(
-                              event.target.value
-                            )) ?? [];
-                          setIngredientSearchesState([...theIngredientSearchs]);
-                        }}
                       />
-                      <AutoCompleteList>
-                        {options.map((value) => {
-                          return (
-                            <AutoCompleteItem
-                              key={value.id}
-                              value={value}
-                              getValue={(item) => {
-                                return item.name;
-                              }}
-                            >
-                              {value.name}
-                            </AutoCompleteItem>
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                    <FormControl mx={2}>
+                      <AutoComplete
+                        openOnFocus
+                        onChange={(_value, item) => {
+                          const ingredient = (item as Item)
+                            .originalValue as Ingredient;
+                          formikProps.setFieldValue(
+                            `ingredientsInRecipe.${index}.ingredientId`,
+                            ingredient.id
                           );
-                        })}
-                      </AutoCompleteList>
-                    </AutoComplete>
-                  </FormControl>
+                          value.ingredient = ingredient;
+                        }}
+                      >
+                        <AutoCompleteInput
+                          placeholder={
+                            yupIngredientInRecipeSchema.fields.ingredientId.spec
+                              .label
+                          }
+                          value={value.ingredient?.name}
+                          onChange={async (event) => {
+                            let theIngredientSearchs = ingredientSearchsState;
+                            theIngredientSearchs[index].results =
+                              (await Database.shared().filteredIngredients(
+                                event.target.value
+                              )) ?? [];
+                            setIngredientSearchesState([
+                              ...theIngredientSearchs,
+                            ]);
+                          }}
+                        />
+                        <AutoCompleteList>
+                          {options.map((value) => {
+                            return (
+                              <AutoCompleteItem
+                                key={value.id}
+                                value={value}
+                                getValue={(item) => {
+                                  return item.name;
+                                }}
+                              >
+                                {value.name}
+                              </AutoCompleteItem>
+                            );
+                          })}
+                        </AutoCompleteList>
+                      </AutoComplete>
+                    </FormControl>
 
-                  <IconButton
-                    mt={"auto"}
-                    icon={<DeleteIcon />}
-                    aria-label="Remove ingredient"
-                    className="text-danger p-0 m-0"
-                    onClick={() => {
-                      fieldArrayHelpers.remove(index);
-                    }}
-                  />
-                </Flex>
+                    <IconButton
+                      mt={"auto"}
+                      icon={<DeleteIcon />}
+                      aria-label="Remove ingredient"
+                      className="text-danger p-0 m-0"
+                      onClick={() => {
+                        fieldArrayHelpers.remove(index);
+                      }}
+                    />
+                  </Flex>
+                  <FormHelperText>{description}</FormHelperText>
+                </Box>
               );
             })}
           </FormControl>

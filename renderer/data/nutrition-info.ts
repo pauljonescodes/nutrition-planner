@@ -7,6 +7,19 @@ export interface NutritionInfo {
   proteinGrams: number;
 }
 
+export function nutritionInfoDescription(value: NutritionInfo): string {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  return `${formatter.format(value.priceCents / 100)} / ${value.massGrams}g / ${
+    value.energyKilocalorie
+  }kcal / ${value.fatGrams}g fat / ${value.carbohydrateGrams}g carb / ${
+    value.proteinGrams
+  }g protein`;
+}
+
 export function addNutritionInfo(
   lhs: NutritionInfo,
   rhs: NutritionInfo

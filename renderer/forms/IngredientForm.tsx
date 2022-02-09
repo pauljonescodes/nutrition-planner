@@ -6,6 +6,11 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { nanoid } from "nanoid";
@@ -14,6 +19,7 @@ import {
   IngredientInterface,
   yupIngredientSchema,
 } from "../data/models/ingredient";
+import { yupIngredientInRecipeSchema } from "../data/models/ingredient-in-recipe";
 
 export interface CreateIngredientFormProps {
   ingredient?: IngredientInterface;
@@ -43,7 +49,9 @@ export function IngredientForm(props: CreateIngredientFormProps) {
             }}
           >
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="name">
+              <FormLabel
+                htmlFor={yupIngredientSchema.fields.name.spec.meta["key"]}
+              >
                 {yupIngredientSchema.fields.name.spec.label}
               </FormLabel>
               <Input
@@ -51,7 +59,7 @@ export function IngredientForm(props: CreateIngredientFormProps) {
                 type="text"
                 onChange={formikProps.handleChange}
                 onBlur={formikProps.handleBlur}
-                name="name"
+                name={yupIngredientSchema.fields.name.spec.meta["key"]}
                 placeholder={yupIngredientSchema.fields.name.spec.label}
                 value={formikProps.values.name as string | undefined}
                 isInvalid={formikProps.errors.name ? true : false}
@@ -65,21 +73,35 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               )}
             </FormControl>
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="priceCents">
+              <FormLabel
+                htmlFor={
+                  yupIngredientSchema.fields.totalPriceCents.spec.meta["key"]
+                }
+              >
                 {yupIngredientSchema.fields.totalPriceCents.spec.label}
               </FormLabel>
-              <Input
-                type="number"
-                step={1}
-                onChange={formikProps.handleChange}
-                onBlur={formikProps.handleBlur}
-                name="priceCents"
-                placeholder={
-                  yupIngredientSchema.fields.totalPriceCents.spec.label
-                }
-                value={formikProps.values.totalPriceCents as number | undefined}
+              <NumberInput
+                defaultValue={formikProps.values.totalPriceCents}
                 isInvalid={formikProps.errors.totalPriceCents ? true : false}
-              />
+              >
+                <NumberInputField
+                  name={
+                    yupIngredientSchema.fields.totalPriceCents.spec.meta["key"]
+                  }
+                  value={
+                    formikProps.values.totalPriceCents as number | undefined
+                  }
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                  placeholder={
+                    yupIngredientInRecipeSchema.fields.servingCount.spec.label
+                  }
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               {formikProps.errors.totalPriceCents ? (
                 <FormErrorMessage>
                   {formikProps.errors.totalPriceCents}
@@ -95,19 +117,33 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               )}
             </FormControl>
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="servingCount">
+              <FormLabel
+                htmlFor={
+                  yupIngredientSchema.fields.servingCount.spec.meta["key"]
+                }
+              >
                 {yupIngredientSchema.fields.servingCount.spec.label}
               </FormLabel>
-              <Input
-                type="number"
-                step={1}
-                onChange={formikProps.handleChange}
-                onBlur={formikProps.handleBlur}
-                name="servingCount"
-                placeholder={yupIngredientSchema.fields.servingCount.spec.label}
-                value={formikProps.values.servingCount as number | undefined}
+              <NumberInput
+                defaultValue={formikProps.values.servingCount}
                 isInvalid={formikProps.errors.servingCount ? true : false}
-              />
+              >
+                <NumberInputField
+                  name={
+                    yupIngredientSchema.fields.servingCount.spec.meta["key"]
+                  }
+                  value={formikProps.values.servingCount as number | undefined}
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                  placeholder={
+                    yupIngredientInRecipeSchema.fields.servingCount.spec.label
+                  }
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               {formikProps.errors.servingCount ? (
                 <FormErrorMessage>
                   {formikProps.errors.servingCount}
@@ -123,23 +159,35 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               )}
             </FormControl>
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="servingMassGrams">
+              <FormLabel
+                htmlFor={
+                  yupIngredientSchema.fields.servingMassGrams.spec.meta["key"]
+                }
+              >
                 {yupIngredientSchema.fields.servingMassGrams.spec.label}
               </FormLabel>
-              <Input
-                type="number"
-                step={1}
-                onChange={formikProps.handleChange}
-                onBlur={formikProps.handleBlur}
-                name="servingMassGrams"
-                placeholder={
-                  yupIngredientSchema.fields.servingMassGrams.spec.label
-                }
-                value={
-                  formikProps.values.servingMassGrams as number | undefined
-                }
+              <NumberInput
+                defaultValue={formikProps.values.servingMassGrams}
                 isInvalid={formikProps.errors.servingMassGrams ? true : false}
-              />
+              >
+                <NumberInputField
+                  name={
+                    yupIngredientSchema.fields.servingMassGrams.spec.meta["key"]
+                  }
+                  value={
+                    formikProps.values.servingMassGrams as number | undefined
+                  }
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                  placeholder={
+                    yupIngredientSchema.fields.servingMassGrams.spec.label
+                  }
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               {formikProps.errors.servingMassGrams ? (
                 <FormErrorMessage>
                   {formikProps.errors.servingMassGrams}
@@ -155,27 +203,43 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               )}
             </FormControl>
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="servingEnergyKilocalorie">
+              <FormLabel
+                htmlFor={
+                  yupIngredientSchema.fields.servingEnergyKilocalorie.spec.meta[
+                    "key"
+                  ]
+                }
+              >
                 {yupIngredientSchema.fields.servingEnergyKilocalorie.spec.label}
               </FormLabel>
-              <Input
-                type="number"
-                step={1}
-                placeholder={
-                  yupIngredientSchema.fields.servingEnergyKilocalorie.spec.label
-                }
-                onChange={formikProps.handleChange}
-                onBlur={formikProps.handleBlur}
-                name="servingEnergyKilocalorie"
-                value={
-                  formikProps.values.servingEnergyKilocalorie as
-                    | number
-                    | undefined
-                }
+              <NumberInput
+                defaultValue={formikProps.values.servingEnergyKilocalorie}
                 isInvalid={
                   formikProps.errors.servingEnergyKilocalorie ? true : false
                 }
-              />
+              >
+                <NumberInputField
+                  name={
+                    yupIngredientSchema.fields.servingEnergyKilocalorie.spec
+                      .meta["key"]
+                  }
+                  value={
+                    formikProps.values.servingEnergyKilocalorie as
+                      | number
+                      | undefined
+                  }
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                  placeholder={
+                    yupIngredientSchema.fields.servingEnergyKilocalorie.spec
+                      .label
+                  }
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               {formikProps.errors.servingEnergyKilocalorie ? (
                 <FormErrorMessage>
                   {formikProps.errors.servingEnergyKilocalorie}
@@ -190,21 +254,35 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               )}
             </FormControl>
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="servingFatGrams">
+              <FormLabel
+                htmlFor={
+                  yupIngredientSchema.fields.servingFatGrams.spec.meta["key"]
+                }
+              >
                 {yupIngredientSchema.fields.servingFatGrams.spec.label}
               </FormLabel>
-              <Input
-                type="number"
-                step={1}
-                placeholder={
-                  yupIngredientSchema.fields.servingFatGrams.spec.label
-                }
-                onChange={formikProps.handleChange}
-                onBlur={formikProps.handleBlur}
-                name="servingFatGrams"
-                value={formikProps.values.servingFatGrams as number | undefined}
+              <NumberInput
+                defaultValue={formikProps.values.servingFatGrams}
                 isInvalid={formikProps.errors.servingFatGrams ? true : false}
-              />
+              >
+                <NumberInputField
+                  name={
+                    yupIngredientSchema.fields.servingFatGrams.spec.meta["key"]
+                  }
+                  value={
+                    formikProps.values.servingFatGrams as number | undefined
+                  }
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                  placeholder={
+                    yupIngredientSchema.fields.servingFatGrams.spec.label
+                  }
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               {formikProps.errors.servingFatGrams ? (
                 <FormErrorMessage>
                   {formikProps.errors.servingFatGrams}
@@ -220,27 +298,43 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               )}
             </FormControl>
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="servingCarbohydrateGrams">
+              <FormLabel
+                htmlFor={
+                  yupIngredientSchema.fields.servingCarbohydrateGrams.spec.meta[
+                    "key"
+                  ]
+                }
+              >
                 {yupIngredientSchema.fields.servingCarbohydrateGrams.spec.label}
               </FormLabel>
-              <Input
-                type="number"
-                step={1}
-                onChange={formikProps.handleChange}
-                onBlur={formikProps.handleBlur}
-                name="servingCarbohydrateGrams"
-                placeholder={
-                  yupIngredientSchema.fields.servingCarbohydrateGrams.spec.label
-                }
-                value={
-                  formikProps.values.servingCarbohydrateGrams as
-                    | number
-                    | undefined
-                }
+              <NumberInput
+                defaultValue={formikProps.values.servingCarbohydrateGrams}
                 isInvalid={
                   formikProps.errors.servingCarbohydrateGrams ? true : false
                 }
-              />
+              >
+                <NumberInputField
+                  name={
+                    yupIngredientSchema.fields.servingCarbohydrateGrams.spec
+                      .meta["key"]
+                  }
+                  value={
+                    formikProps.values.servingCarbohydrateGrams as
+                      | number
+                      | undefined
+                  }
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                  placeholder={
+                    yupIngredientSchema.fields.servingCarbohydrateGrams.spec
+                      .label
+                  }
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               {formikProps.errors.servingCarbohydrateGrams ? (
                 <FormErrorMessage>
                   {formikProps.errors.servingCarbohydrateGrams}
@@ -255,25 +349,41 @@ export function IngredientForm(props: CreateIngredientFormProps) {
               )}
             </FormControl>
             <FormControl mb={3} isRequired>
-              <FormLabel htmlFor="servingProteinGrams">
+              <FormLabel
+                htmlFor={
+                  yupIngredientSchema.fields.servingProteinGrams.spec.meta[
+                    "key"
+                  ]
+                }
+              >
                 {yupIngredientSchema.fields.servingProteinGrams.spec.label}
               </FormLabel>
-              <Input
-                type="number"
-                step={1}
-                onChange={formikProps.handleChange}
-                onBlur={formikProps.handleBlur}
-                placeholder={
-                  yupIngredientSchema.fields.servingProteinGrams.spec.label
-                }
-                name="servingProteinGrams"
-                value={
-                  formikProps.values.servingProteinGrams as number | undefined
-                }
+              <NumberInput
+                defaultValue={formikProps.values.servingProteinGrams}
                 isInvalid={
                   formikProps.errors.servingProteinGrams ? true : false
                 }
-              />
+              >
+                <NumberInputField
+                  name={
+                    yupIngredientSchema.fields.servingProteinGrams.spec.meta[
+                      "key"
+                    ]
+                  }
+                  value={
+                    formikProps.values.servingProteinGrams as number | undefined
+                  }
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                  placeholder={
+                    yupIngredientSchema.fields.servingProteinGrams.spec.label
+                  }
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
               {formikProps.errors.servingProteinGrams ? (
                 <FormErrorMessage>
                   {formikProps.errors.servingProteinGrams}

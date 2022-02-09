@@ -1,4 +1,4 @@
-import { AddIcon, CopyIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -22,7 +22,6 @@ import {
   Spinner,
   useColorMode,
 } from "@chakra-ui/react";
-import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
@@ -181,18 +180,6 @@ const RecipesPage = () => {
                     setDeleteEntity(row);
                   }}
                 />
-                <IconButton
-                  size={"xs"}
-                  icon={<CopyIcon />}
-                  aria-label="Duplicate"
-                  onClick={async () => {
-                    const newRecipe = row;
-                    newRecipe.id = nanoid();
-                    newRecipe.name = `${newRecipe.name} (copy)`;
-                    await Database.shared().putRecipe(newRecipe);
-                    queryData();
-                  }}
-                />
               </ButtonGroup>
             ),
 
@@ -213,6 +200,13 @@ const RecipesPage = () => {
                   100
               ),
             center: true,
+          },
+          {
+            name: "Mass",
+            selector: (row: Recipe) =>
+              Recipe.nutritionInfo(row, perServingTotals)?.massGrams ?? 0,
+            center: true,
+            hide: Media.SM,
           },
           {
             name: "Calories",
