@@ -1,5 +1,13 @@
-import { Box, Center, Heading, HStack, Textarea } from "@chakra-ui/react";
-import { exportDB } from "dexie-export-import";
+import { LockIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Center,
+  Heading,
+  HStack,
+  IconButton,
+  Textarea,
+} from "@chakra-ui/react";
+import { exportDB, importInto } from "dexie-export-import";
 import { useEffect, useRef, useState } from "react";
 import { MainMenu } from "../components/main-menu";
 import { Database } from "../data/database";
@@ -31,7 +39,19 @@ const DataPage = () => {
             <Heading size="md">Data</Heading>
           </Center>
         </Box>
-        <Box></Box>
+        <Box>
+          <Box>
+            <IconButton
+              icon={<LockIcon />}
+              aria-label="Save"
+              onClick={async () => {
+                await Database.shared().delete();
+                await Database.shared().open();
+                importInto(Database.shared(), new Blob([blobText]));
+              }}
+            />
+          </Box>
+        </Box>
       </HStack>
       <Textarea
         height={`calc(100vh - 72px)`}
