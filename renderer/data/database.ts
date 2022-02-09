@@ -1,4 +1,4 @@
-import Dexie, { Table } from "dexie";
+import Dexie, { Collection, Table } from "dexie";
 import {
   dexieIngredientSchema,
   Ingredient,
@@ -11,10 +11,10 @@ import {
 } from "./models/ingredient-in-recipe";
 import { dexieRecipeSchema, Recipe, RecipeInterface } from "./models/recipe";
 
-export interface QueryParameters {
+export interface QueryParameters<T> {
   limit: number;
   offset: number;
-  sortBy?: string;
+  sortBy?: keyof T;
   reverse?: boolean;
 }
 
@@ -60,31 +60,31 @@ export class Database extends Dexie {
     return await this.ingredientsTable?.get(ingredientId);
   }
 
+  async getIngredients(keys: string[]) {
+    return (await this.ingredientsTable?.bulkGet(keys))?.filter((value) => {
+      return value !== undefined;
+    }) as Array<IngredientInterface>;
+  }
+
   async countOfIngredients() {
     return (await this.ingredientsTable?.count()) ?? 0;
   }
 
-  async arrayOfIngredients(parameters: QueryParameters) {
+  async arrayOfIngredients(parameters: QueryParameters<IngredientInterface>) {
+    var collection: Collection<IngredientInterface, string> | undefined;
     if (parameters.sortBy) {
-      const query = this.ingredientsTable?.orderBy(parameters.sortBy);
+      collection = this.ingredientsTable?.orderBy(parameters.sortBy);
       if (parameters.reverse) {
-        return query
-          ?.offset(parameters.offset)
-          .reverse()
-          .limit(parameters.limit)
-          .toArray();
-      } else {
-        return query
-          ?.offset(parameters.offset)
-          .limit(parameters.limit)
-          .toArray();
+        collection = collection?.reverse();
       }
     } else {
-      return await this.ingredientsTable
-        ?.offset(parameters.offset)
-        .limit(parameters.limit)
-        .toArray();
+      collection = this.ingredientsTable?.toCollection();
     }
+
+    return await collection
+      ?.offset(parameters.offset)
+      .limit(parameters.limit)
+      .toArray();
   }
 
   async filteredIngredients(query: string) {
@@ -115,8 +115,25 @@ export class Database extends Dexie {
     return await this.recipesTable?.get(recipeId);
   }
 
-  async arrayOfRecipes() {
-    return await this.recipesTable?.toArray();
+  async arrayOfRecipes(parameters: QueryParameters<RecipeInterface>) {
+    var collection: Collection<RecipeInterface, string> | undefined;
+    if (parameters.sortBy) {
+      collection = this.recipesTable?.orderBy(parameters.sortBy);
+      if (parameters.reverse) {
+        collection = collection?.reverse();
+      }
+    } else {
+      collection = this.recipesTable?.toCollection();
+    }
+
+    return await collection
+      ?.offset(parameters.offset)
+      .limit(parameters.limit)
+      .toArray();
+  }
+
+  async countOfRecipes() {
+    return (await this.recipesTable?.count()) ?? 0;
   }
 
   async deleteRecipe(recipeId: string) {
@@ -135,6 +152,12 @@ export class Database extends Dexie {
 
   async ingredientsInRecipeArray(recipeId: string) {
     return await this.ingredientInRecipesTable?.where({ recipeId }).toArray();
+  }
+
+  async deleteIngredientInRecipe(ingredientInRecipeId: string) {
+    await Database.shared().ingredientInRecipesTable?.delete(
+      ingredientInRecipeId
+    );
   }
 }
 

@@ -1,45 +1,32 @@
-import { Formik } from "formik";
+import {
+  Button,
+  Center,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
+import { Form, Formik } from "formik";
 import { nanoid } from "nanoid";
 import React, { FormEvent } from "react";
-import {
-  IngredientInterface,
-  yupIngredientSchema,
-} from "../data/models/ingredient";
-import { IngredientInRecipeInterface } from "../data/models/ingredient-in-recipe";
-import { RecipeInterface, yupRecipeSchema } from "../data/models/recipe";
+import { Recipe, yupRecipeSchema } from "../data/models/recipe";
 import IngredientsInRecipeFieldArray from "./IngredientsInRecipeFieldArray";
 
-export interface RecipeFormIngredientInRecipe
-  extends IngredientInRecipeInterface {
-  ingredient: IngredientInterface;
+export interface RecipeFormProps {
+  recipe?: Recipe;
+  onSubmit: (ingredient: Recipe) => Promise<string | undefined>;
 }
 
-export interface RecipeFormValue extends RecipeInterface {
-  ingredientsInRecipe: Array<RecipeFormIngredientInRecipe>;
-}
-
-export interface CreateRecipeFormProps {
-  recipe?: RecipeFormValue;
-  onSubmit: (formValue: RecipeFormValue) => void;
-}
-
-export function RecipeForm(props: CreateRecipeFormProps) {
+export function RecipeForm(props: RecipeFormProps) {
   const thisRecipeId = props.recipe?.id ?? nanoid();
 
   return (
-    <Formik<RecipeFormValue>
+    <Formik<Recipe>
       initialValues={{
         ...yupRecipeSchema.getDefault(),
-        ingredientsInRecipe: [
-          {
-            servingCount: 1,
-            recipeId: thisRecipeId,
-            id: nanoid(),
-            ingredientId: "",
-            ingredient: yupIngredientSchema.getDefault(),
-          },
-        ],
         ...props.recipe,
+        id: thisRecipeId,
       }}
       validationSchema={yupRecipeSchema}
       onSubmit={(values, helpers) => {
@@ -55,63 +42,61 @@ export function RecipeForm(props: CreateRecipeFormProps) {
               formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
             }}
           >
-            <Form.Group className="mb-2">
-              <FloatingLabel label={yupRecipeSchema.fields.name.spec.label}>
-                <Form.Control
-                  type="text"
-                  onChange={formikProps.handleChange}
-                  onBlur={formikProps.handleBlur}
-                  placeholder={yupRecipeSchema.fields.name.spec.label}
-                  name="name"
-                  value={formikProps.values.name as string | undefined}
-                  isInvalid={formikProps.errors.name ? true : false}
-                  isValid={
-                    formikProps.touched.name &&
-                    !formikProps.errors.name &&
-                    formikProps.values.name !== undefined
-                  }
-                />
-              </FloatingLabel>
-              <Form.Control.Feedback type="invalid">
-                {formikProps.errors.name}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <FormControl mb={3} isRequired>
+              <FormLabel>{yupRecipeSchema.fields.name.spec.label}</FormLabel>
+              <Input
+                type="text"
+                onChange={formikProps.handleChange}
+                onBlur={formikProps.handleBlur}
+                placeholder={yupRecipeSchema.fields.name.spec.label}
+                name="name"
+                value={formikProps.values.name as string | undefined}
+                isInvalid={formikProps.errors.name ? true : false}
+              />
+              {formikProps.errors.name ? (
+                <FormErrorMessage>{formikProps.errors.name}</FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {yupRecipeSchema.fields.name.spec.meta["helperText"]}
+                </FormHelperText>
+              )}
+            </FormControl>
 
-            <Form.Group className="mb-2">
-              <FloatingLabel
-                label={yupRecipeSchema.fields.servingCount.spec.label}
-              >
-                <Form.Control
-                  type="number"
-                  step={1}
-                  onChange={formikProps.handleChange}
-                  onBlur={formikProps.handleBlur}
-                  placeholder={yupRecipeSchema.fields.servingCount.spec.label}
-                  name="servingCount"
-                  value={formikProps.values.servingCount as number | undefined}
-                  isInvalid={formikProps.errors.servingCount ? true : false}
-                  isValid={
-                    formikProps.touched.servingCount &&
-                    !formikProps.errors.servingCount &&
-                    formikProps.values.servingCount !== undefined
-                  }
-                />
-              </FloatingLabel>
-              <Form.Control.Feedback type="invalid">
-                {formikProps.errors.servingCount}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <FormControl mb={3} isRequired>
+              <FormLabel>
+                {yupRecipeSchema.fields.servingCount.spec.label}
+              </FormLabel>
+              <Input
+                type="number"
+                step={1}
+                onChange={formikProps.handleChange}
+                onBlur={formikProps.handleBlur}
+                placeholder={yupRecipeSchema.fields.servingCount.spec.label}
+                name="servingCount"
+                value={formikProps.values.servingCount as number | undefined}
+                isInvalid={formikProps.errors.servingCount ? true : false}
+              />
+              {formikProps.errors.servingCount ? (
+                <FormErrorMessage>
+                  {formikProps.errors.servingCount}
+                </FormErrorMessage>
+              ) : (
+                <FormHelperText>
+                  {yupRecipeSchema.fields.servingCount.spec.meta["helperText"]}
+                </FormHelperText>
+              )}
+            </FormControl>
 
             <IngredientsInRecipeFieldArray
               formikProps={formikProps}
               thisRecipeId={thisRecipeId}
             />
 
-            <Form.Group className="text-center d-grid">
-              <Button type="submit" size="lg" onClick={() => {}}>
+            <Center>
+              <Button type="submit" mt={4} isLoading={formikProps.isSubmitting}>
                 Submit
               </Button>
-            </Form.Group>
+            </Center>
           </Form>
         );
       }}

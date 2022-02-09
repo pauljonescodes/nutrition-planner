@@ -9,7 +9,11 @@ import {
 import { useRouter } from "next/router";
 import React from "react";
 
-export function MainMenu() {
+interface MainMenuProp {
+  onClick?: () => void;
+}
+
+export function MainMenu(props: MainMenuProp) {
   const router = useRouter();
   return (
     <Menu>
@@ -22,6 +26,9 @@ export function MainMenu() {
       <MenuList>
         <MenuItem
           onClick={() => {
+            if (props.onClick) {
+              props.onClick();
+            }
             router.push("/");
           }}
         >
@@ -29,6 +36,9 @@ export function MainMenu() {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            if (props.onClick) {
+              props.onClick();
+            }
             router.push("/recipes");
           }}
         >
@@ -36,6 +46,9 @@ export function MainMenu() {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            if (props.onClick) {
+              props.onClick();
+            }
             router.push("/ingredients");
           }}
         >
@@ -43,6 +56,9 @@ export function MainMenu() {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            if (props.onClick) {
+              props.onClick();
+            }
             router.push("/data");
           }}
         >

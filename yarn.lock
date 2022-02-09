@@ -709,6 +709,13 @@
   dependencies:
     "@chakra-ui/utils" "1.10.2"
 
+"@choc-ui/chakra-autocomplete@^4.16.2":
+  version "4.16.2"
+  resolved "https://registry.yarnpkg.com/@choc-ui/chakra-autocomplete/-/chakra-autocomplete-4.16.2.tgz#b481e9851751636fedce8548b47e52c84fbff51f"
+  integrity sha512-4uTjCI541wTxgAZSIvoNAAZ35Wi/ILrarWY9dxRcv+RYo1Dcb8zcvjZyPxSmg03q/m6F0aNC0RwDDPkbCoPi1Q==
+  dependencies:
+    react-nanny "^2.9.0"
+
 "@ctrl/tinycolor@^3.4.0":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
@@ -1298,11 +1305,6 @@ boolean@^3.0.1:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/boolean/-/boolean-3.1.4.tgz#f51a2fb5838a99e06f9b6ec1edb674de67026435"
   integrity sha512-3hx0kwU3uzG6ReQ3pnaFQPSktpBw6RHN3/ivDKEuU8g1XSfafowyvDnadjv1xp8IZqhtSukxlwv9bF6FhX8m0w==
-
-bootstrap@5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.1.3.tgz#ba081b0c130f810fa70900acbc1c6d3c28fa8f34"
-  integrity sha512-fcQztozJ8jToQWXxVuEyXWW+dSo8AiXWKwiSSrKWsRB/Qt+Ewwza+JWoLKiTuQLaEPhdNAJ7+Dosc9DOIqNy7Q==
 
 boxen@^5.0.0:
   version "5.1.2"
@@ -2909,6 +2911,11 @@ react-merge-refs@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
+
+react-nanny@^2.9.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/react-nanny/-/react-nanny-2.12.0.tgz#8ee7d20319f81131fc1be50ddf3197f286a81dde"
+  integrity sha512-oQ3Mo2oBPVELl96IHc43zVsCJUt8BYoEXoeBtPJzTfTTVezQx3/CRZZ+4Ck6TITxawRTUiOcU8v7EPaGpDk01A==
 
 react-remove-scroll-bar@^2.1.0:
   version "2.2.0"

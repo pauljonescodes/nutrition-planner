@@ -38,7 +38,9 @@ import { IngredientForm } from "../forms/IngredientForm";
 const IngredientsPage = () => {
   const { colorMode } = useColorMode();
   const { height } = useScrollbarSize();
-  const [data, setData] = useState<Array<IngredientInterface>>([]);
+  const [data, setData] = useState<Array<IngredientInterface> | undefined>(
+    undefined
+  );
   const [formDrawerIsOpen, setFormDrawerIsOpen] = useState(false);
   const [updateIngredient, setUpdateIngredient] = useState<
     IngredientInterface | undefined
@@ -46,9 +48,11 @@ const IngredientsPage = () => {
   const [deleteIngredient, setDeleteIngredient] = useState<
     IngredientInterface | undefined
   >(undefined);
-  const [loading, setLoading] = useState(false);
+  const [progressPending, setProgressPending] = useState(false);
   const [dataCount, setDataCount] = useState(0);
-  const [queryParameters, setQueryParameters] = useState<QueryParameters>({
+  const [queryParameters, setQueryParameters] = useState<
+    QueryParameters<IngredientInterface>
+  >({
     offset: 0,
     limit: 10,
     reverse: false,
@@ -57,12 +61,12 @@ const IngredientsPage = () => {
     useState<number | undefined>(undefined);
 
   async function queryData() {
-    setLoading(true);
+    setProgressPending(true);
     setData(
       (await Database.shared().arrayOfIngredients(queryParameters)) ?? []
     );
     setDataCount(await Database.shared().countOfIngredients());
-    setLoading(false);
+    setProgressPending(false);
   }
 
   function handleResize() {
@@ -234,8 +238,9 @@ const IngredientsPage = () => {
             sortable: true,
           },
         ]}
-        data={data}
-        progressPending={loading}
+        data={data ?? []}
+        progressPending={progressPending}
+        progressComponent={<Spinner />}
         pagination
         paginationServer
         paginationServerOptions={{
@@ -244,7 +249,10 @@ const IngredientsPage = () => {
         }}
         paginationTotalRows={dataCount}
         onChangeRowsPerPage={async (currentRowsPerPage: number) => {
-          setQueryParameters({ ...queryParameters, limit: currentRowsPerPage });
+          setQueryParameters({
+            ...queryParameters,
+            limit: currentRowsPerPage,
+          });
         }}
         paginationPerPage={queryParameters.limit}
         paginationComponentOptions={{
@@ -254,7 +262,7 @@ const IngredientsPage = () => {
         onSort={(selectedColumn) => {
           setQueryParameters({
             ...queryParameters,
-            sortBy: selectedColumn.sortField,
+            sortBy: selectedColumn.sortField as keyof IngredientInterface,
             reverse: !queryParameters.reverse,
           });
         }}
@@ -284,7 +292,6 @@ const IngredientsPage = () => {
               ingredient={updateIngredient}
               onSubmit={async (ingredient) => {
                 var id = await Database.shared().putIngredient(ingredient);
-
                 queryData();
                 setUpdateIngredient(undefined);
                 setFormDrawerIsOpen(false);
@@ -334,7 +341,3 @@ const IngredientsPage = () => {
 };
 
 export default IngredientsPage;
-
-/*
-
-*/

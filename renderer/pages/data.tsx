@@ -1,5 +1,4 @@
-import { AddIcon } from "@chakra-ui/icons";
-import { Box, Center, Heading, HStack, IconButton } from "@chakra-ui/react";
+import { Box, Center, Heading, HStack, Textarea } from "@chakra-ui/react";
 import { exportDB } from "dexie-export-import";
 import { useEffect, useRef, useState } from "react";
 import { MainMenu } from "../components/main-menu";
@@ -32,10 +31,16 @@ const DataPage = () => {
             <Heading size="md">Data</Heading>
           </Center>
         </Box>
-        <Box>
-          <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
-        </Box>
+        <Box></Box>
       </HStack>
+      <Textarea
+        height={`calc(100vh - 72px)`}
+        value={blobText}
+        onChange={(event) => {
+          setBlobText(event.target.value);
+        }}
+        spellCheck={false}
+      />
     </Box>
   );
   {
@@ -63,15 +68,7 @@ const DataPage = () => {
   }
 
   {
-    /* <TextArea
-          placeholder="type here"
-          value={blobText}
-          onChange={(event) => {
-            setBlobText(event.target.value);
-          }}
-          spellCheck={false}
-          fill
-        /> 
+    /* 
     </Fragment>*/
   }
 };
