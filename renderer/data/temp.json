@@ -3,21 +3,26 @@
     "formatVersion": 1,
     "data": {
         "databaseName": "MealPlannerDatabase",
-        "databaseVersion": 13,
+        "databaseVersion": 14,
         "tables": [{
                 "name": "ingredientsTable",
                 "schema": "id,name,priceCents,servingCount,servingMassGrams,servingEnergyKilocalorie,servingFatGrams,servingCarbohydrateGrams,servingProteinGrams",
-                "rowCount": 15
+                "rowCount": 19
             },
             {
                 "name": "recipesTable",
                 "schema": "id,name,servingCount",
-                "rowCount": 1
+                "rowCount": 3
             },
             {
                 "name": "ingredientInRecipesTable",
                 "schema": "id,recipeId,servingCount,ingredientId",
-                "rowCount": 15
+                "rowCount": 19
+            },
+            {
+                "name": "recipeInRecipesTable",
+                "schema": "id,destinationRecipeId,servingCount,sourceRecipeId",
+                "rowCount": 2
             }
         ],
         "data": [{
@@ -33,6 +38,20 @@
                         "totalPriceCents": 799,
                         "name": "Just FreshDirect Chocolate Raisins",
                         "id": "-aZA_Qg_d_mXzEmA2UufT",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "-ofFUVicoTmE9EKeAc2iR",
+                        "name": "Just FreshDirect Organic Frozen Fruit, Strawberries",
+                        "totalPriceCents": "379",
+                        "servingCount": "2",
+                        "servingMassGrams": "140",
+                        "servingEnergyKilocalorie": "50",
+                        "servingFatGrams": 0,
+                        "servingCarbohydrateGrams": "13",
+                        "servingProteinGrams": "1",
                         "$types": {
                             "": "userObject"
                         }
@@ -61,6 +80,20 @@
                         "totalPriceCents": 699,
                         "name": "Just FreshDirect Raw Hazelnuts",
                         "id": "7W9L2G_Kqq2aFXFzPvygj",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "AkKghpGcNxSco-PkVG8yJ",
+                        "name": "Siggi's Skyr Icelandic-Style Strained Non-Fat Yogurt, Plain",
+                        "totalPriceCents": "179",
+                        "servingCount": 1,
+                        "servingMassGrams": "150",
+                        "servingEnergyKilocalorie": "90",
+                        "servingFatGrams": 0,
+                        "servingCarbohydrateGrams": "6",
+                        "servingProteinGrams": "16",
                         "$types": {
                             "": "userObject"
                         }
@@ -103,6 +136,20 @@
                         "totalPriceCents": 1099,
                         "name": "Just FreshDirect Olive Oil",
                         "id": "MHkgK42OBmasyA7sd7Isw",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "O6M_veXfT5UZNVO2PwpSx",
+                        "name": "Organic Valley Grassmilk Fat Free Milk",
+                        "totalPriceCents": "629",
+                        "servingCount": "8",
+                        "servingMassGrams": "240",
+                        "servingEnergyKilocalorie": "90",
+                        "servingFatGrams": 0,
+                        "servingCarbohydrateGrams": "12",
+                        "servingProteinGrams": "8",
                         "$types": {
                             "": "userObject"
                         }
@@ -192,6 +239,20 @@
                         }
                     },
                     {
+                        "id": "iQwoslslNEN37xVLgEpyQ",
+                        "name": "Whey",
+                        "totalPriceCents": 0,
+                        "servingCount": 1,
+                        "servingMassGrams": "246",
+                        "servingEnergyKilocalorie": "66",
+                        "servingFatGrams": "0",
+                        "servingCarbohydrateGrams": "13",
+                        "servingProteinGrams": "2",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
                         "servingProteinGrams": 6,
                         "servingCarbohydrateGrams": 6,
                         "servingFatGrams": 15,
@@ -239,22 +300,57 @@
                 "tableName": "recipesTable",
                 "inbound": true,
                 "rows": [{
-                    "id": "Sb8mQ_d2C548EIWiLRVeg",
-                    "name": "Granola",
-                    "servingCount": 165,
-                    "$types": {
-                        "": "userObject"
+                        "id": "HI_xSTubpPqG2Sq0sCvDt",
+                        "name": "0% Yogurt from Organic Valley Grassmilk",
+                        "servingCount": 24,
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "Sb8mQ_d2C548EIWiLRVeg",
+                        "name": "Granola",
+                        "servingCount": 165,
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "cW62GrHsS5rfvXE3PI1Nd",
+                        "name": "0% Yogurt Strawberry Parfait",
+                        "servingCount": 1,
+                        "$types": {
+                            "": "userObject"
+                        }
                     }
-                }]
+                ]
             },
             {
                 "tableName": "ingredientInRecipesTable",
                 "inbound": true,
                 "rows": [{
+                        "id": "2uENh8f-rxSc2bz3iDjRy",
+                        "ingredientId": "iQwoslslNEN37xVLgEpyQ",
+                        "servingCount": "-8",
+                        "recipeId": "HI_xSTubpPqG2Sq0sCvDt",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
                         "id": "AblrTWsrSK227v5iEdwIq",
                         "ingredientId": "SaHss3nS9rkwKVdCqzG4E",
                         "servingCount": "11",
                         "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "BK_ciRFJG_a-Fh2YKB9tV",
+                        "ingredientId": "-ofFUVicoTmE9EKeAc2iR",
+                        "servingCount": "0.25",
+                        "recipeId": "cW62GrHsS5rfvXE3PI1Nd",
                         "$types": {
                             "": "userObject"
                         }
@@ -309,6 +405,24 @@
                         "ingredientId": "MHkgK42OBmasyA7sd7Isw",
                         "servingCount": "15",
                         "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "Owp1m_a6DwOVJGHk1zMFv",
+                        "ingredientId": "AkKghpGcNxSco-PkVG8yJ",
+                        "servingCount": 1,
+                        "recipeId": "HI_xSTubpPqG2Sq0sCvDt",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "Y94KZclc0x2lSoVYEY8Rv",
+                        "ingredientId": "O6M_veXfT5UZNVO2PwpSx",
+                        "servingCount": "20",
+                        "recipeId": "HI_xSTubpPqG2Sq0sCvDt",
                         "$types": {
                             "": "userObject"
                         }
@@ -381,6 +495,29 @@
                         "ingredientId": "WFZuqLokEsiZvGwx8SdDD",
                         "servingCount": "45",
                         "recipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    }
+                ]
+            },
+            {
+                "tableName": "recipeInRecipesTable",
+                "inbound": true,
+                "rows": [{
+                        "id": "WRbS75I3QX5DhvXYoLK2S",
+                        "sourceRecipeId": "Sb8mQ_d2C548EIWiLRVeg",
+                        "servingCount": 1,
+                        "destinationRecipeId": "cW62GrHsS5rfvXE3PI1Nd",
+                        "$types": {
+                            "": "userObject"
+                        }
+                    },
+                    {
+                        "id": "ZSPc_WbMiIKZ11kOQIVaK",
+                        "sourceRecipeId": "HI_xSTubpPqG2Sq0sCvDt",
+                        "servingCount": 1,
+                        "destinationRecipeId": "cW62GrHsS5rfvXE3PI1Nd",
                         "$types": {
                             "": "userObject"
                         }
