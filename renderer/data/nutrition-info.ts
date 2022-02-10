@@ -20,6 +20,17 @@ export function nutritionInfoDescription(value: NutritionInfo): string {
   }g protein`;
 }
 
+export function nutritionInfo(): NutritionInfo {
+  return {
+    priceCents: 0,
+    massGrams: 0,
+    energyKilocalorie: 0,
+    fatGrams: 0,
+    carbohydrateGrams: 0,
+    proteinGrams: 0,
+  };
+}
+
 export function addNutritionInfo(
   lhs: NutritionInfo,
   rhs: NutritionInfo
@@ -32,6 +43,14 @@ export function addNutritionInfo(
     carbohydrateGrams: lhs.carbohydrateGrams + rhs.carbohydrateGrams,
     proteinGrams: lhs.proteinGrams + rhs.proteinGrams,
   };
+}
+
+export function sumNutritionInfo(info: Array<NutritionInfo>): NutritionInfo {
+  return info.reduce(
+    (previousValue, currentValue) =>
+      addNutritionInfo(previousValue, currentValue),
+    nutritionInfo()
+  );
 }
 
 export function divideNutritionInfo(

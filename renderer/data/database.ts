@@ -1,25 +1,21 @@
-import Dexie, { Collection, Table } from "dexie";
+import Dexie, { Table } from "dexie";
+import { dexieItemSchema, Item, ItemInterface } from "./model/item";
 import {
-  dexieIngredientSchema,
-  Ingredient,
-  IngredientInterface,
-} from "./models/ingredient";
+  dexieItemInItemSchema,
+  ItemInItem,
+  ItemInItemInterface,
+} from "./model/item-in-item";
 import {
-  dexieIngredientInRecipeSchema,
-  IngredientInRecipe,
-  IngredientInRecipeInterface,
-} from "./models/ingredient-in-recipe";
-import { dexieRecipeSchema, Recipe, RecipeInterface } from "./models/recipe";
-import {
-  dexieRecipeInRecipeSchema,
-  RecipeInRecipe,
-  RecipeInRecipeInterface,
-} from "./models/recipe-in-recipe";
+  addNutritionInfo,
+  divideNutritionInfo,
+  multiplyNutritionInfo,
+  sumNutritionInfo,
+} from "./nutrition-info";
 
-export interface QueryParameters<T> {
+export interface ItemQueryParameters {
   limit: number;
   offset: number;
-  sortBy?: keyof T;
+  sortBy?: keyof Item;
   reverse?: boolean;
 }
 
@@ -35,78 +31,107 @@ export class Database extends Dexie {
   }
 
   constructor(
-    private ingredientsTable?: Table<IngredientInterface, string>,
-    private recipesTable?: Table<RecipeInterface, string>,
-    private ingredientInRecipesTable?: Table<
-      IngredientInRecipeInterface,
-      string
-    >,
-    private recipeInRecipesTable?: Table<RecipeInRecipeInterface, string>
+    private itemTable?: Table<ItemInterface, string>,
+    private itemInItemTable?: Table<ItemInItemInterface, string>
   ) {
     super("MealPlannerDatabase");
 
-    this.version(14).stores({
-      ingredientsTable: dexieIngredientSchema,
-      recipesTable: dexieRecipeSchema,
-      ingredientInRecipesTable: dexieIngredientInRecipeSchema,
-      recipeInRecipesTable: dexieRecipeInRecipeSchema,
+    this.version(15).stores({
+      itemTable: dexieItemSchema,
+      itemInItemTable: dexieItemInItemSchema,
     });
 
-    this.ingredientsTable?.mapToClass(Ingredient);
-    this.recipesTable?.mapToClass(Recipe);
-    this.ingredientInRecipesTable?.mapToClass(IngredientInRecipe);
-    this.recipeInRecipesTable?.mapToClass(RecipeInRecipe);
+    this.itemTable?.mapToClass(Item);
+    this.itemInItemTable?.mapToClass(ItemInItem);
   }
 
-  /* Ingredients CRUD */
+  /* Items CRUD */
 
-  async putIngredient(ingredient: IngredientInterface) {
-    return await this.ingredientsTable?.put({
-      id: ingredient.id,
-      name: ingredient.name,
-      totalPriceCents: ingredient.totalPriceCents,
-      servingCount: ingredient.servingCount,
-      servingMassGrams: ingredient.servingMassGrams,
-      servingEnergyKilocalorie: ingredient.servingEnergyKilocalorie,
-      servingFatGrams: ingredient.servingFatGrams,
-      servingCarbohydrateGrams: ingredient.servingCarbohydrateGrams,
-      servingProteinGrams: ingredient.servingProteinGrams,
+  async putItem(item: ItemInterface) {
+    return await this.itemTable?.put({
+      id: item.id,
+      name: item.name,
+      priceCents: item.priceCents,
+      count: item.count,
+      massGrams: item.massGrams,
+      energyKilocalorie: item.energyKilocalorie,
+      fatGrams: item.fatGrams,
+      carbohydrateGrams: item.carbohydrateGrams,
+      proteinGrams: item.proteinGrams,
     });
   }
 
-  async getIngredient(ingredientId: string) {
-    return await this.ingredientsTable?.get(ingredientId);
+  async saveItem(item: Item) {
+    await this.putItem(item);
+
+    const savedItemsInItem = (await this.itemsInItemArray(item)) ?? [];
+
+    const deletions = savedItemsInItem.filter((value1) => {
+      return (
+        item.itemInItems?.find((value2) => {
+          return value2.id === value1.sourceItemId;
+        }) === undefined
+      );
+    });
+
+    const additions =
+      item.itemInItems?.filter((value1) => {
+        return (
+          savedItemsInItem.find((value2) => {
+            return value1.id === value2.sourceItemId;
+          }) === undefined
+        );
+      }) ?? [];
+
+    for (const deletion of deletions) {
+      await this.deleteItemInItem(deletion);
+    }
+
+    for (const addition of additions) {
+      await this.putItemInItem(addition);
+    }
+
+    return item;
   }
 
-  async getIngredients(keys: string[]) {
-    return (await this.ingredientsTable?.bulkGet(keys))?.filter((value) => {
+  async getItem(itemId: string) {
+    return await this.itemTable?.get(itemId);
+  }
+
+  async getItems(keys: string[]) {
+    return (await this.itemTable?.bulkGet(keys))?.filter((value) => {
       return value !== undefined;
-    }) as Array<IngredientInterface>;
+    }) as Array<ItemInterface>;
   }
 
-  async countOfIngredients() {
-    return (await this.ingredientsTable?.count()) ?? 0;
+  async countOfItems() {
+    return (await this.itemTable?.count()) ?? 0;
   }
 
-  async arrayOfIngredients(parameters: QueryParameters<IngredientInterface>) {
-    var collection: Collection<IngredientInterface, string> | undefined;
+  async arrayOfItems(parameters: ItemQueryParameters): Promise<Item[]> {
+    var collection = this.itemTable
+      ?.offset(parameters.offset)
+      .limit(parameters.limit);
+
+    const interfaces: Array<ItemInterface> = [];
     if (parameters.sortBy) {
-      collection = this.ingredientsTable?.orderBy(parameters.sortBy);
       if (parameters.reverse) {
         collection = collection?.reverse();
       }
+      interfaces.push(...((await collection?.sortBy(parameters.sortBy)) ?? []));
     } else {
-      collection = this.ingredientsTable?.toCollection();
+      interfaces.push(...((await collection?.toArray()) ?? []));
     }
 
-    return await collection
-      ?.offset(parameters.offset)
-      .limit(parameters.limit)
-      .toArray();
+    return await Promise.all(
+      interfaces.map((value) => {
+        return this.loadItem(value);
+      })
+    );
   }
 
-  async filteredIngredients(query: string) {
-    return this.ingredientsTable
+  async filteredItems(query: string) {
+    return this.itemTable
       ?.filter((obj) => {
         return new RegExp(".*" + query.split("").join(".*") + ".*").test(
           obj.name
@@ -115,106 +140,99 @@ export class Database extends Dexie {
       .toArray();
   }
 
-  async deleteIngredient(ingredientId: string) {
-    await this.ingredientsTable?.delete(ingredientId);
-    await this.ingredientInRecipesTable
-      ?.where("ingredientId")
-      .equals(ingredientId)
-      .delete();
+  async deleteItem(itemId: string) {
+    await this.itemTable?.delete(itemId);
+    await this.itemInItemTable?.where("sourceItemId").equals(itemId).delete();
   }
 
-  /* Recipes CRUD */
+  itemNutrition(item: Item, perServing: boolean) {
+    return addNutritionInfo(
+      {
+        priceCents: Math.round(item.priceCents / (perServing ? item.count : 1)),
+        massGrams: Math.round(item.massGrams / (perServing ? item.count : 1)),
+        energyKilocalorie: Math.round(
+          item.energyKilocalorie / (perServing ? item.count : 1)
+        ),
+        fatGrams: Math.round(item.fatGrams / (perServing ? item.count : 1)),
+        carbohydrateGrams: Math.round(
+          item.carbohydrateGrams / (perServing ? item.count : 1)
+        ),
+        proteinGrams: Math.round(
+          item.proteinGrams / (perServing ? item.count : 1)
+        ),
+      },
+      sumNutritionInfo(
+        (item.itemInItems ?? []).map((value) =>
+          this.itemInItemNutrition(value, perServing ? item.count : 1)
+        )
+      )
+    );
+  }
 
-  async putRecipe(recipe: RecipeInterface) {
-    return await this.recipesTable?.put({
-      id: recipe.id,
-      name: recipe.name,
-      servingCount: recipe.servingCount,
+  async loadItem(itemInterface: ItemInterface): Promise<Item> {
+    const item = new Item(itemInterface);
+    const itemsInItem = (await this.itemsInItemArray(itemInterface)) ?? [];
+    item.itemInItems = await Promise.all(
+      itemsInItem?.map((value) => this.loadItemInItem(value))
+    );
+    return item;
+  }
+
+  /* Item in recipe CRUD */
+
+  async putItemInItem(itemInItem: ItemInItemInterface) {
+    return await this.itemInItemTable?.put({
+      id: itemInItem.id,
+      sourceItemId: itemInItem.sourceItemId,
+      count: itemInItem.count,
+      destinationItemId: itemInItem.destinationItemId,
     });
   }
 
-  async getRecipe(recipeId: string) {
-    return await this.recipesTable?.get(recipeId);
-  }
-
-  async arrayOfRecipes(parameters: QueryParameters<RecipeInterface>) {
-    var collection: Collection<RecipeInterface, string> | undefined;
-    if (parameters.sortBy) {
-      collection = this.recipesTable?.orderBy(parameters.sortBy);
-      if (parameters.reverse) {
-        collection = collection?.reverse();
-      }
-    } else {
-      collection = this.recipesTable?.toCollection();
-    }
-
-    return await collection
-      ?.offset(parameters.offset)
-      .limit(parameters.limit)
+  async itemsInItemArray(item: ItemInterface) {
+    return await this.itemInItemTable
+      ?.where({ destinationItemId: item.id })
       .toArray();
   }
 
-  async countOfRecipes() {
-    return (await this.recipesTable?.count()) ?? 0;
+  async deleteItemInItem(itemInItem: ItemInItemInterface) {
+    await Database.shared().itemInItemTable?.delete(itemInItem.id);
   }
 
-  async filteredRecipes(query: string) {
-    return this.recipesTable
-      ?.filter((obj) => {
-        return new RegExp(".*" + query.split("").join(".*") + ".*").test(
-          obj.name
-        );
-      })
-      .toArray();
+  itemInItemNutrition(itemInItem: ItemInItem, itemServings: number) {
+    const sourceItemNutritionPerServing = this.itemNutrition(
+      itemInItem.sourceItem!,
+      true
+    );
+    const multipliedByCount = multiplyNutritionInfo(
+      sourceItemNutritionPerServing,
+      itemInItem.count
+    );
+    const dividesByServings = divideNutritionInfo(
+      multipliedByCount,
+      itemServings ?? 1
+    );
+    return dividesByServings;
   }
 
-  async deleteRecipe(recipeId: string) {
-    await Database.shared().recipesTable?.delete(recipeId);
-    await Database.shared()
-      .ingredientInRecipesTable?.where("recipeId")
-      .equals(recipeId)
-      .delete();
+  nutritionPerServing(item: Item) {
+    return {
+      priceCents: item.priceCents / item.count,
+      massGrams: item.massGrams / item.count,
+      energyKilocalorie: item.energyKilocalorie / item.count,
+      fatGrams: item.fatGrams / item.count,
+      carbohydrateGrams: item.carbohydrateGrams / item.count,
+      proteinGrams: item.proteinGrams / item.count,
+    };
   }
 
-  /* Ingredient in recipe CRUD */
-
-  async putIngredientInRecipe(ingredientInRecipe: IngredientInRecipeInterface) {
-    return await this.ingredientInRecipesTable?.put({
-      id: ingredientInRecipe.id,
-      ingredientId: ingredientInRecipe.ingredientId,
-      servingCount: ingredientInRecipe.servingCount,
-      recipeId: ingredientInRecipe.recipeId,
-    });
-  }
-
-  async ingredientsInRecipeArray(recipe: RecipeInterface) {
-    return await this.ingredientInRecipesTable
-      ?.where({ recipeId: recipe.id })
-      .toArray();
-  }
-
-  async deleteIngredientInRecipe(value: IngredientInRecipeInterface) {
-    await Database.shared().ingredientInRecipesTable?.delete(value.id);
-  }
-
-  /* Recipe in recipe CRUD */
-
-  async putRecipeInRecipe(value: RecipeInRecipeInterface) {
-    return await this.recipeInRecipesTable?.put({
-      id: value.id,
-      sourceRecipeId: value.sourceRecipeId,
-      servingCount: value.servingCount,
-      destinationRecipeId: value.destinationRecipeId,
-    });
-  }
-
-  async recipesInRecipeArray(recipe: RecipeInterface) {
-    return await this.recipeInRecipesTable
-      ?.where({ destinationRecipeId: recipe.id })
-      .toArray();
-  }
-
-  async deleteRecipeInRecipe(value: RecipeInRecipeInterface) {
-    await Database.shared().recipeInRecipesTable?.delete(value.id);
+  async loadItemInItem(
+    itemInItemInterface: ItemInItemInterface
+  ): Promise<ItemInItem> {
+    const itemInItem = new ItemInItem(itemInItemInterface);
+    itemInItem.sourceItem = await this.loadItem(
+      (await this.getItem(itemInItem.sourceItemId))!
+    );
+    return itemInItem;
   }
 }

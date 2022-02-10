@@ -20,67 +20,76 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
-import { Ingredient } from "../../data/models/ingredient";
-import {
-  IngredientInRecipe,
-  yupIngredientInRecipeSchema,
-} from "../../data/models/ingredient-in-recipe";
-import { Recipe } from "../../data/models/recipe";
+import { Database } from "../../data/database";
+import { Item as ModelItem } from "../../data/model/item";
+import { ItemInItem, yupItemInItemSchema } from "../../data/model/item-in-item";
 import { nutritionInfoDescription } from "../../data/nutrition-info";
 
-interface IngredientsInRecipeFieldInputProps {
-  value: IngredientInRecipe;
+interface ItemInItemFieldInputProps {
+  value: ItemInItem;
   index: number;
-  thisRecipeId: string;
-  formikProps: FormikProps<Recipe>;
+  thisItemId: string;
+  formikProps: FormikProps<ModelItem>;
   fieldArrayHelpers: FieldArrayRenderProps;
-  options: Ingredient[];
+  options: ModelItem[];
   autoCompleteOnChange: (value: string) => void;
 }
 
-export function IngredientsInRecipeFieldInput(
-  props: IngredientsInRecipeFieldInputProps
-) {
+export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
   const [selectedFieldValueName, setSelectedFieldValueName] = useState<
     string | undefined
   >(undefined);
   return (
     <Box key={props.index} mb={3}>
       <Flex>
-        <NumberInput defaultValue={props.value.servingCount}>
+        <NumberInput defaultValue={props.value.count}>
           <NumberInputField
-            name={`ingredientsInRecipe.${props.index}.servingCount`}
-            value={props.value.servingCount}
+            name={`itemInItems.${props.index}.count`}
+            value={props.value.count}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            placeholder={
-              yupIngredientInRecipeSchema.fields.servingCount.spec.label
-            }
+            placeholder={yupItemInItemSchema.fields.count.spec.label}
           />
           <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
+            <NumberIncrementStepper
+              onClick={() => {
+                const value = props.value.count + 1;
+
+                props.formikProps.setFieldValue(
+                  `itemInItems.${props.index}.count`,
+                  value
+                );
+              }}
+            />
+            <NumberDecrementStepper
+              onClick={() => {
+                props.formikProps.setFieldValue(
+                  `itemInItems.${props.index}.count`,
+                  props.value.count - 1
+                );
+              }}
+            />
           </NumberInputStepper>
         </NumberInput>
         <FormControl mx={2}>
           <AutoComplete
             openOnFocus
             onChange={(_value, item) => {
-              const ingredient = (item as Item).originalValue as Ingredient;
+              const modelItem = (item as Item).originalValue as ModelItem;
+
               props.formikProps.setFieldValue(
-                `ingredientsInRecipe.${props.index}.ingredientId`,
-                ingredient.id
+                `itemInItems.${props.index}.sourceItemId`,
+                modelItem.id
               );
-              setSelectedFieldValueName(ingredient.name);
-              props.value.ingredient = ingredient;
+              setSelectedFieldValueName(modelItem.name);
+              props.value.sourceItem = modelItem;
             }}
           >
             <AutoCompleteInput
-              placeholder={
-                yupIngredientInRecipeSchema.fields.ingredientId.spec.label
-              }
-              value={selectedFieldValueName ?? props.value.ingredient?.name}
+              placeholder={yupItemInItemSchema.fields.sourceItemId.spec.label}
+              value={selectedFieldValueName ?? props.value.sourceItem?.name}
               onChange={async (event) => {
+                props.value.sourceItem!.name = event.target.value;
                 props.autoCompleteOnChange(event.target.value);
               }}
             />
@@ -105,7 +114,7 @@ export function IngredientsInRecipeFieldInput(
         <IconButton
           mt={"auto"}
           icon={<DeleteIcon />}
-          aria-label="Remove ingredient"
+          aria-label="Remove item"
           className="text-danger p-0 m-0"
           onClick={() => {
             props.fieldArrayHelpers.remove(props.index);
@@ -114,7 +123,7 @@ export function IngredientsInRecipeFieldInput(
       </Flex>
       <FormHelperText>
         {nutritionInfoDescription(
-          IngredientInRecipe.nutritionInfo(props.value)
+          Database.shared().itemInItemNutrition(props.value, 1)
         )}
       </FormHelperText>
     </Box>

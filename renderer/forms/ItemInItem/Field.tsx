@@ -4,38 +4,38 @@ import { FieldArrayRenderProps, FormikProps } from "formik";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 import { Database } from "../../data/database";
-import { Recipe } from "../../data/models/recipe";
+import { Item } from "../../data/model/item";
 import {
-  RecipeInRecipeInterface,
-  yupRecipeInRecipeSchema,
-} from "../../data/models/recipe-in-recipe";
-import { RecipeInRecipeFieldInput } from "./FieldInput";
+  ItemInItemInterface,
+  yupItemInItemSchema,
+} from "../../data/model/item-in-item";
+import { ItemInItemFieldInput } from "./FieldInput";
 
-interface RecipeSearchResults {
-  results: Array<Recipe>;
+interface ItemSearchResults {
+  results: Array<Item>;
 }
 
-interface RecipeInRecipeFieldProps {
-  thisRecipeId: string;
-  formikProps: FormikProps<Recipe>;
+interface ItemInItemFieldProps {
+  thisItemId: string;
+  formikProps: FormikProps<Item>;
   fieldArrayHelpers: FieldArrayRenderProps;
 }
 
-export function RecipeInRecipeField(props: RecipeInRecipeFieldProps) {
-  const [recipeSearchsState, setRecipeSearchesState] = useState<
-    RecipeSearchResults[]
+export function ItemInItemField(props: ItemInItemFieldProps) {
+  const [recipeSearchsState, setItemSearchesState] = useState<
+    ItemSearchResults[]
   >([]);
 
-  const recipesInRecipe = props.formikProps.values.recipesInRecipe ?? [];
+  const itemsInItem = props.formikProps.values.itemInItems ?? [];
 
   useEffect(() => {
-    setRecipeSearchesState(recipesInRecipe.map(() => ({ results: [] })));
+    setItemSearchesState(itemsInItem.map(() => ({ results: [] })));
   }, []);
   return (
     <Box>
       <FormControl mb={3}>
-        <FormLabel>{yupRecipeInRecipeSchema.spec.label}</FormLabel>
-        {recipesInRecipe.map((value, index) => {
+        <FormLabel>{yupItemInItemSchema.spec.label}</FormLabel>
+        {itemsInItem.map((value, index) => {
           const options =
             index < recipeSearchsState.length
               ? recipeSearchsState[index].results?.map((value) => {
@@ -43,16 +43,16 @@ export function RecipeInRecipeField(props: RecipeInRecipeFieldProps) {
                 }) ?? []
               : [];
           return (
-            <RecipeInRecipeFieldInput
+            <ItemInItemFieldInput
               autoCompleteOnChange={async (value) => {
-                let theRecipeSearchs = recipeSearchsState;
-                theRecipeSearchs[index].results =
-                  (await Database.shared().filteredRecipes(value)) ?? [];
-                setRecipeSearchesState([...theRecipeSearchs]);
+                let theItemSearchs = recipeSearchsState;
+                theItemSearchs[index].results =
+                  (await Database.shared().filteredItems(value)) ?? [];
+                setItemSearchesState([...theItemSearchs]);
               }}
               value={value}
               index={index}
-              thisRecipeId={props.thisRecipeId}
+              thisItemId={props.thisItemId}
               formikProps={props.formikProps}
               fieldArrayHelpers={props.fieldArrayHelpers}
               options={options}
@@ -69,15 +69,19 @@ export function RecipeInRecipeField(props: RecipeInRecipeFieldProps) {
             className="text-success p-0"
             onClick={() => {
               props.fieldArrayHelpers.push({
-                servingCount: 1,
                 id: nanoid(),
-                destinationRecipeId: props.thisRecipeId,
-              } as RecipeInRecipeInterface);
-              let theRecipeSearchs = recipeSearchsState;
-              theRecipeSearchs.push({
+                destinationItemId: props.thisItemId,
+                count: 1,
+                sourceItemId: "",
+                sourceItem: {
+                  name: "",
+                },
+              } as ItemInItemInterface);
+              let theItemSearchs = recipeSearchsState;
+              theItemSearchs.push({
                 results: [],
               });
-              setRecipeSearchesState([...theRecipeSearchs]);
+              setItemSearchesState([...theItemSearchs]);
             }}
           >
             <AddIcon />
