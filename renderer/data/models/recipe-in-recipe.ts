@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { Database } from "../database";
-import { multiplyNutritionInfo, NutritionInfo } from "../nutrition-info";
+import { divideNutritionInfo, NutritionInfo } from "../nutrition-info";
 import { Recipe } from "./recipe";
 
 export const dexieRecipeInRecipeSchema =
@@ -9,7 +9,7 @@ export const dexieRecipeInRecipeSchema =
 export const yupRecipeInRecipeSchema = Yup.object({
   id: Yup.string().required(),
   sourceRecipeId: Yup.string()
-    .label("Ingredient")
+    .label("Recipe")
     .meta({
       helperText: "An ingredient in this recipe.",
       key: "sourceRecipeId",
@@ -18,7 +18,7 @@ export const yupRecipeInRecipeSchema = Yup.object({
   servingCount: Yup.number()
     .label("Servings")
     .meta({
-      helperText: "The number of servings of the ingredient in this recipe.",
+      helperText: "The number of servings of the recipe in this recipe.",
       key: "servingCount",
     })
     .required()
@@ -28,15 +28,15 @@ export const yupRecipeInRecipeSchema = Yup.object({
   .label("Sub-recipes")
   .meta({
     helperText: "An ingredient in this recipe.",
-    key: "ingredientsInRecipe",
+    key: "recipesInRecipe",
   });
 
 export interface RecipeInRecipeInterface
   extends Yup.InferType<typeof yupRecipeInRecipeSchema> {}
 
 export class RecipeInRecipe implements RecipeInRecipeInterface {
-  destinationRecipe?: Recipe;
-  sourceRecipe?: Recipe;
+  destinationRecipe?: Recipe; // the recipe the other recipe is in
+  sourceRecipe?: Recipe; // the recipe that's in the other recipe
 
   constructor(
     public id: string,
@@ -46,15 +46,16 @@ export class RecipeInRecipe implements RecipeInRecipeInterface {
   ) {}
 
   static async loadSourceRecipe(value: RecipeInRecipe) {
-    value.sourceRecipe = await Database.shared().getRecipe(
+    const sourceRecipe = (await Database.shared().getRecipe(
       value.sourceRecipeId
-    );
+    ))!;
+    value.sourceRecipe = await Recipe.load(sourceRecipe);
     return value;
   }
 
   static nutritionInfo(value: RecipeInRecipe): NutritionInfo {
-    return multiplyNutritionInfo(
-      Recipe.nutritionInfo(value.sourceRecipe),
+    return divideNutritionInfo(
+      Recipe.nutritionInfo(value.sourceRecipe, true),
       value.servingCount
     );
   }

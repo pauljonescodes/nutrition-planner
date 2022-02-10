@@ -10,6 +10,11 @@ import {
   IngredientInRecipeInterface,
 } from "./models/ingredient-in-recipe";
 import { dexieRecipeSchema, Recipe, RecipeInterface } from "./models/recipe";
+import {
+  dexieRecipeInRecipeSchema,
+  RecipeInRecipe,
+  RecipeInRecipeInterface,
+} from "./models/recipe-in-recipe";
 
 export interface QueryParameters<T> {
   limit: number;
@@ -35,19 +40,22 @@ export class Database extends Dexie {
     private ingredientInRecipesTable?: Table<
       IngredientInRecipeInterface,
       string
-    >
+    >,
+    private recipeInRecipesTable?: Table<RecipeInRecipeInterface, string>
   ) {
     super("MealPlannerDatabase");
 
-    this.version(13).stores({
+    this.version(14).stores({
       ingredientsTable: dexieIngredientSchema,
       recipesTable: dexieRecipeSchema,
       ingredientInRecipesTable: dexieIngredientInRecipeSchema,
+      recipeInRecipesTable: dexieRecipeInRecipeSchema,
     });
 
     this.ingredientsTable?.mapToClass(Ingredient);
     this.recipesTable?.mapToClass(Recipe);
     this.ingredientInRecipesTable?.mapToClass(IngredientInRecipe);
+    this.recipeInRecipesTable?.mapToClass(RecipeInRecipe);
   }
 
   /* Ingredients CRUD */
@@ -179,13 +187,34 @@ export class Database extends Dexie {
     });
   }
 
-  async ingredientsInRecipeArray(recipeId: string) {
-    return await this.ingredientInRecipesTable?.where({ recipeId }).toArray();
+  async ingredientsInRecipeArray(recipe: RecipeInterface) {
+    return await this.ingredientInRecipesTable
+      ?.where({ recipeId: recipe.id })
+      .toArray();
   }
 
-  async deleteIngredientInRecipe(ingredientInRecipeId: string) {
-    await Database.shared().ingredientInRecipesTable?.delete(
-      ingredientInRecipeId
-    );
+  async deleteIngredientInRecipe(value: IngredientInRecipeInterface) {
+    await Database.shared().ingredientInRecipesTable?.delete(value.id);
+  }
+
+  /* Recipe in recipe CRUD */
+
+  async putRecipeInRecipe(value: RecipeInRecipeInterface) {
+    return await this.recipeInRecipesTable?.put({
+      id: value.id,
+      sourceRecipeId: value.sourceRecipeId,
+      servingCount: value.servingCount,
+      destinationRecipeId: value.destinationRecipeId,
+    });
+  }
+
+  async recipesInRecipeArray(recipe: RecipeInterface) {
+    return await this.recipeInRecipesTable
+      ?.where({ destinationRecipeId: recipe.id })
+      .toArray();
+  }
+
+  async deleteRecipeInRecipe(value: RecipeInRecipeInterface) {
+    await Database.shared().recipeInRecipesTable?.delete(value.id);
   }
 }

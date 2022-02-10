@@ -27,7 +27,6 @@ import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
 import { MainMenu } from "../components/MainMenu";
 import { Database, QueryParameters } from "../data/database";
-import { IngredientInRecipe } from "../data/models/ingredient-in-recipe";
 import { Recipe, yupRecipeSchema } from "../data/models/recipe";
 import { RecipeForm } from "../forms/RecipeForm";
 
@@ -62,25 +61,13 @@ const RecipesPage = () => {
 
   async function queryData() {
     setProgressPending(true);
-    const interfaces =
-      (await Database.shared().arrayOfRecipes(queryParameters)) ?? [];
-    const classes: Array<Recipe> = [];
-
-    for (const theInterface of interfaces) {
-      const loaded = await Recipe.load(theInterface.id);
-      if (loaded !== undefined) {
-        const wLoaded: Array<IngredientInRecipe> = [];
-        for (const ingredientInRecipe of loaded.ingredientsInRecipe ?? []) {
-          wLoaded.push(
-            await IngredientInRecipe.loadIngredient(ingredientInRecipe)
-          );
-        }
-        loaded.ingredientsInRecipe = wLoaded;
-        classes.push(loaded);
-      }
-    }
-
-    setData(classes);
+    setData(
+      await Promise.all(
+        ((await Database.shared().arrayOfRecipes(queryParameters)) ?? []).map(
+          async (value) => Recipe.load(value)
+        )
+      )
+    );
     setDataCount(await Database.shared().countOfRecipes());
     setProgressPending(false);
   }

@@ -100,6 +100,8 @@ const IngredientsPage = () => {
     queryData();
   }, [queryParameters]);
 
+  console.log(Ingredient.name.toString());
+
   if (numberOfCellsForUsableHeight === undefined) {
     return (
       <Center pt="5">
@@ -177,7 +179,7 @@ const IngredientsPage = () => {
           {
             name: yupIngredientSchema.fields.name.spec.label,
             selector: (row: Ingredient) => row.name,
-            sortField: yupIngredientSchema.fields.name.spec.meta["key"],
+            sortField: Ingredient.name.toString(),
             sortable: true,
             grow: 3,
           },
