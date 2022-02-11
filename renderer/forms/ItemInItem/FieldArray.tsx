@@ -1,6 +1,6 @@
 import { FieldArray, FormikProps } from "formik";
-import { Item } from "../../data/model/item";
-import { yupItemInItemSchema } from "../../data/model/item-in-item";
+import { Item } from "../../data/model/Item";
+import { yupItemInItemSchema } from "../../data/model/ItemInItem";
 import { ItemInItemField } from "./Field";
 
 interface ItemInItemFieldArrayProps {

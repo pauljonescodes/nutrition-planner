@@ -3,6 +3,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  SpaceProps,
 } from "@chakra-ui/react";
 import { FormikProps } from "formik";
 import { BaseSchema } from "yup";
@@ -12,13 +13,14 @@ interface ValidatedFormikControlProps<T> {
   yupSchemaField: BaseSchema;
   value?: string; // props.formikProps.values.name as string | undefined
   error?: string; // props.formikProps.errors.name
+  spaceProps?: SpaceProps;
 }
 
 export function ValidatedFormikControlInput<T>(
   props: ValidatedFormikControlProps<T>
 ) {
   return (
-    <FormControl>
+    <FormControl {...props.spaceProps} isInvalid={props.error !== undefined}>
       <FormLabel>{props.yupSchemaField.spec.label}</FormLabel>
       <Input
         onChange={props.formikProps.handleChange}

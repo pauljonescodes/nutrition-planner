@@ -26,9 +26,9 @@ import React, { useEffect, useState } from "react";
 import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
 import { MainMenu } from "../components/MainMenu";
-import { Database, ItemQueryParameters } from "../data/database";
-import { Item, yupItemSchema } from "../data/model/item";
-import { ItemForm } from "../forms/ItemForm";
+import { Database, ItemQueryParameters } from "../data/Database";
+import { Item, yupItemSchema } from "../data/model/Item";
+import { IngredientForm } from "../forms/IngredientForm";
 
 const ItemsPage = () => {
   const { colorMode } = useColorMode();
@@ -283,10 +283,12 @@ const ItemsPage = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>{updateItem ? "Update" : "Create"} item</DrawerHeader>
+          <DrawerHeader>
+            {updateItem ? "Update" : "Create"} ingredient
+          </DrawerHeader>
 
           <DrawerBody>
-            <ItemForm
+            <IngredientForm
               item={updateItem}
               onSubmit={async (item) => {
                 const saved = await Database.shared().saveItem(item);

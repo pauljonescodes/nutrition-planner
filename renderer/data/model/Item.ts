@@ -1,24 +1,24 @@
 import * as Yup from "yup";
-import { ItemInItem } from "./item-in-item";
+import { ItemInItem } from "./ItemInItem";
+import { ItemType } from "./ItemType";
 
 export const dexieItemSchema =
   "&id,name,count,priceCents,massGrams,energyKilocalorie,fatGrams,carbohydrateGrams,proteinGrams,itemInItems";
 
 export const yupItemSchema = Yup.object({
   id: Yup.string().label("ID").required(),
+  type: Yup.mixed<ItemType>().oneOf(Object.values(ItemType)).required(),
   name: Yup.string()
     .label("Name")
     .default("")
     .meta({
-      helperText: "",
       key: "name",
     })
     .required(),
   count: Yup.number()
-    .label("Count")
-    .default(0)
+    .label("Serving count")
+    .default(1)
     .meta({
-      helperText: "",
       key: "count",
     })
     .required(),
@@ -26,15 +26,14 @@ export const yupItemSchema = Yup.object({
     .label("Price")
     .default(0)
     .meta({
-      helperText: "",
       key: "priceCents",
     })
     .required(),
   massGrams: Yup.number()
     .label("Mass")
     .default(0)
+    .positive()
     .meta({
-      helperText: "",
       key: "massGrams",
     })
     .required(),
@@ -42,7 +41,6 @@ export const yupItemSchema = Yup.object({
     .label("Calories")
     .default(0)
     .meta({
-      helperText: "",
       key: "energyKilocalorie",
     })
     .required(),
@@ -50,7 +48,6 @@ export const yupItemSchema = Yup.object({
     .label("Fat")
     .default(0)
     .meta({
-      helperText: "",
       key: "fatGrams",
     })
     .required(),
@@ -58,7 +55,6 @@ export const yupItemSchema = Yup.object({
     .label("Carbohydrate")
     .default(0)
     .meta({
-      helperText: "",
       key: "carbohydrateGrams",
     })
     .required(),
@@ -66,7 +62,6 @@ export const yupItemSchema = Yup.object({
     .label("Protein")
     .default(0)
     .meta({
-      helperText: "",
       key: "proteinGrams",
     })
     .required(),
@@ -76,6 +71,7 @@ export interface ItemInterface extends Yup.InferType<typeof yupItemSchema> {}
 
 export class Item implements ItemInterface {
   id: string;
+  type: ItemType;
   name: string;
   count: number;
   priceCents: number;
@@ -88,6 +84,7 @@ export class Item implements ItemInterface {
 
   constructor(itemInterface: ItemInterface) {
     this.id = itemInterface.id;
+    this.type = itemInterface.type;
     this.name = itemInterface.name;
     this.count = Number(itemInterface.count);
     this.priceCents = Number(itemInterface.priceCents);

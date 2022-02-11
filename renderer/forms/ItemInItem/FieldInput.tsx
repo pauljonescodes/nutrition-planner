@@ -20,10 +20,10 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
-import { Database } from "../../data/database";
-import { Item as ModelItem } from "../../data/model/item";
-import { ItemInItem, yupItemInItemSchema } from "../../data/model/item-in-item";
-import { nutritionInfoDescription } from "../../data/nutrition-info";
+import { Database } from "../../data/Database";
+import { Item as ModelItem } from "../../data/model/Item";
+import { ItemInItem, yupItemInItemSchema } from "../../data/model/ItemInItem";
+import { nutritionInfoDescription } from "../../data/NutritionInfo";
 
 interface ItemInItemFieldInputProps {
   value: ItemInItem;

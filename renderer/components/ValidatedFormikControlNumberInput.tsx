@@ -4,6 +4,7 @@ import {
   FormLabel,
   NumberInput,
   NumberInputField,
+  SpaceProps,
 } from "@chakra-ui/react";
 import { FormikProps } from "formik";
 import { BaseSchema } from "yup";
@@ -13,13 +14,15 @@ interface ValidatedFormikControlNumberInputProps<T> {
   yupSchemaField: BaseSchema;
   value?: number; // props.formikProps.values.name as string | undefined
   error?: string; // props.formikProps.errors.name
+  spaceProps?: SpaceProps;
 }
 
 export function ValidatedFormikControlNumberInput<T>(
   props: ValidatedFormikControlNumberInputProps<T>
 ) {
+  console.log(props.error);
   return (
-    <FormControl>
+    <FormControl {...props.spaceProps} isInvalid={props.error !== undefined}>
       <FormLabel htmlFor={props.yupSchemaField.spec.meta["key"]}>
         {props.yupSchemaField.spec.label}
       </FormLabel>
@@ -35,7 +38,9 @@ export function ValidatedFormikControlNumberInput<T>(
           placeholder={props.yupSchemaField.spec.label}
         />
       </NumberInput>
-      {props.error && <FormErrorMessage>{props.error}</FormErrorMessage>}
+      {props.error !== undefined && (
+        <FormErrorMessage>{props.error}</FormErrorMessage>
+      )}
     </FormControl>
   );
 }

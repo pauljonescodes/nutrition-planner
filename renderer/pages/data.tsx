@@ -10,7 +10,7 @@ import {
 import { exportDB, importInto } from "dexie-export-import";
 import { useEffect, useRef, useState } from "react";
 import { MainMenu } from "../components/MainMenu";
-import { Database } from "../data/database";
+import { Database } from "../data/Database";
 
 const DataPage = () => {
   const [blobText, setBlobText] = useState<string>("");

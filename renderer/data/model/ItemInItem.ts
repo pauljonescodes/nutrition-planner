@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { Item } from "./item";
+import { Item } from "./Item";
 
 export const dexieItemInItemSchema = "&id,sourceItemId,count,destinationItemId";
 

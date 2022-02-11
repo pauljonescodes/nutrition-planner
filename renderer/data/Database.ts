@@ -1,17 +1,17 @@
 import Dexie, { Table } from "dexie";
-import { dexieItemSchema, Item, ItemInterface } from "./model/item";
+import { dexieItemSchema, Item, ItemInterface } from "./model/Item";
 import {
   dexieItemInItemSchema,
   ItemInItem,
   ItemInItemInterface,
-} from "./model/item-in-item";
+} from "./model/ItemInItem";
 import {
   addNutritionInfo,
   divideNutritionInfo,
   multiplyNutritionInfo,
   NutritionInfo,
   sumNutritionInfo,
-} from "./nutrition-info";
+} from "./NutritionInfo";
 
 export interface ItemQueryParameters {
   limit: number;
@@ -51,6 +51,7 @@ export class Database extends Dexie {
   async putItem(item: ItemInterface) {
     return await this.itemTable?.put({
       id: item.id,
+      type: item.type,
       name: item.name,
       priceCents: item.priceCents,
       count: item.count,
@@ -95,16 +96,6 @@ export class Database extends Dexie {
     return item;
   }
 
-  async getItem(itemId: string) {
-    return await this.itemTable?.get(itemId);
-  }
-
-  async getItems(keys: string[]) {
-    return (await this.itemTable?.bulkGet(keys))?.filter((value) => {
-      return value !== undefined;
-    }) as Array<ItemInterface>;
-  }
-
   async countOfItems() {
     return (await this.itemTable?.count()) ?? 0;
   }
@@ -146,7 +137,7 @@ export class Database extends Dexie {
     await this.itemInItemTable?.where("sourceItemId").equals(itemId).delete();
   }
 
-  async loadItem(itemInterface: ItemInterface): Promise<Item> {
+  private async loadItem(itemInterface: ItemInterface): Promise<Item> {
     const item = new Item(itemInterface);
     const itemsInItem = (await this.itemsInItemArray(itemInterface)) ?? [];
     item.itemInItems = await Promise.all(
@@ -166,7 +157,7 @@ export class Database extends Dexie {
     });
   }
 
-  async itemsInItemArray(item: ItemInterface) {
+  private async itemsInItemArray(item: ItemInterface) {
     return await this.itemInItemTable
       ?.where({ destinationItemId: item.id })
       .toArray();
@@ -176,29 +167,29 @@ export class Database extends Dexie {
     await Database.shared().itemInItemTable?.delete(itemInItem.id);
   }
 
-  async loadItemInItem(
+  private async loadItemInItem(
     itemInItemInterface: ItemInItemInterface
   ): Promise<ItemInItem> {
     const itemInItem = new ItemInItem(itemInItemInterface);
     itemInItem.sourceItem = await this.loadItem(
-      (await this.getItem(itemInItem.sourceItemId))!
+      (await this.itemTable?.get(itemInItem.sourceItemId))!
     );
     return itemInItem;
   }
 
   /* Nutrition */
+
   itemNutrition(item: Item, perServing: boolean = false): NutritionInfo {
-    return addNutritionInfo(
-      multiplyNutritionInfo(item, perServing ? 1 : item.count),
-      divideNutritionInfo(
-        sumNutritionInfo(
-          (item.itemInItems ?? []).map((value) =>
-            this.totalItemInItemNutrition(value)
-          )
-        ),
-        perServing ? item.count : 1
-      )
+    const base = multiplyNutritionInfo(item, perServing ? 1 : item.count);
+    const sub = divideNutritionInfo(
+      sumNutritionInfo(
+        (item.itemInItems ?? []).map((value) =>
+          this.totalItemInItemNutrition(value)
+        )
+      ),
+      perServing ? item.count : 1
     );
+    return addNutritionInfo(base, sub);
   }
 
   totalItemInItemNutrition(itemInItem: ItemInItem): NutritionInfo {
@@ -215,24 +206,38 @@ export class Database extends Dexie {
 
   /* Price */
 
+  formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  formattedItemPrice(item: Item, perServing: boolean = false): string {
+    return this.formatter.format(this.itemPrice(item, perServing) / 100);
+  }
+
   itemPrice(item: Item, perServing: boolean = false): number {
     return (
-      (item.priceCents +
-        (item.itemInItems ?? []).reduce(
-          (previousValue, currentValue) =>
-            previousValue + this.totalItemInItemPrice(currentValue),
-          0
+      (Number(item.priceCents) +
+        Number(
+          (item.itemInItems ?? []).reduce(
+            (previousValue, currentValue) =>
+              previousValue + this.totalItemInItemPrice(currentValue),
+            0
+          )
         )) /
-      (perServing ? item.count : 1)
+      (perServing ? Number(item.count) : 1)
     );
   }
 
+  formattedTotalItemInItemPrice(itemInItem: ItemInItem): string {
+    return this.formatter.format(this.totalItemInItemPrice(itemInItem) / 100);
+  }
+
   totalItemInItemPrice(itemInItem: ItemInItem): number {
-    const sourceItemNutritionPerServing = this.itemPrice(
-      itemInItem.sourceItem!,
-      true
+    const sourceItemNutritionPerServing = Number(
+      this.itemPrice(itemInItem.sourceItem!, true)
     );
 
-    return sourceItemNutritionPerServing * itemInItem.count;
+    return sourceItemNutritionPerServing * Number(itemInItem.count);
   }
 }
