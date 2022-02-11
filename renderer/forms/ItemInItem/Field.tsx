@@ -1,5 +1,11 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, Button, Center, FormControl, FormLabel } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  FormControl,
+  FormLabel,
+  VStack,
+} from "@chakra-ui/react";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
@@ -32,8 +38,8 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
     setItemSearchesState(itemsInItem.map(() => ({ results: [] })));
   }, []);
   return (
-    <Box>
-      <FormControl mb={3}>
+    <VStack>
+      <FormControl>
         <FormLabel>{yupItemInItemSchema.spec.label}</FormLabel>
         {itemsInItem.map((value, index) => {
           const options =
@@ -64,9 +70,6 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
         <Center>
           <Button
             type="button"
-            variant="outline"
-            size="sm"
-            className="text-success p-0"
             onClick={() => {
               props.fieldArrayHelpers.push({
                 id: nanoid(),
@@ -88,6 +91,6 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
           </Button>
         </Center>
       </FormControl>
-    </Box>
+    </VStack>
   );
 }

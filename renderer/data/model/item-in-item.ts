@@ -9,9 +9,9 @@ export const yupItemInItemSchema = Yup.object({
   count: Yup.number().default(0).required(),
   destinationItemId: Yup.string().required(),
 })
-  .label("Sub-items")
+  .label("Ingredients")
   .meta({
-    helperText: "Items that compose this item.",
+    helperText: "",
     key: "itemInItems",
   });
 

@@ -1,15 +1,15 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Flex,
   FormControl,
-  FormHelperText,
   IconButton,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import {
   AutoComplete,
@@ -40,37 +40,39 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
     string | undefined
   >(undefined);
   return (
-    <Box key={props.index} mb={3}>
-      <Flex>
-        <NumberInput defaultValue={props.value.count}>
-          <NumberInputField
-            name={`itemInItems.${props.index}.count`}
-            value={props.value.count}
-            onChange={props.formikProps.handleChange}
-            onBlur={props.formikProps.handleBlur}
-            placeholder={yupItemInItemSchema.fields.count.spec.label}
-          />
-          <NumberInputStepper>
-            <NumberIncrementStepper
-              onClick={() => {
-                const value = props.value.count + 1;
+    <VStack key={props.index} align="start" spacing={0} pb={2}>
+      <Flex pb={1}>
+        <FormControl>
+          <NumberInput defaultValue={props.value.count}>
+            <NumberInputField
+              name={`itemInItems.${props.index}.count`}
+              value={props.value.count}
+              onChange={props.formikProps.handleChange}
+              onBlur={props.formikProps.handleBlur}
+              placeholder={yupItemInItemSchema.fields.count.spec.label}
+            />
+            <NumberInputStepper>
+              <NumberIncrementStepper
+                onClick={() => {
+                  const value = props.value.count + 1;
 
-                props.formikProps.setFieldValue(
-                  `itemInItems.${props.index}.count`,
-                  value
-                );
-              }}
-            />
-            <NumberDecrementStepper
-              onClick={() => {
-                props.formikProps.setFieldValue(
-                  `itemInItems.${props.index}.count`,
-                  props.value.count - 1
-                );
-              }}
-            />
-          </NumberInputStepper>
-        </NumberInput>
+                  props.formikProps.setFieldValue(
+                    `itemInItems.${props.index}.count`,
+                    value
+                  );
+                }}
+              />
+              <NumberDecrementStepper
+                onClick={() => {
+                  props.formikProps.setFieldValue(
+                    `itemInItems.${props.index}.count`,
+                    props.value.count - 1
+                  );
+                }}
+              />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
         <FormControl mx={2}>
           <AutoComplete
             openOnFocus
@@ -112,20 +114,24 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
         </FormControl>
 
         <IconButton
-          mt={"auto"}
           icon={<DeleteIcon />}
           aria-label="Remove item"
-          className="text-danger p-0 m-0"
           onClick={() => {
             props.fieldArrayHelpers.remove(props.index);
           }}
         />
       </Flex>
-      <FormHelperText>
+      <Text
+        color="whiteAlpha.600"
+        fontSize="sm"
+        textOverflow="ellipsis"
+        overflow="hidden"
+        whiteSpace="nowrap"
+      >
         {nutritionInfoDescription(
-          Database.shared().itemInItemNutrition(props.value, 1)
+          Database.shared().totalItemInItemNutrition(props.value)
         )}
-      </FormHelperText>
-    </Box>
+      </Text>
+    </VStack>
   );
 }

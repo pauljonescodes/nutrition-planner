@@ -171,8 +171,7 @@ const ItemsPage = () => {
             name: yupItemSchema.fields.priceCents.spec.label,
             selector: (row: Item) =>
               formatter.format(
-                Database.shared().itemNutrition(row, perServingTotals)
-                  .priceCents / 100
+                Database.shared().itemPrice(row, perServingTotals) / 100
               ),
             center: true,
             sortField: yupItemSchema.fields.priceCents.spec.meta["key"],

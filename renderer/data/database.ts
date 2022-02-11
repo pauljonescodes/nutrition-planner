@@ -9,6 +9,7 @@ import {
   addNutritionInfo,
   divideNutritionInfo,
   multiplyNutritionInfo,
+  NutritionInfo,
   sumNutritionInfo,
 } from "./nutrition-info";
 
@@ -145,30 +146,6 @@ export class Database extends Dexie {
     await this.itemInItemTable?.where("sourceItemId").equals(itemId).delete();
   }
 
-  itemNutrition(item: Item, perServing: boolean) {
-    return addNutritionInfo(
-      {
-        priceCents: Math.round(item.priceCents / (perServing ? item.count : 1)),
-        massGrams: Math.round(item.massGrams / (perServing ? item.count : 1)),
-        energyKilocalorie: Math.round(
-          item.energyKilocalorie / (perServing ? item.count : 1)
-        ),
-        fatGrams: Math.round(item.fatGrams / (perServing ? item.count : 1)),
-        carbohydrateGrams: Math.round(
-          item.carbohydrateGrams / (perServing ? item.count : 1)
-        ),
-        proteinGrams: Math.round(
-          item.proteinGrams / (perServing ? item.count : 1)
-        ),
-      },
-      sumNutritionInfo(
-        (item.itemInItems ?? []).map((value) =>
-          this.itemInItemNutrition(value, perServing ? item.count : 1)
-        )
-      )
-    );
-  }
-
   async loadItem(itemInterface: ItemInterface): Promise<Item> {
     const item = new Item(itemInterface);
     const itemsInItem = (await this.itemsInItemArray(itemInterface)) ?? [];
@@ -199,33 +176,6 @@ export class Database extends Dexie {
     await Database.shared().itemInItemTable?.delete(itemInItem.id);
   }
 
-  itemInItemNutrition(itemInItem: ItemInItem, itemServings: number) {
-    const sourceItemNutritionPerServing = this.itemNutrition(
-      itemInItem.sourceItem!,
-      true
-    );
-    const multipliedByCount = multiplyNutritionInfo(
-      sourceItemNutritionPerServing,
-      itemInItem.count
-    );
-    const dividesByServings = divideNutritionInfo(
-      multipliedByCount,
-      itemServings ?? 1
-    );
-    return dividesByServings;
-  }
-
-  nutritionPerServing(item: Item) {
-    return {
-      priceCents: item.priceCents / item.count,
-      massGrams: item.massGrams / item.count,
-      energyKilocalorie: item.energyKilocalorie / item.count,
-      fatGrams: item.fatGrams / item.count,
-      carbohydrateGrams: item.carbohydrateGrams / item.count,
-      proteinGrams: item.proteinGrams / item.count,
-    };
-  }
-
   async loadItemInItem(
     itemInItemInterface: ItemInItemInterface
   ): Promise<ItemInItem> {
@@ -234,5 +184,55 @@ export class Database extends Dexie {
       (await this.getItem(itemInItem.sourceItemId))!
     );
     return itemInItem;
+  }
+
+  /* Nutrition */
+  itemNutrition(item: Item, perServing: boolean = false): NutritionInfo {
+    return addNutritionInfo(
+      multiplyNutritionInfo(item, perServing ? 1 : item.count),
+      divideNutritionInfo(
+        sumNutritionInfo(
+          (item.itemInItems ?? []).map((value) =>
+            this.totalItemInItemNutrition(value)
+          )
+        ),
+        perServing ? item.count : 1
+      )
+    );
+  }
+
+  totalItemInItemNutrition(itemInItem: ItemInItem): NutritionInfo {
+    const sourceItemNutritionPerServing = this.itemNutrition(
+      itemInItem.sourceItem!,
+      true
+    );
+
+    return multiplyNutritionInfo(
+      sourceItemNutritionPerServing,
+      itemInItem.count
+    );
+  }
+
+  /* Price */
+
+  itemPrice(item: Item, perServing: boolean = false): number {
+    return (
+      (item.priceCents +
+        (item.itemInItems ?? []).reduce(
+          (previousValue, currentValue) =>
+            previousValue + this.totalItemInItemPrice(currentValue),
+          0
+        )) /
+      (perServing ? item.count : 1)
+    );
+  }
+
+  totalItemInItemPrice(itemInItem: ItemInItem): number {
+    const sourceItemNutritionPerServing = this.itemPrice(
+      itemInItem.sourceItem!,
+      true
+    );
+
+    return sourceItemNutritionPerServing * itemInItem.count;
   }
 }

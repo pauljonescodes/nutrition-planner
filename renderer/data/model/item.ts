@@ -10,7 +10,7 @@ export const yupItemSchema = Yup.object({
     .label("Name")
     .default("")
     .meta({
-      helperText: "The ingredient or recipe's name",
+      helperText: "",
       key: "name",
     })
     .required(),
@@ -18,7 +18,7 @@ export const yupItemSchema = Yup.object({
     .label("Count")
     .default(0)
     .meta({
-      helperText: "Number of servings",
+      helperText: "",
       key: "count",
     })
     .required(),
@@ -26,7 +26,7 @@ export const yupItemSchema = Yup.object({
     .label("Price")
     .default(0)
     .meta({
-      helperText: "Cost of ingredient in lowest denomination (0 for a recipe).",
+      helperText: "",
       key: "priceCents",
     })
     .required(),
@@ -34,7 +34,7 @@ export const yupItemSchema = Yup.object({
     .label("Mass")
     .default(0)
     .meta({
-      helperText: "Mass in grams, or volume in mL (0 for a recipe).",
+      helperText: "",
       key: "massGrams",
     })
     .required(),
@@ -42,7 +42,7 @@ export const yupItemSchema = Yup.object({
     .label("Calories")
     .default(0)
     .meta({
-      helperText: "Amount of energy in grams (0 for a recipe).",
+      helperText: "",
       key: "energyKilocalorie",
     })
     .required(),
@@ -50,7 +50,7 @@ export const yupItemSchema = Yup.object({
     .label("Fat")
     .default(0)
     .meta({
-      helperText: "Amount of fat in grams (0 for a recipe).",
+      helperText: "",
       key: "fatGrams",
     })
     .required(),
@@ -58,7 +58,7 @@ export const yupItemSchema = Yup.object({
     .label("Carbohydrate")
     .default(0)
     .meta({
-      helperText: "Amount of carbohydrates in grams (0 for a recipe).",
+      helperText: "",
       key: "carbohydrateGrams",
     })
     .required(),
@@ -66,7 +66,7 @@ export const yupItemSchema = Yup.object({
     .label("Protein")
     .default(0)
     .meta({
-      helperText: "Amount of protein in grams (0 for a recipe).",
+      helperText: "",
       key: "proteinGrams",
     })
     .required(),
