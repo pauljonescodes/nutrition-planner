@@ -29,7 +29,7 @@ export function MainMenu(props: MainMenuProp) {
             if (props.onClick) {
               props.onClick();
             }
-            router.push("/ingredients");
+            router.push("/");
           }}
         >
           Ingredients
