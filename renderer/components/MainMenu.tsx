@@ -39,10 +39,20 @@ export function MainMenu(props: MainMenuProp) {
             if (props.onClick) {
               props.onClick();
             }
-            router.push("/items");
+            router.push("/recipes");
           }}
         >
-          Items
+          Recipes
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            if (props.onClick) {
+              props.onClick();
+            }
+            router.push("/ingredients");
+          }}
+        >
+          Ingredients
         </MenuItem>
         <MenuItem
           onClick={() => {

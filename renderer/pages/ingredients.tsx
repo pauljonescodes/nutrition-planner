@@ -102,7 +102,7 @@ const ItemsPage = () => {
         </Box>
         <Box flex="1">
           <Center>
-            <Heading size="md">Items</Heading>
+            <Heading size="md">Ingredients</Heading>
           </Center>
         </Box>
         <Box>
