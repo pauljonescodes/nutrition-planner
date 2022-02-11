@@ -44,17 +44,6 @@ export function MainMenu(props: MainMenuProp) {
         >
           Recipes
         </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            if (props.onClick) {
-              props.onClick();
-            }
-            router.push("/data");
-          }}
-        >
-          Data
-        </MenuItem>
       </MenuList>
     </Menu>
   );

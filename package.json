@@ -22,7 +22,6 @@
         "@emotion/react": "^11",
         "@emotion/styled": "^11",
         "dexie": "3.2.1-beta.2",
-        "dexie-export-import": "^1.0.3",
         "electron-context-menu": "^3.1.1",
         "electron-is-dev": "^1.1.0",
         "electron-next": "^3.1.5",
