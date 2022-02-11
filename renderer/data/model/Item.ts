@@ -3,7 +3,7 @@ import { ItemInItem } from "./ItemInItem";
 import { ItemType } from "./ItemType";
 
 export const dexieItemSchema =
-  "&id,name,count,priceCents,massGrams,energyKilocalorie,fatGrams,carbohydrateGrams,proteinGrams,itemInItems";
+  "&id,type,name,count,priceCents,massGrams,energyKilocalorie,fatGrams,carbohydrateGrams,proteinGrams,itemInItems";
 
 export const yupItemSchema = Yup.object({
   id: Yup.string().label("ID").required(),
@@ -32,7 +32,6 @@ export const yupItemSchema = Yup.object({
   massGrams: Yup.number()
     .label("Mass")
     .default(0)
-    .positive()
     .meta({
       key: "massGrams",
     })

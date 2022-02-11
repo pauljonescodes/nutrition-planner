@@ -5,15 +5,18 @@ import {
   ItemInItem,
   ItemInItemInterface,
 } from "./model/ItemInItem";
+import { ItemType } from "./model/ItemType";
 import {
   addNutritionInfo,
   divideNutritionInfo,
   multiplyNutritionInfo,
+  nutritionInfo,
   NutritionInfo,
   sumNutritionInfo,
 } from "./NutritionInfo";
 
 export interface ItemQueryParameters {
+  type: ItemType;
   limit: number;
   offset: number;
   sortBy?: keyof Item;
@@ -37,7 +40,7 @@ export class Database extends Dexie {
   ) {
     super("MealPlannerDatabase");
 
-    this.version(15).stores({
+    this.version(16).stores({
       itemTable: dexieItemSchema,
       itemInItemTable: dexieItemInItemSchema,
     });
@@ -96,12 +99,13 @@ export class Database extends Dexie {
     return item;
   }
 
-  async countOfItems() {
-    return (await this.itemTable?.count()) ?? 0;
+  async countOfItems(type: ItemType) {
+    return (await this.itemTable?.where({ type: type }).count()) ?? 0;
   }
 
   async arrayOfItems(parameters: ItemQueryParameters): Promise<Item[]> {
     var collection = this.itemTable
+      ?.where({ type: parameters.type })
       ?.offset(parameters.offset)
       .limit(parameters.limit);
 
@@ -137,7 +141,7 @@ export class Database extends Dexie {
     await this.itemInItemTable?.where("sourceItemId").equals(itemId).delete();
   }
 
-  private async loadItem(itemInterface: ItemInterface): Promise<Item> {
+  async loadItem(itemInterface: ItemInterface): Promise<Item> {
     const item = new Item(itemInterface);
     const itemsInItem = (await this.itemsInItemArray(itemInterface)) ?? [];
     item.itemInItems = await Promise.all(
@@ -180,6 +184,10 @@ export class Database extends Dexie {
   /* Nutrition */
 
   itemNutrition(item: Item, perServing: boolean = false): NutritionInfo {
+    if (item.count === undefined) {
+      return nutritionInfo();
+    }
+
     const base = multiplyNutritionInfo(item, perServing ? 1 : item.count);
     const sub = divideNutritionInfo(
       sumNutritionInfo(
@@ -216,6 +224,10 @@ export class Database extends Dexie {
   }
 
   itemPrice(item: Item, perServing: boolean = false): number {
+    if (item.count === undefined) {
+      return 0;
+    }
+
     return (
       (Number(item.priceCents) +
         Number(

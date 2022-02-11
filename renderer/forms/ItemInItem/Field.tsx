@@ -38,7 +38,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
     setItemSearchesState(itemsInItem.map(() => ({ results: [] })));
   }, []);
   return (
-    <VStack>
+    <VStack spacing={0} pb={2}>
       <FormControl>
         <FormLabel>{yupItemInItemSchema.spec.label}</FormLabel>
         {itemsInItem.map((value, index) => {
@@ -66,31 +66,30 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
           );
         })}
       </FormControl>
-      <FormControl>
-        <Center>
-          <Button
-            type="button"
-            onClick={() => {
-              props.fieldArrayHelpers.push({
-                id: nanoid(),
-                destinationItemId: props.thisItemId,
-                count: 1,
-                sourceItemId: "",
-                sourceItem: {
-                  name: "",
-                },
-              } as ItemInItemInterface);
-              let theItemSearchs = recipeSearchsState;
-              theItemSearchs.push({
-                results: [],
-              });
-              setItemSearchesState([...theItemSearchs]);
-            }}
-          >
-            <AddIcon />
-          </Button>
-        </Center>
-      </FormControl>
+      <Center>
+        <Button
+          onClick={() => {
+            props.fieldArrayHelpers.push({
+              id: nanoid(),
+              destinationItemId: props.thisItemId,
+              count: 1,
+              sourceItemId: "",
+              sourceItem: {
+                // this needs to be populated
+                id: "",
+                name: "",
+              },
+            } as ItemInItemInterface);
+            let theItemSearchs = recipeSearchsState;
+            theItemSearchs.push({
+              results: [],
+            });
+            setItemSearchesState([...theItemSearchs]);
+          }}
+        >
+          <AddIcon />
+        </Button>
+      </Center>
     </VStack>
   );
 }

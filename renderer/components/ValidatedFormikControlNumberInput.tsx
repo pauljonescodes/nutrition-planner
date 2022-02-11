@@ -20,7 +20,6 @@ interface ValidatedFormikControlNumberInputProps<T> {
 export function ValidatedFormikControlNumberInput<T>(
   props: ValidatedFormikControlNumberInputProps<T>
 ) {
-  console.log(props.error);
   return (
     <FormControl {...props.spaceProps} isInvalid={props.error !== undefined}>
       <FormLabel htmlFor={props.yupSchemaField.spec.meta["key"]}>

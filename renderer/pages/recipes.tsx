@@ -22,33 +22,34 @@ import {
   Spinner,
   useColorMode,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
 import { MainMenu } from "../components/MainMenu";
 import { Database, ItemQueryParameters } from "../data/Database";
 import { Item, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
-import { IngredientForm } from "../forms/IngredientForm";
+import { RecipeForm } from "../forms/RecipeForm";
 
-const ItemsPage = () => {
+const RecipesPage = () => {
   const { colorMode } = useColorMode();
   const { height } = useScrollbarSize();
   const [data, setData] = useState<Array<Item> | undefined>(undefined);
   const [formDrawerIsOpen, setFormDrawerIsOpen] = useState(false);
-  const [updateItem, setUpdateItem] = useState<Item | undefined>(undefined);
-  const [deleteItem, setDeleteItem] = useState<Item | undefined>(undefined);
+  const [perServingTotals, setPerServingTotals] = useState(false);
+  const [updateEntity, setUpdateEntity] = useState<Item | undefined>(undefined);
+  const [deleteEntity, setDeleteEntity] = useState<Item | undefined>(undefined);
   const [progressPending, setProgressPending] = useState(false);
   const [dataCount, setDataCount] = useState(0);
-  const [perServingTotals, setPerServingTotals] = useState(false);
   const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
-    type: ItemType.ingredient,
+    type: ItemType.recipe,
     offset: 0,
     limit: 10,
     reverse: false,
   });
   const [numberOfCellsForUsableHeight, setNumberOfCellsForUsableHeight] =
     useState<number | undefined>(undefined);
+
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -66,7 +67,7 @@ const ItemsPage = () => {
     const cellHeight = 48;
     const newNumberOfCellsForUsableHeight =
       Math.round(usableHeight / cellHeight) - 2;
-    if (newNumberOfCellsForUsableHeight !== queryParameters.limit) {
+    if (newNumberOfCellsForUsableHeight !== numberOfCellsForUsableHeight) {
       setNumberOfCellsForUsableHeight(newNumberOfCellsForUsableHeight);
       setQueryParameters({
         ...queryParameters,
@@ -104,7 +105,7 @@ const ItemsPage = () => {
         </Box>
         <Box flex="1">
           <Center>
-            <Heading size="md">Ingredients</Heading>
+            <Heading size="md">Recipes</Heading>
           </Center>
         </Box>
         <Box>
@@ -124,7 +125,6 @@ const ItemsPage = () => {
           </ButtonGroup>
         </Box>
       </HStack>
-
       <DataTable
         theme={colorMode === "light" ? "default" : "dark"}
         responsive
@@ -145,7 +145,7 @@ const ItemsPage = () => {
                   icon={<EditIcon />}
                   aria-label="Edit"
                   onClick={() => {
-                    setUpdateItem(row);
+                    setUpdateEntity(row);
                     setFormDrawerIsOpen(true);
                   }}
                 />
@@ -154,7 +154,7 @@ const ItemsPage = () => {
                   icon={<DeleteIcon />}
                   aria-label="Delete"
                   onClick={() => {
-                    setDeleteItem(row);
+                    setDeleteEntity(row);
                   }}
                 />
               </ButtonGroup>
@@ -167,74 +167,52 @@ const ItemsPage = () => {
             selector: (row: Item) => row.name,
             sortField: yupItemSchema.fields.name.spec.meta["key"],
             sortable: true,
-            grow: 3,
+            grow: 4,
           },
           {
             name: yupItemSchema.fields.priceCents.spec.label,
-            selector: (row: Item) =>
-              formatter.format(
-                Database.shared().itemPrice(row, perServingTotals) / 100
-              ),
+            selector: (row: Item) => Database.shared().formattedItemPrice(row),
             center: true,
-            sortField: yupItemSchema.fields.priceCents.spec.meta["key"],
-            sortable: true,
-            hide: Media.SM,
-          },
-          {
-            name: yupItemSchema.fields.count.spec.label,
-            selector: (row: Item) => row.count,
-            center: true,
-            sortField: yupItemSchema.fields.count.spec.meta["key"],
-            sortable: true,
-            hide: Media.MD,
           },
           {
             name: yupItemSchema.fields.massGrams.spec.label,
             selector: (row: Item) =>
-              Database.shared().itemNutrition(row, perServingTotals).massGrams,
+              Database.shared().itemNutrition(row, perServingTotals)
+                ?.massGrams ?? 0,
             center: true,
-            sortField: yupItemSchema.fields.massGrams.spec.meta["key"],
-            sortable: true,
-            hide: Media.MD,
+            hide: Media.SM,
           },
           {
             name: yupItemSchema.fields.energyKilocalorie.spec.label,
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals)
-                .energyKilocalorie,
+                ?.energyKilocalorie ?? 0,
             center: true,
-            sortField: yupItemSchema.fields.energyKilocalorie.spec.meta["key"],
-            sortable: true,
-            hide: Media.MD,
+            hide: Media.SM,
           },
           {
             name: yupItemSchema.fields.fatGrams.spec.label,
             selector: (row: Item) =>
-              Database.shared().itemNutrition(row, perServingTotals).fatGrams,
+              Database.shared().itemNutrition(row, perServingTotals)
+                ?.fatGrams ?? 0,
             center: true,
-            sortField: yupItemSchema.fields.fatGrams.spec.meta["key"],
-            sortable: true,
-            hide: Media.LG,
+            hide: Media.MD,
           },
           {
             name: yupItemSchema.fields.carbohydrateGrams.spec.label,
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals)
-                .carbohydrateGrams,
+                ?.carbohydrateGrams ?? 0,
             center: true,
-            sortField: yupItemSchema.fields.carbohydrateGrams.spec.meta["key"],
-            sortable: true,
-            hide: Media.LG,
+            hide: Media.MD,
           },
           {
             name: yupItemSchema.fields.proteinGrams.spec.label,
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals)
-                .proteinGrams,
+                ?.proteinGrams ?? 0,
             center: true,
-            sortField: yupItemSchema.fields.proteinGrams.spec.meta["key"],
-            sortable: true,
-            hide: Media.LG,
+            hide: Media.MD,
           },
         ]}
         data={data ?? []}
@@ -276,7 +254,7 @@ const ItemsPage = () => {
         isOpen={formDrawerIsOpen}
         placement="right"
         onClose={() => {
-          setUpdateItem(undefined);
+          setUpdateEntity(undefined);
           setFormDrawerIsOpen(false);
         }}
         finalFocusRef={undefined}
@@ -286,16 +264,16 @@ const ItemsPage = () => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>
-            {updateItem ? "Update" : "Create"} ingredient
+            {updateEntity ? "Update" : "Create"} recipe
           </DrawerHeader>
 
           <DrawerBody>
-            <IngredientForm
-              item={updateItem}
+            <RecipeForm
+              item={updateEntity}
               onSubmit={async (item) => {
                 const saved = await Database.shared().saveItem(item);
                 queryData();
-                setUpdateItem(undefined);
+                setUpdateEntity(undefined);
                 setFormDrawerIsOpen(false);
                 return saved.id;
               }}
@@ -304,13 +282,13 @@ const ItemsPage = () => {
         </DrawerContent>
       </Drawer>
       <AlertDialog
-        isOpen={deleteItem !== undefined}
-        onClose={() => setDeleteItem(undefined)}
+        isOpen={deleteEntity !== undefined}
+        onClose={() => setDeleteEntity(undefined)}
         leastDestructiveRef={undefined}
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader>Delete Item</AlertDialogHeader>
+            <AlertDialogHeader>Delete Recipe</AlertDialogHeader>
 
             <AlertDialogBody>
               Are you sure? You can't undo this action afterwards.
@@ -318,12 +296,14 @@ const ItemsPage = () => {
 
             <AlertDialogFooter>
               <ButtonGroup>
-                <Button onClick={() => setDeleteItem(undefined)}>Cancel</Button>
+                <Button onClick={() => setDeleteEntity(undefined)}>
+                  Cancel
+                </Button>
                 <Button
                   colorScheme="red"
                   onClick={async () => {
-                    await Database.shared().deleteItem(deleteItem?.id!);
-                    setDeleteItem(undefined);
+                    await Database.shared().deleteItem(deleteEntity?.id!);
+                    setDeleteEntity(undefined);
                     queryData();
                   }}
                 >
@@ -338,4 +318,4 @@ const ItemsPage = () => {
   );
 };
 
-export default ItemsPage;
+export default RecipesPage;

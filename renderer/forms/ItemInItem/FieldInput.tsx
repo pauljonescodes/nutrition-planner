@@ -21,7 +21,10 @@ import {
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
 import { Database } from "../../data/Database";
-import { Item as ModelItem } from "../../data/model/Item";
+import {
+  Item as ModelItem,
+  ItemInterface as ModelItemInterface,
+} from "../../data/model/Item";
 import { ItemInItem, yupItemInItemSchema } from "../../data/model/ItemInItem";
 import { nutritionInfoDescription } from "../../data/NutritionInfo";
 
@@ -76,15 +79,20 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
         <FormControl mx={2}>
           <AutoComplete
             openOnFocus
-            onChange={(_value, item) => {
-              const modelItem = (item as Item).originalValue as ModelItem;
+            onChange={async (_value, item) => {
+              const modelItem = (item as Item)
+                .originalValue as ModelItemInterface;
 
               props.formikProps.setFieldValue(
                 `itemInItems.${props.index}.sourceItemId`,
                 modelItem.id
               );
               setSelectedFieldValueName(modelItem.name);
-              props.value.sourceItem = modelItem;
+
+              props.formikProps.setFieldValue(
+                `itemInItems.${props.index}.sourceItem`,
+                await Database.shared().loadItem(modelItem)
+              );
             }}
           >
             <AutoCompleteInput
@@ -128,6 +136,8 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
         overflow="hidden"
         whiteSpace="nowrap"
       >
+        {Database.shared().formattedTotalItemInItemPrice(props.value)}
+        {" / "}
         {nutritionInfoDescription(
           Database.shared().totalItemInItemNutrition(props.value)
         )}
