@@ -559,7 +559,7 @@
         "type": "recipe",
         "name": "1 cup soup",
         "priceCents": 0,
-        "count": "8",
+        "count": 8,
         "massGrams": 0,
         "energyKilocalorie": 0,
         "fatGrams": 0,
@@ -854,6 +854,12 @@
         "destinationItemId": "puPJCh-3XGHZ0NMtNf-OJ"
       },
       {
+        "id": "DSFbhmWL8lPr20Q6UJv7S",
+        "sourceItemId": "AOkmgi3EBjkbFF06KlyDi",
+        "count": "13",
+        "destinationItemId": "jgAxWnaC9nGbey0H8c2h5"
+      },
+      {
         "id": "E6v_lc4SIjeVK4kSRY4O3",
         "sourceItemId": "nyp5iMqn9Z97vlxakSrGn",
         "count": "15",
@@ -862,7 +868,7 @@
       {
         "id": "EubkR38KR5lqmoNsgpsxA",
         "sourceItemId": "_LnqvpKCgYoiMYmBJqX_R",
-        "count": "8",
+        "count": 8,
         "destinationItemId": "jgAxWnaC9nGbey0H8c2h5"
       },
       {
@@ -924,12 +930,6 @@
         "sourceItemId": "QdQ-uPFxi4jNmJIVfFCC7",
         "count": 1,
         "destinationItemId": "3dTy4ppiFI6azlcIYaaVH"
-      },
-      {
-        "id": "MJ851MAV3CZY8hGzfBlzB",
-        "sourceItemId": "Go0TRGt5yE98Ay_Vb26NM",
-        "count": 1,
-        "destinationItemId": "RvvqI8ffZD9riAWrerjj0"
       },
       {
         "id": "NIXAi8TaSeBkIDfNRp7Rg",
@@ -1222,7 +1222,7 @@
       {
         "id": "m3izEz2d_ZNM_3sMRYr7Y",
         "sourceItemId": "3HPMxkDYzu64nS_ABbJPe",
-        "count": 2,
+        "count": "3",
         "destinationItemId": "RvvqI8ffZD9riAWrerjj0"
       },
       {
