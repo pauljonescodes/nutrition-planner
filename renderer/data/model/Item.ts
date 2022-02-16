@@ -10,59 +10,67 @@ export const yupItemSchema = Yup.object({
   type: Yup.mixed<ItemType>().oneOf(Object.values(ItemType)).required(),
   name: Yup.string()
     .label("Name")
-    .default("")
     .meta({
+      placeholder: "A description",
       key: "name",
     })
+    .default("")
     .required(),
   count: Yup.number()
     .label("Serving count")
-    .default(1)
     .meta({
+      placeholder: "Number of servings in total",
       key: "count",
     })
+    .default(0)
     .required(),
   priceCents: Yup.number()
     .label("Price")
-    .default(0)
     .meta({
+      placeholder: "Price of product",
       key: "priceCents",
     })
+    .default(0)
     .required(),
   massGrams: Yup.number()
     .label("Mass")
-    .default(0)
     .meta({
+      placeholder: "Mass in grams or volume in mL",
       key: "massGrams",
     })
+    .default(0)
     .required(),
   energyKilocalorie: Yup.number()
     .label("Calories")
-    .default(0)
     .meta({
+      placeholder: "Energy in kilocalories",
       key: "energyKilocalorie",
     })
+    .default(0)
     .required(),
   fatGrams: Yup.number()
     .label("Fat")
-    .default(0)
     .meta({
+      placeholder: "Fat in grams",
       key: "fatGrams",
     })
+    .default(0)
     .required(),
   carbohydrateGrams: Yup.number()
     .label("Carbohydrate")
-    .default(0)
     .meta({
+      placeholder: "Carbohydrates in grams",
       key: "carbohydrateGrams",
     })
+    .default(0)
     .required(),
   proteinGrams: Yup.number()
     .label("Protein")
-    .default(0)
     .meta({
+      placeholder: "Protein in grams",
       key: "proteinGrams",
     })
+    .default(0)
     .required(),
 });
 

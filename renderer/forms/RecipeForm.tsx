@@ -1,7 +1,7 @@
 import { Button, Center, Text, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { nanoid } from "nanoid";
-import { FormEvent } from "react";
+import { FormEvent, RefObject } from "react";
 import { ValidatedFormikControlInput } from "../components/ValidatedFormikControlInput";
 import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
 import { Database } from "../data/Database";
@@ -13,6 +13,7 @@ import { ItemInItemFieldArray } from "./ItemInItem/FieldArray";
 export interface RecipeFormProps {
   item?: Item;
   onSubmit: (item: Item) => Promise<string | undefined>;
+  firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
 export function RecipeForm(props: RecipeFormProps) {
@@ -28,7 +29,7 @@ export function RecipeForm(props: RecipeFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit(values);
+        props.onSubmit(values as Item);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -36,7 +37,9 @@ export function RecipeForm(props: RecipeFormProps) {
       component={(formikProps) => {
         return (
           <Form
+            noValidate={true}
             onSubmit={(e) => {
+              e.preventDefault();
               formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
             }}
           >
@@ -46,6 +49,7 @@ export function RecipeForm(props: RecipeFormProps) {
               yupSchemaField={yupItemSchema.fields.name}
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
+              inputFieldRef={props.firstInputFieldRef}
             />
 
             <ValidatedFormikControlNumberInput
@@ -78,7 +82,10 @@ export function RecipeForm(props: RecipeFormProps) {
                   whiteSpace="nowrap"
                 >
                   {nutritionInfoDescription(
-                    Database.shared().itemNutrition(formikProps.values, true)
+                    Database.shared().itemNutrition(
+                      formikProps.values as Item,
+                      true
+                    )
                   )}
                 </Text>
                 <Text
@@ -90,12 +97,12 @@ export function RecipeForm(props: RecipeFormProps) {
                   whiteSpace="nowrap"
                 >
                   {Database.shared().formattedItemPrice(
-                    formikProps.values,
+                    formikProps.values as Item,
                     true
                   )}{" "}
                   per serving /{" "}
                   {Database.shared().formattedItemPrice(
-                    formikProps.values,
+                    formikProps.values as Item,
                     false
                   )}{" "}
                   total

@@ -25,11 +25,13 @@ export function addNutritionInfo(
   rhs: NutritionInfo
 ): NutritionInfo {
   return {
-    massGrams: lhs.massGrams + rhs.massGrams,
-    energyKilocalorie: lhs.energyKilocalorie + rhs.energyKilocalorie,
-    fatGrams: lhs.fatGrams + rhs.fatGrams,
-    carbohydrateGrams: lhs.carbohydrateGrams + rhs.carbohydrateGrams,
-    proteinGrams: lhs.proteinGrams + rhs.proteinGrams,
+    massGrams: (lhs.massGrams ?? 0) + (rhs.massGrams ?? 0),
+    energyKilocalorie:
+      (lhs.energyKilocalorie ?? 0) + (rhs.energyKilocalorie ?? 0),
+    fatGrams: (lhs.fatGrams ?? 0) + (rhs.fatGrams ?? 0),
+    carbohydrateGrams:
+      (lhs.carbohydrateGrams ?? 0) + (rhs.carbohydrateGrams ?? 0),
+    proteinGrams: (lhs.proteinGrams ?? 0) + (rhs.proteinGrams ?? 0),
   };
 }
 
@@ -46,11 +48,11 @@ export function divideNutritionInfo(
   rhs: number
 ): NutritionInfo {
   return {
-    massGrams: Math.round(lhs.massGrams / rhs),
-    energyKilocalorie: Math.round(lhs.energyKilocalorie / rhs),
-    fatGrams: Math.round(lhs.fatGrams / rhs),
-    carbohydrateGrams: Math.round(lhs.carbohydrateGrams / rhs),
-    proteinGrams: Math.round(lhs.proteinGrams / rhs),
+    massGrams: Math.round((lhs.massGrams ?? 0) / rhs),
+    energyKilocalorie: Math.round((lhs.energyKilocalorie ?? 0) / rhs),
+    fatGrams: Math.round((lhs.fatGrams ?? 0) / rhs),
+    carbohydrateGrams: Math.round((lhs.carbohydrateGrams ?? 0) / rhs),
+    proteinGrams: Math.round((lhs.proteinGrams ?? 0) / rhs),
   };
 }
 
@@ -59,10 +61,10 @@ export function multiplyNutritionInfo(
   rhs: number
 ): NutritionInfo {
   return {
-    massGrams: Math.round(lhs.massGrams * rhs),
-    energyKilocalorie: Math.round(lhs.energyKilocalorie * rhs),
-    fatGrams: Math.round(lhs.fatGrams * rhs),
-    carbohydrateGrams: Math.round(lhs.carbohydrateGrams * rhs),
-    proteinGrams: Math.round(lhs.proteinGrams * rhs),
+    massGrams: Math.round((lhs.massGrams ?? 0) * rhs),
+    energyKilocalorie: Math.round((lhs.energyKilocalorie ?? 0) * rhs),
+    fatGrams: Math.round((lhs.fatGrams ?? 0) * rhs),
+    carbohydrateGrams: Math.round((lhs.carbohydrateGrams ?? 0) * rhs),
+    proteinGrams: Math.round((lhs.proteinGrams ?? 0) * rhs),
   };
 }

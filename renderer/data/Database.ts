@@ -23,6 +23,11 @@ export interface ItemQueryParameters {
   reverse?: boolean;
 }
 
+export interface SerialTable {
+  table: string;
+  rows: any[];
+}
+
 export class Database extends Dexie {
   private static database: Database;
 
@@ -138,7 +143,10 @@ export class Database extends Dexie {
 
   async deleteItem(itemId: string) {
     await this.itemTable?.delete(itemId);
-    await this.itemInItemTable?.where("sourceItemId").equals(itemId).delete();
+    await this.itemInItemTable
+      ?.where("destinationItemId")
+      .equals(itemId)
+      .delete();
   }
 
   async loadItem(itemInterface: ItemInterface): Promise<Item> {
@@ -251,5 +259,29 @@ export class Database extends Dexie {
     );
 
     return sourceItemNutritionPerServing * Number(itemInItem.count);
+  }
+
+  /* Import/export */
+
+  async export(): Promise<SerialTable[]> {
+    return await this.transaction("r", this.tables, async () => {
+      return await Promise.all(
+        this.tables.map((table) =>
+          table.toArray().then((rows) => ({ table: table.name, rows: rows }))
+        )
+      );
+    });
+  }
+
+  async import(data: SerialTable[]) {
+    return await this.transaction("rw", this.tables, async () => {
+      return await Promise.all(
+        data.map((t: SerialTable) =>
+          this.table(t.table)
+            .clear()
+            .then(() => this.table(t.table).bulkAdd(t.rows))
+        )
+      );
+    });
   }
 }

@@ -3,11 +3,8 @@ import {
   Flex,
   FormControl,
   IconButton,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -46,34 +43,20 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
     <VStack key={props.index} align="start" spacing={0} pb={2}>
       <Flex pb={1}>
         <FormControl>
-          <NumberInput defaultValue={props.value.count}>
+          <NumberInput
+            defaultValue={props.value.count}
+            precision={2}
+            min={-9999.99}
+            max={9999.99}
+          >
             <NumberInputField
+              pattern="(-)?[0-9]*(.[0-9]+)?"
               name={`itemInItems.${props.index}.count`}
               value={props.value.count}
               onChange={props.formikProps.handleChange}
               onBlur={props.formikProps.handleBlur}
               placeholder={yupItemInItemSchema.fields.count.spec.label}
             />
-            <NumberInputStepper>
-              <NumberIncrementStepper
-                onClick={() => {
-                  const value = props.value.count + 1;
-
-                  props.formikProps.setFieldValue(
-                    `itemInItems.${props.index}.count`,
-                    value
-                  );
-                }}
-              />
-              <NumberDecrementStepper
-                onClick={() => {
-                  props.formikProps.setFieldValue(
-                    `itemInItems.${props.index}.count`,
-                    props.value.count - 1
-                  );
-                }}
-              />
-            </NumberInputStepper>
           </NumberInput>
         </FormControl>
         <FormControl mx={2}>

@@ -19,10 +19,10 @@ import {
   Heading,
   HStack,
   IconButton,
-  Spinner,
+  Text,
   useColorMode,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
 import { MainMenu } from "../components/MainMenu";
@@ -40,7 +40,7 @@ const ItemsPage = () => {
   const [deleteItem, setDeleteItem] = useState<Item | undefined>(undefined);
   const [progressPending, setProgressPending] = useState(false);
   const [dataCount, setDataCount] = useState(0);
-  const [perServingTotals, setPerServingTotals] = useState(false);
+  const [perServingTotals, setPerServingTotals] = useState(true);
   const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
     type: ItemType.ingredient,
     offset: 0,
@@ -53,6 +53,7 @@ const ItemsPage = () => {
     style: "currency",
     currency: "USD",
   });
+  const formFirstFieldRef = useRef<HTMLInputElement>(null);
 
   async function queryData() {
     setProgressPending(true);
@@ -89,11 +90,7 @@ const ItemsPage = () => {
   }, [queryParameters]);
 
   if (numberOfCellsForUsableHeight === undefined) {
-    return (
-      <Center pt="5">
-        <Spinner />
-      </Center>
-    );
+    return <div />;
   }
 
   return (
@@ -175,9 +172,10 @@ const ItemsPage = () => {
               formatter.format(
                 Database.shared().itemPrice(row, perServingTotals) / 100
               ),
+            sortable: perServingTotals,
             center: true,
             sortField: yupItemSchema.fields.priceCents.spec.meta["key"],
-            sortable: true,
+
             hide: Media.SM,
           },
           {
@@ -192,9 +190,9 @@ const ItemsPage = () => {
             name: yupItemSchema.fields.massGrams.spec.label,
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals).massGrams,
+            sortable: perServingTotals,
             center: true,
             sortField: yupItemSchema.fields.massGrams.spec.meta["key"],
-            sortable: true,
             hide: Media.MD,
           },
           {
@@ -202,18 +200,18 @@ const ItemsPage = () => {
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals)
                 .energyKilocalorie,
+            sortable: perServingTotals,
             center: true,
             sortField: yupItemSchema.fields.energyKilocalorie.spec.meta["key"],
-            sortable: true,
             hide: Media.MD,
           },
           {
             name: yupItemSchema.fields.fatGrams.spec.label,
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals).fatGrams,
+            sortable: perServingTotals,
             center: true,
             sortField: yupItemSchema.fields.fatGrams.spec.meta["key"],
-            sortable: true,
             hide: Media.LG,
           },
           {
@@ -221,9 +219,9 @@ const ItemsPage = () => {
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals)
                 .carbohydrateGrams,
+            sortable: perServingTotals,
             center: true,
             sortField: yupItemSchema.fields.carbohydrateGrams.spec.meta["key"],
-            sortable: true,
             hide: Media.LG,
           },
           {
@@ -231,15 +229,18 @@ const ItemsPage = () => {
             selector: (row: Item) =>
               Database.shared().itemNutrition(row, perServingTotals)
                 .proteinGrams,
+            sortable: perServingTotals,
             center: true,
             sortField: yupItemSchema.fields.proteinGrams.spec.meta["key"],
-            sortable: true,
             hide: Media.LG,
           },
         ]}
         data={data ?? []}
         progressPending={progressPending}
-        progressComponent={<Spinner />}
+        progressComponent={<div />}
+        noDataComponent={
+          <Text>When added, your ingredients will show up here.</Text>
+        }
         pagination
         paginationServer
         paginationServerOptions={{
@@ -280,6 +281,7 @@ const ItemsPage = () => {
           setFormDrawerIsOpen(false);
         }}
         finalFocusRef={undefined}
+        initialFocusRef={formFirstFieldRef}
         size="lg"
       >
         <DrawerOverlay />
@@ -292,6 +294,7 @@ const ItemsPage = () => {
           <DrawerBody>
             <IngredientForm
               item={updateItem}
+              firstInputFieldRef={formFirstFieldRef}
               onSubmit={async (item) => {
                 const saved = await Database.shared().saveItem(item);
                 queryData();

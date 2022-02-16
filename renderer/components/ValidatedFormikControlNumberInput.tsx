@@ -30,11 +30,12 @@ export function ValidatedFormikControlNumberInput<T>(
         isInvalid={props.error ? true : false}
       >
         <NumberInputField
+          formNoValidate
           name={props.yupSchemaField.spec.meta["key"]}
           value={props.value}
           onChange={props.formikProps.handleChange}
           onBlur={props.formikProps.handleBlur}
-          placeholder={props.yupSchemaField.spec.label}
+          placeholder={props.yupSchemaField.spec.meta["placeholder"]}
         />
       </NumberInput>
       {props.error !== undefined && (

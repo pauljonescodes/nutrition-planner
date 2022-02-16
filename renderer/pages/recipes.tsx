@@ -19,10 +19,10 @@ import {
   Heading,
   HStack,
   IconButton,
-  Spinner,
+  Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
 import { MainMenu } from "../components/MainMenu";
@@ -36,7 +36,7 @@ const RecipesPage = () => {
   const { height } = useScrollbarSize();
   const [data, setData] = useState<Array<Item> | undefined>(undefined);
   const [formDrawerIsOpen, setFormDrawerIsOpen] = useState(false);
-  const [perServingTotals, setPerServingTotals] = useState(false);
+  const [perServingTotals, setPerServingTotals] = useState(true);
   const [updateEntity, setUpdateEntity] = useState<Item | undefined>(undefined);
   const [deleteEntity, setDeleteEntity] = useState<Item | undefined>(undefined);
   const [progressPending, setProgressPending] = useState(false);
@@ -49,6 +49,7 @@ const RecipesPage = () => {
   });
   const [numberOfCellsForUsableHeight, setNumberOfCellsForUsableHeight] =
     useState<number | undefined>(undefined);
+  const formFirstFieldRef = useRef<HTMLInputElement>(null);
 
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -90,11 +91,7 @@ const RecipesPage = () => {
   }, [queryParameters]);
 
   if (numberOfCellsForUsableHeight === undefined) {
-    return (
-      <Center pt="5">
-        <Spinner />
-      </Center>
-    );
+    return <div />;
   }
 
   return (
@@ -171,7 +168,8 @@ const RecipesPage = () => {
           },
           {
             name: yupItemSchema.fields.priceCents.spec.label,
-            selector: (row: Item) => Database.shared().formattedItemPrice(row),
+            selector: (row: Item) =>
+              Database.shared().formattedItemPrice(row, perServingTotals),
             center: true,
           },
           {
@@ -217,7 +215,10 @@ const RecipesPage = () => {
         ]}
         data={data ?? []}
         progressPending={progressPending}
-        progressComponent={<Spinner />}
+        progressComponent={<div />}
+        noDataComponent={
+          <Text>When added, your recipes will show up here.</Text>
+        }
         pagination
         paginationServer
         paginationServerOptions={{
@@ -258,6 +259,7 @@ const RecipesPage = () => {
           setFormDrawerIsOpen(false);
         }}
         finalFocusRef={undefined}
+        initialFocusRef={formFirstFieldRef}
         size="lg"
       >
         <DrawerOverlay />
@@ -270,6 +272,7 @@ const RecipesPage = () => {
           <DrawerBody>
             <RecipeForm
               item={updateEntity}
+              firstInputFieldRef={formFirstFieldRef}
               onSubmit={async (item) => {
                 const saved = await Database.shared().saveItem(item);
                 queryData();

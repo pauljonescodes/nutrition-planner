@@ -16,7 +16,7 @@ interface MainMenuProp {
 export function MainMenu(props: MainMenuProp) {
   const router = useRouter();
   return (
-    <Menu>
+    <Menu autoSelect={false}>
       <MenuButton
         as={IconButton}
         aria-label="Options"
@@ -43,6 +43,16 @@ export function MainMenu(props: MainMenuProp) {
           }}
         >
           Recipes
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            if (props.onClick) {
+              props.onClick();
+            }
+            router.push("/data");
+          }}
+        >
+          Data
         </MenuItem>
       </MenuList>
     </Menu>
