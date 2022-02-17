@@ -28,6 +28,7 @@
     "formik": "^2.2.9",
     "framer-motion": "^5",
     "nanoid": "^3.2.0",
+    "next-pwa": "^5.4.4",
     "react": "^17.0.2",
     "react-data-table-component": "^7.4.7",
     "react-dom": "^17.0.2",

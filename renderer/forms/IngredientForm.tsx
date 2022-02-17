@@ -1,4 +1,10 @@
-import { Button, Center, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  Text,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { nanoid } from "nanoid";
 import { FormEvent, RefObject } from "react";
@@ -17,6 +23,7 @@ export interface ItemFormProps {
 
 export function IngredientForm(props: ItemFormProps) {
   const thisItemId = props.item?.id ?? nanoid();
+  const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
     <Formik<Partial<Item>>
@@ -109,7 +116,7 @@ export function IngredientForm(props: ItemFormProps) {
                   Submit
                 </Button>
                 <Text
-                  color="whiteAlpha.600"
+                  color={alphaColor}
                   fontSize="sm"
                   textOverflow="ellipsis"
                   overflow="hidden"
@@ -123,7 +130,7 @@ export function IngredientForm(props: ItemFormProps) {
                   )}
                 </Text>
                 <Text
-                  color="whiteAlpha.600"
+                  color={alphaColor}
                   fontSize="sm"
                   pb={3}
                   textOverflow="ellipsis"

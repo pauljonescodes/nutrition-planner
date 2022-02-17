@@ -5,6 +5,7 @@ import {
   NumberInput,
   NumberInputField,
   Text,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import {
@@ -38,6 +39,7 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
   const [selectedFieldValueName, setSelectedFieldValueName] = useState<
     string | undefined
   >(undefined);
+  const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
   return (
     <VStack key={props.index} align="stretch" spacing={0} pb={2}>
       <HStack pb={1}>
@@ -107,7 +109,7 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
         />
       </HStack>
       <Text
-        color="whiteAlpha.600"
+        color={alphaColor}
         fontSize="sm"
         textOverflow="ellipsis"
         overflow="hidden"
