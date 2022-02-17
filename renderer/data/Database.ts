@@ -119,7 +119,8 @@ export class Database extends Dexie {
       if (parameters.reverse) {
         collection = collection?.reverse();
       }
-      interfaces.push(...((await collection?.sortBy(parameters.sortBy)) ?? []));
+      const items = (await collection?.sortBy(parameters.sortBy)) ?? [];
+      interfaces.push(...items);
     } else {
       interfaces.push(...((await collection?.toArray()) ?? []));
     }

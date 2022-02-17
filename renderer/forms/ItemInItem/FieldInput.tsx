@@ -1,7 +1,6 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Flex,
-  FormControl,
+  HStack,
   IconButton,
   NumberInput,
   NumberInputField,
@@ -40,69 +39,64 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
     string | undefined
   >(undefined);
   return (
-    <VStack key={props.index} align="start" spacing={0} pb={2}>
-      <Flex pb={1}>
-        <FormControl>
-          <NumberInput
-            defaultValue={props.value.count}
-            precision={2}
-            min={-9999.99}
-            max={9999.99}
-          >
-            <NumberInputField
-              pattern="(-)?[0-9]*(.[0-9]+)?"
-              name={`itemInItems.${props.index}.count`}
-              value={props.value.count}
-              onChange={props.formikProps.handleChange}
-              onBlur={props.formikProps.handleBlur}
-              placeholder={yupItemInItemSchema.fields.count.spec.label}
-            />
-          </NumberInput>
-        </FormControl>
-        <FormControl mx={2}>
-          <AutoComplete
-            openOnFocus
-            onChange={async (_value, item) => {
-              const modelItem = (item as Item)
-                .originalValue as ModelItemInterface;
+    <VStack key={props.index} align="stretch" spacing={0} pb={2}>
+      <HStack pb={1}>
+        <NumberInput
+          defaultValue={props.value.count}
+          min={-9999.99}
+          max={9999.99}
+        >
+          <NumberInputField
+            pattern="(-)?[0-9]*(.[0-9]+)?"
+            name={`itemInItems.${props.index}.count`}
+            value={props.value.count}
+            onChange={props.formikProps.handleChange}
+            onBlur={props.formikProps.handleBlur}
+            placeholder={yupItemInItemSchema.fields.count.spec.label}
+          />
+        </NumberInput>
+        <AutoComplete
+          openOnFocus
+          onChange={async (_value, item) => {
+            const modelItem = (item as Item)
+              .originalValue as ModelItemInterface;
 
-              props.formikProps.setFieldValue(
-                `itemInItems.${props.index}.sourceItemId`,
-                modelItem.id
-              );
-              setSelectedFieldValueName(modelItem.name);
+            props.formikProps.setFieldValue(
+              `itemInItems.${props.index}.sourceItemId`,
+              modelItem.id
+            );
+            setSelectedFieldValueName(modelItem.name);
 
-              props.formikProps.setFieldValue(
-                `itemInItems.${props.index}.sourceItem`,
-                await Database.shared().loadItem(modelItem)
-              );
+            props.formikProps.setFieldValue(
+              `itemInItems.${props.index}.sourceItem`,
+              await Database.shared().loadItem(modelItem)
+            );
+          }}
+        >
+          <AutoCompleteInput
+            placeholder={yupItemInItemSchema.fields.sourceItemId.spec.label}
+            value={selectedFieldValueName ?? props.value.sourceItem?.name}
+            onChange={async (event) => {
+              props.value.sourceItem!.name = event.target.value;
+              props.autoCompleteOnChange(event.target.value);
             }}
-          >
-            <AutoCompleteInput
-              placeholder={yupItemInItemSchema.fields.sourceItemId.spec.label}
-              value={selectedFieldValueName ?? props.value.sourceItem?.name}
-              onChange={async (event) => {
-                props.value.sourceItem!.name = event.target.value;
-                props.autoCompleteOnChange(event.target.value);
-              }}
-            />
-            <AutoCompleteList>
-              {props.options.map((value) => {
-                return (
-                  <AutoCompleteItem
-                    key={value.id}
-                    value={value}
-                    getValue={(item) => {
-                      return item.name;
-                    }}
-                  >
-                    {value.name}
-                  </AutoCompleteItem>
-                );
-              })}
-            </AutoCompleteList>
-          </AutoComplete>
-        </FormControl>
+          />
+          <AutoCompleteList>
+            {props.options.map((value) => {
+              return (
+                <AutoCompleteItem
+                  key={value.id}
+                  value={value}
+                  getValue={(item) => {
+                    return item.name;
+                  }}
+                >
+                  {value.name}
+                </AutoCompleteItem>
+              );
+            })}
+          </AutoCompleteList>
+        </AutoComplete>
 
         <IconButton
           icon={<DeleteIcon />}
@@ -111,7 +105,7 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
             props.fieldArrayHelpers.remove(props.index);
           }}
         />
-      </Flex>
+      </HStack>
       <Text
         color="whiteAlpha.600"
         fontSize="sm"

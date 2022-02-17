@@ -57,7 +57,7 @@ const RecipesPage = () => {
   });
 
   async function queryData() {
-    setProgressPending(true);
+    setProgressPending(data === undefined);
     setData((await Database.shared().arrayOfItems(queryParameters)) ?? []);
     setDataCount(await Database.shared().countOfItems(ItemType.ingredient));
     setProgressPending(false);
@@ -274,10 +274,10 @@ const RecipesPage = () => {
               item={updateEntity}
               firstInputFieldRef={formFirstFieldRef}
               onSubmit={async (item) => {
-                const saved = await Database.shared().saveItem(item);
-                queryData();
                 setUpdateEntity(undefined);
                 setFormDrawerIsOpen(false);
+                const saved = await Database.shared().saveItem(item);
+                queryData();
                 return saved.id;
               }}
             />

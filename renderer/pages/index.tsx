@@ -56,7 +56,7 @@ const ItemsPage = () => {
   const formFirstFieldRef = useRef<HTMLInputElement>(null);
 
   async function queryData() {
-    setProgressPending(true);
+    setProgressPending(data === undefined);
     setData((await Database.shared().arrayOfItems(queryParameters)) ?? []);
     setDataCount(await Database.shared().countOfItems(ItemType.ingredient));
     setProgressPending(false);
@@ -172,7 +172,7 @@ const ItemsPage = () => {
               formatter.format(
                 Database.shared().itemPrice(row, perServingTotals) / 100
               ),
-            sortable: perServingTotals,
+            sortable: !perServingTotals,
             center: true,
             sortField: yupItemSchema.fields.priceCents.spec.meta["key"],
 
@@ -296,10 +296,11 @@ const ItemsPage = () => {
               item={updateItem}
               firstInputFieldRef={formFirstFieldRef}
               onSubmit={async (item) => {
-                const saved = await Database.shared().saveItem(item);
-                queryData();
                 setUpdateItem(undefined);
                 setFormDrawerIsOpen(false);
+                const saved = await Database.shared().saveItem(item);
+                queryData();
+
                 return saved.id;
               }}
             />
