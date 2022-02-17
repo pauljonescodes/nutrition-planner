@@ -1,9 +1,23 @@
-import { Box, ChakraProvider, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  ChakraProvider,
+  extendTheme,
+  VStack,
+  type ThemeConfig,
+} from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { Fragment } from "react";
-import { theme } from "./theme";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const config: ThemeConfig = {
+    useSystemColorMode: true,
+    initialColorMode: "system",
+  };
+
+  const theme = extendTheme({
+    config,
+  });
+
   return (
     <Fragment>
       <ChakraProvider theme={theme}>
