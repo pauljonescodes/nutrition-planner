@@ -1,3 +1,4 @@
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -8,12 +9,15 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Center,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  IconButton,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -22,14 +26,12 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
-import useScrollbarSize from "react-scrollbar-size";
 import { Database, ItemQueryParameters } from "../data/Database";
 import { Item, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
 import { IngredientForm } from "../forms/IngredientForm";
 
 const ItemsPage = () => {
-  const { height } = useScrollbarSize();
   const [data, setData] = useState<Array<Item> | undefined>(undefined);
   const [formDrawerIsOpen, setFormDrawerIsOpen] = useState(false);
   const [updateItem, setUpdateItem] = useState<Item | undefined>(undefined);
@@ -61,18 +63,18 @@ const ItemsPage = () => {
     queryData();
   }, [queryParameters]);
 
-  return (
+  return progressPending ? (
+    <Center>
+      <Spinner />
+    </Center>
+  ) : (
     <Box>
-      <Table
-        style={{
-          height: `calc(100vh - 40px)`,
-        }}
-      >
+      <Table>
         <Thead>
           <Tr>
             <Th>{yupItemSchema.fields.name.spec.label}</Th>
-            <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
             <Th isNumeric>{yupItemSchema.fields.priceCents.spec.label}</Th>
+            <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
             <Th isNumeric>{yupItemSchema.fields.massGrams.spec.label}</Th>
             <Th isNumeric>
               {yupItemSchema.fields.energyKilocalorie.spec.label}
@@ -82,19 +84,39 @@ const ItemsPage = () => {
               {yupItemSchema.fields.carbohydrateGrams.spec.label}
             </Th>
             <Th isNumeric>{yupItemSchema.fields.proteinGrams.spec.label}</Th>
+            <Th></Th>
           </Tr>
         </Thead>
         <Tbody>
           {data?.map((value) => (
             <Tr>
               <Td>{value.name}</Td>
+              <Td isNumeric>{formatter.format(value.priceCents / 100)}</Td>
               <Td isNumeric>{value.count}</Td>
-              <Td isNumeric>{value.priceCents}</Td>
-              <Td isNumeric>{value.massGrams}</Td>
+              <Td isNumeric>{value.massGrams}g</Td>
               <Td isNumeric>{value.energyKilocalorie}</Td>
-              <Td isNumeric>{value.fatGrams}</Td>
-              <Td isNumeric>{value.carbohydrateGrams}</Td>
-              <Td isNumeric>{value.proteinGrams}</Td>
+              <Td isNumeric>{value.fatGrams}g</Td>
+              <Td isNumeric>{value.carbohydrateGrams}g</Td>
+              <Td isNumeric>{value.proteinGrams}g</Td>
+              <Td>
+                <ButtonGroup isAttached>
+                  <IconButton
+                    icon={<DeleteIcon />}
+                    aria-label="Delete"
+                    onClick={() => {
+                      setDeleteItem(value);
+                    }}
+                  />
+                  <IconButton
+                    icon={<EditIcon />}
+                    aria-label="Edit"
+                    onClick={() => {
+                      setUpdateItem(value);
+                      setFormDrawerIsOpen(true);
+                    }}
+                  />
+                </ButtonGroup>
+              </Td>
             </Tr>
           ))}
         </Tbody>

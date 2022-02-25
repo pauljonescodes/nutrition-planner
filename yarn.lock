@@ -4471,13 +4471,6 @@ react-clientside-effect@^1.2.5:
   dependencies:
     "@babel/runtime" "^7.12.13"
 
-react-data-table-component@^7.4.7:
-  version "7.4.7"
-  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.4.7.tgz#18067a2ac1dcb01bf3a010c03ab1c975061c496c"
-  integrity sha512-S4iaArrcYvJcIdOBsdUeBgEDfLFghI/G5Oykr5ZbfrUA282JTeQAQtGwutsIs6TKfXQAwMVUs2R+bu3S8oZfWA==
-  dependencies:
-    deepmerge "^4.2.2"
-
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -4542,11 +4535,6 @@ react-remove-scroll@2.4.1:
     tslib "^1.0.0"
     use-callback-ref "^1.2.3"
     use-sidecar "^1.0.1"
-
-react-scrollbar-size@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/react-scrollbar-size/-/react-scrollbar-size-4.0.0.tgz#47c130b9c46331c1bdade030b890d80388da9c6b"
-  integrity sha512-6ocQusPakZGPQQc5mxMRd9Cqy1ALKHyR6eGFbNWM94NPRBnhqAo0DSWXBodhgm9vg8y21o3ZudYJD8gyoW/NRw==
 
 react-style-singleton@^2.1.0:
   version "2.1.1"

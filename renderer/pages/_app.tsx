@@ -1,4 +1,4 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, CopyIcon, LockIcon } from "@chakra-ui/icons";
 import {
   Button,
   ButtonGroup,
@@ -63,15 +63,29 @@ export default function App({ Component, pageProps }: AppProps) {
               aria-label="Add"
             />
           </ButtonGroup>
-          <Button
-            variant="outline"
-            isActive={router.pathname === "/data"}
-            onClick={() => {
-              router.push("/data");
-            }}
-          >
-            Data
-          </Button>
+          <ButtonGroup isAttached>
+            <Button
+              variant="outline"
+              isActive={router.pathname === "/data"}
+              onClick={() => {
+                router.push("/data");
+              }}
+            >
+              Data
+            </Button>
+            <IconButton
+              variant="outline"
+              icon={<CopyIcon />}
+              aria-label="Save"
+              onClick={async () => {}}
+            />
+            <IconButton
+              variant="outline"
+              icon={<LockIcon />}
+              aria-label="Save"
+              onClick={async () => {}}
+            />
+          </ButtonGroup>
         </HStack>
         <Component {...pageProps} />
       </ChakraProvider>
