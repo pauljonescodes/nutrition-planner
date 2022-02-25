@@ -8,7 +8,6 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { MainMenu } from "../components/MainMenu";
 import { Database, SerialTable } from "../data/Database";
 
 const DataPage = () => {
@@ -28,9 +27,7 @@ const DataPage = () => {
   return (
     <Box>
       <HStack p="4">
-        <Box>
-          <MainMenu />
-        </Box>
+        <Box></Box>
         <Box flex="1">
           <Center>
             <Heading size="md">Data</Heading>

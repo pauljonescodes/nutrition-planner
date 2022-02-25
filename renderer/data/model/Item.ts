@@ -17,7 +17,7 @@ export const yupItemSchema = Yup.object({
     .default("")
     .required(),
   count: Yup.number()
-    .label("Serving count")
+    .label("Servings")
     .meta({
       placeholder: "Number of servings in total",
       key: "count",
@@ -57,7 +57,7 @@ export const yupItemSchema = Yup.object({
     .default(0)
     .required(),
   carbohydrateGrams: Yup.number()
-    .label("Carbohydrate")
+    .label("Carb")
     .meta({
       placeholder: "Carbohydrates in grams",
       key: "carbohydrateGrams",

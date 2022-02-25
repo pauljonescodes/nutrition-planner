@@ -109,11 +109,7 @@ export class Database extends Dexie {
   }
 
   async arrayOfItems(parameters: ItemQueryParameters): Promise<Item[]> {
-    var collection = this.itemTable
-      ?.where({ type: parameters.type })
-      ?.offset(parameters.offset)
-      .limit(parameters.limit);
-
+    var collection = this.itemTable?.where({ type: parameters.type });
     const interfaces: Array<ItemInterface> = [];
     if (parameters.sortBy) {
       if (parameters.reverse) {

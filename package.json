@@ -1,56 +1,56 @@
 {
-  "private": true,
-  "main": "main/index.js",
-  "productName": "Meal Planner",
-  "name": "mealplanner",
-  "version": "0.0.1",
-  "scripts": {
-    "clean": "rimraf dist main renderer/out renderer/.next",
-    "dev": "npm run build-electron && electron .",
-    "build-renderer": "next build renderer",
-    "dev-renderer": "next dev renderer",
-    "build-electron": "tsc -p electron-src",
-    "build": "npm run build-renderer && next export renderer && npm run build-electron",
-    "pack-app": "npm run build && electron-builder --dir",
-    "dist": "npm run build && electron-builder",
-    "type-check": "tsc"
-  },
-  "dependencies": {
-    "@chakra-ui/icons": "^1.1.5",
-    "@chakra-ui/react": "^1.8.3",
-    "@choc-ui/chakra-autocomplete": "^4.16.2",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
-    "dexie": "3.2.1-beta.2",
-    "electron-context-menu": "^3.1.1",
-    "electron-is-dev": "^1.1.0",
-    "electron-next": "^3.1.5",
-    "formik": "^2.2.9",
-    "framer-motion": "^5",
-    "nanoid": "^3.2.0",
-    "next-pwa": "^5.4.4",
-    "react": "^17.0.2",
-    "react-data-table-component": "^7.4.7",
-    "react-dom": "^17.0.2",
-    "react-scrollbar-size": "^4.0.0",
-    "styled-components": "^5.3.3",
-    "yup": "^0.32.11"
-  },
-  "devDependencies": {
-    "@types/node": "^14.14.6",
-    "@types/react": "^16.9.9",
-    "@types/react-dom": "^16.9.9",
-    "electron": "^13",
-    "electron-builder": "^22.9.1",
-    "next": "latest",
-    "rimraf": "^3.0.0",
-    "typescript": "^4.0.5"
-  },
-  "build": {
-    "asar": true,
-    "files": [
-      "main",
-      "renderer/out"
-    ]
-  }
+    "private": true,
+    "main": "main/index.js",
+    "productName": "Meal Planner",
+    "name": "mealplanner",
+    "version": "0.0.1",
+    "scripts": {
+        "clean": "rimraf dist main renderer/out renderer/.next",
+        "dev": "npm run build-electron && electron .",
+        "build-renderer": "next build renderer",
+        "dev-renderer": "next dev renderer",
+        "build-electron": "tsc -p electron-src",
+        "build": "npm run build-renderer && next export renderer && npm run build-electron",
+        "pack-app": "npm run build && electron-builder --dir",
+        "dist": "npm run build && electron-builder",
+        "type-check": "tsc"
+    },
+    "dependencies": {
+        "@chakra-ui/icons": "^1.1.5",
+        "@chakra-ui/react": "^1.8.3",
+        "@choc-ui/chakra-autocomplete": "^4.16.2",
+        "@emotion/react": "^11",
+        "@emotion/styled": "^11",
+        "dexie": "3.2.1-beta.2",
+        "electron-context-menu": "^3.1.1",
+        "electron-is-dev": "^1.1.0",
+        "electron-next": "^3.1.5",
+        "formik": "^2.2.9",
+        "framer-motion": "^5",
+        "nanoid": "^3.2.0",
+        "next-pwa": "^5.4.4",
+        "react": "^17.0.2",
+        "react-data-table-component": "^7.4.7",
+        "react-dom": "^17.0.2",
+        "react-scrollbar-size": "^4.0.0",
+        "styled-components": "^5.3.3",
+        "yup": "^0.32.11"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.6",
+        "@types/react": "^16.9.9",
+        "@types/react-dom": "^16.9.9",
+        "electron": "^13",
+        "electron-builder": "^22.9.1",
+        "next": "latest",
+        "rimraf": "^3.0.0",
+        "typescript": "^4.0.5"
+    },
+    "build": {
+        "asar": true,
+        "files": [
+            "main",
+            "renderer/out"
+        ]
+    }
 }

@@ -1,11 +1,15 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
-  Box,
+  Button,
+  ButtonGroup,
   ChakraProvider,
   extendTheme,
-  VStack,
+  HStack,
+  IconButton,
   type ThemeConfig,
 } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import { Fragment } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -18,14 +22,58 @@ export default function App({ Component, pageProps }: AppProps) {
     config,
   });
 
+  const router = useRouter();
+
   return (
     <Fragment>
       <ChakraProvider theme={theme}>
-        <VStack align={"stretch"} spacing="0">
-          <Box height={"100vh"}>
-            <Component {...pageProps} />
-          </Box>
-        </VStack>
+        <HStack p={3}>
+          <ButtonGroup isAttached>
+            <Button
+              variant="outline"
+              isActive={router.pathname === "/"}
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              Ingredients
+            </Button>
+            <IconButton
+              variant="outline"
+              // onClick={() => setFormDrawerIsOpen(true)}
+              icon={<AddIcon />}
+              aria-label="Add"
+            />
+          </ButtonGroup>
+
+          <ButtonGroup isAttached>
+            <Button
+              variant="outline"
+              isActive={router.pathname === "/recipes"}
+              onClick={() => {
+                router.push("/recipes");
+              }}
+            >
+              Recipes
+            </Button>
+            <IconButton
+              variant="outline"
+              // onClick={() => setFormDrawerIsOpen(true)}
+              icon={<AddIcon />}
+              aria-label="Add"
+            />
+          </ButtonGroup>
+          <Button
+            variant="outline"
+            isActive={router.pathname === "/data"}
+            onClick={() => {
+              router.push("/data");
+            }}
+          >
+            Data
+          </Button>
+        </HStack>
+        <Component {...pageProps} />
       </ChakraProvider>
     </Fragment>
   );

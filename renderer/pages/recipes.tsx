@@ -25,7 +25,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import DataTable, { Media } from "react-data-table-component";
 import useScrollbarSize from "react-scrollbar-size";
-import { MainMenu } from "../components/MainMenu";
 import { Database, ItemQueryParameters } from "../data/Database";
 import { Item, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
@@ -97,9 +96,7 @@ const RecipesPage = () => {
   return (
     <Box>
       <HStack p="4">
-        <Box>
-          <MainMenu />
-        </Box>
+        <Box></Box>
         <Box flex="1">
           <Center>
             <Heading size="md">Recipes</Heading>
@@ -272,7 +269,6 @@ const RecipesPage = () => {
           <DrawerBody>
             <RecipeForm
               item={updateEntity}
-              firstInputFieldRef={formFirstFieldRef}
               onSubmit={async (item) => {
                 setUpdateEntity(undefined);
                 setFormDrawerIsOpen(false);
