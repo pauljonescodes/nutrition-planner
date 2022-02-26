@@ -1,18 +1,23 @@
-import { AddIcon, CopyIcon, LockIcon } from "@chakra-ui/icons";
 import {
-  Button,
-  ButtonGroup,
   ChakraProvider,
   extendTheme,
-  HStack,
-  IconButton,
   type ThemeConfig,
 } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import { Fragment } from "react";
+import { useState } from "react";
+import { Feedback } from "../components/Feedback";
+import { MenuHStack } from "../components/MenuHStack";
+import { AppContext } from "../context/AppContext";
+import { AppState } from "../context/AppState";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App(props: AppProps) {
+  const [appState, setAppState] = useState<AppState>({
+    ingredientFormDrawerIsOpen: false,
+    setAppState: (value) => {
+      setAppState({ ...value, setAppState: appState.setAppState });
+    },
+  });
+
   const config: ThemeConfig = {
     useSystemColorMode: true,
     initialColorMode: "system",
@@ -22,73 +27,13 @@ export default function App({ Component, pageProps }: AppProps) {
     config,
   });
 
-  const router = useRouter();
-
   return (
-    <Fragment>
+    <AppContext.Provider value={appState}>
       <ChakraProvider theme={theme}>
-        <HStack p={3}>
-          <ButtonGroup isAttached>
-            <Button
-              variant="outline"
-              isActive={router.pathname === "/"}
-              onClick={() => {
-                router.push("/");
-              }}
-            >
-              Ingredients
-            </Button>
-            <IconButton
-              variant="outline"
-              // onClick={() => setFormDrawerIsOpen(true)}
-              icon={<AddIcon />}
-              aria-label="Add"
-            />
-          </ButtonGroup>
-
-          <ButtonGroup isAttached>
-            <Button
-              variant="outline"
-              isActive={router.pathname === "/recipes"}
-              onClick={() => {
-                router.push("/recipes");
-              }}
-            >
-              Recipes
-            </Button>
-            <IconButton
-              variant="outline"
-              // onClick={() => setFormDrawerIsOpen(true)}
-              icon={<AddIcon />}
-              aria-label="Add"
-            />
-          </ButtonGroup>
-          <ButtonGroup isAttached>
-            <Button
-              variant="outline"
-              isActive={router.pathname === "/data"}
-              onClick={() => {
-                router.push("/data");
-              }}
-            >
-              Data
-            </Button>
-            <IconButton
-              variant="outline"
-              icon={<CopyIcon />}
-              aria-label="Save"
-              onClick={async () => {}}
-            />
-            <IconButton
-              variant="outline"
-              icon={<LockIcon />}
-              aria-label="Save"
-              onClick={async () => {}}
-            />
-          </ButtonGroup>
-        </HStack>
-        <Component {...pageProps} />
+        <MenuHStack />
+        <props.Component {...props.pageProps} />
+        <Feedback />
       </ChakraProvider>
-    </Fragment>
+    </AppContext.Provider>
   );
 }

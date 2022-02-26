@@ -34,8 +34,8 @@ export function IngredientForm(props: ItemFormProps) {
         id: thisItemId,
       }}
       validationSchema={yupItemSchema}
-      onSubmit={(values, helpers) => {
-        props.onSubmit(values as Item);
+      onSubmit={async (values, helpers) => {
+        await props.onSubmit(values as Item);
         helpers.resetForm();
       }}
       validateOnChange={false}
