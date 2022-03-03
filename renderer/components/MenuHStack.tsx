@@ -1,18 +1,25 @@
-import { AddIcon, CopyIcon, LockIcon } from "@chakra-ui/icons";
-import { Button, ButtonGroup, HStack, IconButton } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  ButtonGroup,
+  HStack,
+  IconButton,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { AppContext } from "../context/AppContext";
 
 export function MenuHStack() {
   const router = useRouter();
 
+  const color = useColorModeValue("white", "gray.800");
+
   return (
     <AppContext.Consumer>
       {(appStateValue) => (
-        <HStack p={3}>
+        <HStack p={3} position="fixed" top="0" bg={color} width="100%">
           <ButtonGroup isAttached>
             <Button
-              variant="outline"
               isActive={router.pathname === "/"}
               onClick={() => {
                 router.push("/");
@@ -21,7 +28,6 @@ export function MenuHStack() {
               Ingredients
             </Button>
             <IconButton
-              variant="outline"
               onClick={() => {
                 appStateValue.setAppState!({
                   ingredientFormDrawerIsOpen: true,
@@ -31,10 +37,8 @@ export function MenuHStack() {
               aria-label="Add"
             />
           </ButtonGroup>
-
           <ButtonGroup isAttached>
             <Button
-              variant="outline"
               isActive={router.pathname === "/recipes"}
               onClick={() => {
                 router.push("/recipes");
@@ -43,7 +47,6 @@ export function MenuHStack() {
               Recipes
             </Button>
             <IconButton
-              variant="outline"
               onClick={() => {
                 appStateValue.setAppState!({
                   recipeFormDrawerIsOpen: true,
@@ -55,25 +58,21 @@ export function MenuHStack() {
           </ButtonGroup>
           <ButtonGroup isAttached>
             <Button
-              variant="outline"
-              isActive={router.pathname === "/data"}
+              isActive={router.pathname === "/plans"}
               onClick={() => {
-                router.push("/data");
+                router.push("/plans");
               }}
             >
-              Data
+              Plans
             </Button>
             <IconButton
-              variant="outline"
-              icon={<CopyIcon />}
-              aria-label="Save"
-              onClick={async () => {}}
-            />
-            <IconButton
-              variant="outline"
-              icon={<LockIcon />}
-              aria-label="Save"
-              onClick={async () => {}}
+              onClick={() => {
+                appStateValue.setAppState!({
+                  recipeFormDrawerIsOpen: true,
+                });
+              }}
+              icon={<AddIcon />}
+              aria-label="Add"
             />
           </ButtonGroup>
         </HStack>

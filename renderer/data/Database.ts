@@ -16,9 +16,10 @@ import {
 } from "./NutritionInfo";
 
 export interface ItemQueryParameters {
+  name?: string;
   type: ItemType;
   limit: number;
-  offset: number;
+  page: number;
   sortBy?: keyof Item;
   reverse?: boolean;
 }
@@ -104,12 +105,33 @@ export class Database extends Dexie {
     return item;
   }
 
-  async countOfItems(type: ItemType) {
-    return (await this.itemTable?.where({ type: type }).count()) ?? 0;
+  async countOfItems(parameters: ItemQueryParameters) {
+    var collection = this.itemTable?.where({ type: parameters.type });
+
+    if (parameters.name) {
+      collection = collection?.filter((obj) => {
+        return new RegExp(
+          ".*" + parameters.name?.toLowerCase().split("").join(".*") + ".*"
+        ).test(obj.name.toLowerCase());
+      });
+    }
+
+    return (await collection?.count()) ?? 0;
   }
 
   async arrayOfItems(parameters: ItemQueryParameters): Promise<Item[]> {
-    var collection = this.itemTable?.where({ type: parameters.type });
+    var collection = this.itemTable
+      ?.where({ type: parameters.type })
+      .offset(parameters.page * parameters.limit)
+      .limit(parameters.limit);
+
+    if (parameters.name) {
+      collection = collection?.filter((obj) => {
+        return new RegExp(
+          ".*" + parameters.name?.toLowerCase().split("").join(".*") + ".*"
+        ).test(obj.name.toLowerCase());
+      });
+    }
     const interfaces: Array<ItemInterface> = [];
     if (parameters.sortBy) {
       if (parameters.reverse) {
@@ -131,19 +153,30 @@ export class Database extends Dexie {
   async filteredItems(query: string) {
     return this.itemTable
       ?.filter((obj) => {
-        return new RegExp(".*" + query.split("").join(".*") + ".*").test(
-          obj.name
-        );
+        return new RegExp(
+          ".*" + query.toLowerCase().split("").join(".*") + ".*"
+        ).test(obj.name.toLowerCase());
       })
       .toArray();
   }
 
   async deleteItem(itemId: string) {
-    await this.itemTable?.delete(itemId);
-    await this.itemInItemTable
-      ?.where("destinationItemId")
-      .equals(itemId)
-      .delete();
+    const item = await this.itemTable?.get(itemId);
+    if (item !== undefined) {
+      await this.itemTable?.delete(itemId);
+
+      if (item.type === "ingredient") {
+        await this.itemInItemTable
+          ?.where("sourceItemId")
+          .equals(itemId)
+          .delete();
+      } else {
+        await this.itemInItemTable
+          ?.where("destinationItemId")
+          .equals(itemId)
+          .delete();
+      }
+    }
   }
 
   async loadItem(itemInterface: ItemInterface): Promise<Item> {
@@ -180,9 +213,12 @@ export class Database extends Dexie {
     itemInItemInterface: ItemInItemInterface
   ): Promise<ItemInItem> {
     const itemInItem = new ItemInItem(itemInItemInterface);
-    itemInItem.sourceItem = await this.loadItem(
-      (await this.itemTable?.get(itemInItem.sourceItemId))!
-    );
+    const sourceItem = await this.itemTable?.get(itemInItem.sourceItemId);
+
+    if (sourceItem !== undefined) {
+      itemInItem.sourceItem = await this.loadItem(sourceItem);
+    }
+
     return itemInItem;
   }
 
@@ -206,10 +242,9 @@ export class Database extends Dexie {
   }
 
   totalItemInItemNutrition(itemInItem: ItemInItem): NutritionInfo {
-    const sourceItemNutritionPerServing = this.itemNutrition(
-      itemInItem.sourceItem!,
-      true
-    );
+    const sourceItemNutritionPerServing = itemInItem.sourceItem
+      ? this.itemNutrition(itemInItem.sourceItem, true)
+      : nutritionInfo();
 
     return multiplyNutritionInfo(
       sourceItemNutritionPerServing,
@@ -251,9 +286,9 @@ export class Database extends Dexie {
   }
 
   totalItemInItemPrice(itemInItem: ItemInItem): number {
-    const sourceItemNutritionPerServing = Number(
-      this.itemPrice(itemInItem.sourceItem!, true)
-    );
+    const sourceItemNutritionPerServing = itemInItem.sourceItem
+      ? Number(this.itemPrice(itemInItem.sourceItem, true))
+      : 0;
 
     return sourceItemNutritionPerServing * Number(itemInItem.count);
   }

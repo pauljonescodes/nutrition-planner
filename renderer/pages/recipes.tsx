@@ -22,7 +22,7 @@ const RecipesPage = () => {
   const [progressPending, setProgressPending] = useState(false);
   const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
     type: ItemType.recipe,
-    offset: 0,
+    page: 0,
     limit: 10,
     reverse: false,
   });
@@ -75,7 +75,7 @@ const RecipesPage = () => {
               );
               const price = Database.shared().itemPrice(value, true);
               return (
-                <Tr>
+                <Tr key={value.id}>
                   <Td>
                     <ButtonGroup isAttached>
                       <IconButton

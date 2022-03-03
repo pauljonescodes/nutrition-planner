@@ -1,4 +1,5 @@
 import {
+  Box,
   ChakraProvider,
   extendTheme,
   type ThemeConfig,
@@ -31,7 +32,10 @@ export default function App(props: AppProps) {
     <AppContext.Provider value={appState}>
       <ChakraProvider theme={theme}>
         <MenuHStack />
-        <props.Component {...props.pageProps} />
+        <Box pt="64px">
+          <props.Component {...props.pageProps} />
+        </Box>
+
         <Feedback />
       </ChakraProvider>
     </AppContext.Provider>
