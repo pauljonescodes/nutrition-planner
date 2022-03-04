@@ -29,7 +29,7 @@ const ItemsPage = () => {
   const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
     type: ItemType.ingredient,
     page: 0,
-    limit: 10,
+    limit: 1,
     reverse: false,
   });
   const pages = Math.floor((dataCount ?? 0) / queryParameters.limit);
@@ -52,10 +52,11 @@ const ItemsPage = () => {
   }
 
   function handleResize() {
-    const usableHeight = (window.innerHeight ?? 0) - 64 * 2;
+    const usableHeight = (window.innerHeight ?? 0) - 64 * 2 - 40;
     const cellHeight = 73;
-    const newNumberOfCellsForUsableHeight =
-      Math.round(usableHeight / cellHeight) - 1;
+    const newNumberOfCellsForUsableHeight = Math.floor(
+      usableHeight / cellHeight
+    );
     if (newNumberOfCellsForUsableHeight !== queryParameters.limit) {
       setNumberOfCellsForUsableHeight(newNumberOfCellsForUsableHeight);
       setQueryParameters({

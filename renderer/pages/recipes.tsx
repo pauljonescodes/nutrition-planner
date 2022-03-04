@@ -4,10 +4,12 @@ import {
   ButtonGroup,
   Center,
   IconButton,
+  Show,
   Spinner,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -26,7 +28,7 @@ const RecipesPage = () => {
   const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
     type: ItemType.recipe,
     page: 0,
-    limit: 10,
+    limit: 1,
     reverse: false,
   });
   const pages = Math.floor((dataCount ?? 0) / queryParameters.limit);
@@ -49,10 +51,11 @@ const RecipesPage = () => {
   }
 
   function handleResize() {
-    const usableHeight = (window.innerHeight ?? 0) - 64 * 2;
+    const usableHeight = (window.innerHeight ?? 0) - 64 * 2 - 40;
     const cellHeight = 73;
-    const newNumberOfCellsForUsableHeight =
-      Math.round(usableHeight / cellHeight) - 1;
+    const newNumberOfCellsForUsableHeight = Math.floor(
+      usableHeight / cellHeight
+    );
     if (newNumberOfCellsForUsableHeight !== queryParameters.limit) {
       setNumberOfCellsForUsableHeight(newNumberOfCellsForUsableHeight);
       setQueryParameters({
@@ -86,21 +89,31 @@ const RecipesPage = () => {
           <Table>
             <Thead>
               <Tr>
-                <Th>Actions</Th>
+                <Th>
+                  <Center>Actions</Center>
+                </Th>
                 <Th>{yupItemSchema.fields.name.spec.label}</Th>
                 <Th isNumeric>{yupItemSchema.fields.priceCents.spec.label}</Th>
-                <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
-                <Th isNumeric>{yupItemSchema.fields.massGrams.spec.label}</Th>
-                <Th isNumeric>
-                  {yupItemSchema.fields.energyKilocalorie.spec.label}
-                </Th>
-                <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
-                <Th isNumeric>
-                  {yupItemSchema.fields.carbohydrateGrams.spec.label}
-                </Th>
-                <Th isNumeric>
-                  {yupItemSchema.fields.proteinGrams.spec.label}
-                </Th>
+                <Show above="md">
+                  <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
+                </Show>
+                <Show above="lg">
+                  <Th isNumeric>{yupItemSchema.fields.massGrams.spec.label}</Th>
+                </Show>
+                <Show above="xl">
+                  <Th isNumeric>
+                    {yupItemSchema.fields.energyKilocalorie.spec.label}
+                  </Th>
+                </Show>
+                <Show above="2xl">
+                  <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
+                  <Th isNumeric>
+                    {yupItemSchema.fields.carbohydrateGrams.spec.label}
+                  </Th>
+                  <Th isNumeric>
+                    {yupItemSchema.fields.proteinGrams.spec.label}
+                  </Th>
+                </Show>
               </Tr>
             </Thead>
             <Tbody>
@@ -113,34 +126,46 @@ const RecipesPage = () => {
                 return (
                   <Tr key={value.id}>
                     <Td>
-                      <ButtonGroup isAttached>
-                        <IconButton
-                          icon={<EditIcon />}
-                          aria-label="Edit"
-                          onClick={() => {
-                            appStateValue.setAppState!({
-                              updateItem: value,
-                              recipeFormDrawerIsOpen: true,
-                            });
-                          }}
-                        />
-                        <IconButton
-                          icon={<DeleteIcon />}
-                          aria-label="Delete"
-                          onClick={() => {
-                            appStateValue.setAppState!({ deleteItem: value });
-                          }}
-                        />
-                      </ButtonGroup>
+                      <Center>
+                        <ButtonGroup isAttached>
+                          <IconButton
+                            icon={<EditIcon />}
+                            aria-label="Edit"
+                            onClick={() => {
+                              appStateValue.setAppState!({
+                                updateItem: value,
+                                recipeFormDrawerIsOpen: true,
+                              });
+                            }}
+                          />
+                          <IconButton
+                            icon={<DeleteIcon />}
+                            aria-label="Delete"
+                            onClick={() => {
+                              appStateValue.setAppState!({ deleteItem: value });
+                            }}
+                          />
+                        </ButtonGroup>
+                      </Center>
                     </Td>
-                    <Td>{value.name}</Td>
+                    <Td>
+                      <Text noOfLines={2}>{value.name}</Text>
+                    </Td>
                     <Td isNumeric>{formatter.format(price / 100)}</Td>
-                    <Td isNumeric>{value.count}</Td>
-                    <Td isNumeric>{nutritionInfo.massGrams}g</Td>
-                    <Td isNumeric>{nutritionInfo.energyKilocalorie}</Td>
-                    <Td isNumeric>{nutritionInfo.fatGrams}g</Td>
-                    <Td isNumeric>{nutritionInfo.carbohydrateGrams}g</Td>
-                    <Td isNumeric>{nutritionInfo.proteinGrams}g</Td>
+                    <Show above="md">
+                      <Td isNumeric>{value.count}</Td>
+                    </Show>
+                    <Show above="lg">
+                      <Td isNumeric>{nutritionInfo.massGrams}g</Td>
+                    </Show>
+                    <Show above="xl">
+                      <Td isNumeric>{nutritionInfo.energyKilocalorie}</Td>
+                    </Show>
+                    <Show above="2xl">
+                      <Td isNumeric>{nutritionInfo.fatGrams}g</Td>
+                      <Td isNumeric>{nutritionInfo.carbohydrateGrams}g</Td>
+                      <Td isNumeric>{nutritionInfo.proteinGrams}g</Td>
+                    </Show>
                   </Tr>
                 );
               })}
