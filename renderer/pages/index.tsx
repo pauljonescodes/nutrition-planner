@@ -1,11 +1,4 @@
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DeleteIcon,
-  EditIcon,
-} from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   ButtonGroup,
@@ -23,6 +16,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { Pagination } from "../components/Pagination";
 import { AppContext } from "../context/AppContext";
 import { Database, ItemQueryParameters } from "../data/Database";
 import { Item, yupItemSchema } from "../data/model/Item";
@@ -30,7 +24,7 @@ import { ItemType } from "../data/model/ItemType";
 
 const ItemsPage = () => {
   const [data, setData] = useState<Array<Item> | undefined>(undefined);
-  const [dataCount, setDataCount] = useState<number>(0);
+  const [dataCount, setDataCount] = useState<number | undefined>(undefined);
   const [progressPending, setProgressPending] = useState(false);
   const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
     type: ItemType.ingredient,
@@ -39,7 +33,10 @@ const ItemsPage = () => {
     reverse: false,
   });
   const pages = Math.floor((dataCount ?? 0) / queryParameters.limit);
-  console.log(pages);
+  if (dataCount !== undefined && queryParameters.page > pages) {
+    setQueryParameters({ ...queryParameters, page: pages });
+  }
+
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -181,57 +178,13 @@ const ItemsPage = () => {
             </Tbody>
           </Table>
           <Center p={3} position="fixed" bottom="0" width="100%">
-            <ButtonGroup>
-              <IconButton
-                icon={<ArrowLeftIcon />}
-                aria-label="Go to first page"
-                onClick={() => {
-                  setQueryParameters({
-                    ...queryParameters,
-                    page: 0,
-                  });
-                }}
-                disabled={queryParameters.page === 0}
-              />
-              <IconButton
-                icon={<ChevronLeftIcon />}
-                aria-label="Go to previous page"
-                onClick={() => {
-                  setQueryParameters({
-                    ...queryParameters,
-                    page: queryParameters.page - 1,
-                  });
-                }}
-                disabled={queryParameters.page === 0}
-              />
-            </ButtonGroup>
-            <Text px="3">
-              {queryParameters.page + 1} / {pages + 1}
-            </Text>
-            <ButtonGroup>
-              <IconButton
-                icon={<ChevronRightIcon />}
-                aria-label="Go to next page"
-                onClick={() => {
-                  setQueryParameters({
-                    ...queryParameters,
-                    page: queryParameters.page + 1,
-                  });
-                }}
-                disabled={queryParameters.page === pages}
-              />
-              <IconButton
-                icon={<ArrowRightIcon />}
-                aria-label="Go to last page"
-                onClick={() => {
-                  setQueryParameters({
-                    ...queryParameters,
-                    page: pages,
-                  });
-                }}
-                disabled={queryParameters.page === pages}
-              />
-            </ButtonGroup>
+            <Pagination
+              onSetPage={(page) => {
+                setQueryParameters({ ...queryParameters, page });
+              }}
+              page={queryParameters.page}
+              pages={pages}
+            />
           </Center>
         </Box>
       )}
