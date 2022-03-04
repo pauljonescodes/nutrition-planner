@@ -11,14 +11,14 @@ import { FormEvent, RefObject } from "react";
 import { ValidatedFormikControlInput } from "../components/ValidatedFormikControlInput";
 import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
 import { Database } from "../data/Database";
-import { Item, yupItemSchema } from "../data/model/Item";
+import { ItemInferredType, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
 import { nutritionInfoDescription } from "../data/NutritionInfo";
 import { ItemInItemFieldArray } from "./ItemInItem/FieldArray";
 
 export interface RecipeFormProps {
-  item?: Item;
-  onSubmit: (item: Item) => Promise<string | undefined>;
+  item?: ItemInferredType;
+  onSubmit: (item: ItemInferredType) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -27,7 +27,7 @@ export function RecipeForm(props: RecipeFormProps) {
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
-    <Formik<Item>
+    <Formik<ItemInferredType>
       initialValues={{
         ...yupItemSchema.getDefault(),
         ...props.item,
@@ -36,7 +36,7 @@ export function RecipeForm(props: RecipeFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit(values as Item);
+        props.onSubmit(values as ItemInferredType);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -90,7 +90,7 @@ export function RecipeForm(props: RecipeFormProps) {
                 >
                   {nutritionInfoDescription(
                     Database.shared().itemNutrition(
-                      formikProps.values as Item,
+                      formikProps.values as ItemInferredType,
                       true
                     )
                   )}
@@ -104,12 +104,12 @@ export function RecipeForm(props: RecipeFormProps) {
                   whiteSpace="nowrap"
                 >
                   {Database.shared().formattedItemPrice(
-                    formikProps.values as Item,
+                    formikProps.values as ItemInferredType,
                     true
                   )}{" "}
                   per serving /{" "}
                   {Database.shared().formattedItemPrice(
-                    formikProps.values as Item,
+                    formikProps.values as ItemInferredType,
                     false
                   )}{" "}
                   total

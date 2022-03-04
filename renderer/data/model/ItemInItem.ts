@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import { Item } from "./Item";
 
 export const dexieItemInItemSchema = "&id,sourceItemId,count,destinationItemId";
 
@@ -15,21 +14,4 @@ export const yupItemInItemSchema = Yup.object({
     key: "itemInItems",
   });
 
-export interface ItemInItemInterface
-  extends Yup.InferType<typeof yupItemInItemSchema> {}
-
-export class ItemInItem implements ItemInItemInterface {
-  id: string;
-  sourceItemId: string;
-  count: number;
-  destinationItemId: string;
-  destinationItem?: Item;
-  sourceItem?: Item;
-
-  constructor(itemInItem: ItemInItemInterface) {
-    this.id = itemInItem.id;
-    this.sourceItemId = itemInItem.sourceItemId;
-    this.count = Number(itemInItem.count);
-    this.destinationItemId = itemInItem.destinationItemId;
-  }
-}
+export type ItemInItemInferredType = Yup.InferType<typeof yupItemInItemSchema>;

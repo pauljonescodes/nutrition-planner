@@ -9,21 +9,20 @@ import {
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
-import { Database } from "../../data/Database";
-import { Item } from "../../data/model/Item";
+import { ItemInferredType } from "../../data/model/Item";
 import {
-  ItemInItemInterface,
+  ItemInItemInferredType,
   yupItemInItemSchema,
 } from "../../data/model/ItemInItem";
 import { ItemInItemFieldInput } from "./FieldInput";
 
 interface ItemSearchResults {
-  results: Array<Item>;
+  results: Array<ItemInferredType>;
 }
 
 interface ItemInItemFieldProps {
   thisItemId: string;
-  formikProps: FormikProps<Item>;
+  formikProps: FormikProps<ItemInferredType>;
   fieldArrayHelpers: FieldArrayRenderProps;
 }
 
@@ -32,7 +31,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
     ItemSearchResults[]
   >([]);
 
-  const itemsInItem = props.formikProps.values.itemInItems ?? [];
+  const itemsInItem: Array<ItemInItemInferredType> = [];
 
   useEffect(() => {
     setItemSearchesState(itemsInItem.map(() => ({ results: [] })));
@@ -52,8 +51,8 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
             <ItemInItemFieldInput
               autoCompleteOnChange={async (value) => {
                 let theItemSearchs = recipeSearchsState;
-                theItemSearchs[index].results =
-                  (await Database.shared().filteredItems(value)) ?? [];
+                // theItemSearchs[index].results =
+                //   (await Database.shared().filteredItems(value)) ?? [];
                 setItemSearchesState([...theItemSearchs]);
               }}
               value={value}
@@ -79,7 +78,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
                 id: "",
                 name: "",
               },
-            } as ItemInItemInterface);
+            } as ItemInItemInferredType);
             let theItemSearchs = recipeSearchsState;
             theItemSearchs.push({
               results: [],

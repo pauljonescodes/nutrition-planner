@@ -11,13 +11,13 @@ import { FormEvent, RefObject } from "react";
 import { ValidatedFormikControlInput } from "../components/ValidatedFormikControlInput";
 import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
 import { Database } from "../data/Database";
-import { Item, yupItemSchema } from "../data/model/Item";
+import { ItemInferredType, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
 import { nutritionInfoDescription } from "../data/NutritionInfo";
 
 export interface ItemFormProps {
-  item?: Item;
-  onSubmit: (item: Item) => Promise<string | undefined>;
+  item?: ItemInferredType;
+  onSubmit: (item: ItemInferredType) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -26,7 +26,7 @@ export function IngredientForm(props: ItemFormProps) {
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
-    <Formik<Partial<Item>>
+    <Formik<Partial<ItemInferredType>>
       initialValues={{
         ...yupItemSchema.getDefault(),
         ...props.item,
@@ -35,7 +35,7 @@ export function IngredientForm(props: ItemFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={async (values, helpers) => {
-        await props.onSubmit(values as Item);
+        await props.onSubmit(values as ItemInferredType);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -124,7 +124,7 @@ export function IngredientForm(props: ItemFormProps) {
                 >
                   {nutritionInfoDescription(
                     Database.shared().itemNutrition(
-                      formikProps.values as Item,
+                      formikProps.values as ItemInferredType,
                       false
                     )
                   )}
@@ -138,7 +138,7 @@ export function IngredientForm(props: ItemFormProps) {
                   whiteSpace="nowrap"
                 >
                   {Database.shared().formattedItemPrice(
-                    formikProps.values as Item,
+                    formikProps.values as ItemInferredType,
                     true
                   )}{" "}
                   / serving

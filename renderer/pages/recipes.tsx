@@ -18,11 +18,13 @@ import { useEffect, useState } from "react";
 import { Pagination } from "../components/Pagination";
 import { AppContext } from "../context/AppContext";
 import { Database, ItemQueryParameters } from "../data/Database";
-import { Item, yupItemSchema } from "../data/model/Item";
+import { ItemInferredType, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
 
 const RecipesPage = () => {
-  const [data, setData] = useState<Array<Item> | undefined>(undefined);
+  const [data, setData] = useState<Array<ItemInferredType> | undefined>(
+    undefined
+  );
   const [dataCount, setDataCount] = useState<number | undefined>(undefined);
   const [progressPending, setProgressPending] = useState(false);
   const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
@@ -45,8 +47,8 @@ const RecipesPage = () => {
 
   async function queryData() {
     setProgressPending(data === undefined);
-    setData((await Database.shared().arrayOfItems(queryParameters)) ?? []);
-    setDataCount(await Database.shared().countOfItems(queryParameters));
+    // setData((await Database.shared().arrayOfItems(queryParameters)) ?? []);
+    // setDataCount(await Database.shared().countOfItems(queryParameters));
     setProgressPending(false);
   }
 

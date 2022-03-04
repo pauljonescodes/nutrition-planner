@@ -18,15 +18,15 @@ import {
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
 import { Database } from "../../data/Database";
+import { ItemInferredType as ModelItem } from "../../data/model/Item";
 import {
-  Item as ModelItem,
-  ItemInterface as ModelItemInterface,
-} from "../../data/model/Item";
-import { ItemInItem, yupItemInItemSchema } from "../../data/model/ItemInItem";
+  ItemInItemInferredType,
+  yupItemInItemSchema,
+} from "../../data/model/ItemInItem";
 import { nutritionInfoDescription } from "../../data/NutritionInfo";
 
 interface ItemInItemFieldInputProps {
-  value: ItemInItem;
+  value: ItemInItemInferredType;
   index: number;
   thisItemId: string;
   formikProps: FormikProps<ModelItem>;
@@ -60,8 +60,7 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
         <AutoComplete
           openOnFocus
           onChange={async (_value, item) => {
-            const modelItem = (item as Item)
-              .originalValue as ModelItemInterface;
+            const modelItem = (item as Item).originalValue as ModelItem;
 
             props.formikProps.setFieldValue(
               `itemInItems.${props.index}.sourceItemId`,
@@ -77,11 +76,11 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
         >
           <AutoCompleteInput
             placeholder={yupItemInItemSchema.fields.sourceItemId.spec.label}
-            value={selectedFieldValueName ?? props.value.sourceItem?.name}
-            onChange={async (event) => {
-              props.value.sourceItem!.name = event.target.value;
-              props.autoCompleteOnChange(event.target.value);
-            }}
+            // value={selectedFieldValueName ?? props.value.sourceItem?.name}
+            // onChange={async (event) => {
+            //   props.value.sourceItem!.name = event.target.value;
+            //   props.autoCompleteOnChange(event.target.value);
+            // }}
           />
           <AutoCompleteList>
             {props.options.map((value) => {
