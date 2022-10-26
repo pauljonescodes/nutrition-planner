@@ -1,9 +1,6 @@
 import * as Yup from "yup";
 import { ItemType } from "./ItemType";
 
-export const dexieItemSchema =
-  "&id,type,name,count,priceCents,massGrams,energyKilocalorie,fatGrams,carbohydrateGrams,proteinGrams,itemInItems";
-
 export const yupItemSchema = Yup.object({
   id: Yup.string().label("ID").required(),
   type: Yup.mixed<ItemType>().oneOf(Object.values(ItemType)).required(),

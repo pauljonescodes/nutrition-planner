@@ -1,7 +1,5 @@
 import * as Yup from "yup";
 
-export const dexieItemInItemSchema = "&id,sourceItemId,count,destinationItemId";
-
 export const yupItemInItemSchema = Yup.object({
   id: Yup.string().required(),
   sourceItemId: Yup.string().required(),
