@@ -22,7 +22,6 @@
         "@emotion/react": "^11",
         "@emotion/styled": "^11",
         "formik": "^2",
-        "framer-motion": "^5",
         "nanoid": "^3",
         "pouchdb-adapter-idb": "^7.3.0",
         "react": "^18.2.0",
