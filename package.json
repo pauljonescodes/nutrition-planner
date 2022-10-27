@@ -24,6 +24,7 @@
         "formik": "^2",
         "framer-motion": "^7.6.1",
         "nanoid": "^4.0.0",
+        "next": "^13.0.0",
         "pouchdb-adapter-idb": "^7.3.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -38,7 +39,6 @@
         "@types/pouchdb-adapter-idb": "^6.1.4",
         "@types/react": "^18.0.23",
         "@types/react-dom": "^18.0.7",
-        "next": "12.3.1",
         "rimraf": "^3",
         "typescript": "^4"
     },
