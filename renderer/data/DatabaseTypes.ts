@@ -1,13 +1,15 @@
-import * as pouchdb from "pouchdb-adapter-idb";
 import {
-  addPouchPlugin,
   createRxDatabase,
   RxCollection,
   RxDatabase,
   RxDocument,
   RxJsonSchema,
 } from "rxdb";
-import { getRxStoragePouch } from "rxdb/plugins/pouchdb";
+
+import { addRxPlugin } from "rxdb";
+import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
+import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
+
 import { ItemInferredType } from "./model/Item";
 
 type ItemDocumentMethods = {
@@ -28,13 +30,21 @@ export type DatabaseCollections = {
 export type DatabaseType = RxDatabase<DatabaseCollections>;
 
 export async function createDatabase(): Promise<DatabaseType | undefined> {
-  addPouchPlugin(pouchdb);
   var database: DatabaseType | undefined;
+
+  addPouchPlugin(require("pouchdb-adapter-idb"));
+
+  addRxPlugin(RxDBQueryBuilderPlugin);
 
   try {
     database = await createRxDatabase<DatabaseCollections>({
       name: "rxdatabase",
-      storage: getRxStoragePouch("idb"),
+      storage: getRxStoragePouch("idb", {
+        /**
+         * other pouchdb specific options
+         * @link https://pouchdb.com/api.html#create_database
+         */
+      }),
     });
   } catch (error) {
     console.log(error);
