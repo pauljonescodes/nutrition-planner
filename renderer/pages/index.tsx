@@ -15,8 +15,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { addRxPlugin } from "rxdb";
-import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
 import { Subscription } from "rxjs";
 import { Pagination } from "../components/Pagination";
 import { AppContext } from "../context/AppContext";
@@ -71,8 +69,6 @@ const ItemsPage = () => {
       }
     };
   }, [context.database]);
-
-  addRxPlugin(RxDBQueryBuilderPlugin);
 
   return (
     <Box>
