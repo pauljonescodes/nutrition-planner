@@ -43,9 +43,15 @@ export function Feedback() {
           <DrawerBody>
             <IngredientForm
               item={appContext.updateItem}
-              onSubmit={(item) => {
+              onSubmit={async (item) => {
+                console.log(appContext.database);
                 appContext.setAppState!({});
-                appContext.database?.items.upsert(item);
+                console.log(item.id);
+
+                const result = await appContext.database?.items.upsert({
+                  ...item,
+                });
+                console.log(`asdasd ${result}`);
               }}
             />
           </DrawerBody>

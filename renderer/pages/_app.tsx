@@ -48,7 +48,7 @@ export default function App(props: AppProps) {
     };
   }, []);
 
-  console.log(`rendering ${appState.database}`);
+  console.log(`rendering ${appState.database?.name}`);
 
   return (
     <AppContext.Provider value={appState}>

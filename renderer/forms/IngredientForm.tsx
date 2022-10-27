@@ -12,7 +12,6 @@ import { ValidatedFormikControlInput } from "../components/ValidatedFormikContro
 import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
 import { Database } from "../data/Database";
 import { ItemInferredType, yupItemSchema } from "../data/model/Item";
-import { ItemType } from "../data/model/ItemType";
 import { nutritionInfoDescription } from "../data/NutritionInfo";
 
 export interface ItemFormProps {
@@ -29,13 +28,20 @@ export function IngredientForm(props: ItemFormProps) {
     <Formik<Partial<ItemInferredType>>
       initialValues={{
         ...yupItemSchema.getDefault(),
-        ...props.item,
-        type: ItemType.ingredient,
+        type: props.item?.type,
+        name: props.item?.name,
+        count: props.item?.count,
+        priceCents: props.item?.priceCents,
+        massGrams: props.item?.massGrams,
+        energyKilocalorie: props.item?.energyKilocalorie,
+        fatGrams: props.item?.fatGrams,
+        carbohydrateGrams: props.item?.carbohydrateGrams,
+        proteinGrams: props.item?.proteinGrams,
         id: thisItemId,
       }}
       validationSchema={yupItemSchema}
       onSubmit={async (values, helpers) => {
-        await props.onSubmit(values as ItemInferredType);
+        props.onSubmit(values as ItemInferredType);
         helpers.resetForm();
       }}
       validateOnChange={false}
