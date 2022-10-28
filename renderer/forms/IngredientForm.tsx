@@ -6,29 +6,33 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { nanoid } from "nanoid";
 import { FormEvent, RefObject } from "react";
 import { ValidatedFormikControlInput } from "../components/ValidatedFormikControlInput";
 import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
-import { Database } from "../data/Database";
+import {
+  databaseCurrencyFormatter,
+  dataid,
+  ItemDocument,
+} from "../data/Database";
 import { ItemInferredType, yupItemSchema } from "../data/model/Item";
+import { ItemType } from "../data/model/ItemType";
 import { nutritionInfoDescription } from "../data/NutritionInfo";
 
 export interface ItemFormProps {
-  item?: ItemInferredType;
+  item?: ItemDocument;
   onSubmit: (item: ItemInferredType) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
 export function IngredientForm(props: ItemFormProps) {
-  const thisItemId = props.item?.id ?? nanoid();
+  const thisItemId = props.item?.id ?? dataid();
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
-    <Formik<Partial<ItemInferredType>>
+    <Formik<Partial<ItemDocument>>
       initialValues={{
         ...yupItemSchema.getDefault(),
-        type: props.item?.type,
+        type: ItemType.ingredient,
         name: props.item?.name,
         count: props.item?.count,
         priceCents: props.item?.priceCents,
@@ -60,11 +64,20 @@ export function IngredientForm(props: ItemFormProps) {
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
               inputFieldRef={props.firstInputFieldRef}
+              onPaste={(event) => {
+                console.log(event.clipboardData.getData("text"));
+              }}
             />
             <ValidatedFormikControlNumberInput
-              value={formikProps.values.priceCents}
+              value={
+                formikProps.values.priceCents
+                  ? formikProps.values.priceCents / 100
+                  : undefined
+              }
               error={formikProps.errors.priceCents}
               yupSchemaField={yupItemSchema.fields.priceCents}
+              transform={(value) => value * 100}
+              format={(value) => (value ?? 0) / 100}
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
@@ -128,12 +141,8 @@ export function IngredientForm(props: ItemFormProps) {
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  {nutritionInfoDescription(
-                    Database.shared().itemNutrition(
-                      formikProps.values as ItemInferredType,
-                      false
-                    )
-                  )}
+                  {props.item?.nutrition() &&
+                    nutritionInfoDescription(props.item?.nutrition())}
                 </Text>
                 <Text
                   color={alphaColor}
@@ -143,9 +152,8 @@ export function IngredientForm(props: ItemFormProps) {
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  {Database.shared().formattedItemPrice(
-                    formikProps.values as ItemInferredType,
-                    true
+                  {databaseCurrencyFormatter.format(
+                    (props.item?.servingPriceCents() ?? 0) / 100
                   )}{" "}
                   / serving
                 </Text>

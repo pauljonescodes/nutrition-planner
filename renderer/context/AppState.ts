@@ -1,11 +1,9 @@
-import { DatabaseType } from "../data/DatabaseTypes";
-import { ItemInferredType } from "../data/model/Item";
+import { ItemDocument } from "../data/Database";
 
 export interface AppState {
-  database?: DatabaseType;
   ingredientFormDrawerIsOpen?: boolean;
   recipeFormDrawerIsOpen?: boolean;
-  updateItem?: ItemInferredType;
-  deleteItem?: ItemInferredType;
+  updateItem?: ItemDocument;
+  deleteItem?: ItemDocument;
   setAppState?: (value: AppState) => void;
 }

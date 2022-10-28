@@ -7,8 +7,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FieldArrayRenderProps, FormikProps } from "formik";
-import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
+import { dataid } from "../../data/Database";
 import { ItemInferredType } from "../../data/model/Item";
 import {
   ItemInItemInferredType,
@@ -69,7 +69,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
         <Button
           onClick={() => {
             props.fieldArrayHelpers.push({
-              id: nanoid(),
+              id: dataid(),
               destinationItemId: props.thisItemId,
               count: 1,
               sourceItemId: "",

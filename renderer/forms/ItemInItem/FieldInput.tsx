@@ -17,13 +17,11 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
-import { Database } from "../../data/Database";
 import { ItemInferredType as ModelItem } from "../../data/model/Item";
 import {
   ItemInItemInferredType,
   yupItemInItemSchema,
 } from "../../data/model/ItemInItem";
-import { nutritionInfoDescription } from "../../data/NutritionInfo";
 
 interface ItemInItemFieldInputProps {
   value: ItemInItemInferredType;
@@ -68,10 +66,10 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
             );
             setSelectedFieldValueName(modelItem.name);
 
-            props.formikProps.setFieldValue(
-              `itemInItems.${props.index}.sourceItem`,
-              await Database.shared().loadItem(modelItem)
-            );
+            // props.formikProps.setFieldValue(
+            //   `itemInItems.${props.index}.sourceItem`,
+            //   await Database.shared().loadItem(modelItem)
+            // );
           }}
         >
           <AutoCompleteInput
@@ -114,11 +112,9 @@ export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
         overflow="hidden"
         whiteSpace="nowrap"
       >
-        {Database.shared().formattedTotalItemInItemPrice(props.value)}
+        XX
         {" / "}
-        {nutritionInfoDescription(
-          Database.shared().totalItemInItemNutrition(props.value)
-        )}
+        YY
       </Text>
     </VStack>
   );

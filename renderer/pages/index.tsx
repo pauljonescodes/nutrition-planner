@@ -6,6 +6,7 @@ import {
   IconButton,
   Input,
   Show,
+  Skeleton,
   Table,
   Tbody,
   Td,
@@ -15,25 +16,19 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { Subscription } from "rxjs";
+import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { Pagination } from "../components/Pagination";
 import { AppContext } from "../context/AppContext";
-import { ItemInferredType, yupItemSchema } from "../data/model/Item";
+import { databaseCurrencyFormatter, ItemDocument } from "../data/Database";
+import { yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
 
 const ItemsPage = () => {
-  const [data, setData] = useState<Array<ItemInferredType> | undefined>(
-    undefined
-  );
+  const context = useContext(AppContext);
+  const [page, setPage] = useState(0);
+  const [nameSearch, setNameSearch] = useState<string>("");
   const [numberOfCellsForUsableHeight, setNumberOfCellsForUsableHeight] =
     useState<number | undefined>(undefined);
-  const [page, setPage] = useState<number>(0);
-  const context = useContext(AppContext);
-
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
 
   function handleResize() {
     const usableHeight = (window.innerHeight ?? 0) - 64 * 2 - 40;
@@ -52,23 +47,18 @@ const ItemsPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    let sub: Subscription | undefined;
-    if (context.database && context.database.items) {
-      sub = context.database.items
-        .find()
-        .where("type")
-        .equals(ItemType.ingredient)
-        .$.subscribe((value) => {
-          setData(value);
-        });
+  const { result, fetchPage, pageCount, isFetching } = useRxQuery(
+    useRxCollection<ItemDocument>("items")?.find({
+      selector: {
+        type: ItemType.ingredient,
+        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+      },
+    })!,
+    {
+      pageSize: numberOfCellsForUsableHeight,
+      pagination: "Traditional",
     }
-    return () => {
-      if (sub && sub.unsubscribe) {
-        sub.unsubscribe();
-      }
-    };
-  }, [context.database]);
+  );
 
   return (
     <Box>
@@ -79,8 +69,10 @@ const ItemsPage = () => {
             <Th>
               <Input
                 placeholder={yupItemSchema.fields.name.spec.label}
-                value={""}
-                onChange={(event) => {}}
+                value={nameSearch}
+                onChange={(e) => {
+                  setNameSearch(e.currentTarget.value);
+                }}
                 size="sm"
                 variant="unstyled"
               />
@@ -107,15 +99,15 @@ const ItemsPage = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {data
-            ?.slice(
-              page * (numberOfCellsForUsableHeight ?? 0),
-              page * (numberOfCellsForUsableHeight ?? 0) +
-                (numberOfCellsForUsableHeight ?? 0)
-            )
-            .map((value) => (
-              <Tr key={value.id}>
-                <Td>
+          {(isFetching
+            ? Array(numberOfCellsForUsableHeight).fill(
+                yupItemSchema.getDefault()
+              )
+            : result
+          ).map((value) => (
+            <Tr key={value.id}>
+              <Td>
+                <Skeleton isLoaded={!isFetching}>
                   <ButtonGroup isAttached>
                     <IconButton
                       icon={<EditIcon />}
@@ -135,38 +127,66 @@ const ItemsPage = () => {
                       }}
                     />
                   </ButtonGroup>
+                </Skeleton>
+              </Td>
+              <Td>
+                <Skeleton isLoaded={!isFetching}>
+                  {value.name.length > 0 ? (
+                    <Text noOfLines={2}>{value.name}</Text>
+                  ) : (
+                    "loading"
+                  )}
+                </Skeleton>
+              </Td>
+              <Show above="md">
+                <Td isNumeric>
+                  <Skeleton isLoaded={!isFetching}>
+                    {databaseCurrencyFormatter.format(value.priceCents / 100)}
+                  </Skeleton>
                 </Td>
-                <Td>
-                  <Text noOfLines={2}>{value.name}</Text>
+              </Show>
+              <Show above="lg">
+                <Td isNumeric>
+                  <Skeleton isLoaded={!isFetching}>{value.count}</Skeleton>
                 </Td>
-                <Show above="md">
-                  <Td isNumeric>{formatter.format(value.priceCents / 100)}</Td>
-                </Show>
-                <Show above="lg">
-                  <Td isNumeric>{value.count}</Td>
-                  <Td isNumeric>{value.massGrams}g</Td>
-                </Show>
-                <Show above="xl">
-                  <Td isNumeric>{value.energyKilocalorie}</Td>
-                </Show>
-                <Show above="2xl">
-                  <Td isNumeric>{value.fatGrams}g</Td>
-                  <Td isNumeric>{value.carbohydrateGrams}g</Td>
-                  <Td isNumeric>{value.proteinGrams}g</Td>
-                </Show>
-              </Tr>
-            ))}
+                <Td isNumeric>
+                  <Skeleton isLoaded={!isFetching}>{value.massGrams}g</Skeleton>
+                </Td>
+              </Show>
+              <Show above="xl">
+                <Td isNumeric>
+                  <Skeleton isLoaded={!isFetching}>
+                    {value.energyKilocalorie}
+                  </Skeleton>
+                </Td>
+              </Show>
+              <Show above="2xl">
+                <Td isNumeric>
+                  <Skeleton isLoaded={!isFetching}>{value.fatGrams}g</Skeleton>
+                </Td>
+                <Td isNumeric>
+                  <Skeleton isLoaded={!isFetching}>
+                    {value.carbohydrateGrams}g
+                  </Skeleton>
+                </Td>
+                <Td isNumeric>
+                  <Skeleton isLoaded={!isFetching}>
+                    {value.proteinGrams}g
+                  </Skeleton>
+                </Td>
+              </Show>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
       <Center p={3} position="fixed" bottom="0" width="100%">
         <Pagination
           onSetPage={(page) => {
+            fetchPage(page + 1);
             setPage(page);
           }}
           page={page}
-          pages={Math.floor(
-            (data?.length ?? 0) / (numberOfCellsForUsableHeight ?? 1)
-          )}
+          pages={pageCount - 1}
         />
       </Center>
     </Box>

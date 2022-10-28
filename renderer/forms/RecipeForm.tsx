@@ -6,14 +6,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { nanoid } from "nanoid";
 import { FormEvent, RefObject } from "react";
 import { ValidatedFormikControlInput } from "../components/ValidatedFormikControlInput";
 import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
-import { Database } from "../data/Database";
+import { dataid } from "../data/Database";
 import { ItemInferredType, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
-import { nutritionInfoDescription } from "../data/NutritionInfo";
 import { ItemInItemFieldArray } from "./ItemInItem/FieldArray";
 
 export interface RecipeFormProps {
@@ -23,7 +21,7 @@ export interface RecipeFormProps {
 }
 
 export function RecipeForm(props: RecipeFormProps) {
-  const thisItemId = props.item?.id ?? nanoid();
+  const thisItemId = props.item?.id ?? dataid();
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
@@ -88,12 +86,7 @@ export function RecipeForm(props: RecipeFormProps) {
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  {nutritionInfoDescription(
-                    Database.shared().itemNutrition(
-                      formikProps.values as ItemInferredType,
-                      true
-                    )
-                  )}
+                  XX
                 </Text>
                 <Text
                   color={alphaColor}
@@ -103,16 +96,7 @@ export function RecipeForm(props: RecipeFormProps) {
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  {Database.shared().formattedItemPrice(
-                    formikProps.values as ItemInferredType,
-                    true
-                  )}{" "}
-                  per serving /{" "}
-                  {Database.shared().formattedItemPrice(
-                    formikProps.values as ItemInferredType,
-                    false
-                  )}{" "}
-                  total
+                  YY per serving / ZZ total
                 </Text>
               </VStack>
             </Center>

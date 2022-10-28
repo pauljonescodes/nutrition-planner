@@ -3337,6 +3337,11 @@ rimraf@3.0.2, rimraf@^3:
   dependencies:
     glob "^7.1.3"
 
+rxdb-hooks@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/rxdb-hooks/-/rxdb-hooks-4.0.3.tgz#fb461f0e0e90d0782fb97185e4076d60698985b2"
+  integrity sha512-OlJKA6t1trJOjOEKb6eONhF0EUhRRj7IEyCAQozOb++93haRBwSWYqBu/U4Kt7sc88Z1pzbyQapF+pi9vhC9Qg==
+
 rxdb@^13.7.0:
   version "13.7.0"
   resolved "https://registry.yarnpkg.com/rxdb/-/rxdb-13.7.0.tgz#d95a42117d801889254a06aa1ad1fe67bcb7fe21"

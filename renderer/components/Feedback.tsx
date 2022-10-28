@@ -14,13 +14,17 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { Fragment, useContext } from "react";
+import { Fragment, LegacyRef, useContext, useRef } from "react";
+import { useRxCollection } from "rxdb-hooks";
 import { AppContext } from "../context/AppContext";
+import { ItemDocument } from "../data/Database";
 import { IngredientForm } from "../forms/IngredientForm";
 import { RecipeForm } from "../forms/RecipeForm";
 
 export function Feedback() {
   const appContext = useContext(AppContext);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const items = useRxCollection<ItemDocument>("items");
 
   return (
     <Fragment>
@@ -44,14 +48,9 @@ export function Feedback() {
             <IngredientForm
               item={appContext.updateItem}
               onSubmit={async (item) => {
-                console.log(appContext.database);
                 appContext.setAppState!({});
-                console.log(item.id);
-
-                const result = await appContext.database?.items.upsert({
-                  ...item,
-                });
-                console.log(`asdasd ${result}`);
+                console.log(item);
+                items?.upsert(item);
               }}
             />
           </DrawerBody>
@@ -87,7 +86,7 @@ export function Feedback() {
       <AlertDialog
         isOpen={appContext.deleteItem !== undefined}
         onClose={() => {}}
-        leastDestructiveRef={undefined}
+        leastDestructiveRef={cancelRef}
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
@@ -99,21 +98,17 @@ export function Feedback() {
 
             <AlertDialogFooter>
               <ButtonGroup>
-                <Button onClick={() => appContext.setAppState!({})}>
+                <Button
+                  onClick={() => appContext.setAppState!({})}
+                  ref={cancelRef as LegacyRef<HTMLButtonElement>}
+                >
                   Cancel
                 </Button>
                 <Button
                   colorScheme="red"
                   onClick={async () => {
                     const id = appContext.deleteItem?.id;
-                    console.log(id);
-                    if (id !== undefined) {
-                      console.log(appContext.database);
-                      const result =
-                        await appContext.database?.items.bulkRemove([id]);
-                      console.log(result);
-                    }
-
+                    await items?.findOne({ selector: { id: id } }).remove();
                     appContext.setAppState!({});
                   }}
                 >

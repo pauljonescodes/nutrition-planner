@@ -17,7 +17,7 @@ export function MenuHStack() {
   return (
     <AppContext.Consumer>
       {(appStateValue) => (
-        <HStack p={3} position="fixed" top="0" bg={color} width="100%">
+        <HStack p={3} bg={color} width={"100vw"} overflowX="scroll">
           <ButtonGroup isAttached>
             <Button
               isActive={router.pathname === "/"}

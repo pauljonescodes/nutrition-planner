@@ -17,9 +17,10 @@ import {
 import { useEffect, useState } from "react";
 import { Pagination } from "../components/Pagination";
 import { AppContext } from "../context/AppContext";
-import { Database, ItemQueryParameters } from "../data/Database";
+import { ItemQueryParameters } from "../data/Database";
 import { ItemInferredType, yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
+import { nutritionInfo } from "../data/NutritionInfo";
 
 const RecipesPage = () => {
   const [data, setData] = useState<Array<ItemInferredType> | undefined>(
@@ -120,11 +121,8 @@ const RecipesPage = () => {
             </Thead>
             <Tbody>
               {data?.map((value) => {
-                const nutritionInfo = Database.shared().itemNutrition(
-                  value,
-                  true
-                );
-                const price = Database.shared().itemPrice(value, true);
+                const info = nutritionInfo();
+                const price = 0;
                 return (
                   <Tr key={value.id}>
                     <Td>
@@ -158,15 +156,15 @@ const RecipesPage = () => {
                       <Td isNumeric>{value.count}</Td>
                     </Show>
                     <Show above="lg">
-                      <Td isNumeric>{nutritionInfo.massGrams}g</Td>
+                      <Td isNumeric>{info.massGrams}g</Td>
                     </Show>
                     <Show above="xl">
-                      <Td isNumeric>{nutritionInfo.energyKilocalorie}</Td>
+                      <Td isNumeric>{info.energyKilocalorie}</Td>
                     </Show>
                     <Show above="2xl">
-                      <Td isNumeric>{nutritionInfo.fatGrams}g</Td>
-                      <Td isNumeric>{nutritionInfo.carbohydrateGrams}g</Td>
-                      <Td isNumeric>{nutritionInfo.proteinGrams}g</Td>
+                      <Td isNumeric>{info.fatGrams}g</Td>
+                      <Td isNumeric>{info.carbohydrateGrams}g</Td>
+                      <Td isNumeric>{info.proteinGrams}g</Td>
                     </Show>
                   </Tr>
                 );
