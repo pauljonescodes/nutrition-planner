@@ -7,24 +7,11 @@ import {
 } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import { Provider } from "rxdb-hooks";
-import { Feedback } from "../components/Feedback";
+import { Provider as RxDbProvider } from "rxdb-hooks";
 import { MenuHStack } from "../components/MenuHStack";
-import { AppContext } from "../context/AppContext";
-import { AppState } from "../context/AppState";
 import { createDatabase, DatabaseType } from "../data/Database";
 
 export default function App(props: AppProps) {
-  const [appState, setAppState] = useState<AppState>({
-    ingredientFormDrawerIsOpen: false,
-    setAppState: (value) => {
-      setAppState({
-        ...value,
-        setAppState: appState.setAppState,
-      });
-    },
-  });
-
   const [database, setDatabase] = useState<DatabaseType | undefined>(undefined);
 
   useEffect(() => {
@@ -41,19 +28,15 @@ export default function App(props: AppProps) {
   });
 
   return (
-    <Provider db={database}>
-      <AppContext.Provider value={appState}>
-        <ChakraProvider theme={theme}>
-          <VStack spacing={0} align="stretch">
-            <MenuHStack />
-            <Box>
-              <props.Component {...props.pageProps} />
-            </Box>
-          </VStack>
-
-          <Feedback />
-        </ChakraProvider>
-      </AppContext.Provider>
-    </Provider>
+    <RxDbProvider db={database}>
+      <ChakraProvider theme={theme}>
+        <VStack spacing={0} align="stretch">
+          <MenuHStack />
+          <Box>
+            <props.Component {...props.pageProps} />
+          </Box>
+        </VStack>
+      </ChakraProvider>
+    </RxDbProvider>
   );
 }

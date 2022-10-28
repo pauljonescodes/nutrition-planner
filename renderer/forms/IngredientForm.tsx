@@ -14,13 +14,13 @@ import {
   dataid,
   ItemDocument,
 } from "../data/Database";
-import { ItemInferredType, yupItemSchema } from "../data/model/Item";
+import { yupItemSchema } from "../data/model/Item";
 import { ItemType } from "../data/model/ItemType";
 import { nutritionInfoDescription } from "../data/NutritionInfo";
 
 export interface ItemFormProps {
   item?: ItemDocument;
-  onSubmit: (item: ItemInferredType) => void;
+  onSubmit: (item: ItemDocument) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -45,7 +45,7 @@ export function IngredientForm(props: ItemFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={async (values, helpers) => {
-        props.onSubmit(values as ItemInferredType);
+        props.onSubmit(values as ItemDocument);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -64,9 +64,6 @@ export function IngredientForm(props: ItemFormProps) {
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
               inputFieldRef={props.firstInputFieldRef}
-              onPaste={(event) => {
-                console.log(event.clipboardData.getData("text"));
-              }}
             />
             <ValidatedFormikControlNumberInput
               value={
