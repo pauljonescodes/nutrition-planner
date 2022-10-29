@@ -1,11 +1,11 @@
 import { FieldArray, FormikProps } from "formik";
-import { ItemInferredType } from "../../data/model/Item";
-import { yupItemInItemSchema } from "../../data/model/ItemInItem";
-import { ItemInItemField } from "./Field";
+import { ItemType } from "../../../data/yup/item";
+import { yupItemInItemSchema } from "../../../data/yup/item-in-item";
+import { ItemInItemField } from "./ItemInItemField";
 
 interface ItemInItemFieldArrayProps {
   thisItemId: string;
-  formikProps: FormikProps<ItemInferredType>;
+  formikProps: FormikProps<ItemType>;
 }
 
 export function ItemInItemFieldArray(props: ItemInItemFieldArrayProps) {

@@ -17,19 +17,38 @@ import {
 } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
+import { IngredientDrawer } from "../components/drawers/IngredientDrawer";
 import { Pagination } from "../components/Pagination";
-import { databaseCurrencyFormatter, ItemDocument } from "../data/Database";
-import { yupItemSchema } from "../data/model/Item";
-import { ItemType } from "../data/model/ItemType";
+import { dataid } from "../data/dataid";
+import { ItemTypeEnum } from "../data/ItemTypeEnum";
+import { ItemDocument } from "../data/rxdb/item";
+import { yupItemSchema } from "../data/yup/item";
 
 const ItemsPage = () => {
   const [page, setPage] = useState(0);
   const [nameSearch, setNameSearch] = useState<string>("");
   const [numberOfCellsForUsableHeight, setNumberOfCellsForUsableHeight] =
     useState<number | undefined>(undefined);
-
-  const [updateItem, setUpdateItem] = useState<ItemDocument | null>(null);
+  const [drawerItem, setDrawerItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
+  const collection = useRxCollection<ItemDocument>("items");
+  const { result, fetchPage, pageCount, isFetching } = useRxQuery(
+    collection?.find({
+      selector: {
+        type: ItemTypeEnum.ingredient,
+        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+      },
+    })!,
+    {
+      pageSize: numberOfCellsForUsableHeight,
+      pagination: "Traditional",
+    }
+  );
+  const [loadingResult, setLoadingResult] = useState<Array<ItemDocument>>(
+    buildLoadingResult()
+  );
+
+  const numberFormatter = new Intl.NumberFormat();
 
   function handleResize() {
     const usableHeight = (window.innerHeight ?? 0) - 64 * 2 - 40;
@@ -39,7 +58,15 @@ const ItemsPage = () => {
     );
     if (newNumberOfCellsForUsableHeight !== numberOfCellsForUsableHeight) {
       setNumberOfCellsForUsableHeight(newNumberOfCellsForUsableHeight);
+      setLoadingResult(buildLoadingResult());
     }
+  }
+
+  function buildLoadingResult() {
+    return Array(numberOfCellsForUsableHeight).fill({
+      ...yupItemSchema.getDefault(),
+      id: dataid(),
+    });
   }
 
   useEffect(() => {
@@ -49,19 +76,6 @@ const ItemsPage = () => {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
-
-  const { result, fetchPage, pageCount, isFetching } = useRxQuery(
-    useRxCollection<ItemDocument>("items")?.find({
-      selector: {
-        type: ItemType.ingredient,
-        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
-      },
-    })!,
-    {
-      pageSize: numberOfCellsForUsableHeight,
-      pagination: "Traditional",
-    }
-  );
 
   return (
     <Fragment>
@@ -105,85 +119,82 @@ const ItemsPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {(isFetching
-              ? Array(numberOfCellsForUsableHeight).fill(
-                  yupItemSchema.getDefault()
-                )
-              : result
-            ).map((value: ItemDocument) => (
-              <Tr key={value.id}>
-                <Td>
-                  <Skeleton isLoaded={!isFetching}>
-                    <ButtonGroup isAttached>
-                      <IconButton
-                        icon={<EditIcon />}
-                        aria-label="Edit"
-                        onClick={() => {
-                          setUpdateItem(value);
-                        }}
-                      />
-                      <IconButton
-                        icon={<DeleteIcon />}
-                        aria-label="Delete"
-                        onClick={() => {
-                          setDeleteItem(value);
-                        }}
-                      />
-                    </ButtonGroup>
-                  </Skeleton>
-                </Td>
-                <Td>
-                  <Skeleton isLoaded={!isFetching}>
-                    {value.name.length > 0 ? (
-                      <Text noOfLines={2}>{value.name}</Text>
-                    ) : (
-                      "a"
-                    )}
-                  </Skeleton>
-                </Td>
-                <Show above="md">
-                  <Td isNumeric>
+            {(isFetching ? loadingResult : result).map(
+              (value: ItemDocument) => (
+                <Tr key={value.id}>
+                  <Td>
                     <Skeleton isLoaded={!isFetching}>
-                      {databaseCurrencyFormatter.format(value.priceCents / 100)}
+                      <ButtonGroup isAttached>
+                        <IconButton
+                          icon={<EditIcon />}
+                          aria-label="Edit"
+                          onClick={() => {
+                            setDrawerItem(value);
+                          }}
+                        />
+                        <IconButton
+                          icon={<DeleteIcon />}
+                          aria-label="Delete"
+                          onClick={() => {
+                            setDeleteItem(value);
+                          }}
+                        />
+                      </ButtonGroup>
                     </Skeleton>
                   </Td>
-                </Show>
-                <Show above="lg">
-                  <Td isNumeric>
-                    <Skeleton isLoaded={!isFetching}>{value.count}</Skeleton>
-                  </Td>
-                  <Td isNumeric>
+                  <Td>
                     <Skeleton isLoaded={!isFetching}>
-                      {value.massGrams}g
+                      {value.name.length > 0 ? (
+                        <Text noOfLines={2}>{value.name}</Text>
+                      ) : (
+                        "a"
+                      )}
                     </Skeleton>
                   </Td>
-                </Show>
-                <Show above="xl">
-                  <Td isNumeric>
-                    <Skeleton isLoaded={!isFetching}>
-                      {value.energyKilocalorie}
-                    </Skeleton>
-                  </Td>
-                </Show>
-                <Show above="2xl">
-                  <Td isNumeric>
-                    <Skeleton isLoaded={!isFetching}>
-                      {value.fatGrams}g
-                    </Skeleton>
-                  </Td>
-                  <Td isNumeric>
-                    <Skeleton isLoaded={!isFetching}>
-                      {value.carbohydrateGrams}g
-                    </Skeleton>
-                  </Td>
-                  <Td isNumeric>
-                    <Skeleton isLoaded={!isFetching}>
-                      {value.proteinGrams}g
-                    </Skeleton>
-                  </Td>
-                </Show>
-              </Tr>
-            ))}
+                  <Show above="md">
+                    <Td isNumeric>
+                      <Skeleton isLoaded={!isFetching}>
+                        {numberFormatter.format(value.priceCents / 100)}
+                      </Skeleton>
+                    </Td>
+                  </Show>
+                  <Show above="lg">
+                    <Td isNumeric>
+                      <Skeleton isLoaded={!isFetching}>{value.count}</Skeleton>
+                    </Td>
+                    <Td isNumeric>
+                      <Skeleton isLoaded={!isFetching}>
+                        {value.massGrams}g
+                      </Skeleton>
+                    </Td>
+                  </Show>
+                  <Show above="xl">
+                    <Td isNumeric>
+                      <Skeleton isLoaded={!isFetching}>
+                        {value.energyKilocalorie}
+                      </Skeleton>
+                    </Td>
+                  </Show>
+                  <Show above="2xl">
+                    <Td isNumeric>
+                      <Skeleton isLoaded={!isFetching}>
+                        {value.fatGrams}g
+                      </Skeleton>
+                    </Td>
+                    <Td isNumeric>
+                      <Skeleton isLoaded={!isFetching}>
+                        {value.carbohydrateGrams}g
+                      </Skeleton>
+                    </Td>
+                    <Td isNumeric>
+                      <Skeleton isLoaded={!isFetching}>
+                        {value.proteinGrams}g
+                      </Skeleton>
+                    </Td>
+                  </Show>
+                </Tr>
+              )
+            )}
           </Tbody>
         </Table>
         <Center p={3} position="fixed" bottom="0" width="100%">
@@ -197,6 +208,15 @@ const ItemsPage = () => {
           />
         </Center>
       </Box>
+      <IngredientDrawer
+        item={drawerItem}
+        onResult={(item) => {
+          setDrawerItem(null);
+          if (item) {
+            collection?.upsert(item);
+          }
+        }}
+      />
     </Fragment>
   );
 };

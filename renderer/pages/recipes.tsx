@@ -16,19 +16,16 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Pagination } from "../components/Pagination";
-import { ItemQueryParameters } from "../data/Database";
-import { ItemInferredType, yupItemSchema } from "../data/model/Item";
-import { ItemType } from "../data/model/ItemType";
-import { nutritionInfo } from "../data/NutritionInfo";
+import { ItemTypeEnum } from "../data/ItemTypeEnum";
+import { nutritionInfo } from "../data/nutrition-info";
+import { ItemType, yupItemSchema } from "../data/yup/item";
 
 const RecipesPage = () => {
-  const [data, setData] = useState<Array<ItemInferredType> | undefined>(
-    undefined
-  );
+  const [data, setData] = useState<Array<ItemType> | undefined>(undefined);
   const [dataCount, setDataCount] = useState<number | undefined>(undefined);
   const [progressPending, setProgressPending] = useState(false);
-  const [queryParameters, setQueryParameters] = useState<ItemQueryParameters>({
-    type: ItemType.recipe,
+  const [queryParameters, setQueryParameters] = useState<any>({
+    type: ItemTypeEnum.recipe,
     page: 0,
     limit: 1,
     reverse: false,

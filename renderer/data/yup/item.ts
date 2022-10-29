@@ -1,9 +1,12 @@
 import * as Yup from "yup";
-import { ItemType } from "./ItemType";
+import { ItemTypeEnum } from "../ItemTypeEnum";
 
 export const yupItemSchema = Yup.object({
   id: Yup.string().label("ID").required(),
-  type: Yup.mixed<ItemType>().oneOf(Object.values(ItemType)).required(),
+  type: Yup.mixed<ItemTypeEnum>()
+    .oneOf(Object.values(ItemTypeEnum))
+    .default(ItemTypeEnum.ingredient)
+    .required(),
   name: Yup.string()
     .label("Name")
     .meta({
@@ -70,4 +73,4 @@ export const yupItemSchema = Yup.object({
     .required(),
 });
 
-export type ItemInferredType = Yup.InferType<typeof yupItemSchema>;
+export type ItemType = Yup.InferType<typeof yupItemSchema>;

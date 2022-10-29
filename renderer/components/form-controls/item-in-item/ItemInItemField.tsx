@@ -1,28 +1,22 @@
 import { AddIcon } from "@chakra-ui/icons";
-import {
-  Button,
-  Center,
-  FormControl,
-  FormLabel,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, FormLabel, VStack } from "@chakra-ui/react";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useEffect, useState } from "react";
-import { dataid } from "../../data/Database";
-import { ItemInferredType } from "../../data/model/Item";
+import { dataid } from "../../../data/dataid";
+import { ItemType } from "../../../data/yup/item";
 import {
   ItemInItemInferredType,
   yupItemInItemSchema,
-} from "../../data/model/ItemInItem";
-import { ItemInItemFieldInput } from "./FieldInput";
+} from "../../../data/yup/item-in-item";
+import { ItemInItemAutoCompleteInput } from "./ItemInItemAutoCompleteInput";
 
 interface ItemSearchResults {
-  results: Array<ItemInferredType>;
+  results: Array<ItemType>;
 }
 
 interface ItemInItemFieldProps {
   thisItemId: string;
-  formikProps: FormikProps<ItemInferredType>;
+  formikProps: FormikProps<ItemType>;
   fieldArrayHelpers: FieldArrayRenderProps;
 }
 
@@ -38,33 +32,31 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
   }, []);
   return (
     <VStack spacing={0} pb={2}>
-      <FormControl>
-        <FormLabel>{yupItemInItemSchema.spec.label}</FormLabel>
-        {itemsInItem.map((value, index) => {
-          const options =
-            index < recipeSearchsState.length
-              ? recipeSearchsState[index].results?.map((value) => {
-                  return value!;
-                }) ?? []
-              : [];
-          return (
-            <ItemInItemFieldInput
-              autoCompleteOnChange={async (value) => {
-                let theItemSearchs = recipeSearchsState;
-                // theItemSearchs[index].results =
-                //   (await Database.shared().filteredItems(value)) ?? [];
-                setItemSearchesState([...theItemSearchs]);
-              }}
-              value={value}
-              index={index}
-              thisItemId={props.thisItemId}
-              formikProps={props.formikProps}
-              fieldArrayHelpers={props.fieldArrayHelpers}
-              options={options}
-            />
-          );
-        })}
-      </FormControl>
+      <FormLabel>{yupItemInItemSchema.spec.label}</FormLabel>
+      {itemsInItem.map((value, index) => {
+        const options =
+          index < recipeSearchsState.length
+            ? recipeSearchsState[index].results?.map((value) => {
+                return value!;
+              }) ?? []
+            : [];
+        return (
+          <ItemInItemAutoCompleteInput
+            autoCompleteOnChange={async (value) => {
+              let theItemSearchs = recipeSearchsState;
+              // theItemSearchs[index].results =
+              //   (await Database.shared().filteredItems(value)) ?? [];
+              setItemSearchesState([...theItemSearchs]);
+            }}
+            value={value}
+            index={index}
+            thisItemId={props.thisItemId}
+            formikProps={props.formikProps}
+            fieldArrayHelpers={props.fieldArrayHelpers}
+            options={options}
+          />
+        );
+      })}
       <Center>
         <Button
           onClick={() => {

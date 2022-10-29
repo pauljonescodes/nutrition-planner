@@ -1,155 +1,78 @@
-import { nanoid } from "nanoid";
-import {
-  addRxPlugin,
-  createRxDatabase,
-  RxCollection,
-  RxDatabase,
-  RxDocument,
-  RxJsonSchema,
-} from "rxdb";
-import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
-import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
-import { ItemInferredType } from "./model/Item";
-import { ItemType } from "./model/ItemType";
-import {
-  addNutritionInfo,
-  divideNutritionInfo,
-  multiplyNutritionInfo,
-  nutritionInfo,
-  NutritionInfo,
-  sumNutritionInfo,
-} from "./NutritionInfo";
-
-export interface ItemQueryParameters {
-  name?: string;
-  type: ItemType;
-  limit: number;
-  page: number;
-  sortBy?: keyof ItemInferredType;
-  reverse?: boolean;
+export interface NutritionInfo {
+  massGrams: number;
+  energyKilocalorie: number;
+  fatGrams: number;
+  carbohydrateGrams: number;
+  proteinGrams: number;
 }
 
-type ItemDocumentMethods = {
-  nutrition: () => NutritionInfo;
-  servingPriceCents: () => number;
-};
-
-export const databaseCurrencyFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-
-export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
-
-export type ItemCollection = RxCollection<
-  ItemInferredType,
-  ItemDocumentMethods
->;
-
-export type DatabaseCollections = {
-  items: ItemCollection;
-};
-
-export type DatabaseType = RxDatabase<DatabaseCollections>;
-
-export function dataid(): string {
-  var anId = nanoid();
-
-  while (anId[0] === "_") {
-    anId = nanoid();
-  }
-
-  return anId;
+export function nutritionInfoDescription(value: NutritionInfo): string {
+  return `${value.massGrams}g / ${value.energyKilocalorie}kcal / ${value.fatGrams}g fat / ${value.carbohydrateGrams}g carb / ${value.proteinGrams}g protein`;
 }
 
-export async function createDatabase(): Promise<DatabaseType | undefined> {
-  var database: DatabaseType | undefined;
-
-  addPouchPlugin(require("pouchdb-adapter-idb"));
-
-  addRxPlugin(RxDBQueryBuilderPlugin);
-
-  try {
-    database = await createRxDatabase<DatabaseCollections>({
-      name: "rxdatabase",
-      storage: getRxStoragePouch("idb", {}),
-    });
-  } catch (error) {
-    console.log(error);
-  }
-
-  const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
-    version: 0,
-    primaryKey: "id",
-    type: "object",
-    properties: {
-      id: {
-        type: "string",
-      },
-      type: {
-        type: "string",
-      },
-      name: {
-        type: "string",
-      },
-      count: {
-        type: "number",
-      },
-      priceCents: {
-        type: "number",
-      },
-      massGrams: {
-        type: "number",
-      },
-      energyKilocalorie: {
-        type: "number",
-      },
-      fatGrams: {
-        type: "number",
-      },
-      carbohydrateGrams: {
-        type: "number",
-      },
-      proteinGrams: {
-        type: "number",
-      },
-    } as any,
-    required: [],
+export function nutritionInfo(): NutritionInfo {
+  return {
+    massGrams: 0,
+    energyKilocalorie: 0,
+    fatGrams: 0,
+    carbohydrateGrams: 0,
+    proteinGrams: 0,
   };
-
-  const itemDocumentMethods: ItemDocumentMethods = {
-    nutrition: function (this: ItemDocument): NutritionInfo {
-      if (this.count === undefined) {
-        return nutritionInfo();
-      }
-
-      const base = multiplyNutritionInfo(this, this.count);
-      const sub = divideNutritionInfo(
-        sumNutritionInfo(
-          [].map(
-            (
-              value // this.itemInItems
-            ) => nutritionInfo() // totalItemInItemNutrition(value)
-          )
-        ),
-        this.count
-      );
-      return addNutritionInfo(base, sub);
-    },
-    servingPriceCents: function (this: ItemDocument): number {
-      return this.priceCents / this.count;
-    },
-  };
-
-  await database?.addCollections({
-    items: {
-      schema: itemDocumentSchema,
-      methods: itemDocumentMethods,
-    },
-  });
-
-  return database;
 }
+
+export function addNutritionInfo(
+  lhs: NutritionInfo,
+  rhs: NutritionInfo
+): NutritionInfo {
+  return {
+    massGrams: (lhs.massGrams ?? 0) + (rhs.massGrams ?? 0),
+    energyKilocalorie:
+      (lhs.energyKilocalorie ?? 0) + (rhs.energyKilocalorie ?? 0),
+    fatGrams: (lhs.fatGrams ?? 0) + (rhs.fatGrams ?? 0),
+    carbohydrateGrams:
+      (lhs.carbohydrateGrams ?? 0) + (rhs.carbohydrateGrams ?? 0),
+    proteinGrams: (lhs.proteinGrams ?? 0) + (rhs.proteinGrams ?? 0),
+  };
+}
+
+export function sumNutritionInfo(info: Array<NutritionInfo>): NutritionInfo {
+  return info.reduce(
+    (previousValue, currentValue) =>
+      addNutritionInfo(previousValue, currentValue),
+    nutritionInfo()
+  );
+}
+
+export function divideNutritionInfo(
+  lhs: NutritionInfo,
+  rhs: number
+): NutritionInfo {
+  return {
+    massGrams: Math.round((lhs.massGrams ?? 0) / rhs),
+    energyKilocalorie: Math.round((lhs.energyKilocalorie ?? 0) / rhs),
+    fatGrams: Math.round((lhs.fatGrams ?? 0) / rhs),
+    carbohydrateGrams: Math.round((lhs.carbohydrateGrams ?? 0) / rhs),
+    proteinGrams: Math.round((lhs.proteinGrams ?? 0) / rhs),
+  };
+}
+
+export function multiplyNutritionInfo(
+  lhs: NutritionInfo,
+  rhs: number
+): NutritionInfo {
+  return {
+    massGrams: Math.round((lhs.massGrams ?? 0) * rhs),
+    energyKilocalorie: Math.round((lhs.energyKilocalorie ?? 0) * rhs),
+    fatGrams: Math.round((lhs.fatGrams ?? 0) * rhs),
+    carbohydrateGrams: Math.round((lhs.carbohydrateGrams ?? 0) * rhs),
+    proteinGrams: Math.round((lhs.proteinGrams ?? 0) * rhs),
+  };
+}
+
+// export const databaseCurrencyFormatter = new Intl.NumberFormat("en-US", {
+//   style: "currency",
+//   currency: "USD",
+// });
 
 // export class Database {
 

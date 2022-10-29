@@ -6,7 +6,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { ItemDocument } from "../data/Database";
+import { ItemDocument } from "../../data/rxdb/item";
 import { RecipeForm } from "../forms/RecipeForm";
 
 type RecipeDrawerProps = {

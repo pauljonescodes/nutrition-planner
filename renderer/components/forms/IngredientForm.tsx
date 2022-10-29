@@ -7,32 +7,28 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { FormEvent, RefObject } from "react";
-import { ValidatedFormikControlInput } from "../components/ValidatedFormikControlInput";
-import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
-import {
-  databaseCurrencyFormatter,
-  dataid,
-  ItemDocument,
-} from "../data/Database";
-import { yupItemSchema } from "../data/model/Item";
-import { ItemType } from "../data/model/ItemType";
-import { nutritionInfoDescription } from "../data/NutritionInfo";
+import { dataid } from "../../data/dataid";
+import { ItemTypeEnum } from "../../data/ItemTypeEnum";
+import { ItemType, yupItemSchema } from "../../data/yup/item";
+import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
+import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
 
 export interface ItemFormProps {
-  item?: ItemDocument;
-  onSubmit: (item: ItemDocument) => void;
+  item: ItemType | null;
+  onSubmit: (item: ItemType) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
 export function IngredientForm(props: ItemFormProps) {
   const thisItemId = props.item?.id ?? dataid();
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const numberFormatter = new Intl.NumberFormat();
 
   return (
-    <Formik<Partial<ItemDocument>>
+    <Formik<Partial<ItemType>>
       initialValues={{
         ...yupItemSchema.getDefault(),
-        type: ItemType.ingredient,
+        type: ItemTypeEnum.ingredient,
         name: props.item?.name,
         count: props.item?.count,
         priceCents: props.item?.priceCents,
@@ -45,7 +41,7 @@ export function IngredientForm(props: ItemFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={async (values, helpers) => {
-        props.onSubmit(values as ItemDocument);
+        props.onSubmit(values as ItemType);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -57,7 +53,7 @@ export function IngredientForm(props: ItemFormProps) {
               formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
             }}
           >
-            <ValidatedFormikControlInput
+            <ValidatedFormikControl
               value={formikProps.values.name}
               error={formikProps.errors.name}
               yupSchemaField={yupItemSchema.fields.name}
@@ -65,7 +61,7 @@ export function IngredientForm(props: ItemFormProps) {
               spaceProps={{ pb: 2 }}
               inputFieldRef={props.firstInputFieldRef}
             />
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={
                 formikProps.values.priceCents
                   ? formikProps.values.priceCents / 100
@@ -78,21 +74,21 @@ export function IngredientForm(props: ItemFormProps) {
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={formikProps.values.count}
               error={formikProps.errors.count}
               yupSchemaField={yupItemSchema.fields.count}
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={formikProps.values.massGrams}
               error={formikProps.errors.massGrams}
               yupSchemaField={yupItemSchema.fields.massGrams}
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={formikProps.values.energyKilocalorie}
               error={formikProps.errors.energyKilocalorie}
               yupSchemaField={yupItemSchema.fields.energyKilocalorie}
@@ -100,21 +96,21 @@ export function IngredientForm(props: ItemFormProps) {
               spaceProps={{ pb: 2 }}
             />
 
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={formikProps.values.fatGrams}
               error={formikProps.errors.fatGrams}
               yupSchemaField={yupItemSchema.fields.fatGrams}
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={formikProps.values.carbohydrateGrams}
               error={formikProps.errors.carbohydrateGrams}
               yupSchemaField={yupItemSchema.fields.carbohydrateGrams}
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={formikProps.values.proteinGrams}
               error={formikProps.errors.proteinGrams}
               yupSchemaField={yupItemSchema.fields.proteinGrams}
@@ -138,8 +134,8 @@ export function IngredientForm(props: ItemFormProps) {
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  {props.item?.nutrition() &&
-                    nutritionInfoDescription(props.item?.nutrition())}
+                  {/* {props.item?.nutrition() &&
+                    nutritionInfoDescription(props.item?.nutrition())} */}
                 </Text>
                 <Text
                   color={alphaColor}
@@ -149,10 +145,10 @@ export function IngredientForm(props: ItemFormProps) {
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  {databaseCurrencyFormatter.format(
+                  {/* {numberFormatter.format(
                     (props.item?.servingPriceCents() ?? 0) / 100
                   )}{" "}
-                  / serving
+                  / serving */}
                 </Text>
               </VStack>
             </Center>

@@ -17,13 +17,13 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
-import { ItemInferredType as ModelItem } from "../../data/model/Item";
+import { ItemType as ModelItem } from "../../../data/yup/item";
 import {
   ItemInItemInferredType,
   yupItemInItemSchema,
-} from "../../data/model/ItemInItem";
+} from "../../../data/yup/item-in-item";
 
-interface ItemInItemFieldInputProps {
+interface ItemInItemAutoCompleteInputProps {
   value: ItemInItemInferredType;
   index: number;
   thisItemId: string;
@@ -33,7 +33,9 @@ interface ItemInItemFieldInputProps {
   autoCompleteOnChange: (value: string) => void;
 }
 
-export function ItemInItemFieldInput(props: ItemInItemFieldInputProps) {
+export function ItemInItemAutoCompleteInput(
+  props: ItemInItemAutoCompleteInputProps
+) {
   const [selectedFieldValueName, setSelectedFieldValueName] = useState<
     string | undefined
   >(undefined);

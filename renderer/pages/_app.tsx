@@ -9,7 +9,7 @@ import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { Provider as RxDbProvider } from "rxdb-hooks";
 import { MenuHStack } from "../components/MenuHStack";
-import { createDatabase, DatabaseType } from "../data/Database";
+import { createDatabase, DatabaseType } from "../data/rxdb/database";
 
 export default function App(props: AppProps) {
   const [database, setDatabase] = useState<DatabaseType | undefined>(undefined);

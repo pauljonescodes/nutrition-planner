@@ -10,7 +10,7 @@ import { FormikProps } from "formik";
 import { ChangeEvent } from "react";
 import { BaseSchema } from "yup";
 
-interface ValidatedFormikControlNumberInputProps<T> {
+interface ValidatedFormikNumberControlProps<T> {
   formikProps: FormikProps<T>;
   yupSchemaField: BaseSchema;
   value?: number; // props.formikProps.values.name as string | undefined
@@ -20,8 +20,8 @@ interface ValidatedFormikControlNumberInputProps<T> {
   format?: (value: number | undefined) => number;
 }
 
-export function ValidatedFormikControlNumberInput<T>(
-  props: ValidatedFormikControlNumberInputProps<T>
+export function ValidatedFormikNumberControl<T>(
+  props: ValidatedFormikNumberControlProps<T>
 ) {
   return (
     <FormControl {...props.spaceProps} isInvalid={props.error !== undefined}>

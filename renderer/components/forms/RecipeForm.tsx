@@ -7,16 +7,16 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { FormEvent, RefObject } from "react";
-import { ValidatedFormikControlInput } from "../components/ValidatedFormikControlInput";
-import { ValidatedFormikControlNumberInput } from "../components/ValidatedFormikControlNumberInput";
-import { dataid } from "../data/Database";
-import { ItemInferredType, yupItemSchema } from "../data/model/Item";
-import { ItemType } from "../data/model/ItemType";
-import { ItemInItemFieldArray } from "./ItemInItem/FieldArray";
+import { dataid } from "../../data/dataid";
+import { ItemTypeEnum } from "../../data/ItemTypeEnum";
+import { ItemType, yupItemSchema } from "../../data/yup/item";
+import { ItemInItemFieldArray } from "../form-controls/item-in-item/ItemInItemFieldArray";
+import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
+import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
 
 export interface RecipeFormProps {
-  item?: ItemInferredType;
-  onSubmit: (item: ItemInferredType) => void;
+  item?: ItemType;
+  onSubmit: (item: ItemType) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -25,16 +25,16 @@ export function RecipeForm(props: RecipeFormProps) {
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
-    <Formik<ItemInferredType>
+    <Formik<ItemType>
       initialValues={{
         ...yupItemSchema.getDefault(),
         ...props.item,
-        type: ItemType.recipe,
+        type: ItemTypeEnum.recipe,
         id: thisItemId,
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit(values as ItemInferredType);
+        props.onSubmit(values as ItemType);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -48,7 +48,7 @@ export function RecipeForm(props: RecipeFormProps) {
               formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
             }}
           >
-            <ValidatedFormikControlInput
+            <ValidatedFormikControl
               value={formikProps.values.name}
               error={formikProps.errors.name}
               yupSchemaField={yupItemSchema.fields.name}
@@ -57,7 +57,7 @@ export function RecipeForm(props: RecipeFormProps) {
               inputFieldRef={props.firstInputFieldRef}
             />
 
-            <ValidatedFormikControlNumberInput
+            <ValidatedFormikNumberControl
               value={formikProps.values.count}
               error={formikProps.errors.count}
               yupSchemaField={yupItemSchema.fields.count}

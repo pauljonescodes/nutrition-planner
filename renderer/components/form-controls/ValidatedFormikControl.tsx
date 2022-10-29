@@ -18,7 +18,7 @@ interface ValidatedFormikControlProps<T> {
   inputFieldRef?: RefObject<HTMLInputElement>;
 }
 
-export function ValidatedFormikControlInput<T>(
+export function ValidatedFormikControl<T>(
   props: ValidatedFormikControlProps<T>
 ) {
   return (
