@@ -32,7 +32,7 @@ export default function App(props: AppProps) {
       <ChakraProvider theme={theme}>
         <VStack spacing={0} align="stretch">
           <MenuHStack />
-          <Box>
+          <Box pt="64px">
             <props.Component {...props.pageProps} />
           </Box>
         </VStack>

@@ -29,7 +29,14 @@ export function MenuHStack() {
 
   return (
     <Fragment>
-      <HStack p={3} bg={color} width={"100vw"} overflowX="scroll">
+      <HStack
+        p={3}
+        bg={color}
+        width={"100vw"}
+        overflowX="scroll"
+        position="fixed"
+        zIndex={999}
+      >
         <ButtonGroup isAttached>
           <Button
             isActive={router.pathname === "/"}
@@ -108,7 +115,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setIngredientDrawerItem(null);
           if (item) {
-            item.createDate = new Date();
+            item.createdAt = new Date();
             collection?.upsert(item);
           }
         }}
@@ -118,7 +125,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setRecipeDrawerItem(null);
           if (item) {
-            item.createDate = new Date();
+            item.createdAt = new Date();
             collection?.upsert(item);
           }
         }}
