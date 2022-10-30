@@ -1,6 +1,8 @@
 import {
   Alert,
   AlertDescription,
+  Button,
+  Center,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
@@ -71,7 +73,20 @@ export function RecipeForm(props: RecipeFormProps) {
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
+
             <ItemInItemFieldArray formikProps={formikProps} />
+
+            <Center>
+              <VStack>
+                <Button
+                  type="submit"
+                  my={4}
+                  isLoading={formikProps.isSubmitting}
+                >
+                  Submit
+                </Button>
+              </VStack>
+            </Center>
             <VStack>
               {Object.values(formikProps.errors).map((value) => (
                 <Alert status="error">

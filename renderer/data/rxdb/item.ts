@@ -105,7 +105,8 @@ export const itemDocumentMethods: ItemDocumentMethods = {
       for (const subitem of thisSubitems ?? []) {
         const item = await this.collection.findOne(subitem.itemId).exec();
         const itemNutritionInfo =
-          (await item?.calculatedNutritionInfo(calcType)) ?? nutritionInfo();
+          (await item?.calculatedNutritionInfo(CalcTypeEnum.perServing)) ??
+          nutritionInfo();
         accumulatedNutritionInfo = addNutritionInfo(
           accumulatedNutritionInfo,
           divideNutritionInfo(
@@ -135,7 +136,8 @@ export const itemDocumentMethods: ItemDocumentMethods = {
 
       for (const subitem of thisSubitems ?? []) {
         const item = await this.collection.findOne(subitem.itemId).exec();
-        const itemPrice = (await item?.calculatedPriceCents(calcType)) ?? 0;
+        const itemPrice =
+          (await item?.calculatedPriceCents(CalcTypeEnum.perServing)) ?? 0;
         accumulatedServingPriceCents +=
           (itemPrice * (subitem.count ?? 0)) /
           (calcType === CalcTypeEnum.perServing ? this.count : 1);
