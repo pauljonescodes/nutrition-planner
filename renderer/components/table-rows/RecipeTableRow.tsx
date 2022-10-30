@@ -10,11 +10,13 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { nutritionInfo } from "../../data/nutrition-info";
+import { CalcTypeEnum } from "../../data/CalcTypeEnum";
+import { NutritionInfo } from "../../data/nutrition-info";
 import { ItemDocument } from "../../data/rxdb/item";
 
 type RecipeTableRowProps = {
   item: ItemDocument;
+  priceType: CalcTypeEnum;
   onEdit: () => void;
   onCopy: () => void;
   onDelete: () => void;
@@ -23,14 +25,19 @@ type RecipeTableRowProps = {
 export function RecipeTableRow(props: RecipeTableRowProps) {
   // const value =props.item.servingPriceCents()
   const numberFormatter = new Intl.NumberFormat();
-  const info = nutritionInfo();
-  const [servicePriceCents, setServingPriceCents] = useState<number | null>(
+  const [nutritionInfo, setNutritionInfo] = useState<NutritionInfo | null>(
     null
   );
+  const [price, setPrice] = useState<number | null>(null);
 
   useEffect(() => {
-    props.item.servingPriceCents().then((value) => setServingPriceCents(value));
-  }, [props.item]);
+    props.item
+      .calculatedPriceCents(props.priceType)
+      .then((value) => setPrice(value));
+    props.item
+      .calculatedNutritionInfo(props.priceType)
+      .then((value) => setNutritionInfo(value));
+  }, [props.item, props.priceType]);
 
   return (
     <Tr key={props.item.id}>
@@ -61,24 +68,20 @@ export function RecipeTableRow(props: RecipeTableRowProps) {
 
       <Show above="md">
         <Td isNumeric>
-          {servicePriceCents === null ? (
-            <Spinner />
-          ) : (
-            numberFormatter.format(servicePriceCents / 100)
-          )}
+          {price === null ? <Spinner /> : numberFormatter.format(price / 100)}
         </Td>
       </Show>
       <Show above="lg">
         <Td isNumeric>{props.item.count}</Td>
-        <Td isNumeric>{info.massGrams}g</Td>
+        <Td isNumeric>{nutritionInfo?.massGrams}g</Td>
       </Show>
       <Show above="xl">
-        <Td isNumeric>{info.energyKilocalorie}</Td>
+        <Td isNumeric>{nutritionInfo?.energyKilocalorie}</Td>
       </Show>
       <Show above="2xl">
-        <Td isNumeric>{info.fatGrams}g</Td>
-        <Td isNumeric>{info.carbohydrateGrams}g</Td>
-        <Td isNumeric>{info.proteinGrams}g</Td>
+        <Td isNumeric>{nutritionInfo?.fatGrams}g</Td>
+        <Td isNumeric>{nutritionInfo?.carbohydrateGrams}g</Td>
+        <Td isNumeric>{nutritionInfo?.proteinGrams}g</Td>
       </Show>
     </Tr>
   );

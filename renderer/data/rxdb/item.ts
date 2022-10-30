@@ -1,17 +1,18 @@
 import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
+import { CalcTypeEnum } from "../CalcTypeEnum";
 import {
   addNutritionInfo,
   divideNutritionInfo,
   multiplyNutritionInfo,
   nutritionInfo,
   NutritionInfo,
-  sumNutritionInfo,
 } from "../nutrition-info";
 import { ItemInferredType } from "../yup/item";
 
 export type ItemDocumentMethods = {
-  nutrition: () => NutritionInfo;
-  servingPriceCents: () => Promise<number>;
+  nutritionInfo: () => NutritionInfo;
+  calculatedNutritionInfo: (calcType: CalcTypeEnum) => Promise<NutritionInfo>;
+  calculatedPriceCents: (calcType: CalcTypeEnum) => Promise<number>;
 };
 
 export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
@@ -59,9 +60,17 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
     },
     subitems: {
       type: "array",
-      ref: "subitem",
       items: {
-        type: "string",
+        type: "object",
+        properties: {
+          count: {
+            type: "number",
+          },
+          item: {
+            ref: "item",
+            type: "string",
+          },
+        },
       },
     },
   } as any,
@@ -69,35 +78,67 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
 };
 
 export const itemDocumentMethods: ItemDocumentMethods = {
-  nutrition: function (this: ItemDocument): NutritionInfo {
-    if (this.count === undefined) {
-      return nutritionInfo();
-    }
-
-    const base = multiplyNutritionInfo(this, this.count);
-    const sub = divideNutritionInfo(
-      sumNutritionInfo(
-        [].map(
-          (
-            value // this.itemInItems
-          ) => nutritionInfo() // totalItemInItemNutrition(value)
-        )
-      ),
-      this.count
-    );
-    return addNutritionInfo(base, sub);
+  nutritionInfo: function (this: ItemDocument): NutritionInfo {
+    return {
+      massGrams: this.massGrams,
+      energyKilocalorie: this.energyKilocalorie,
+      fatGrams: this.fatGrams,
+      carbohydrateGrams: this.carbohydrateGrams,
+      proteinGrams: this.proteinGrams,
+    };
   },
-  servingPriceCents: async function (this: ItemDocument): Promise<number> {
+  calculatedNutritionInfo: async function (
+    this: ItemDocument,
+    calcType: CalcTypeEnum
+  ): Promise<NutritionInfo> {
     const thisSubitems = this.subitems ?? [];
     if (thisSubitems.length === 0) {
-      return this.priceCents;
+      switch (calcType) {
+        case CalcTypeEnum.perServing:
+          return divideNutritionInfo(this.nutritionInfo(), this.count);
+        case CalcTypeEnum.total:
+          return this.nutritionInfo();
+      }
+    } else {
+      var accumulatedNutritionInfo: NutritionInfo = nutritionInfo();
+
+      for (const subitem of thisSubitems ?? []) {
+        const item = await this.collection.findOne(subitem.itemId).exec();
+        const itemNutritionInfo =
+          (await item?.calculatedNutritionInfo(calcType)) ?? nutritionInfo();
+        accumulatedNutritionInfo = addNutritionInfo(
+          accumulatedNutritionInfo,
+          divideNutritionInfo(
+            multiplyNutritionInfo(itemNutritionInfo, subitem.count ?? 0),
+            calcType === CalcTypeEnum.perServing ? this.count : 1
+          )
+        );
+      }
+
+      return accumulatedNutritionInfo;
+    }
+  },
+  calculatedPriceCents: async function (
+    this: ItemDocument,
+    calcType: CalcTypeEnum
+  ): Promise<number> {
+    const thisSubitems = this.subitems ?? [];
+    if (thisSubitems.length === 0) {
+      switch (calcType) {
+        case CalcTypeEnum.perServing:
+          return this.priceCents / this.count;
+        case CalcTypeEnum.total:
+          return this.priceCents;
+      }
     } else {
       var accumulatedServingPriceCents = 0;
-      const poppedSubitems = await this.populate("subitems");
 
-      for (const subitem of poppedSubitems) {
-        const price = await subitem.servingPriceCents();
-        accumulatedServingPriceCents += price;
+      for (const subitem of thisSubitems ?? []) {
+        const item = await this.collection.findOne(subitem.itemId).exec();
+        const itemPrice = (await item?.calculatedPriceCents(calcType)) ?? 0;
+        accumulatedServingPriceCents +=
+          (itemPrice * (subitem.count ?? 0)) /
+          (calcType === CalcTypeEnum.perServing ? this.count : 1);
       }
 
       return accumulatedServingPriceCents;

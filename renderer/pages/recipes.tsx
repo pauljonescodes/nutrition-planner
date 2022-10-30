@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Center,
   Input,
   Show,
@@ -16,6 +17,7 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { RecipeDrawer } from "../components/drawers/RecipeDrawer";
 import { RecipeTableRow } from "../components/table-rows/RecipeTableRow";
+import { CalcTypeEnum } from "../data/CalcTypeEnum";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
@@ -25,9 +27,12 @@ const RecipesPage = () => {
   const [nameSearch, setNameSearch] = useState<string>("");
   const [drawerItem, setDrawerItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
-  const collection = useRxCollection<ItemDocument>("item");
+  const [priceType, setPriceType] = useState<CalcTypeEnum>(
+    CalcTypeEnum.perServing
+  );
+  const itemCollection = useRxCollection<ItemDocument>("item");
   const { result, fetchMore, isExhausted } = useRxQuery(
-    collection?.find({
+    itemCollection?.find({
       selector: {
         type: ItemTypeEnum.recipe,
         name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
@@ -35,7 +40,7 @@ const RecipesPage = () => {
     })!,
     {
       pageSize: 6,
-      pagination: "Traditional",
+      pagination: "Infinite",
     }
   );
 
@@ -43,6 +48,7 @@ const RecipesPage = () => {
     <Fragment>
       <Box>
         <InfiniteScroll
+          key="infinite-scroll"
           pageStart={0}
           loadMore={fetchMore}
           hasMore={!isExhausted}
@@ -52,7 +58,7 @@ const RecipesPage = () => {
             </Center>
           }
         >
-          <Table>
+          <Table key="table">
             <Thead>
               <Tr>
                 <Th>Actions</Th>
@@ -70,7 +76,18 @@ const RecipesPage = () => {
 
                 <Show above="md">
                   <Th isNumeric>
-                    {yupItemSchema.fields.priceCents.spec.label}
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setPriceType(
+                          priceType === CalcTypeEnum.perServing
+                            ? CalcTypeEnum.total
+                            : CalcTypeEnum.perServing
+                        );
+                      }}
+                    >
+                      {priceType}
+                    </Button>
                   </Th>
                 </Show>
                 <Show above="lg">
@@ -96,16 +113,18 @@ const RecipesPage = () => {
             <Tbody>
               {result?.map((value) => (
                 <RecipeTableRow
+                  key={value.id}
                   item={value}
+                  priceType={priceType}
                   onEdit={() => {
                     setDrawerItem(value);
                   }}
                   onCopy={() => {
-                    const newValue = value.toJSON() as ItemInferredType;
+                    const newValue = value.toMutableJSON() as ItemInferredType;
                     newValue.id = dataid();
                     newValue.name = `${newValue.name}-copy`;
                     newValue.createdAt = new Date();
-                    collection?.upsert(newValue);
+                    itemCollection?.upsert(newValue);
                   }}
                   onDelete={() => {
                     setDeleteItem(value);
@@ -118,11 +137,11 @@ const RecipesPage = () => {
       </Box>
       <RecipeDrawer
         item={drawerItem}
-        onResult={(item) => {
+        onResult={async (item) => {
           setDrawerItem(null);
           if (item) {
             item.createdAt = new Date();
-            collection?.upsert(item);
+            itemCollection?.upsert(item as ItemInferredType);
           }
         }}
       />

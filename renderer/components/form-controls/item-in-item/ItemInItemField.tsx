@@ -35,7 +35,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
             autoCompleteOnChange={async (value) => {
               setNameSearch(value);
             }}
-            value={value ?? ""}
+            value={value!}
             index={index}
             formikProps={props.formikProps}
             fieldArrayHelpers={props.fieldArrayHelpers}
@@ -45,9 +45,10 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
       })}
       <Center>
         <Button
-          onClick={() => {
-            const itemInItem = "";
-            props.fieldArrayHelpers.push(itemInItem);
+          onClick={async () => {
+            props.fieldArrayHelpers.push({
+              count: 1,
+            });
           }}
         >
           <AddIcon />

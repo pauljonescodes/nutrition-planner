@@ -6,15 +6,10 @@ import { useRxCollection, useRxDB } from "rxdb-hooks";
 import { useFilePicker } from "use-file-picker";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { itemDocumentMethods, itemDocumentSchema } from "../data/rxdb/item";
-import {
-  subitemDocumentMethods,
-  subitemDocumentSchema,
-} from "../data/rxdb/subitem";
 
 const SettingsPage = () => {
   const database = useRxDB();
   const itemCollection = useRxCollection("item");
-  const subitemCollection = useRxCollection("subitem");
   const [openFileSelector, { filesContent, loading: filesLoading }] =
     useFilePicker({
       accept: ".json",
@@ -26,15 +21,10 @@ const SettingsPage = () => {
 
   async function removeCollections() {
     await itemCollection?.remove();
-    await subitemCollection?.remove();
     await database?.addCollections({
       item: {
         schema: itemDocumentSchema,
         methods: itemDocumentMethods,
-      },
-      subitem: {
-        schema: subitemDocumentSchema,
-        methods: subitemDocumentMethods,
       },
     });
   }

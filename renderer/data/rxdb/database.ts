@@ -3,21 +3,14 @@ import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
 import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
-
 import {
   ItemCollection,
   itemDocumentMethods,
   itemDocumentSchema,
 } from "./item";
-import {
-  SubitemCollection,
-  subitemDocumentMethods,
-  subitemDocumentSchema,
-} from "./subitem";
 
 export type DatabaseCollections = {
   item: ItemCollection;
-  subitem: SubitemCollection;
 };
 
 export type DatabaseType = RxDatabase<DatabaseCollections>;
@@ -45,10 +38,6 @@ export async function createDatabase(): Promise<DatabaseType | undefined> {
     item: {
       schema: itemDocumentSchema,
       methods: itemDocumentMethods,
-    },
-    subitem: {
-      schema: subitemDocumentSchema,
-      methods: subitemDocumentMethods,
     },
   });
 

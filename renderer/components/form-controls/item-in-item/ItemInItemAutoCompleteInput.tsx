@@ -4,7 +4,6 @@ import {
   IconButton,
   NumberInput,
   NumberInputField,
-  Text,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
@@ -20,9 +19,13 @@ import { useEffect, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
 import { ItemDocument } from "../../../data/rxdb/item";
 import { ItemInferredType } from "../../../data/yup/item";
+import {
+  SubitemInferredType,
+  yupSubitemSchema,
+} from "../../../data/yup/subitem";
 
 interface ItemInItemAutoCompleteInputProps {
-  value: string;
+  value: SubitemInferredType;
   index: number;
   formikProps: FormikProps<Partial<ItemInferredType>>;
   fieldArrayHelpers: FieldArrayRenderProps;
@@ -37,7 +40,6 @@ export function ItemInItemAutoCompleteInput(
     string | undefined
   >(undefined);
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
-  var itemName = selectedFieldValueName;
 
   const collection = useRxCollection<ItemDocument>("item");
 
@@ -57,17 +59,17 @@ export function ItemInItemAutoCompleteInput(
     <VStack key={props.index} align="stretch" spacing={0} pb={2}>
       <HStack pb={1}>
         <NumberInput
-          defaultValue={0 /*props.value.count*/}
+          defaultValue={props.value.count}
           min={-9999.99}
           max={9999.99}
         >
           <NumberInputField
             pattern="(-)?[0-9]*(.[0-9]+)?"
             name={`subitems.${props.index}.count`}
-            value={0 /*props.value.count*/}
+            value={props.value.count}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            // placeholder={yupSubitemSchema.fields.count.spec.label}
+            placeholder={yupSubitemSchema.fields.count.spec.label}
           />
         </NumberInput>
         <AutoComplete
@@ -76,15 +78,15 @@ export function ItemInItemAutoCompleteInput(
             const modelItem = (item as Item).originalValue as ItemInferredType;
 
             props.formikProps.setFieldValue(
-              `subitems.${props.index}`,
+              `subitems.${props.index}.itemId`,
               modelItem.id
             );
             setSelectedFieldValueName(modelItem.name);
           }}
         >
           <AutoCompleteInput
-            // placeholder={yupSubitemSchema.fields.item.spec.label}
-            value={selectedFieldValueName ?? props.value}
+            placeholder={yupSubitemSchema.fields.itemId.spec.label}
+            value={selectedFieldValueName ?? props.value.itemId}
             onChange={async (event) => {
               setSelectedFieldValueName(event.target.value);
               props.autoCompleteOnChange(event.target.value);
@@ -115,17 +117,6 @@ export function ItemInItemAutoCompleteInput(
           }}
         />
       </HStack>
-      <Text
-        color={alphaColor}
-        fontSize="sm"
-        textOverflow="ellipsis"
-        overflow="hidden"
-        whiteSpace="nowrap"
-      >
-        XX
-        {" / "}
-        YY
-      </Text>
     </VStack>
   );
 }
