@@ -6,12 +6,13 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { ItemType } from "../../data/yup/item";
+import { ItemInferredType } from "../../data/yup/item";
+
 import { IngredientForm } from "../forms/IngredientForm";
 
 type IngredientDrawerProps = {
-  item: ItemType | null;
-  onResult(item: ItemType | null): void;
+  item: Partial<ItemInferredType> | null;
+  onResult(item: Partial<ItemInferredType> | null): void;
 };
 
 export function IngredientDrawer(props: IngredientDrawerProps) {
@@ -21,7 +22,7 @@ export function IngredientDrawer(props: IngredientDrawerProps) {
       placement="left"
       onClose={() => props.onResult(null)}
       finalFocusRef={undefined}
-      size="lg"
+      size="md"
     >
       <DrawerOverlay />
       <DrawerContent>

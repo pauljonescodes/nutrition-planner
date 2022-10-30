@@ -9,14 +9,14 @@ import { Form, Formik } from "formik";
 import { FormEvent, RefObject } from "react";
 import { dataid } from "../../data/dataid";
 import { ItemTypeEnum } from "../../data/ItemTypeEnum";
-import { ItemType, yupItemSchema } from "../../data/yup/item";
+import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
 import { ItemInItemFieldArray } from "../form-controls/item-in-item/ItemInItemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
 
 export interface RecipeFormProps {
-  item?: ItemType;
-  onSubmit: (item: ItemType) => void;
+  item: Partial<ItemInferredType> | null;
+  onSubmit: (item: Partial<ItemInferredType>) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -25,16 +25,24 @@ export function RecipeForm(props: RecipeFormProps) {
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
-    <Formik<ItemType>
+    <Formik<Partial<ItemInferredType>>
       initialValues={{
         ...yupItemSchema.getDefault(),
-        ...props.item,
         type: ItemTypeEnum.recipe,
+        name: props.item?.name,
+        count: props.item?.count,
+        priceCents: 0,
+        massGrams: 0,
+        energyKilocalorie: 0,
+        fatGrams: 0,
+        carbohydrateGrams: 0,
+        proteinGrams: 0,
+        subitems: props.item?.subitems,
         id: thisItemId,
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit(values as ItemType);
+        props.onSubmit(values);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -65,10 +73,7 @@ export function RecipeForm(props: RecipeFormProps) {
               spaceProps={{ pb: 2 }}
             />
 
-            <ItemInItemFieldArray
-              thisItemId={thisItemId}
-              formikProps={formikProps}
-            />
+            <ItemInItemFieldArray formikProps={formikProps} />
 
             <Center>
               <VStack>
@@ -100,6 +105,13 @@ export function RecipeForm(props: RecipeFormProps) {
                 </Text>
               </VStack>
             </Center>
+            {/* <VStack>
+              {Object.values(formikProps.errors).map((value) => (
+                <Alert status="error">
+                  <AlertDescription>{value}</AlertDescription>
+                </Alert>
+              ))}
+            </VStack> */}
           </Form>
         );
       }}

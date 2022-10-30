@@ -16,20 +16,21 @@ import {
   Item,
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
-import { useState } from "react";
-import { ItemType as ModelItem } from "../../../data/yup/item";
+import { useEffect, useState } from "react";
+import { useRxCollection } from "rxdb-hooks";
+import { ItemDocument } from "../../../data/rxdb/item";
 import {
-  ItemInItemInferredType,
-  yupItemInItemSchema,
-} from "../../../data/yup/item-in-item";
+  ItemInferredType,
+  SubitemInferredType,
+  yupSubitemSchema,
+} from "../../../data/yup/item";
 
 interface ItemInItemAutoCompleteInputProps {
-  value: ItemInItemInferredType;
+  value: SubitemInferredType;
   index: number;
-  thisItemId: string;
-  formikProps: FormikProps<ModelItem>;
+  formikProps: FormikProps<Partial<ItemInferredType>>;
   fieldArrayHelpers: FieldArrayRenderProps;
-  options: ModelItem[];
+  options: ItemInferredType[];
   autoCompleteOnChange: (value: string) => void;
 }
 
@@ -40,6 +41,22 @@ export function ItemInItemAutoCompleteInput(
     string | undefined
   >(undefined);
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  var itemName = selectedFieldValueName;
+
+  const collection = useRxCollection<ItemDocument>("item");
+
+  async function querySelectedFieldValueName() {
+    if (props.value.item) {
+      const query = collection?.findOne(props.value.item);
+      const value = await query?.exec();
+      setSelectedFieldValueName(value?.name);
+    }
+  }
+
+  useEffect(() => {
+    querySelectedFieldValueName();
+  }, [props.value.item, collection]);
+
   return (
     <VStack key={props.index} align="stretch" spacing={0} pb={2}>
       <HStack pb={1}>
@@ -50,37 +67,32 @@ export function ItemInItemAutoCompleteInput(
         >
           <NumberInputField
             pattern="(-)?[0-9]*(.[0-9]+)?"
-            name={`itemInItems.${props.index}.count`}
+            name={`subitems.${props.index}.count`}
             value={props.value.count}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            placeholder={yupItemInItemSchema.fields.count.spec.label}
+            placeholder={yupSubitemSchema.fields.count.spec.label}
           />
         </NumberInput>
         <AutoComplete
           openOnFocus
           onChange={async (_value, item) => {
-            const modelItem = (item as Item).originalValue as ModelItem;
+            const modelItem = (item as Item).originalValue as ItemInferredType;
 
             props.formikProps.setFieldValue(
-              `itemInItems.${props.index}.sourceItemId`,
+              `subitems.${props.index}.item`,
               modelItem.id
             );
             setSelectedFieldValueName(modelItem.name);
-
-            // props.formikProps.setFieldValue(
-            //   `itemInItems.${props.index}.sourceItem`,
-            //   await Database.shared().loadItem(modelItem)
-            // );
           }}
         >
           <AutoCompleteInput
-            placeholder={yupItemInItemSchema.fields.sourceItemId.spec.label}
-            // value={selectedFieldValueName ?? props.value.sourceItem?.name}
-            // onChange={async (event) => {
-            //   props.value.sourceItem!.name = event.target.value;
-            //   props.autoCompleteOnChange(event.target.value);
-            // }}
+            placeholder={yupSubitemSchema.fields.item.spec.label}
+            value={selectedFieldValueName ?? props.value.item}
+            onChange={async (event) => {
+              setSelectedFieldValueName(event.target.value);
+              props.autoCompleteOnChange(event.target.value);
+            }}
           />
           <AutoCompleteList>
             {props.options.map((value) => {

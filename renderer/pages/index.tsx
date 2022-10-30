@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { CopyIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   ButtonGroup,
@@ -6,7 +6,6 @@ import {
   IconButton,
   Input,
   Show,
-  Skeleton,
   Table,
   Tbody,
   Td,
@@ -17,12 +16,13 @@ import {
 } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
+import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { IngredientDrawer } from "../components/drawers/IngredientDrawer";
 import { Pagination } from "../components/Pagination";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
-import { yupItemSchema } from "../data/yup/item";
+import { ItemInferredType, yupItemSchema } from "../data/yup/item";
 
 const ItemsPage = () => {
   const [page, setPage] = useState(0);
@@ -31,8 +31,8 @@ const ItemsPage = () => {
     useState<number | undefined>(undefined);
   const [drawerItem, setDrawerItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
-  const collection = useRxCollection<ItemDocument>("items");
-  const { result, fetchPage, pageCount, isFetching } = useRxQuery(
+  const collection = useRxCollection<ItemDocument>("item");
+  const { result, fetchPage, pageCount } = useRxQuery(
     collection?.find({
       selector: {
         type: ItemTypeEnum.ingredient,
@@ -43,9 +43,6 @@ const ItemsPage = () => {
       pageSize: numberOfCellsForUsableHeight,
       pagination: "Traditional",
     }
-  );
-  const [loadingResult, setLoadingResult] = useState<Array<ItemDocument>>(
-    buildLoadingResult()
   );
 
   const numberFormatter = new Intl.NumberFormat();
@@ -58,15 +55,7 @@ const ItemsPage = () => {
     );
     if (newNumberOfCellsForUsableHeight !== numberOfCellsForUsableHeight) {
       setNumberOfCellsForUsableHeight(newNumberOfCellsForUsableHeight);
-      setLoadingResult(buildLoadingResult());
     }
-  }
-
-  function buildLoadingResult() {
-    return Array(numberOfCellsForUsableHeight).fill({
-      ...yupItemSchema.getDefault(),
-      id: dataid(),
-    });
   }
 
   useEffect(() => {
@@ -119,82 +108,62 @@ const ItemsPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {(isFetching ? loadingResult : result).map(
-              (value: ItemDocument) => (
-                <Tr key={value.id}>
-                  <Td>
-                    <Skeleton isLoaded={!isFetching}>
-                      <ButtonGroup isAttached>
-                        <IconButton
-                          icon={<EditIcon />}
-                          aria-label="Edit"
-                          onClick={() => {
-                            setDrawerItem(value);
-                          }}
-                        />
-                        <IconButton
-                          icon={<DeleteIcon />}
-                          aria-label="Delete"
-                          onClick={() => {
-                            setDeleteItem(value);
-                          }}
-                        />
-                      </ButtonGroup>
-                    </Skeleton>
+            {result?.map((value: ItemDocument) => (
+              <Tr key={value.id}>
+                <Td width={"144px"}>
+                  <ButtonGroup isAttached size={"sm"}>
+                    <IconButton
+                      icon={<EditIcon />}
+                      aria-label="Edit"
+                      onClick={() => {
+                        setDrawerItem(value);
+                      }}
+                    />
+                    <IconButton
+                      icon={<CopyIcon />}
+                      aria-label="Duplicate"
+                      onClick={() => {
+                        const newValue = value.toJSON() as ItemInferredType;
+                        newValue.id = dataid();
+                        newValue.name = `${newValue.name}-copy`;
+                        collection?.upsert(newValue);
+                      }}
+                    />
+                    <IconButton
+                      icon={<DeleteIcon />}
+                      aria-label="Delete"
+                      onClick={() => {
+                        setDeleteItem(value);
+                      }}
+                    />
+                  </ButtonGroup>
+                </Td>
+                <Td>
+                  {value.name.length > 0 ? (
+                    <Text noOfLines={2}>{value.name}</Text>
+                  ) : (
+                    "a"
+                  )}
+                </Td>
+                <Show above="md">
+                  <Td isNumeric>
+                    {numberFormatter.format(value.priceCents / 100)}
                   </Td>
-                  <Td>
-                    <Skeleton isLoaded={!isFetching}>
-                      {value.name.length > 0 ? (
-                        <Text noOfLines={2}>{value.name}</Text>
-                      ) : (
-                        "a"
-                      )}
-                    </Skeleton>
-                  </Td>
-                  <Show above="md">
-                    <Td isNumeric>
-                      <Skeleton isLoaded={!isFetching}>
-                        {numberFormatter.format(value.priceCents / 100)}
-                      </Skeleton>
-                    </Td>
-                  </Show>
-                  <Show above="lg">
-                    <Td isNumeric>
-                      <Skeleton isLoaded={!isFetching}>{value.count}</Skeleton>
-                    </Td>
-                    <Td isNumeric>
-                      <Skeleton isLoaded={!isFetching}>
-                        {value.massGrams}g
-                      </Skeleton>
-                    </Td>
-                  </Show>
-                  <Show above="xl">
-                    <Td isNumeric>
-                      <Skeleton isLoaded={!isFetching}>
-                        {value.energyKilocalorie}
-                      </Skeleton>
-                    </Td>
-                  </Show>
-                  <Show above="2xl">
-                    <Td isNumeric>
-                      <Skeleton isLoaded={!isFetching}>
-                        {value.fatGrams}g
-                      </Skeleton>
-                    </Td>
-                    <Td isNumeric>
-                      <Skeleton isLoaded={!isFetching}>
-                        {value.carbohydrateGrams}g
-                      </Skeleton>
-                    </Td>
-                    <Td isNumeric>
-                      <Skeleton isLoaded={!isFetching}>
-                        {value.proteinGrams}g
-                      </Skeleton>
-                    </Td>
-                  </Show>
-                </Tr>
-              )
-            )}
+                </Show>
+                <Show above="lg">
+                  <Td isNumeric>{value.count}</Td>
+                  <Td isNumeric>{value.massGrams}g</Td>
+                </Show>
+                <Show above="xl">
+                  <Td isNumeric>{value.energyKilocalorie}</Td>
+                </Show>
+                <Show above="2xl">
+                  <Td isNumeric>{value.fatGrams}g</Td>
+                  <Td isNumeric>{value.carbohydrateGrams}g</Td>
+                  <Td isNumeric>{value.proteinGrams}g</Td>
+                </Show>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
         <Center p={3} position="fixed" bottom="0" width="100%">
@@ -215,6 +184,15 @@ const ItemsPage = () => {
           if (item) {
             collection?.upsert(item);
           }
+        }}
+      />
+      <DeleteAlertDialog
+        isOpen={deleteItem !== null}
+        onResult={function (result: boolean): void {
+          if (result) {
+            deleteItem?.remove();
+          }
+          setDeleteItem(null);
         }}
       />
     </Fragment>

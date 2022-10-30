@@ -9,13 +9,13 @@ import { Form, Formik } from "formik";
 import { FormEvent, RefObject } from "react";
 import { dataid } from "../../data/dataid";
 import { ItemTypeEnum } from "../../data/ItemTypeEnum";
-import { ItemType, yupItemSchema } from "../../data/yup/item";
+import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
 
 export interface ItemFormProps {
-  item: ItemType | null;
-  onSubmit: (item: ItemType) => void;
+  item: Partial<ItemInferredType> | null;
+  onSubmit: (item: Partial<ItemInferredType>) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -25,10 +25,11 @@ export function IngredientForm(props: ItemFormProps) {
   const numberFormatter = new Intl.NumberFormat();
 
   return (
-    <Formik<Partial<ItemType>>
+    <Formik<Partial<ItemInferredType>>
       initialValues={{
         ...yupItemSchema.getDefault(),
         type: ItemTypeEnum.ingredient,
+        subitems: [],
         name: props.item?.name,
         count: props.item?.count,
         priceCents: props.item?.priceCents,
@@ -41,7 +42,7 @@ export function IngredientForm(props: ItemFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={async (values, helpers) => {
-        props.onSubmit(values as ItemType);
+        props.onSubmit(values);
         helpers.resetForm();
       }}
       validateOnChange={false}

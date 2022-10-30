@@ -9,16 +9,22 @@ import {
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
+
 import { dataid } from "../data/dataid";
+import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
-import { ItemType, yupItemSchema } from "../data/yup/item";
+import { ItemInferredType, yupItemSchema } from "../data/yup/item";
 import { IngredientDrawer } from "./drawers/IngredientDrawer";
+import { RecipeDrawer } from "./drawers/RecipeDrawer";
 
 export function MenuHStack() {
   const router = useRouter();
-  const [drawerItem, setDrawerItem] = useState<ItemType | null>(null);
+  const [ingredientDrawerItem, setIngredientDrawerItem] =
+    useState<Partial<ItemInferredType> | null>(null);
+  const [recipeDrawerItem, setRecipeDrawerItem] =
+    useState<Partial<ItemInferredType> | null>(null);
 
-  const collection = useRxCollection<ItemDocument>("items");
+  const collection = useRxCollection<ItemDocument>("item");
   const color = useColorModeValue("white", "gray.800");
 
   return (
@@ -35,9 +41,10 @@ export function MenuHStack() {
           </Button>
           <IconButton
             onClick={() => {
-              setDrawerItem({
+              setIngredientDrawerItem({
                 ...yupItemSchema.getDefault(),
                 id: dataid(),
+                type: ItemTypeEnum.ingredient,
               });
             }}
             icon={<AddIcon />}
@@ -53,9 +60,19 @@ export function MenuHStack() {
           >
             Recipes
           </Button>
-          <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
+          <IconButton
+            onClick={() => {
+              setRecipeDrawerItem({
+                ...yupItemSchema.getDefault(),
+                id: dataid(),
+                type: ItemTypeEnum.recipe,
+              });
+            }}
+            icon={<AddIcon />}
+            aria-label="Add"
+          />
         </ButtonGroup>
-        <ButtonGroup isAttached>
+        {/* <ButtonGroup isAttached>
           <Button
             isActive={router.pathname === "/plans"}
             onClick={() => {
@@ -77,11 +94,26 @@ export function MenuHStack() {
           </Button>
           <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
         </ButtonGroup>
+        <IconButton
+          onClick={() => router.push("/settings")}
+          isActive={router.pathname === "/settings"}
+          icon={<SettingsIcon />}
+          aria-label="Settings"
+        /> */}
       </HStack>
       <IngredientDrawer
-        item={drawerItem}
+        item={ingredientDrawerItem}
         onResult={(item) => {
-          setDrawerItem(null);
+          setIngredientDrawerItem(null);
+          if (item) {
+            collection?.upsert(item);
+          }
+        }}
+      />
+      <RecipeDrawer
+        item={recipeDrawerItem}
+        onResult={(item) => {
+          setRecipeDrawerItem(null);
           if (item) {
             collection?.upsert(item);
           }

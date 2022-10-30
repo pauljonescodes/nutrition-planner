@@ -17,7 +17,7 @@ type IngredientDrawerProps = {
 
 export function DeleteAlertDialog(props: IngredientDrawerProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
-  // const items = useRxCollection<ItemDocument>("items");
+  // const items = useRxCollection<ItemDocument>("item");
 
   return (
     <AlertDialog

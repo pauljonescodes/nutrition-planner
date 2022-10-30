@@ -1,81 +1,64 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Button, Center, FormLabel, VStack } from "@chakra-ui/react";
 import { FieldArrayRenderProps, FormikProps } from "formik";
-import { useEffect, useState } from "react";
-import { dataid } from "../../../data/dataid";
-import { ItemType } from "../../../data/yup/item";
+import { useState } from "react";
+import { useRxCollection, useRxQuery } from "rxdb-hooks";
+import { ItemDocument } from "../../../data/rxdb/item";
 import {
-  ItemInItemInferredType,
-  yupItemInItemSchema,
-} from "../../../data/yup/item-in-item";
+  ItemInferredType,
+  SubitemInferredType,
+  yupItemSchema,
+} from "../../../data/yup/item";
 import { ItemInItemAutoCompleteInput } from "./ItemInItemAutoCompleteInput";
 
 interface ItemSearchResults {
-  results: Array<ItemType>;
+  results: Array<ItemInferredType>;
 }
 
 interface ItemInItemFieldProps {
-  thisItemId: string;
-  formikProps: FormikProps<ItemType>;
+  formikProps: FormikProps<Partial<ItemInferredType>>;
   fieldArrayHelpers: FieldArrayRenderProps;
 }
 
 export function ItemInItemField(props: ItemInItemFieldProps) {
-  const [recipeSearchsState, setItemSearchesState] = useState<
-    ItemSearchResults[]
-  >([]);
+  const [nameSearch, setNameSearch] = useState("");
+  const { result } = useRxQuery(
+    useRxCollection<ItemDocument>("item")?.find({
+      selector: {
+        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+      },
+    })!,
+    {
+      pageSize: 6,
+      pagination: "Traditional",
+    }
+  );
 
-  const itemsInItem: Array<ItemInItemInferredType> = [];
-
-  useEffect(() => {
-    setItemSearchesState(itemsInItem.map(() => ({ results: [] })));
-  }, []);
   return (
     <VStack spacing={0} pb={2}>
-      <FormLabel>{yupItemInItemSchema.spec.label}</FormLabel>
-      {itemsInItem.map((value, index) => {
-        const options =
-          index < recipeSearchsState.length
-            ? recipeSearchsState[index].results?.map((value) => {
-                return value!;
-              }) ?? []
-            : [];
+      <FormLabel>{yupItemSchema.fields.subitems.spec.label}</FormLabel>
+      {props.formikProps.values.subitems?.map((value, index) => {
         return (
           <ItemInItemAutoCompleteInput
             autoCompleteOnChange={async (value) => {
-              let theItemSearchs = recipeSearchsState;
-              // theItemSearchs[index].results =
-              //   (await Database.shared().filteredItems(value)) ?? [];
-              setItemSearchesState([...theItemSearchs]);
+              setNameSearch(value);
             }}
             value={value}
             index={index}
-            thisItemId={props.thisItemId}
             formikProps={props.formikProps}
             fieldArrayHelpers={props.fieldArrayHelpers}
-            options={options}
+            options={result}
           />
         );
       })}
       <Center>
         <Button
           onClick={() => {
-            props.fieldArrayHelpers.push({
-              id: dataid(),
-              destinationItemId: props.thisItemId,
+            const itemInItem: SubitemInferredType = {
               count: 1,
-              sourceItemId: "",
-              sourceItem: {
-                // this needs to be populated
-                id: "",
-                name: "",
-              },
-            } as ItemInItemInferredType);
-            let theItemSearchs = recipeSearchsState;
-            theItemSearchs.push({
-              results: [],
-            });
-            setItemSearchesState([...theItemSearchs]);
+              item: "",
+            };
+            props.fieldArrayHelpers.push(itemInItem);
           }}
         >
           <AddIcon />

@@ -8,7 +8,7 @@ import {
 } from "./item";
 
 export type DatabaseCollections = {
-  items: ItemCollection;
+  item: ItemCollection;
 };
 
 export type DatabaseType = RxDatabase<DatabaseCollections>;
@@ -29,7 +29,7 @@ export async function createDatabase(): Promise<DatabaseType | undefined> {
   }
 
   await database?.addCollections({
-    items: {
+    item: {
       schema: itemDocumentSchema,
       methods: itemDocumentMethods,
     },

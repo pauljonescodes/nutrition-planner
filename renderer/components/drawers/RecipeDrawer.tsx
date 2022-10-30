@@ -6,22 +6,22 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { ItemDocument } from "../../data/rxdb/item";
+import { ItemInferredType } from "../../data/yup/item";
 import { RecipeForm } from "../forms/RecipeForm";
 
 type RecipeDrawerProps = {
-  recipe: ItemDocument;
-  onClose(): void;
+  item: Partial<ItemInferredType> | null;
+  onResult(item: Partial<ItemInferredType> | null): void;
 };
 
 export function RecipeDrawer(props: RecipeDrawerProps) {
   return (
     <Drawer
-      isOpen={false}
+      isOpen={props.item !== null}
       placement="left"
-      size="lg"
+      size="md"
       onClose={() => {
-        // appContext.setAppState!({});
+        props.onResult(null);
       }}
       finalFocusRef={undefined}
     >
@@ -32,9 +32,9 @@ export function RecipeDrawer(props: RecipeDrawerProps) {
 
         <DrawerBody>
           <RecipeForm
-            item={props.recipe}
+            item={props.item}
             onSubmit={(item) => {
-              // const saved = await Database.shared().saveItem(item);
+              props.onResult(item);
             }}
           />
         </DrawerBody>

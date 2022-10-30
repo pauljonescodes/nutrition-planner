@@ -7,14 +7,14 @@ import {
   NutritionInfo,
   sumNutritionInfo,
 } from "../nutrition-info";
-import { ItemType } from "../yup/item";
+import { ItemInferredType } from "../yup/item";
 
 export type ItemDocumentMethods = {
   nutrition: () => NutritionInfo;
   servingPriceCents: () => number;
 };
 
-export type ItemDocument = RxDocument<ItemType, ItemDocumentMethods>;
+export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
 export type ItemCollection = RxCollection<ItemDocument, ItemDocumentMethods>;
 
 export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
@@ -51,6 +51,21 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
     },
     proteinGrams: {
       type: "number",
+    },
+    subitems: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          item: {
+            type: "string",
+            ref: "item",
+          },
+          count: {
+            type: "number",
+          },
+        },
+      },
     },
   } as any,
   required: [],

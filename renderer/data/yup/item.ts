@@ -1,19 +1,26 @@
 import * as Yup from "yup";
 import { ItemTypeEnum } from "../ItemTypeEnum";
 
+export const yupSubitemSchema = Yup.object({
+  item: Yup.string().meta({
+    placeholder: "",
+    key: "subitems.item",
+  }),
+  count: Yup.number().label("Servings").meta({
+    placeholder: "Number of servings of subitem",
+    key: "subitems.count",
+  }),
+});
+
 export const yupItemSchema = Yup.object({
   id: Yup.string().label("ID").required(),
-  type: Yup.mixed<ItemTypeEnum>()
-    .oneOf(Object.values(ItemTypeEnum))
-    .default(ItemTypeEnum.ingredient)
-    .required(),
+  type: Yup.mixed<ItemTypeEnum>().oneOf(Object.values(ItemTypeEnum)).required(),
   name: Yup.string()
     .label("Name")
     .meta({
       placeholder: "A description",
       key: "name",
     })
-    .default("")
     .required(),
   count: Yup.number()
     .label("Servings")
@@ -21,7 +28,6 @@ export const yupItemSchema = Yup.object({
       placeholder: "Number of servings in total",
       key: "count",
     })
-    .default(0)
     .required(),
   priceCents: Yup.number()
     .label("Price")
@@ -29,7 +35,6 @@ export const yupItemSchema = Yup.object({
       placeholder: "Price of product",
       key: "priceCents",
     })
-    .default(0)
     .required(),
   massGrams: Yup.number()
     .label("Mass")
@@ -37,7 +42,6 @@ export const yupItemSchema = Yup.object({
       placeholder: "Mass in grams or volume in mL",
       key: "massGrams",
     })
-    .default(0)
     .required(),
   energyKilocalorie: Yup.number()
     .label("Calories")
@@ -45,7 +49,6 @@ export const yupItemSchema = Yup.object({
       placeholder: "Energy in kilocalories",
       key: "energyKilocalorie",
     })
-    .default(0)
     .required(),
   fatGrams: Yup.number()
     .label("Fat")
@@ -53,7 +56,6 @@ export const yupItemSchema = Yup.object({
       placeholder: "Fat in grams",
       key: "fatGrams",
     })
-    .default(0)
     .required(),
   carbohydrateGrams: Yup.number()
     .label("Carb")
@@ -61,7 +63,6 @@ export const yupItemSchema = Yup.object({
       placeholder: "Carbohydrates in grams",
       key: "carbohydrateGrams",
     })
-    .default(0)
     .required(),
   proteinGrams: Yup.number()
     .label("Protein")
@@ -69,8 +70,15 @@ export const yupItemSchema = Yup.object({
       placeholder: "Protein in grams",
       key: "proteinGrams",
     })
-    .default(0)
     .required(),
+  subitems: Yup.array()
+    .default([])
+    .meta({
+      key: "subitems",
+    })
+    .label("Ingredients")
+    .of(yupSubitemSchema),
 });
 
-export type ItemType = Yup.InferType<typeof yupItemSchema>;
+export type ItemInferredType = Yup.InferType<typeof yupItemSchema>;
+export type SubitemInferredType = Yup.InferType<typeof yupSubitemSchema>;
