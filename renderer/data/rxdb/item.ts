@@ -11,7 +11,7 @@ import { ItemInferredType } from "../yup/item";
 
 export type ItemDocumentMethods = {
   nutrition: () => NutritionInfo;
-  servingPriceCents: () => number;
+  servingPriceCents: () => Promise<number>;
 };
 
 export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
@@ -24,8 +24,13 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
   properties: {
     id: {
       type: "string",
+      maxLength: 6,
     },
     type: {
+      type: "string",
+    },
+    createdAt: {
+      format: "date-time",
       type: "string",
     },
     name: {
@@ -54,17 +59,9 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
     },
     subitems: {
       type: "array",
+      ref: "subitem",
       items: {
-        type: "object",
-        properties: {
-          item: {
-            type: "string",
-            ref: "item",
-          },
-          count: {
-            type: "number",
-          },
-        },
+        type: "string",
       },
     },
   } as any,
@@ -90,7 +87,20 @@ export const itemDocumentMethods: ItemDocumentMethods = {
     );
     return addNutritionInfo(base, sub);
   },
-  servingPriceCents: function (this: ItemDocument): number {
-    return this.priceCents / this.count;
+  servingPriceCents: async function (this: ItemDocument): Promise<number> {
+    const thisSubitems = this.subitems ?? [];
+    if (thisSubitems.length === 0) {
+      return this.priceCents;
+    } else {
+      var accumulatedServingPriceCents = 0;
+      const poppedSubitems = await this.populate("subitems");
+
+      for (const subitem of poppedSubitems) {
+        const price = await subitem.servingPriceCents();
+        accumulatedServingPriceCents += price;
+      }
+
+      return accumulatedServingPriceCents;
+    }
   },
 };

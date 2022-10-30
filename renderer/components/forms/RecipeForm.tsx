@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertDescription,
   Button,
   Center,
   Text,
@@ -105,13 +107,13 @@ export function RecipeForm(props: RecipeFormProps) {
                 </Text>
               </VStack>
             </Center>
-            {/* <VStack>
+            <VStack>
               {Object.values(formikProps.errors).map((value) => (
                 <Alert status="error">
                   <AlertDescription>{value}</AlertDescription>
                 </Alert>
               ))}
-            </VStack> */}
+            </VStack>
           </Form>
         );
       }}

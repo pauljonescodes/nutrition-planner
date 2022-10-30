@@ -27,7 +27,7 @@ export function DeleteAlertDialog(props: IngredientDrawerProps) {
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader>Delete Item</AlertDialogHeader>
+          <AlertDialogHeader>Delete</AlertDialogHeader>
 
           <AlertDialogBody>
             Are you sure? You can't undo this action afterwards.

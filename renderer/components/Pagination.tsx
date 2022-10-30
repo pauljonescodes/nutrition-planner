@@ -35,7 +35,7 @@ export function Pagination(props: PaginationProps) {
         />
       </ButtonGroup>
       <Text px="3">
-        {props.page + 1} / {props.pages}
+        {props.page + 1} / {Math.max(props.pages, 1)}
       </Text>
       <ButtonGroup>
         <IconButton
@@ -44,7 +44,7 @@ export function Pagination(props: PaginationProps) {
           onClick={() => {
             props.onSetPage(props.page + 1);
           }}
-          disabled={props.page === props.pages - 1}
+          disabled={props.page === Math.max(props.pages - 1, 0)}
         />
         <IconButton
           icon={<ArrowRightIcon />}
@@ -52,7 +52,7 @@ export function Pagination(props: PaginationProps) {
           onClick={() => {
             props.onSetPage(props.pages);
           }}
-          disabled={props.page === props.pages - 1}
+          disabled={props.page === Math.max(props.pages - 1, 0)}
         />
       </ButtonGroup>
     </Fragment>

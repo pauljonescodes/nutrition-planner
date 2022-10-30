@@ -1,4 +1,4 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Button,
   ButtonGroup,
@@ -25,7 +25,7 @@ export function MenuHStack() {
     useState<Partial<ItemInferredType> | null>(null);
 
   const collection = useRxCollection<ItemDocument>("item");
-  const color = useColorModeValue("white", "gray.800");
+  const color = useColorModeValue("gray.50", "gray.800");
 
   return (
     <Fragment>
@@ -72,7 +72,8 @@ export function MenuHStack() {
             aria-label="Add"
           />
         </ButtonGroup>
-        {/* <ButtonGroup isAttached>
+        {
+          /* <ButtonGroup isAttached>
           <Button
             isActive={router.pathname === "/plans"}
             onClick={() => {
@@ -93,19 +94,21 @@ export function MenuHStack() {
             Log
           </Button>
           <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
-        </ButtonGroup>
-        <IconButton
-          onClick={() => router.push("/settings")}
-          isActive={router.pathname === "/settings"}
-          icon={<SettingsIcon />}
-          aria-label="Settings"
-        /> */}
+        </ButtonGroup>*/
+          <IconButton
+            onClick={() => router.push("/settings")}
+            isActive={router.pathname === "/settings"}
+            icon={<SettingsIcon />}
+            aria-label="Settings"
+          />
+        }
       </HStack>
       <IngredientDrawer
         item={ingredientDrawerItem}
         onResult={(item) => {
           setIngredientDrawerItem(null);
           if (item) {
+            item.createDate = new Date();
             collection?.upsert(item);
           }
         }}
@@ -115,6 +118,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setRecipeDrawerItem(null);
           if (item) {
+            item.createDate = new Date();
             collection?.upsert(item);
           }
         }}

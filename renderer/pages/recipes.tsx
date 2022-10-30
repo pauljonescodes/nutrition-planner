@@ -1,15 +1,10 @@
-import { CopyIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Box,
-  ButtonGroup,
   Center,
-  IconButton,
   Input,
   Show,
   Table,
   Tbody,
-  Td,
-  Text,
   Th,
   Thead,
   Tr,
@@ -19,9 +14,9 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { RecipeDrawer } from "../components/drawers/RecipeDrawer";
 import { Pagination } from "../components/Pagination";
+import { RecipeTableRow } from "../components/table-rows/RecipeTableRow";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
-import { nutritionInfo } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
 
@@ -45,8 +40,6 @@ const RecipesPage = () => {
       pagination: "Traditional",
     }
   );
-
-  const numberFormatter = new Intl.NumberFormat();
 
   function handleResize() {
     const usableHeight = (window.innerHeight ?? 0) - 64 * 2 - 40;
@@ -117,63 +110,24 @@ const RecipesPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {result?.map((value) => {
-              const info = nutritionInfo();
-              const price = 0;
-              return (
-                <Tr key={value.id}>
-                  <Td width={"144px"}>
-                    <Center>
-                      <ButtonGroup isAttached size="sm">
-                        <IconButton
-                          icon={<EditIcon />}
-                          aria-label="Edit"
-                          onClick={() => {
-                            setDrawerItem(value);
-                          }}
-                        />
-                        <IconButton
-                          icon={<CopyIcon />}
-                          aria-label="Duplicate"
-                          onClick={() => {
-                            const newValue = value.toJSON() as ItemInferredType;
-                            newValue.id = dataid();
-                            newValue.name = `${newValue.name}-copy`;
-                            collection?.upsert(newValue);
-                          }}
-                        />
-                        <IconButton
-                          icon={<DeleteIcon />}
-                          aria-label="Delete"
-                          onClick={() => {
-                            setDeleteItem(value);
-                          }}
-                        />
-                      </ButtonGroup>
-                    </Center>
-                  </Td>
-                  <Td>
-                    <Text noOfLines={2}>{value.name}</Text>
-                  </Td>
-
-                  <Show above="md">
-                    <Td isNumeric>{numberFormatter.format(price / 100)}</Td>
-                  </Show>
-                  <Show above="lg">
-                    <Td isNumeric>{value.count}</Td>
-                    <Td isNumeric>{info.massGrams}g</Td>
-                  </Show>
-                  <Show above="xl">
-                    <Td isNumeric>{info.energyKilocalorie}</Td>
-                  </Show>
-                  <Show above="2xl">
-                    <Td isNumeric>{info.fatGrams}g</Td>
-                    <Td isNumeric>{info.carbohydrateGrams}g</Td>
-                    <Td isNumeric>{info.proteinGrams}g</Td>
-                  </Show>
-                </Tr>
-              );
-            })}
+            {result?.map((value) => (
+              <RecipeTableRow
+                item={value}
+                onEdit={() => {
+                  setDrawerItem(value);
+                }}
+                onCopy={() => {
+                  const newValue = value.toJSON() as ItemInferredType;
+                  newValue.id = dataid();
+                  newValue.name = `${newValue.name}-copy`;
+                  newValue.createdAt = new Date();
+                  collection?.upsert(newValue);
+                }}
+                onDelete={() => {
+                  setDeleteItem(value);
+                }}
+              />
+            ))}
           </Tbody>
         </Table>
         <Center p={3} position="fixed" bottom="0" width="100%">
@@ -192,6 +146,7 @@ const RecipesPage = () => {
         onResult={(item) => {
           setDrawerItem(null);
           if (item) {
+            item.createdAt = new Date();
             collection?.upsert(item);
           }
         }}

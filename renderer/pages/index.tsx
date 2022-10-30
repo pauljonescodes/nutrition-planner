@@ -123,8 +123,11 @@ const ItemsPage = () => {
                       icon={<CopyIcon />}
                       aria-label="Duplicate"
                       onClick={() => {
-                        const newValue = value.toJSON() as ItemInferredType;
-                        newValue.id = dataid();
+                        const newValue =
+                          value.toMutableJSON() as ItemInferredType;
+                        const id = dataid();
+                        newValue.id = id;
+                        newValue.createdAt = new Date();
                         newValue.name = `${newValue.name}-copy`;
                         collection?.upsert(newValue);
                       }}
@@ -182,6 +185,7 @@ const ItemsPage = () => {
         onResult={(item) => {
           setDrawerItem(null);
           if (item) {
+            item.createdAt = new Date();
             collection?.upsert(item);
           }
         }}

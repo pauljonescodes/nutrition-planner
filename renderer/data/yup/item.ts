@@ -1,19 +1,10 @@
 import * as Yup from "yup";
 import { ItemTypeEnum } from "../ItemTypeEnum";
-
-export const yupSubitemSchema = Yup.object({
-  item: Yup.string().meta({
-    placeholder: "",
-    key: "subitems.item",
-  }),
-  count: Yup.number().label("Servings").meta({
-    placeholder: "Number of servings of subitem",
-    key: "subitems.count",
-  }),
-});
+import { yupSubitemSchema } from "./subitem";
 
 export const yupItemSchema = Yup.object({
   id: Yup.string().label("ID").required(),
+  createdAt: Yup.date().optional(),
   type: Yup.mixed<ItemTypeEnum>().oneOf(Object.values(ItemTypeEnum)).required(),
   name: Yup.string()
     .label("Name")
@@ -81,4 +72,3 @@ export const yupItemSchema = Yup.object({
 });
 
 export type ItemInferredType = Yup.InferType<typeof yupItemSchema>;
-export type SubitemInferredType = Yup.InferType<typeof yupSubitemSchema>;

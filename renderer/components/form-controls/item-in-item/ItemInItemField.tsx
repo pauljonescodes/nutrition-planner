@@ -4,16 +4,8 @@ import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { ItemDocument } from "../../../data/rxdb/item";
-import {
-  ItemInferredType,
-  SubitemInferredType,
-  yupItemSchema,
-} from "../../../data/yup/item";
+import { ItemInferredType, yupItemSchema } from "../../../data/yup/item";
 import { ItemInItemAutoCompleteInput } from "./ItemInItemAutoCompleteInput";
-
-interface ItemSearchResults {
-  results: Array<ItemInferredType>;
-}
 
 interface ItemInItemFieldProps {
   formikProps: FormikProps<Partial<ItemInferredType>>;
@@ -43,7 +35,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
             autoCompleteOnChange={async (value) => {
               setNameSearch(value);
             }}
-            value={value}
+            value={value ?? ""}
             index={index}
             formikProps={props.formikProps}
             fieldArrayHelpers={props.fieldArrayHelpers}
@@ -54,10 +46,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
       <Center>
         <Button
           onClick={() => {
-            const itemInItem: SubitemInferredType = {
-              count: 1,
-              item: "",
-            };
+            const itemInItem = "";
             props.fieldArrayHelpers.push(itemInItem);
           }}
         >

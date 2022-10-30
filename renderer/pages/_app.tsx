@@ -28,7 +28,7 @@ export default function App(props: AppProps) {
   });
 
   return (
-    <RxDbProvider db={database}>
+    <RxDbProvider db={database} idAttribute="id">
       <ChakraProvider theme={theme}>
         <VStack spacing={0} align="stretch">
           <MenuHStack />

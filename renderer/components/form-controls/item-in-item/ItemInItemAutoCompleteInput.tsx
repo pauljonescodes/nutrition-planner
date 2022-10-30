@@ -19,14 +19,10 @@ import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
 import { ItemDocument } from "../../../data/rxdb/item";
-import {
-  ItemInferredType,
-  SubitemInferredType,
-  yupSubitemSchema,
-} from "../../../data/yup/item";
+import { ItemInferredType } from "../../../data/yup/item";
 
 interface ItemInItemAutoCompleteInputProps {
-  value: SubitemInferredType;
+  value: string;
   index: number;
   formikProps: FormikProps<Partial<ItemInferredType>>;
   fieldArrayHelpers: FieldArrayRenderProps;
@@ -46,8 +42,8 @@ export function ItemInItemAutoCompleteInput(
   const collection = useRxCollection<ItemDocument>("item");
 
   async function querySelectedFieldValueName() {
-    if (props.value.item) {
-      const query = collection?.findOne(props.value.item);
+    if (props.value) {
+      const query = collection?.findOne({ selector: { name: props.value } });
       const value = await query?.exec();
       setSelectedFieldValueName(value?.name);
     }
@@ -55,23 +51,23 @@ export function ItemInItemAutoCompleteInput(
 
   useEffect(() => {
     querySelectedFieldValueName();
-  }, [props.value.item, collection]);
+  }, [props.value, collection]);
 
   return (
     <VStack key={props.index} align="stretch" spacing={0} pb={2}>
       <HStack pb={1}>
         <NumberInput
-          defaultValue={props.value.count}
+          defaultValue={0 /*props.value.count*/}
           min={-9999.99}
           max={9999.99}
         >
           <NumberInputField
             pattern="(-)?[0-9]*(.[0-9]+)?"
             name={`subitems.${props.index}.count`}
-            value={props.value.count}
+            value={0 /*props.value.count*/}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            placeholder={yupSubitemSchema.fields.count.spec.label}
+            // placeholder={yupSubitemSchema.fields.count.spec.label}
           />
         </NumberInput>
         <AutoComplete
@@ -80,15 +76,15 @@ export function ItemInItemAutoCompleteInput(
             const modelItem = (item as Item).originalValue as ItemInferredType;
 
             props.formikProps.setFieldValue(
-              `subitems.${props.index}.item`,
+              `subitems.${props.index}`,
               modelItem.id
             );
             setSelectedFieldValueName(modelItem.name);
           }}
         >
           <AutoCompleteInput
-            placeholder={yupSubitemSchema.fields.item.spec.label}
-            value={selectedFieldValueName ?? props.value.item}
+            // placeholder={yupSubitemSchema.fields.item.spec.label}
+            value={selectedFieldValueName ?? props.value}
             onChange={async (event) => {
               setSelectedFieldValueName(event.target.value);
               props.autoCompleteOnChange(event.target.value);
