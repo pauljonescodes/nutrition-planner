@@ -1,12 +1,6 @@
-import {
-  Button,
-  Center,
-  Text,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { FormEvent, RefObject, useEffect, useState } from "react";
+import { FormEvent, RefObject, useState } from "react";
 import { dataid } from "../../data/dataid";
 import { ItemTypeEnum } from "../../data/ItemTypeEnum";
 import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
@@ -21,7 +15,6 @@ export interface ItemFormProps {
 
 export function IngredientForm(props: ItemFormProps) {
   const thisItemId = props.item?.id ?? dataid();
-  const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   const [initialValuesState, setInitialValuesState] = useState<
     Partial<ItemInferredType>
@@ -32,7 +25,7 @@ export function IngredientForm(props: ItemFormProps) {
     priceCents: props.item?.priceCents,
     massGrams: props.item?.massGrams,
     count: props.item?.count,
-    energyKilocalorie: props.item?.energyKilocalorie,
+    energyKilocalories: props.item?.energyKilocalories,
     fatGrams: props.item?.fatGrams,
     saturatedFatGrams: props.item?.saturatedFatGrams,
     transFatGrams: props.item?.transFatGrams,
@@ -44,10 +37,6 @@ export function IngredientForm(props: ItemFormProps) {
     proteinGrams: props.item?.proteinGrams,
     subitems: [],
   });
-
-  useEffect(() => {
-    console.log(initialValuesState);
-  }, [initialValuesState]);
 
   return (
     <Formik<Partial<ItemInferredType>>
@@ -63,99 +52,42 @@ export function IngredientForm(props: ItemFormProps) {
       validateOnChange={false}
       validateOnBlur={false}
       component={(formikProps) => {
-        function firstMatchedIntParsed(args: {
-          forRegExp: RegExp;
-          inString: string;
-        }): number | undefined {
-          const matches = args.inString.match(args.forRegExp) ?? [];
-          if (matches.length > 0) {
-            return parseInt(matches[0]);
+        async function onPaste(text: string) {
+          const regExps = [
+            /(?:\()(?<massGrams>\d+)(?:g\))/gi,
+            /(?:servings.*)(?<count>\d+)/gi,
+            /(?<count>\d+)(?:.*servings)/gi,
+            /(?:Calories\s*)(?<energyKilocalories>\d+)/gi,
+            /(?:Total Fat\s*)(?<fatGrams>\d+)(?:g)/gi,
+            /(?:Saturated Fat\s*)(?<saturatedFatGrams>\d+)(?:g)/gi,
+            /(?:Trans Fat\s*)(?<transFatGrams>\d+)(?:g)/gi,
+            /(?:Cholesterol\s*)(?<cholesterolMilligrams>\d+)(?:mg)/gi,
+            /(?:Sodium\s*)(?<sodiumMilligrams>\d+)(?:mg)/gi,
+            /(?:Total Carbohydrate\s*)(?<carbohydrateGrams>\d+)(?:g)/gi,
+            /(?:Dietary Fiber\s*)(?<fiberGrams>\d+)(?:g)/gi,
+            /(?:Sugars\s*)(?<sugarGrams>\d+)(?:g)/gi,
+            /(?:Protein\s*)(?<proteinGrams>\d+)(?:g)/gi,
+          ];
+
+          const numberedGroups: { [key: string]: number } = {};
+          for (const regExp of regExps) {
+            const regExpMatchArray = regExp.exec(text);
+            const matchedGroup = regExpMatchArray?.groups ?? {};
+            Object.keys(matchedGroup).forEach(function (key) {
+              numberedGroups[key] = +matchedGroup[key];
+            });
           }
 
-          return undefined;
-        }
-
-        async function onPaste(text: string) {
-          const massGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=(Serv).+\()(.*)(?=g\))/,
-            inString: text,
-          });
-          const count = firstMatchedIntParsed({
-            forRegExp: /(?<=Servings.*)(\d+)/,
-            inString: text,
-          });
-          const energyKilocalorie = firstMatchedIntParsed({
-            forRegExp: /(?<=Calories .*)(\d+)/,
-            inString: text,
-          });
-          const fatGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Total Fat .*)(\d+)/,
-            inString: text,
-          });
-          const saturatedFatGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Saturated Fat .*)(\d+)/,
-            inString: text,
-          });
-          const transFatGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Trans Fat .*)(\d+)/,
-            inString: text,
-          });
-          const cholesterolMilligrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Cholesterol .*)(\d+)/,
-            inString: text,
-          });
-          const sodiumMilligrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Sodium .*)(\d+)/,
-            inString: text,
-          });
-          const carbohydrateGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Total Carbohydrate .*)(\d+)/,
-            inString: text,
-          });
-          const fiberGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Dietary Fiber .*)(\d+)/,
-            inString: text,
-          });
-          const sugarGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Sugars .*)(\d+)/,
-            inString: text,
-          });
-          const proteinGrams = firstMatchedIntParsed({
-            forRegExp: /(?<=Protein .*)(\d+)/,
-            inString: text,
-          });
           setInitialValuesState({
             ...initialValuesState,
             ...formikProps.values,
-            massGrams,
-            count,
-            energyKilocalorie,
-            fatGrams,
-            saturatedFatGrams,
-            transFatGrams,
-            cholesterolMilligrams,
-            sodiumMilligrams,
-            carbohydrateGrams,
-            fiberGrams,
-            sugarGrams,
-            proteinGrams,
+            ...numberedGroups,
           });
           formikProps.resetForm({
             values: {
               ...initialValuesState,
               ...formikProps.values,
-              massGrams,
-              count,
-              energyKilocalorie,
-              fatGrams,
-              saturatedFatGrams,
-              transFatGrams,
-              cholesterolMilligrams,
-              sodiumMilligrams,
-              carbohydrateGrams,
-              fiberGrams,
-              sugarGrams,
-              proteinGrams,
+              ...numberedGroups,
             },
           });
         }
@@ -203,9 +135,9 @@ export function IngredientForm(props: ItemFormProps) {
               spaceProps={{ pb: 2 }}
             />
             <ValidatedFormikNumberControl
-              value={formikProps.values.energyKilocalorie}
-              error={formikProps.errors.energyKilocalorie}
-              yupSchemaField={yupItemSchema.fields.energyKilocalorie}
+              value={formikProps.values.energyKilocalories}
+              error={formikProps.errors.energyKilocalories}
+              yupSchemaField={yupItemSchema.fields.energyKilocalories}
               formikProps={formikProps}
               spaceProps={{ pb: 2 }}
             />
@@ -274,38 +206,9 @@ export function IngredientForm(props: ItemFormProps) {
             />
 
             <Center>
-              <VStack>
-                <Button
-                  type="submit"
-                  my={4}
-                  isLoading={formikProps.isSubmitting}
-                >
-                  Submit
-                </Button>
-                <Text
-                  color={alphaColor}
-                  fontSize="sm"
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                >
-                  {/* {props.item?.nutrition() &&
-                    nutritionInfoDescription(props.item?.nutrition())} */}
-                </Text>
-                <Text
-                  color={alphaColor}
-                  fontSize="sm"
-                  pb={3}
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                >
-                  {/* {numberFormatter.format(
-                    (props.item?.servingPriceCents() ?? 0) / 100
-                  )}{" "}
-                  / serving */}
-                </Text>
-              </VStack>
+              <Button type="submit" my={4} isLoading={formikProps.isSubmitting}>
+                Submit
+              </Button>
             </Center>
           </Form>
         );

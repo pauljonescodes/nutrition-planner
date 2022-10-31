@@ -27,7 +27,7 @@ export function RecipeForm(props: RecipeFormProps) {
         priceCents: 0,
         massGrams: 0,
         count: props.item?.count,
-        energyKilocalorie: 0,
+        energyKilocalories: 0,
         fatGrams: 0,
         saturatedFatGrams: 0,
         transFatGrams: 0,

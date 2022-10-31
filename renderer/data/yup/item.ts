@@ -34,7 +34,7 @@ export const yupItemSchema = Yup.object({
       key: "count",
     })
     .required(),
-  energyKilocalorie: Yup.number()
+  energyKilocalories: Yup.number()
     .label("Calories")
     .meta({
       placeholder: "Energy in kilocalories",

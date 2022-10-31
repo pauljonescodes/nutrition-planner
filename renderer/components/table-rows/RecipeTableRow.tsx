@@ -76,7 +76,7 @@ export function RecipeTableRow(props: RecipeTableRowProps) {
         <Td isNumeric>{nutritionInfo?.massGrams}g</Td>
       </Show>
       <Show above="xl">
-        <Td isNumeric>{nutritionInfo?.energyKilocalorie}kcal</Td>
+        <Td isNumeric>{nutritionInfo?.energyKilocalories}kcal</Td>
         <Td isNumeric>{nutritionInfo?.fatGrams}g</Td>
         <Td isNumeric>{nutritionInfo?.carbohydrateGrams}g</Td>
         <Td isNumeric>{nutritionInfo?.proteinGrams}g</Td>

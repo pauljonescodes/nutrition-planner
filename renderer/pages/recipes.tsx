@@ -99,7 +99,7 @@ const RecipesPage = () => {
                 </Show>
                 <Show above="xl">
                   <Th isNumeric>
-                    {yupItemSchema.fields.energyKilocalorie.spec.label}
+                    {yupItemSchema.fields.energyKilocalories.spec.label}
                   </Th>
                   <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
                   <Th isNumeric>

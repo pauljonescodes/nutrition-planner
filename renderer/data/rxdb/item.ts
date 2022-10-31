@@ -99,7 +99,7 @@ export const itemDocumentMethods: ItemDocumentMethods = {
   nutritionInfo: function (this: ItemDocument): NutritionInfo {
     return {
       massGrams: this.massGrams,
-      energyKilocalorie: this.energyKilocalorie,
+      energyKilocalories: this.energyKilocalories,
       fatGrams: this.fatGrams,
       saturatedFatGrams: this.saturatedFatGrams,
       transFatGrams: this.transFatGrams,

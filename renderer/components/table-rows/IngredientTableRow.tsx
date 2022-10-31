@@ -52,7 +52,7 @@ function IngredientTableRow(props: IngredientTableRowProps) {
         <Td isNumeric>{value.massGrams}g</Td>
       </Show>
       <Show above="xl">
-        <Td isNumeric>{value.energyKilocalorie}</Td>
+        <Td isNumeric>{value.energyKilocalories}</Td>
         <Td isNumeric>{value.fatGrams}g</Td>
         <Td isNumeric>{value.carbohydrateGrams}g</Td>
         <Td isNumeric>{value.proteinGrams}g</Td>
