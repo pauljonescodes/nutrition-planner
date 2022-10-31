@@ -1,16 +1,16 @@
 import { FieldArray, FormikProps } from "formik";
-import { ItemInferredType, yupItemSchema } from "../../../data/yup/item";
-import { ItemInItemField } from "./ItemInItemField";
+import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
+import { SubitemField } from "./SubitemField";
 
-interface ItemInItemFieldArrayProps {
+interface SubitemFieldArrayProps {
   formikProps: FormikProps<Partial<ItemInferredType>>;
 }
 
-export function ItemInItemFieldArray(props: ItemInItemFieldArrayProps) {
+export function SubitemFieldArray(props: SubitemFieldArrayProps) {
   return (
     <FieldArray name={yupItemSchema.fields.subitems.spec.meta["key"]}>
       {(fieldArrayHelpers) => (
-        <ItemInItemField
+        <SubitemField
           formikProps={props.formikProps}
           fieldArrayHelpers={fieldArrayHelpers}
         />

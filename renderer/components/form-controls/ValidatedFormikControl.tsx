@@ -16,6 +16,7 @@ interface ValidatedFormikControlProps<T> {
   error?: string; // props.formikProps.errors.name
   spaceProps?: SpaceProps;
   inputFieldRef?: RefObject<HTMLInputElement>;
+  onPaste?: (text: string) => void;
 }
 
 export function ValidatedFormikControl<T>(
@@ -32,6 +33,11 @@ export function ValidatedFormikControl<T>(
         name={props.yupSchemaField.spec.meta["key"]} // not sure about this
         value={props.value}
         isInvalid={props.error ? true : false}
+        onPaste={(e) => {
+          if (props.onPaste) {
+            props.onPaste(e.clipboardData.getData("Text"));
+          }
+        }}
       />
       {props.error && <FormErrorMessage>{props.error}</FormErrorMessage>}
     </FormControl>

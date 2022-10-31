@@ -1,17 +1,10 @@
-import {
-  Alert,
-  AlertDescription,
-  Button,
-  Center,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { FormEvent, RefObject } from "react";
 import { dataid } from "../../data/dataid";
 import { ItemTypeEnum } from "../../data/ItemTypeEnum";
 import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
-import { ItemInItemFieldArray } from "../form-controls/item-in-item/ItemInItemFieldArray";
+import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
 
@@ -23,23 +16,28 @@ export interface RecipeFormProps {
 
 export function RecipeForm(props: RecipeFormProps) {
   const thisItemId = props.item?.id ?? dataid();
-  const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
     <Formik<Partial<ItemInferredType>>
       initialValues={{
         ...yupItemSchema.getDefault(),
+        id: thisItemId,
         type: ItemTypeEnum.recipe,
         name: props.item?.name,
-        count: props.item?.count,
         priceCents: 0,
         massGrams: 0,
+        count: props.item?.count,
         energyKilocalorie: 0,
         fatGrams: 0,
+        saturatedFatGrams: 0,
+        transFatGrams: 0,
+        cholesterolMilligrams: 0,
+        sodiumMilligrams: 0,
         carbohydrateGrams: 0,
+        fiberGrams: 0,
+        sugarGrams: 0,
         proteinGrams: 0,
         subitems: props.item?.subitems,
-        id: thisItemId,
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
@@ -74,7 +72,7 @@ export function RecipeForm(props: RecipeFormProps) {
               spaceProps={{ pb: 2 }}
             />
 
-            <ItemInItemFieldArray formikProps={formikProps} />
+            <SubitemFieldArray formikProps={formikProps} />
 
             <Center>
               <VStack>
@@ -87,13 +85,13 @@ export function RecipeForm(props: RecipeFormProps) {
                 </Button>
               </VStack>
             </Center>
-            <VStack>
+            {/* <VStack>
               {Object.values(formikProps.errors).map((value) => (
                 <Alert status="error">
                   <AlertDescription>{value}</AlertDescription>
                 </Alert>
               ))}
-            </VStack>
+            </VStack> */}
           </Form>
         );
       }}

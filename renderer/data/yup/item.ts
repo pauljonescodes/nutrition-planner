@@ -13,13 +13,6 @@ export const yupItemSchema = Yup.object({
       key: "name",
     })
     .required(),
-  count: Yup.number()
-    .label("Servings")
-    .meta({
-      placeholder: "Number of servings in total",
-      key: "count",
-    })
-    .required(),
   priceCents: Yup.number()
     .label("Price")
     .meta({
@@ -32,6 +25,13 @@ export const yupItemSchema = Yup.object({
     .meta({
       placeholder: "Mass in grams or volume in mL",
       key: "massGrams",
+    })
+    .required(),
+  count: Yup.number()
+    .label("Servings")
+    .meta({
+      placeholder: "Number of servings in total",
+      key: "count",
     })
     .required(),
   energyKilocalorie: Yup.number()
@@ -48,11 +48,53 @@ export const yupItemSchema = Yup.object({
       key: "fatGrams",
     })
     .required(),
+  saturatedFatGrams: Yup.number()
+    .label("Saturated Fat")
+    .meta({
+      placeholder: "Saturated fat in grams",
+      key: "saturatedFatGrams",
+    })
+    .required(),
+  transFatGrams: Yup.number()
+    .label("Trans Fat")
+    .meta({
+      placeholder: "Trans fat in grams",
+      key: "transFatGrams",
+    })
+    .required(),
+  cholesterolMilligrams: Yup.number()
+    .label("Cholesterol")
+    .meta({
+      placeholder: "Cholesterol in mg",
+      key: "cholesterolMilligrams",
+    })
+    .required(),
+  sodiumMilligrams: Yup.number()
+    .label("Sodium")
+    .meta({
+      placeholder: "Sodium in g",
+      key: "sodiumMilligrams",
+    })
+    .required(),
   carbohydrateGrams: Yup.number()
     .label("Carb")
     .meta({
       placeholder: "Carbohydrates in grams",
       key: "carbohydrateGrams",
+    })
+    .required(),
+  fiberGrams: Yup.number()
+    .label("Fiber")
+    .meta({
+      placeholder: "Fiber in grams",
+      key: "fiberGrams",
+    })
+    .required(),
+  sugarGrams: Yup.number()
+    .label("Sugar")
+    .meta({
+      placeholder: "Fiber in grams",
+      key: "sugarGrams",
     })
     .required(),
   proteinGrams: Yup.number()

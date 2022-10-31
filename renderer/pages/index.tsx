@@ -1,16 +1,12 @@
-import { CopyIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Box,
-  ButtonGroup,
+  Button,
   Center,
-  IconButton,
   Input,
   Show,
   Spinner,
   Table,
   Tbody,
-  Td,
-  Text,
   Th,
   Thead,
   Tr,
@@ -20,8 +16,10 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { IngredientDrawer } from "../components/drawers/IngredientDrawer";
-
+import IngredientTableRow from "../components/table-rows/IngredientTableRow";
 import { dataid } from "../data/dataid";
+import { CalcTypeEnum } from "../data/nutrition-info";
+
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
@@ -31,6 +29,9 @@ const ItemsPage = () => {
   const [drawerItem, setDrawerItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
   const collection = useRxCollection<ItemDocument>("item");
+  const [priceType, setPriceType] = useState<CalcTypeEnum>(
+    CalcTypeEnum.perServing
+  );
   const { result, fetchMore, isExhausted } = useRxQuery(
     collection?.find({
       selector: {
@@ -43,8 +44,6 @@ const ItemsPage = () => {
       pagination: "Infinite",
     }
   );
-
-  const numberFormatter = new Intl.NumberFormat();
 
   return (
     <Fragment>
@@ -76,7 +75,20 @@ const ItemsPage = () => {
                 </Th>
                 <Show above="md">
                   <Th isNumeric>
-                    {yupItemSchema.fields.priceCents.spec.label}
+                    <Button
+                      variant="ghost"
+                      textTransform="uppercase"
+                      size="xs"
+                      onClick={() => {
+                        setPriceType(
+                          priceType === CalcTypeEnum.perServing
+                            ? CalcTypeEnum.total
+                            : CalcTypeEnum.perServing
+                        );
+                      }}
+                    >
+                      {priceType}
+                    </Button>
                   </Th>
                 </Show>
                 <Show above="lg">
@@ -87,8 +99,6 @@ const ItemsPage = () => {
                   <Th isNumeric>
                     {yupItemSchema.fields.energyKilocalorie.spec.label}
                   </Th>
-                </Show>
-                <Show above="2xl">
                   <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
                   <Th isNumeric>
                     {yupItemSchema.fields.carbohydrateGrams.spec.label}
@@ -101,63 +111,24 @@ const ItemsPage = () => {
             </Thead>
             <Tbody>
               {result?.map((value: ItemDocument) => (
-                <Tr key={value.id}>
-                  <Td width={"144px"}>
-                    <ButtonGroup isAttached size={"sm"}>
-                      <IconButton
-                        icon={<EditIcon />}
-                        aria-label="Edit"
-                        onClick={() => {
-                          setDrawerItem(value);
-                        }}
-                      />
-                      <IconButton
-                        icon={<CopyIcon />}
-                        aria-label="Duplicate"
-                        onClick={() => {
-                          const newValue =
-                            value.toMutableJSON() as ItemInferredType;
-                          const id = dataid();
-                          newValue.id = id;
-                          newValue.createdAt = new Date();
-                          newValue.name = `${newValue.name}-copy`;
-                          collection?.upsert(newValue);
-                        }}
-                      />
-                      <IconButton
-                        icon={<DeleteIcon />}
-                        aria-label="Delete"
-                        onClick={() => {
-                          setDeleteItem(value);
-                        }}
-                      />
-                    </ButtonGroup>
-                  </Td>
-                  <Td>
-                    {value.name.length > 0 ? (
-                      <Text noOfLines={2}>{value.name}</Text>
-                    ) : (
-                      "a"
-                    )}
-                  </Td>
-                  <Show above="md">
-                    <Td isNumeric>
-                      {numberFormatter.format(value.priceCents / 100)}
-                    </Td>
-                  </Show>
-                  <Show above="lg">
-                    <Td isNumeric>{value.count}</Td>
-                    <Td isNumeric>{value.massGrams}g</Td>
-                  </Show>
-                  <Show above="xl">
-                    <Td isNumeric>{value.energyKilocalorie}</Td>
-                  </Show>
-                  <Show above="2xl">
-                    <Td isNumeric>{value.fatGrams}g</Td>
-                    <Td isNumeric>{value.carbohydrateGrams}g</Td>
-                    <Td isNumeric>{value.proteinGrams}g</Td>
-                  </Show>
-                </Tr>
+                <IngredientTableRow
+                  item={value}
+                  priceType={priceType}
+                  onEdit={function (): void {
+                    setDrawerItem(value);
+                  }}
+                  onCopy={function (): void {
+                    const newValue = value.toMutableJSON() as ItemInferredType;
+                    const id = dataid();
+                    newValue.id = id;
+                    newValue.createdAt = new Date();
+                    newValue.name = `${newValue.name}-copy`;
+                    collection?.upsert(newValue);
+                  }}
+                  onDelete={function (): void {
+                    setDeleteItem(value);
+                  }}
+                />
               ))}
             </Tbody>
           </Table>

@@ -10,8 +10,9 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { CalcTypeEnum } from "../../data/CalcTypeEnum";
-import { NutritionInfo } from "../../data/nutrition-info";
+
+import { currencyFormatter } from "../../data/number-formatter";
+import { CalcTypeEnum, NutritionInfo } from "../../data/nutrition-info";
 import { ItemDocument } from "../../data/rxdb/item";
 
 type RecipeTableRowProps = {
@@ -24,7 +25,6 @@ type RecipeTableRowProps = {
 
 export function RecipeTableRow(props: RecipeTableRowProps) {
   // const value =props.item.servingPriceCents()
-  const numberFormatter = new Intl.NumberFormat();
   const [nutritionInfo, setNutritionInfo] = useState<NutritionInfo | null>(
     null
   );
@@ -68,7 +68,7 @@ export function RecipeTableRow(props: RecipeTableRowProps) {
 
       <Show above="md">
         <Td isNumeric>
-          {price === null ? <Spinner /> : numberFormatter.format(price / 100)}
+          {price === null ? <Spinner /> : currencyFormatter.format(price / 100)}
         </Td>
       </Show>
       <Show above="lg">
@@ -76,9 +76,7 @@ export function RecipeTableRow(props: RecipeTableRowProps) {
         <Td isNumeric>{nutritionInfo?.massGrams}g</Td>
       </Show>
       <Show above="xl">
-        <Td isNumeric>{nutritionInfo?.energyKilocalorie}</Td>
-      </Show>
-      <Show above="2xl">
+        <Td isNumeric>{nutritionInfo?.energyKilocalorie}kcal</Td>
         <Td isNumeric>{nutritionInfo?.fatGrams}g</Td>
         <Td isNumeric>{nutritionInfo?.carbohydrateGrams}g</Td>
         <Td isNumeric>{nutritionInfo?.proteinGrams}g</Td>

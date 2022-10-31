@@ -3,16 +3,16 @@ import { Button, Center, FormLabel, VStack } from "@chakra-ui/react";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
-import { ItemDocument } from "../../../data/rxdb/item";
-import { ItemInferredType, yupItemSchema } from "../../../data/yup/item";
-import { ItemInItemAutoCompleteInput } from "./ItemInItemAutoCompleteInput";
+import { ItemDocument } from "../../data/rxdb/item";
+import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
+import { SubitemAutoCompleteInput } from "./SubitemAutoCompleteInput";
 
-interface ItemInItemFieldProps {
+interface SubitemFieldProps {
   formikProps: FormikProps<Partial<ItemInferredType>>;
   fieldArrayHelpers: FieldArrayRenderProps;
 }
 
-export function ItemInItemField(props: ItemInItemFieldProps) {
+export function SubitemField(props: SubitemFieldProps) {
   const [nameSearch, setNameSearch] = useState("");
   const { result } = useRxQuery(
     useRxCollection<ItemDocument>("item")?.find({
@@ -31,7 +31,7 @@ export function ItemInItemField(props: ItemInItemFieldProps) {
       <FormLabel>{yupItemSchema.fields.subitems.spec.label}</FormLabel>
       {props.formikProps.values.subitems?.map((value, index) => {
         return (
-          <ItemInItemAutoCompleteInput
+          <SubitemAutoCompleteInput
             autoCompleteOnChange={async (value) => {
               setNameSearch(value);
             }}

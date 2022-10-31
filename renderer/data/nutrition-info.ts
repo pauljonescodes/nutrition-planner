@@ -1,8 +1,19 @@
+export enum CalcTypeEnum {
+  perServing = "Serving price",
+  total = "Total price",
+}
+
 export interface NutritionInfo {
   massGrams: number;
   energyKilocalorie: number;
   fatGrams: number;
+  saturatedFatGrams: number;
+  transFatGrams: number;
+  cholesterolMilligrams: number;
+  sodiumMilligrams: number;
   carbohydrateGrams: number;
+  fiberGrams: number;
+  sugarGrams: number;
   proteinGrams: number;
 }
 
@@ -10,12 +21,18 @@ export function nutritionInfoDescription(value: NutritionInfo): string {
   return `${value.massGrams}g / ${value.energyKilocalorie}kcal / ${value.fatGrams}g fat / ${value.carbohydrateGrams}g carb / ${value.proteinGrams}g protein`;
 }
 
-export function nutritionInfo(): NutritionInfo {
+export function baseNutritionInfo(): NutritionInfo {
   return {
     massGrams: 0,
     energyKilocalorie: 0,
     fatGrams: 0,
+    saturatedFatGrams: 0,
+    transFatGrams: 0,
+    cholesterolMilligrams: 0,
+    sodiumMilligrams: 0,
     carbohydrateGrams: 0,
+    fiberGrams: 0,
+    sugarGrams: 0,
     proteinGrams: 0,
   };
 }
@@ -25,13 +42,18 @@ export function addNutritionInfo(
   rhs: NutritionInfo
 ): NutritionInfo {
   return {
-    massGrams: (lhs.massGrams ?? 0) + (rhs.massGrams ?? 0),
-    energyKilocalorie:
-      (lhs.energyKilocalorie ?? 0) + (rhs.energyKilocalorie ?? 0),
-    fatGrams: (lhs.fatGrams ?? 0) + (rhs.fatGrams ?? 0),
-    carbohydrateGrams:
-      (lhs.carbohydrateGrams ?? 0) + (rhs.carbohydrateGrams ?? 0),
-    proteinGrams: (lhs.proteinGrams ?? 0) + (rhs.proteinGrams ?? 0),
+    massGrams: lhs.massGrams + rhs.massGrams,
+    energyKilocalorie: lhs.energyKilocalorie + rhs.energyKilocalorie,
+    fatGrams: lhs.fatGrams + rhs.fatGrams,
+    saturatedFatGrams: lhs.saturatedFatGrams + rhs.saturatedFatGrams,
+    transFatGrams: lhs.transFatGrams + rhs.transFatGrams,
+    cholesterolMilligrams:
+      lhs.cholesterolMilligrams + rhs.cholesterolMilligrams,
+    sodiumMilligrams: lhs.sodiumMilligrams + rhs.sodiumMilligrams,
+    carbohydrateGrams: lhs.carbohydrateGrams + rhs.carbohydrateGrams,
+    fiberGrams: lhs.fiberGrams + rhs.fiberGrams,
+    sugarGrams: lhs.sugarGrams + rhs.sugarGrams,
+    proteinGrams: lhs.proteinGrams + rhs.proteinGrams,
   };
 }
 
@@ -39,7 +61,7 @@ export function sumNutritionInfo(info: Array<NutritionInfo>): NutritionInfo {
   return info.reduce(
     (previousValue, currentValue) =>
       addNutritionInfo(previousValue, currentValue),
-    nutritionInfo()
+    baseNutritionInfo()
   );
 }
 
@@ -48,11 +70,17 @@ export function divideNutritionInfo(
   rhs: number
 ): NutritionInfo {
   return {
-    massGrams: Math.round((lhs.massGrams ?? 0) / rhs),
-    energyKilocalorie: Math.round((lhs.energyKilocalorie ?? 0) / rhs),
-    fatGrams: Math.round((lhs.fatGrams ?? 0) / rhs),
-    carbohydrateGrams: Math.round((lhs.carbohydrateGrams ?? 0) / rhs),
-    proteinGrams: Math.round((lhs.proteinGrams ?? 0) / rhs),
+    massGrams: Math.round(lhs.massGrams / rhs),
+    energyKilocalorie: Math.round(lhs.energyKilocalorie / rhs),
+    fatGrams: Math.round(lhs.fatGrams / rhs),
+    saturatedFatGrams: Math.round(lhs.saturatedFatGrams / rhs),
+    transFatGrams: Math.round(lhs.transFatGrams / rhs),
+    cholesterolMilligrams: Math.round(lhs.cholesterolMilligrams / rhs),
+    sodiumMilligrams: Math.round(lhs.sodiumMilligrams / rhs),
+    carbohydrateGrams: Math.round(lhs.carbohydrateGrams / rhs),
+    fiberGrams: Math.round(lhs.fiberGrams / rhs),
+    sugarGrams: Math.round(lhs.sugarGrams / rhs),
+    proteinGrams: Math.round(lhs.proteinGrams / rhs),
   };
 }
 
@@ -61,18 +89,19 @@ export function multiplyNutritionInfo(
   rhs: number
 ): NutritionInfo {
   return {
-    massGrams: Math.round((lhs.massGrams ?? 0) * rhs),
-    energyKilocalorie: Math.round((lhs.energyKilocalorie ?? 0) * rhs),
-    fatGrams: Math.round((lhs.fatGrams ?? 0) * rhs),
-    carbohydrateGrams: Math.round((lhs.carbohydrateGrams ?? 0) * rhs),
-    proteinGrams: Math.round((lhs.proteinGrams ?? 0) * rhs),
+    massGrams: Math.round(lhs.massGrams * rhs),
+    energyKilocalorie: Math.round(lhs.energyKilocalorie * rhs),
+    fatGrams: Math.round(lhs.fatGrams * rhs),
+    saturatedFatGrams: Math.round(lhs.saturatedFatGrams * rhs),
+    transFatGrams: Math.round(lhs.transFatGrams * rhs),
+    cholesterolMilligrams: Math.round(lhs.cholesterolMilligrams * rhs),
+    sodiumMilligrams: Math.round(lhs.sodiumMilligrams * rhs),
+    carbohydrateGrams: Math.round(lhs.carbohydrateGrams * rhs),
+    fiberGrams: Math.round(lhs.fiberGrams * rhs),
+    sugarGrams: Math.round(lhs.sugarGrams * rhs),
+    proteinGrams: Math.round(lhs.proteinGrams * rhs),
   };
 }
-
-// export const databaseCurrencyFormatter = new Intl.NumberFormat("en-US", {
-//   style: "currency",
-//   currency: "USD",
-// });
 
 // export class Database {
 
@@ -241,11 +270,6 @@ export function multiplyNutritionInfo(
 // }
 
 //   /* Price */
-
-//   formatter = new Intl.NumberFormat("en-US", {
-//     style: "currency",
-//     currency: "USD",
-//   });
 
 //   formattedItemPrice(
 //     item: ItemInferredType,

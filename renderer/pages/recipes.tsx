@@ -17,9 +17,9 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { RecipeDrawer } from "../components/drawers/RecipeDrawer";
 import { RecipeTableRow } from "../components/table-rows/RecipeTableRow";
-import { CalcTypeEnum } from "../data/CalcTypeEnum";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
+import { CalcTypeEnum } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
 
@@ -78,6 +78,8 @@ const RecipesPage = () => {
                   <Th isNumeric>
                     <Button
                       variant="ghost"
+                      textTransform="uppercase"
+                      size="xs"
                       onClick={() => {
                         setPriceType(
                           priceType === CalcTypeEnum.perServing
@@ -88,6 +90,7 @@ const RecipesPage = () => {
                     >
                       {priceType}
                     </Button>
+                    {/* (?<=Calories .*)[0-9]+(	) */}
                   </Th>
                 </Show>
                 <Show above="lg">
@@ -98,8 +101,6 @@ const RecipesPage = () => {
                   <Th isNumeric>
                     {yupItemSchema.fields.energyKilocalorie.spec.label}
                   </Th>
-                </Show>
-                <Show above="2xl">
                   <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
                   <Th isNumeric>
                     {yupItemSchema.fields.carbohydrateGrams.spec.label}

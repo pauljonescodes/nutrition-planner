@@ -2,6 +2,35 @@ import { ColorModeScript } from "@chakra-ui/react";
 import NextDocument, { Head, Html, Main, NextScript } from "next/document";
 
 export default class Document extends NextDocument {
+  static async getInitialProps(ctx: any) {
+    try {
+      const initialProps = await NextDocument.getInitialProps(ctx);
+
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {/* Stitches CSS for SSR */}
+            <style
+              id="stitches"
+              dangerouslySetInnerHTML={{
+                __html: `#MenuHStack {
+                  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                      scrollbar-width: none;  /* Firefox */
+                  }
+                  #MenuHStack::-webkit-scrollbar { 
+                      display: none;  /* Safari and Chrome */
+                  }`,
+              }}
+            />
+          </>
+        ),
+      };
+    } finally {
+    }
+  }
+
   render() {
     return (
       <Html lang="en">
@@ -10,7 +39,6 @@ export default class Document extends NextDocument {
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <meta name="description" content="Description" />
           <meta name="keywords" content="Keywords" />
-
           <link rel="manifest" href="/manifest.json" />
           <link
             href="/icons/favicon-16x16.png"

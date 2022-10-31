@@ -1,10 +1,10 @@
 import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
-import { CalcTypeEnum } from "../CalcTypeEnum";
 import {
   addNutritionInfo,
+  baseNutritionInfo,
+  CalcTypeEnum,
   divideNutritionInfo,
   multiplyNutritionInfo,
-  nutritionInfo,
   NutritionInfo,
 } from "../nutrition-info";
 import { ItemInferredType } from "../yup/item";
@@ -52,7 +52,25 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
     fatGrams: {
       type: "number",
     },
+    saturatedFatGrams: {
+      type: "number",
+    },
+    transFatGrams: {
+      type: "number",
+    },
+    cholesterolMilligrams: {
+      type: "number",
+    },
+    sodiumMilligrams: {
+      type: "number",
+    },
     carbohydrateGrams: {
+      type: "number",
+    },
+    fiberGrams: {
+      type: "number",
+    },
+    sugarGrams: {
       type: "number",
     },
     proteinGrams: {
@@ -83,7 +101,13 @@ export const itemDocumentMethods: ItemDocumentMethods = {
       massGrams: this.massGrams,
       energyKilocalorie: this.energyKilocalorie,
       fatGrams: this.fatGrams,
+      saturatedFatGrams: this.saturatedFatGrams,
+      transFatGrams: this.transFatGrams,
+      cholesterolMilligrams: this.cholesterolMilligrams,
+      sodiumMilligrams: this.sodiumMilligrams,
       carbohydrateGrams: this.carbohydrateGrams,
+      fiberGrams: this.fiberGrams,
+      sugarGrams: this.sugarGrams,
       proteinGrams: this.proteinGrams,
     };
   },
@@ -95,18 +119,18 @@ export const itemDocumentMethods: ItemDocumentMethods = {
     if (thisSubitems.length === 0) {
       switch (calcType) {
         case CalcTypeEnum.perServing:
-          return divideNutritionInfo(this.nutritionInfo(), this.count);
-        case CalcTypeEnum.total:
           return this.nutritionInfo();
+        case CalcTypeEnum.total:
+          return multiplyNutritionInfo(this.nutritionInfo(), this.count);
       }
     } else {
-      var accumulatedNutritionInfo: NutritionInfo = nutritionInfo();
+      var accumulatedNutritionInfo: NutritionInfo = baseNutritionInfo();
 
       for (const subitem of thisSubitems ?? []) {
         const item = await this.collection.findOne(subitem.itemId).exec();
         const itemNutritionInfo =
           (await item?.calculatedNutritionInfo(CalcTypeEnum.perServing)) ??
-          nutritionInfo();
+          baseNutritionInfo();
         accumulatedNutritionInfo = addNutritionInfo(
           accumulatedNutritionInfo,
           divideNutritionInfo(

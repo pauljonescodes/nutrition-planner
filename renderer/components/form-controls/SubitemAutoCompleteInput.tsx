@@ -4,6 +4,7 @@ import {
   IconButton,
   NumberInput,
   NumberInputField,
+  Text,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
@@ -17,42 +18,64 @@ import {
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
-import { ItemDocument } from "../../../data/rxdb/item";
-import { ItemInferredType } from "../../../data/yup/item";
+import { currencyFormatter } from "../../data/number-formatter";
 import {
-  SubitemInferredType,
-  yupSubitemSchema,
-} from "../../../data/yup/subitem";
+  CalcTypeEnum,
+  multiplyNutritionInfo,
+  NutritionInfo,
+  nutritionInfoDescription,
+} from "../../data/nutrition-info";
+import { ItemDocument } from "../../data/rxdb/item";
+import { ItemInferredType } from "../../data/yup/item";
+import { SubitemInferredType, yupSubitemSchema } from "../../data/yup/subitem";
 
-interface ItemInItemAutoCompleteInputProps {
+interface SubitemAutoCompleteInputProps {
   value: SubitemInferredType;
   index: number;
   formikProps: FormikProps<Partial<ItemInferredType>>;
   fieldArrayHelpers: FieldArrayRenderProps;
-  options: ItemInferredType[];
+  options: Array<ItemDocument>;
   autoCompleteOnChange: (value: string) => void;
 }
 
-export function ItemInItemAutoCompleteInput(
-  props: ItemInItemAutoCompleteInputProps
-) {
-  const [selectedFieldValueName, setSelectedFieldValueName] = useState<
-    string | undefined
-  >(undefined);
+export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
+  const [fieldValueDocumentState, setFieldValueDocumentState] = useState<
+    ItemDocument | undefined | null
+  >(null);
+  const [
+    fieldValueServingNutritionInfoState,
+    setFieldValueServingNutritionInfoState,
+  ] = useState<NutritionInfo | undefined>(undefined);
+  const [
+    fieldValueServingPriceCentsState,
+    setFieldValueServingPriceCentsState,
+  ] = useState<number | undefined>(undefined);
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   const collection = useRxCollection<ItemDocument>("item");
 
-  async function querySelectedFieldValueName() {
+  async function queryFieldValueDocument() {
     if (props.value) {
-      const query = collection?.findOne({ selector: { name: props.value } });
+      const query = collection?.findOne({
+        selector: { id: props.value.itemId },
+      });
       const value = await query?.exec();
-      setSelectedFieldValueName(value?.name);
+      setFieldValueDocumentState(value);
+
+      const nutritionInfo = await value?.calculatedNutritionInfo(
+        CalcTypeEnum.perServing
+      );
+      setFieldValueServingNutritionInfoState(nutritionInfo);
+
+      const priceCentsPerServing = await value?.calculatedPriceCents(
+        CalcTypeEnum.perServing
+      );
+      setFieldValueServingPriceCentsState(priceCentsPerServing);
     }
   }
 
   useEffect(() => {
-    querySelectedFieldValueName();
+    queryFieldValueDocument();
   }, [props.value, collection]);
 
   return (
@@ -75,20 +98,20 @@ export function ItemInItemAutoCompleteInput(
         <AutoComplete
           openOnFocus
           onChange={async (_value, item) => {
-            const modelItem = (item as Item).originalValue as ItemInferredType;
+            const itemDocument = (item as Item).originalValue as ItemDocument;
 
             props.formikProps.setFieldValue(
               `subitems.${props.index}.itemId`,
-              modelItem.id
+              itemDocument.id
             );
-            setSelectedFieldValueName(modelItem.name);
+            setFieldValueDocumentState(itemDocument);
           }}
         >
           <AutoCompleteInput
             placeholder={yupSubitemSchema.fields.itemId.spec.label}
-            value={selectedFieldValueName ?? props.value.itemId}
+            value={fieldValueDocumentState?.name}
             onChange={async (event) => {
-              setSelectedFieldValueName(event.target.value);
+              // setFieldValueDocumentState(event.target.value);
               props.autoCompleteOnChange(event.target.value);
             }}
           />
@@ -117,6 +140,29 @@ export function ItemInItemAutoCompleteInput(
           }}
         />
       </HStack>
+      <Text
+        color={alphaColor}
+        fontSize="sm"
+        textOverflow="ellipsis"
+        overflow="hidden"
+        whiteSpace="nowrap"
+      >
+        {fieldValueServingPriceCentsState
+          ? currencyFormatter.format(
+              (fieldValueServingPriceCentsState / 100) *
+                (props.value.count ?? 0)
+            )
+          : ""}
+        {" / "}
+        {fieldValueServingNutritionInfoState
+          ? nutritionInfoDescription(
+              multiplyNutritionInfo(
+                fieldValueServingNutritionInfoState,
+                props.value.count ?? 0
+              )
+            )
+          : ""}
+      </Text>
     </VStack>
   );
 }

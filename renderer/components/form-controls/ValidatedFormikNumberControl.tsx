@@ -17,6 +17,7 @@ interface ValidatedFormikNumberControlProps<T> {
   error?: string; // props.formikProps.errors.name
   spaceProps?: SpaceProps;
   transform?: (value: number) => number;
+  onPaste?: (text: string) => void;
   format?: (value: number | undefined) => number;
 }
 
@@ -36,6 +37,12 @@ export function ValidatedFormikNumberControl<T>(
           formNoValidate
           name={props.yupSchemaField.spec.meta["key"]}
           value={props.format ? props.format(props.value) : props.value}
+          onPaste={(e) => {
+            e.preventDefault();
+            if (props.onPaste) {
+              props.onPaste(e.clipboardData.getData("Text"));
+            }
+          }}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             if (props.transform) {
               const valueFloat = parseFloat(e.currentTarget.value);

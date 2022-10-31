@@ -36,6 +36,7 @@ export function MenuHStack() {
         overflowX="scroll"
         position="fixed"
         zIndex={999}
+        id="MenuHStack"
       >
         <ButtonGroup isAttached>
           <Button
