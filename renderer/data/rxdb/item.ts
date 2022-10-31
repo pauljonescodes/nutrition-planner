@@ -46,7 +46,7 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
     massGrams: {
       type: "number",
     },
-    energyKilocalorie: {
+    energyKilocalories: {
       type: "number",
     },
     fatGrams: {
