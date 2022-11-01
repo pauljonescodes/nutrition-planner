@@ -1,10 +1,11 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
+  Grid,
+  GridItem,
   HStack,
   IconButton,
   NumberInput,
   NumberInputField,
-  Text,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
@@ -16,14 +17,11 @@ import {
   Item,
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
-import { useEffect, useState } from "react";
-import { useRxCollection } from "rxdb-hooks";
+import { useState } from "react";
 import { currencyFormatter } from "../../data/number-formatter";
 import {
-  CalcTypeEnum,
   multiplyNutritionInfo,
   NutritionInfo,
-  nutritionInfoDescription,
 } from "../../data/nutrition-info";
 import { ItemDocument } from "../../data/rxdb/item";
 import { ItemInferredType } from "../../data/yup/item";
@@ -31,6 +29,9 @@ import { SubitemInferredType, yupSubitemSchema } from "../../data/yup/subitem";
 
 interface SubitemAutoCompleteInputProps {
   value: SubitemInferredType;
+  calculatedNutritionInfo: NutritionInfo;
+  calculatedPriceInCents: number;
+  queriedSubitemName: string;
   index: number;
   formikProps: FormikProps<Partial<ItemInferredType>>;
   fieldArrayHelpers: FieldArrayRenderProps;
@@ -39,49 +40,21 @@ interface SubitemAutoCompleteInputProps {
 }
 
 export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
-  const [fieldValueDocumentState, setFieldValueDocumentState] = useState<
-    ItemDocument | undefined | null
-  >(null);
-  const [
-    fieldValueServingNutritionInfoState,
-    setFieldValueServingNutritionInfoState,
-  ] = useState<NutritionInfo | undefined>(undefined);
-  const [
-    fieldValueServingPriceCentsState,
-    setFieldValueServingPriceCentsState,
-  ] = useState<number | undefined>(undefined);
+  const [fieldValueState, setFieldValueState] = useState<string | undefined>(
+    undefined
+  );
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
-  const collection = useRxCollection<ItemDocument>("item");
-
-  async function queryFieldValueDocument() {
-    if (props.value) {
-      const query = collection?.findOne({
-        selector: { id: props.value.itemId },
-      });
-      const value = await query?.exec();
-      setFieldValueDocumentState(value);
-
-      const nutritionInfo = await value?.calculatedNutritionInfo(
-        CalcTypeEnum.perServing
-      );
-      setFieldValueServingNutritionInfoState(nutritionInfo);
-
-      const priceCentsPerServing = await value?.calculatedPriceCents(
-        CalcTypeEnum.perServing
-      );
-      setFieldValueServingPriceCentsState(priceCentsPerServing);
-    }
-  }
-
-  useEffect(() => {
-    queryFieldValueDocument();
-  }, [props.value, collection]);
+  const calculatedTotalNutritionInfo = multiplyNutritionInfo(
+    props.calculatedNutritionInfo,
+    props.value.count ?? 1
+  );
 
   return (
     <VStack key={props.index} align="stretch" spacing={0} pb={2}>
       <HStack pb={1}>
         <NumberInput
+          w="30%"
           defaultValue={props.value.count}
           min={-9999.99}
           max={9999.99}
@@ -104,14 +77,14 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
               `subitems.${props.index}.itemId`,
               itemDocument.id
             );
-            setFieldValueDocumentState(itemDocument);
+            setFieldValueState(itemDocument.name);
           }}
         >
           <AutoCompleteInput
             placeholder={yupSubitemSchema.fields.itemId.spec.label}
-            value={fieldValueDocumentState?.name}
+            value={fieldValueState ?? props.queriedSubitemName}
             onChange={async (event) => {
-              // setFieldValueDocumentState(event.target.value);
+              setFieldValueState(event.target.value);
               props.autoCompleteOnChange(event.target.value);
             }}
           />
@@ -140,29 +113,30 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
           }}
         />
       </HStack>
-      <Text
-        color={alphaColor}
-        fontSize="sm"
-        textOverflow="ellipsis"
-        overflow="hidden"
-        whiteSpace="nowrap"
-      >
-        {fieldValueServingPriceCentsState
-          ? currencyFormatter.format(
-              (fieldValueServingPriceCentsState / 100) *
-                (props.value.count ?? 0)
-            )
-          : ""}
-        {" / "}
-        {fieldValueServingNutritionInfoState
-          ? nutritionInfoDescription(
-              multiplyNutritionInfo(
-                fieldValueServingNutritionInfoState,
-                props.value.count ?? 0
-              )
-            )
-          : ""}
-      </Text>
+
+      <Grid templateColumns="repeat(6, 1fr)" pb={2}>
+        <GridItem color={alphaColor} fontSize="sm">
+          {currencyFormatter.format(
+            ((props.calculatedPriceInCents ?? 0) / 100) *
+              (props.value.count ?? 0)
+          )}
+        </GridItem>
+        <GridItem color={alphaColor} fontSize="sm">
+          {calculatedTotalNutritionInfo.massGrams}g
+        </GridItem>
+        <GridItem color={alphaColor} fontSize="sm">
+          {calculatedTotalNutritionInfo.energyKilocalories}kcal
+        </GridItem>
+        <GridItem color={alphaColor} fontSize="sm">
+          {calculatedTotalNutritionInfo.fatGrams}g fat
+        </GridItem>
+        <GridItem color={alphaColor} fontSize="sm">
+          {calculatedTotalNutritionInfo.carbohydrateGrams}g carbs
+        </GridItem>
+        <GridItem color={alphaColor} fontSize="sm">
+          {calculatedTotalNutritionInfo.proteinGrams}g protein
+        </GridItem>
+      </Grid>
     </VStack>
   );
 }

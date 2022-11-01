@@ -7,36 +7,29 @@ import {
   DrawerOverlay,
 } from "@chakra-ui/react";
 import { ItemInferredType } from "../../data/yup/item";
-import { RecipeFormik } from "../formik/RecipeFormik";
+import { PlanFormik } from "../formik/PlanFormik";
 
-type RecipeDrawerProps = {
+type PlanDrawerProps = {
   item: Partial<ItemInferredType> | null;
   onResult(item: Partial<ItemInferredType> | null): void;
 };
 
-export function RecipeDrawer(props: RecipeDrawerProps) {
+export function PlanDrawer(props: PlanDrawerProps) {
   return (
     <Drawer
       isOpen={props.item !== null}
       placement="left"
-      size="md"
-      onClose={() => {
-        props.onResult(null);
-      }}
+      onClose={() => props.onResult(null)}
       finalFocusRef={undefined}
+      size="md"
     >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Recipe</DrawerHeader>
+        <DrawerHeader>Plan</DrawerHeader>
 
         <DrawerBody>
-          <RecipeFormik
-            item={props.item}
-            onSubmit={(item) => {
-              props.onResult(item);
-            }}
-          />
+          <PlanFormik item={props.item} onSubmit={props.onResult} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

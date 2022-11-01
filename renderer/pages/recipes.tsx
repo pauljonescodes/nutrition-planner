@@ -3,9 +3,9 @@ import {
   Button,
   Center,
   Input,
-  Show,
   Spinner,
   Table,
+  TableContainer,
   Tbody,
   Th,
   Thead,
@@ -16,7 +16,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { RecipeDrawer } from "../components/drawers/RecipeDrawer";
-import { RecipeTableRow } from "../components/table-rows/RecipeTableRow";
+import { ItemTableRow } from "../components/ItemTableRow";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { CalcTypeEnum } from "../data/nutrition-info";
@@ -31,7 +31,7 @@ const RecipesPage = () => {
     CalcTypeEnum.perServing
   );
   const itemCollection = useRxCollection<ItemDocument>("item");
-  const { result, fetchMore, isExhausted } = useRxQuery(
+  const { result, fetchMore, isExhausted, resetList } = useRxQuery(
     itemCollection?.find({
       selector: {
         type: ItemTypeEnum.recipe,
@@ -58,23 +58,23 @@ const RecipesPage = () => {
             </Center>
           }
         >
-          <Table key="table">
-            <Thead>
-              <Tr>
-                <Th>Actions</Th>
-                <Th>
-                  <Input
-                    placeholder={yupItemSchema.fields.name.spec.label}
-                    value={nameSearch}
-                    onChange={(e) => {
-                      setNameSearch(e.currentTarget.value);
-                    }}
-                    size="sm"
-                    variant="unstyled"
-                  />
-                </Th>
+          <TableContainer>
+            <Table key="table">
+              <Thead>
+                <Tr>
+                  <Th>Actions</Th>
+                  <Th>
+                    <Input
+                      placeholder={yupItemSchema.fields.name.spec.label}
+                      value={nameSearch}
+                      onChange={(e) => {
+                        setNameSearch(e.currentTarget.value);
+                      }}
+                      size="sm"
+                      variant="unstyled"
+                    />
+                  </Th>
 
-                <Show above="md">
                   <Th isNumeric>
                     <Button
                       variant="ghost"
@@ -90,14 +90,9 @@ const RecipesPage = () => {
                     >
                       {priceType}
                     </Button>
-                    {/* (?<=Calories .*)[0-9]+(	) */}
                   </Th>
-                </Show>
-                <Show above="lg">
                   <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
                   <Th isNumeric>{yupItemSchema.fields.massGrams.spec.label}</Th>
-                </Show>
-                <Show above="xl">
                   <Th isNumeric>
                     {yupItemSchema.fields.energyKilocalories.spec.label}
                   </Th>
@@ -108,32 +103,33 @@ const RecipesPage = () => {
                   <Th isNumeric>
                     {yupItemSchema.fields.proteinGrams.spec.label}
                   </Th>
-                </Show>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {result?.map((value) => (
-                <RecipeTableRow
-                  key={value.id}
-                  item={value}
-                  priceType={priceType}
-                  onEdit={() => {
-                    setDrawerItem(value);
-                  }}
-                  onCopy={() => {
-                    const newValue = value.toMutableJSON() as ItemInferredType;
-                    newValue.id = dataid();
-                    newValue.name = `${newValue.name}-copy`;
-                    newValue.createdAt = new Date();
-                    itemCollection?.upsert(newValue);
-                  }}
-                  onDelete={() => {
-                    setDeleteItem(value);
-                  }}
-                />
-              ))}
-            </Tbody>
-          </Table>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {result?.map((value) => (
+                  <ItemTableRow
+                    key={value.id}
+                    item={value}
+                    priceType={priceType}
+                    onEdit={() => {
+                      setDrawerItem(value);
+                    }}
+                    onCopy={() => {
+                      const newValue =
+                        value.toMutableJSON() as ItemInferredType;
+                      newValue.id = dataid();
+                      newValue.name = `${newValue.name}-copy`;
+                      newValue.createdAt = new Date();
+                      itemCollection?.upsert(newValue);
+                    }}
+                    onDelete={() => {
+                      setDeleteItem(value);
+                    }}
+                  />
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
         </InfiniteScroll>
       </Box>
       <RecipeDrawer

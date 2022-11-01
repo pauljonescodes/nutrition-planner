@@ -1,5 +1,5 @@
 export enum ItemTypeEnum {
-  ingredient = "ingredient",
+  item = "item",
   recipe = "recipe",
-  mealPlan = "mealPlan",
+  plan = "plan",
 }

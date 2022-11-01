@@ -16,7 +16,7 @@ export const yupItemSchema = Yup.object({
   priceCents: Yup.number()
     .label("Price")
     .meta({
-      placeholder: "Price of product",
+      placeholder: "Price",
       key: "priceCents",
     })
     .required(),
@@ -105,11 +105,10 @@ export const yupItemSchema = Yup.object({
     })
     .required(),
   subitems: Yup.array()
-    .default([])
     .meta({
       key: "subitems",
     })
-    .label("Ingredients")
+    .label("Items")
     .of(yupSubitemSchema),
 });
 

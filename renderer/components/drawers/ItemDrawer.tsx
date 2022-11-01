@@ -8,14 +8,14 @@ import {
 } from "@chakra-ui/react";
 import { ItemInferredType } from "../../data/yup/item";
 
-import { IngredientForm } from "../forms/IngredientForm";
+import { ItemFormik } from "../formik/ItemFormik";
 
-type IngredientDrawerProps = {
+type ItemDrawerProps = {
   item: Partial<ItemInferredType> | null;
   onResult(item: Partial<ItemInferredType> | null): void;
 };
 
-export function IngredientDrawer(props: IngredientDrawerProps) {
+export function ItemDrawer(props: ItemDrawerProps) {
   return (
     <Drawer
       isOpen={props.item !== null}
@@ -30,7 +30,7 @@ export function IngredientDrawer(props: IngredientDrawerProps) {
         <DrawerHeader>Ingredient</DrawerHeader>
 
         <DrawerBody>
-          <IngredientForm item={props.item} onSubmit={props.onResult} />
+          <ItemFormik item={props.item} onSubmit={props.onResult} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

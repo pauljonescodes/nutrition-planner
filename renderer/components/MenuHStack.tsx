@@ -14,14 +14,17 @@ import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
-import { IngredientDrawer } from "./drawers/IngredientDrawer";
+import { ItemDrawer } from "./drawers/ItemDrawer";
+import { PlanDrawer } from "./drawers/PlanDrawer";
 import { RecipeDrawer } from "./drawers/RecipeDrawer";
 
 export function MenuHStack() {
   const router = useRouter();
-  const [ingredientDrawerItem, setIngredientDrawerItem] =
+  const [itemDrawerItem, setItemDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
   const [recipeDrawerItem, setRecipeDrawerItem] =
+    useState<Partial<ItemInferredType> | null>(null);
+  const [planDrawerItem, setPlanDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
 
   const collection = useRxCollection<ItemDocument>("item");
@@ -49,10 +52,10 @@ export function MenuHStack() {
           </Button>
           <IconButton
             onClick={() => {
-              setIngredientDrawerItem({
+              setItemDrawerItem({
                 ...yupItemSchema.getDefault(),
                 id: dataid(),
-                type: ItemTypeEnum.ingredient,
+                type: ItemTypeEnum.item,
               });
             }}
             icon={<AddIcon />}
@@ -80,8 +83,7 @@ export function MenuHStack() {
             aria-label="Add"
           />
         </ButtonGroup>
-        {
-          /* <ButtonGroup isAttached>
+        <ButtonGroup isAttached>
           <Button
             isActive={router.pathname === "/plans"}
             onClick={() => {
@@ -90,31 +92,29 @@ export function MenuHStack() {
           >
             Plans
           </Button>
-          <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
-        </ButtonGroup>
-        <ButtonGroup isAttached>
-          <Button
-            isActive={router.pathname === "/log"}
-            onClick={() => {
-              router.push("/log");
-            }}
-          >
-            Log
-          </Button>
-          <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
-        </ButtonGroup>*/
           <IconButton
-            onClick={() => router.push("/settings")}
-            isActive={router.pathname === "/settings"}
-            icon={<SettingsIcon />}
-            aria-label="Settings"
+            onClick={() => {
+              setPlanDrawerItem({
+                ...yupItemSchema.getDefault(),
+                id: dataid(),
+                type: ItemTypeEnum.plan,
+              });
+            }}
+            icon={<AddIcon />}
+            aria-label="Add"
           />
-        }
+        </ButtonGroup>
+        <IconButton
+          onClick={() => router.push("/settings")}
+          isActive={router.pathname === "/settings"}
+          icon={<SettingsIcon />}
+          aria-label="Settings"
+        />
       </HStack>
-      <IngredientDrawer
-        item={ingredientDrawerItem}
+      <ItemDrawer
+        item={itemDrawerItem}
         onResult={(item) => {
-          setIngredientDrawerItem(null);
+          setItemDrawerItem(null);
           if (item) {
             item.createdAt = new Date();
             collection?.upsert(item);
@@ -125,6 +125,16 @@ export function MenuHStack() {
         item={recipeDrawerItem}
         onResult={(item) => {
           setRecipeDrawerItem(null);
+          if (item) {
+            item.createdAt = new Date();
+            collection?.upsert(item);
+          }
+        }}
+      />
+      <PlanDrawer
+        item={planDrawerItem}
+        onResult={(item) => {
+          setPlanDrawerItem(null);
           if (item) {
             item.createdAt = new Date();
             collection?.upsert(item);

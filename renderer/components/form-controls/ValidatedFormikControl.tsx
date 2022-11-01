@@ -1,6 +1,7 @@
 import {
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Input,
   SpaceProps,
@@ -16,6 +17,9 @@ interface ValidatedFormikControlProps<T> {
   error?: string; // props.formikProps.errors.name
   spaceProps?: SpaceProps;
   inputFieldRef?: RefObject<HTMLInputElement>;
+  formLabelText?: string;
+  helperText?: string;
+  isRequired?: boolean;
   onPaste?: (text: string) => void;
 }
 
@@ -23,8 +27,17 @@ export function ValidatedFormikControl<T>(
   props: ValidatedFormikControlProps<T>
 ) {
   return (
-    <FormControl {...props.spaceProps} isInvalid={props.error !== undefined}>
-      <FormLabel>{props.yupSchemaField.spec.label}</FormLabel>
+    <FormControl
+      {...props.spaceProps}
+      isInvalid={props.error !== undefined}
+      isRequired={
+        props.isRequired ??
+        props.yupSchemaField.describe().tests[0].name === "required"
+      }
+    >
+      <FormLabel>
+        {props.formLabelText ?? props.yupSchemaField.spec.label}
+      </FormLabel>
       <Input
         ref={props.inputFieldRef}
         onChange={props.formikProps.handleChange}
@@ -40,6 +53,7 @@ export function ValidatedFormikControl<T>(
         }}
       />
       {props.error && <FormErrorMessage>{props.error}</FormErrorMessage>}
+      {props.helperText && <FormHelperText>{props.helperText}</FormHelperText>}
     </FormControl>
   );
 }

@@ -3,7 +3,6 @@ import {
   ButtonGroup,
   Center,
   IconButton,
-  Show,
   Spinner,
   Td,
   Text,
@@ -11,11 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { currencyFormatter } from "../../data/number-formatter";
-import { CalcTypeEnum, NutritionInfo } from "../../data/nutrition-info";
-import { ItemDocument } from "../../data/rxdb/item";
+import { currencyFormatter } from "../data/number-formatter";
+import { CalcTypeEnum, NutritionInfo } from "../data/nutrition-info";
+import { ItemDocument } from "../data/rxdb/item";
 
-type RecipeTableRowProps = {
+type ItemTableRowProps = {
   item: ItemDocument;
   priceType: CalcTypeEnum;
   onEdit: () => void;
@@ -23,8 +22,7 @@ type RecipeTableRowProps = {
   onDelete: () => void;
 };
 
-export function RecipeTableRow(props: RecipeTableRowProps) {
-  // const value =props.item.servingPriceCents()
+export function ItemTableRow(props: ItemTableRowProps) {
   const [nutritionInfo, setNutritionInfo] = useState<NutritionInfo | null>(
     null
   );
@@ -37,7 +35,7 @@ export function RecipeTableRow(props: RecipeTableRowProps) {
     props.item
       .calculatedNutritionInfo(props.priceType)
       .then((value) => setNutritionInfo(value));
-  }, [props.item, props.priceType]);
+  }, [props.item, props.priceType, props.item.subitems]);
 
   return (
     <Tr key={props.item.id}>
@@ -66,21 +64,15 @@ export function RecipeTableRow(props: RecipeTableRowProps) {
         <Text noOfLines={2}>{props.item.name}</Text>
       </Td>
 
-      <Show above="md">
-        <Td isNumeric>
-          {price === null ? <Spinner /> : currencyFormatter.format(price / 100)}
-        </Td>
-      </Show>
-      <Show above="lg">
-        <Td isNumeric>{props.item.count}</Td>
-        <Td isNumeric>{nutritionInfo?.massGrams}g</Td>
-      </Show>
-      <Show above="xl">
-        <Td isNumeric>{nutritionInfo?.energyKilocalories}kcal</Td>
-        <Td isNumeric>{nutritionInfo?.fatGrams}g</Td>
-        <Td isNumeric>{nutritionInfo?.carbohydrateGrams}g</Td>
-        <Td isNumeric>{nutritionInfo?.proteinGrams}g</Td>
-      </Show>
+      <Td isNumeric>
+        {price === null ? <Spinner /> : currencyFormatter.format(price / 100)}
+      </Td>
+      <Td isNumeric>{props.item.count}</Td>
+      <Td isNumeric>{nutritionInfo?.massGrams}g</Td>
+      <Td isNumeric>{nutritionInfo?.energyKilocalories}kcal</Td>
+      <Td isNumeric>{nutritionInfo?.fatGrams}g</Td>
+      <Td isNumeric>{nutritionInfo?.carbohydrateGrams}g</Td>
+      <Td isNumeric>{nutritionInfo?.proteinGrams}g</Td>
     </Tr>
   );
 }
