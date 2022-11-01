@@ -4373,9 +4373,10 @@ if (isProd) {
   } else {
     const port = process.argv[2];
     await mainWindow.loadURL(`http://localhost:${port}/`);
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   }
 })();
+
 electron__WEBPACK_IMPORTED_MODULE_0__.app.on("window-all-closed", () => {
   electron__WEBPACK_IMPORTED_MODULE_0__.app.quit();
 });

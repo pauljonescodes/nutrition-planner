@@ -7,6 +7,7 @@
     "scripts": {
         "clean": "rimraf dist main renderer/out renderer/.next",
         "next-build": "next build renderer",
+        "build-renderer": "next build renderer",
         "next-dev": "next dev renderer",
         "nextron-dev": "nextron",
         "nextron-build": "nextron build",
