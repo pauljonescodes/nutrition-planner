@@ -34,12 +34,13 @@ export function MenuHStack() {
     <Fragment>
       <HStack
         p={3}
+        pr={5}
         bg={color}
         width={"100vw"}
         overflowX="scroll"
         position="fixed"
         zIndex={999}
-        id="MenuHStack"
+        className="hide-scrollbar"
       >
         <ButtonGroup isAttached>
           <Button

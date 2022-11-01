@@ -15,11 +15,11 @@ export default class Document extends NextDocument {
             <style
               id="stitches"
               dangerouslySetInnerHTML={{
-                __html: `#MenuHStack {
+                __html: `.hide-scrollbar {
                   -ms-overflow-style: none;  /* Internet Explorer 10+ */
                       scrollbar-width: none;  /* Firefox */
                   }
-                  #MenuHStack::-webkit-scrollbar { 
+                  .hide-scrollbar::-webkit-scrollbar { 
                       display: none;  /* Safari and Chrome */
                   }`,
               }}

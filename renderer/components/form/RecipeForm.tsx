@@ -32,13 +32,8 @@ type RecipeFormProps = {
 
 export default function RecipeForm(props: RecipeFormProps) {
   const subitems = props.formikProps.values.subitems ?? [];
-  const recipeServings = props.formikProps.values.count ?? 1;
   const collection = useRxCollection<ItemDocument>("item");
 
-  const [queriedSubitemsState, setQueriedSubitemsState] = useState<Map<
-    string,
-    ItemDocument
-  > | null>(null);
   const [calculatedNutritionInfoMapState, setCalculatedNutritionInfoMapState] =
     useState<Map<string, NutritionInfo> | null>(null);
   const [calculatedPriceInCentsMapState, setCalculatedPriceInCentsMapState] =
@@ -46,6 +41,10 @@ export default function RecipeForm(props: RecipeFormProps) {
   const [queriedSubitemNameMapState, setQueriedSubitemNameMapState] =
     useState<Map<string, string> | null>(null);
   const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+
+  useEffect(() => {
+    calculate();
+  }, [props.formikProps.values.subitems, collection]);
 
   async function calculate() {
     const subitemIds = subitems
@@ -55,8 +54,6 @@ export default function RecipeForm(props: RecipeFormProps) {
     const result = await collection?.findByIds(subitemIds);
 
     if (result !== undefined) {
-      setQueriedSubitemsState(result);
-
       const nutritionEntries = await Promise.all(
         subitems.map(async (value): Promise<[string, NutritionInfo]> => {
           const itemId = value.itemId;
@@ -109,10 +106,6 @@ export default function RecipeForm(props: RecipeFormProps) {
     }
   }
 
-  useEffect(() => {
-    calculate();
-  }, [props.formikProps.values.subitems, collection]);
-
   var totalNutritionInfo = baseNutritionInfo();
   if (calculatedNutritionInfoMapState) {
     totalNutritionInfo = divideNutritionInfo(
@@ -128,7 +121,7 @@ export default function RecipeForm(props: RecipeFormProps) {
           return baseNutritionInfo();
         })
       ),
-      recipeServings
+      props.formikProps.values.count ?? 1
     );
   }
 
@@ -145,7 +138,8 @@ export default function RecipeForm(props: RecipeFormProps) {
 
           return 0;
         })
-        .reduce((previous, current) => previous + current, 0) / recipeServings;
+        .reduce((previous, current) => previous + current, 0) /
+      (props.formikProps.values.count ?? 1);
   }
 
   return (
@@ -184,7 +178,7 @@ export default function RecipeForm(props: RecipeFormProps) {
       />
 
       <Center>
-        <VStack>
+        <VStack width={"100%"}>
           <Button
             type="submit"
             my={4}
@@ -192,7 +186,7 @@ export default function RecipeForm(props: RecipeFormProps) {
           >
             Submit
           </Button>
-          <Grid templateColumns="repeat(6, 1fr)" pb={2}>
+          <Grid templateColumns="repeat(6, 1fr)" pb={2} width={"100%"}>
             <GridItem color={alphaColor} fontSize="sm">
               {currencyFormatter.format(totalPriceInCents / 100)}
             </GridItem>

@@ -20,7 +20,7 @@ export function PlanFormik(props: PlanFormProps) {
     type: ItemTypeEnum.plan,
     name: props.item?.name,
     massGrams: 0,
-    count: 0,
+    count: 1,
     priceCents: 0,
     energyKilocalories: 0,
     fatGrams: 0,

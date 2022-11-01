@@ -23,7 +23,7 @@ import { CalcTypeEnum } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
 
-const RecipesPage = () => {
+export default function RecipesPage() {
   const [nameSearch, setNameSearch] = useState<string>("");
   const [drawerItem, setDrawerItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
@@ -58,7 +58,7 @@ const RecipesPage = () => {
             </Center>
           }
         >
-          <TableContainer>
+          <TableContainer className="hide-scrollbar">
             <Table key="table">
               <Thead>
                 <Tr>
@@ -153,6 +153,4 @@ const RecipesPage = () => {
       />
     </Fragment>
   );
-};
-
-export default RecipesPage;
+}
