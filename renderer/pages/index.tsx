@@ -1,12 +1,9 @@
 import {
   Box,
   Button,
-  Center,
   Input,
-  Spinner,
   Table,
   TableContainer,
-  Tbody,
   Th,
   Thead,
   Tr,
@@ -47,88 +44,82 @@ export default function ItemsPage() {
   return (
     <Fragment>
       <Box>
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={fetchMore}
-          hasMore={!isExhausted}
-          loader={
-            <Center pt="3">
-              <Spinner />
-            </Center>
-          }
-        >
-          <TableContainer className="hide-scrollbar">
-            <Table>
-              <Thead>
-                <Tr>
-                  <Th>Actions</Th>
-                  <Th>
-                    <Input
-                      placeholder={yupItemSchema.fields.name.spec.label}
-                      value={nameSearch}
-                      onChange={(e) => {
-                        setNameSearch(e.currentTarget.value);
-                      }}
-                      size="sm"
-                      variant="unstyled"
-                    />
-                  </Th>
-                  <Th isNumeric>
-                    <Button
-                      variant="ghost"
-                      textTransform="uppercase"
-                      size="xs"
-                      onClick={() => {
-                        setPriceType(
-                          priceType === CalcTypeEnum.perServing
-                            ? CalcTypeEnum.total
-                            : CalcTypeEnum.perServing
-                        );
-                      }}
-                    >
-                      {priceType}
-                    </Button>
-                  </Th>
-                  <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
-                  <Th isNumeric>{yupItemSchema.fields.massGrams.spec.label}</Th>
-                  <Th isNumeric>
-                    {yupItemSchema.fields.energyKilocalories.spec.label}
-                  </Th>
-                  <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
-                  <Th isNumeric>
-                    {yupItemSchema.fields.carbohydrateGrams.spec.label}
-                  </Th>
-                  <Th isNumeric>
-                    {yupItemSchema.fields.proteinGrams.spec.label}
-                  </Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {result?.map((value: ItemDocument) => (
-                  <ItemTableRow
-                    item={value}
-                    priceType={priceType}
-                    onEdit={function (): void {
-                      setDrawerItem(value);
+        <TableContainer className="hide-scrollbar">
+          <Table>
+            <Thead height={"50px"}>
+              <Tr>
+                <Th>Actions</Th>
+                <Th>
+                  <Input
+                    placeholder={yupItemSchema.fields.name.spec.label}
+                    value={nameSearch}
+                    onChange={(e) => {
+                      setNameSearch(e.currentTarget.value);
                     }}
-                    onCopy={function (): void {
-                      const newValue =
-                        value.toMutableJSON() as ItemInferredType;
-                      const id = dataid();
-                      newValue.id = id;
-                      newValue.createdAt = new Date();
-                      newValue.name = `${newValue.name}-copy`;
-                      collection?.upsert(newValue);
-                    }}
-                    onDelete={function (): void {
-                      setDeleteItem(value);
-                    }}
+                    size="sm"
+                    variant="unstyled"
                   />
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </InfiniteScroll>
+                </Th>
+                <Th isNumeric>
+                  <Button
+                    variant="ghost"
+                    textTransform="uppercase"
+                    size="xs"
+                    onClick={() => {
+                      setPriceType(
+                        priceType === CalcTypeEnum.perServing
+                          ? CalcTypeEnum.total
+                          : CalcTypeEnum.perServing
+                      );
+                    }}
+                  >
+                    {priceType}
+                  </Button>
+                </Th>
+                <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
+                <Th isNumeric>{yupItemSchema.fields.massGrams.spec.label}</Th>
+                <Th isNumeric>
+                  {yupItemSchema.fields.energyKilocalories.spec.label}
+                </Th>
+                <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
+                <Th isNumeric>
+                  {yupItemSchema.fields.carbohydrateGrams.spec.label}
+                </Th>
+                <Th isNumeric>
+                  {yupItemSchema.fields.proteinGrams.spec.label}
+                </Th>
+              </Tr>
+            </Thead>
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={fetchMore}
+              hasMore={!isExhausted}
+              element="tbody"
+            >
+              {result?.map((value: ItemDocument) => (
+                <ItemTableRow
+                  key={`${value.id}-itr`}
+                  item={value}
+                  priceType={priceType}
+                  onEdit={function (): void {
+                    setDrawerItem(value);
+                  }}
+                  onCopy={function (): void {
+                    const newValue = value.toMutableJSON() as ItemInferredType;
+                    const id = dataid();
+                    newValue.id = id;
+                    newValue.createdAt = new Date();
+                    newValue.name = `${newValue.name}-copy`;
+                    collection?.upsert(newValue);
+                  }}
+                  onDelete={function (): void {
+                    setDeleteItem(value);
+                  }}
+                />
+              ))}
+            </InfiniteScroll>
+          </Table>
+        </TableContainer>
       </Box>
       <ItemDrawer
         item={drawerItem}

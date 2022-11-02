@@ -59,7 +59,7 @@ export default function PlansPage() {
         >
           <TableContainer className="hide-scrollbar">
             <Table key="table">
-              <Thead>
+              <Thead height={"50px"}>
                 <Tr>
                   <Th>Actions</Th>
                   <Th>

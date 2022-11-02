@@ -39,7 +39,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
 
   return (
     <Tr key={props.item.id}>
-      <Td width={"144px"}>
+      <Td width={"144px"} key={`${props.item.id}-actions`}>
         <Center>
           <ButtonGroup isAttached size="sm">
             <IconButton
@@ -60,19 +60,31 @@ export function ItemTableRow(props: ItemTableRowProps) {
           </ButtonGroup>
         </Center>
       </Td>
-      <Td>
+      <Td key={`${props.item.id}-name`}>
         <Text noOfLines={2}>{props.item.name}</Text>
       </Td>
 
-      <Td isNumeric>
+      <Td key={`${props.item.id}-price`} isNumeric>
         {price === null ? <Spinner /> : currencyFormatter.format(price / 100)}
       </Td>
-      <Td isNumeric>{props.item.count}</Td>
-      <Td isNumeric>{nutritionInfo?.massGrams}g</Td>
-      <Td isNumeric>{nutritionInfo?.energyKilocalories}kcal</Td>
-      <Td isNumeric>{nutritionInfo?.fatGrams}g</Td>
-      <Td isNumeric>{nutritionInfo?.carbohydrateGrams}g</Td>
-      <Td isNumeric>{nutritionInfo?.proteinGrams}g</Td>
+      <Td key={`${props.item.id}-item`} isNumeric>
+        {props.item.count}
+      </Td>
+      <Td key={`${props.item.id}-massGrams`} isNumeric>
+        {nutritionInfo?.massGrams}g
+      </Td>
+      <Td key={`${props.item.id}-energyKilocalories`} isNumeric>
+        {nutritionInfo?.energyKilocalories}kcal
+      </Td>
+      <Td key={`${props.item.id}-fatGrams`} isNumeric>
+        {nutritionInfo?.fatGrams}g
+      </Td>
+      <Td key={`${props.item.id}-carbohydrateGrams`} isNumeric>
+        {nutritionInfo?.carbohydrateGrams}g
+      </Td>
+      <Td key={`${props.item.id}-proteinGrams`} isNumeric>
+        {nutritionInfo?.proteinGrams}g
+      </Td>
     </Tr>
   );
 }
