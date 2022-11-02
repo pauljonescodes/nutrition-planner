@@ -1,6 +1,17 @@
-export enum CalcTypeEnum {
+export enum CalculationTypeEnum {
   perServing = "Serving price",
   total = "Total price",
+}
+
+export function toggleCalculationType(
+  value: CalculationTypeEnum
+): CalculationTypeEnum {
+  switch (value) {
+    case CalculationTypeEnum.perServing:
+      return CalculationTypeEnum.total;
+    case CalculationTypeEnum.total:
+      return CalculationTypeEnum.perServing;
+  }
 }
 
 export interface NutritionInfo {

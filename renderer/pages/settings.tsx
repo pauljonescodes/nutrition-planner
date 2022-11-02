@@ -1,5 +1,12 @@
 import { DeleteIcon, DownloadIcon } from "@chakra-ui/icons";
-import { Button, Container, useToast, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Container,
+  Text,
+  useColorModeValue,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import * as FileSaver from "file-saver";
 import { Fragment, useEffect, useState } from "react";
 import { useRxCollection, useRxDB } from "rxdb-hooks";
@@ -18,6 +25,7 @@ const SettingsPage = () => {
   const [importLoading, setImportLoading] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const toast = useToast();
+  const textColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   async function removeCollections() {
     await itemCollection?.remove();
@@ -88,6 +96,9 @@ const SettingsPage = () => {
           >
             Reset
           </Button>
+          <Text color={textColor} fontSize="xs">
+            {process.env.version}
+          </Text>
         </VStack>
       </Container>
       <DeleteAlertDialog

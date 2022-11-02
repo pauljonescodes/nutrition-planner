@@ -28,14 +28,14 @@ export function MenuHStack() {
     useState<Partial<ItemInferredType> | null>(null);
 
   const collection = useRxCollection<ItemDocument>("item");
-  const color = useColorModeValue("gray.50", "gray.800");
+  const hStackBackgroundColor = useColorModeValue("gray.50", "gray.800");
 
   return (
     <Fragment>
       <HStack
         p={3}
         pr={5}
-        bg={color}
+        bg={hStackBackgroundColor}
         width={"100vw"}
         overflowX="scroll"
         position="fixed"

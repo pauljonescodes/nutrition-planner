@@ -3,20 +3,21 @@ import {
   ButtonGroup,
   Center,
   IconButton,
-  Spinner,
+  Skeleton,
   Td,
   Text,
   Tr,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import { currencyFormatter } from "../data/number-formatter";
-import { CalcTypeEnum, NutritionInfo } from "../data/nutrition-info";
+import { CalculationTypeEnum, NutritionInfo } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
 
 type ItemTableRowProps = {
   item: ItemDocument;
-  priceType: CalcTypeEnum;
+  priceType: CalculationTypeEnum;
   onEdit: () => void;
   onCopy: () => void;
   onDelete: () => void;
@@ -27,6 +28,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
     null
   );
   const [price, setPrice] = useState<number | null>(null);
+  const borderColorValue = useColorModeValue("gray.100", "gray.700");
 
   useEffect(() => {
     props.item
@@ -37,53 +39,74 @@ export function ItemTableRow(props: ItemTableRowProps) {
       .then((value) => setNutritionInfo(value));
   }, [props.item, props.priceType, props.item.subitems]);
 
-  return (
-    <Tr key={props.item.id}>
-      <Td width={"144px"} key={`${props.item.id}-actions`}>
-        <Center>
-          <ButtonGroup isAttached size="sm">
-            <IconButton
-              icon={<EditIcon />}
-              aria-label="Edit"
-              onClick={props.onEdit}
-            />
-            <IconButton
-              icon={<CopyIcon />}
-              aria-label="Duplicate"
-              onClick={props.onCopy}
-            />
-            <IconButton
-              icon={<DeleteIcon />}
-              aria-label="Delete"
-              onClick={props.onDelete}
-            />
-          </ButtonGroup>
-        </Center>
-      </Td>
-      <Td key={`${props.item.id}-name`}>
-        <Text noOfLines={2}>{props.item.name}</Text>
-      </Td>
+  const isPriceLoaded = price !== null;
+  const isNutritionLoaded = nutritionInfo !== null;
+  const isLoaded = isPriceLoaded && isNutritionLoaded;
+  const borderColor = isLoaded ? borderColorValue : "transparent";
 
-      <Td key={`${props.item.id}-price`} isNumeric>
-        {price === null ? <Spinner /> : currencyFormatter.format(price / 100)}
+  return (
+    <Tr key={props.item.id} height="73px">
+      <Td width={"144px"} borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>
+          <Center>
+            <ButtonGroup isAttached size="sm">
+              <IconButton
+                icon={<EditIcon />}
+                aria-label="Edit"
+                onClick={props.onEdit}
+              />
+              <IconButton
+                icon={<CopyIcon />}
+                aria-label="Duplicate"
+                onClick={props.onCopy}
+              />
+              <IconButton
+                icon={<DeleteIcon />}
+                aria-label="Delete"
+                onClick={props.onDelete}
+              />
+            </ButtonGroup>
+          </Center>
+        </Skeleton>
       </Td>
-      <Td key={`${props.item.id}-item`} isNumeric>
-        {props.item.count}
+      <Td borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>
+          <Text
+            minW={"176px"}
+            maxW={"448px"}
+            noOfLines={2}
+            whiteSpace={"initial"}
+          >
+            {props.item.name}
+          </Text>
+        </Skeleton>
       </Td>
-      <Td key={`${props.item.id}-massGrams`} isNumeric>
-        {nutritionInfo?.massGrams}g
+      <Td isNumeric borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>
+          {currencyFormatter.format((price ?? 999) / 100)}
+        </Skeleton>
       </Td>
-      <Td key={`${props.item.id}-energyKilocalories`} isNumeric>
-        {nutritionInfo?.energyKilocalories}kcal
+      <Td isNumeric borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>{props.item.count}</Skeleton>
       </Td>
-      <Td key={`${props.item.id}-fatGrams`} isNumeric>
-        {nutritionInfo?.fatGrams}g
+      <Td isNumeric borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>{nutritionInfo?.massGrams}g</Skeleton>
       </Td>
-      <Td key={`${props.item.id}-carbohydrateGrams`} isNumeric>
-        {nutritionInfo?.carbohydrateGrams}g
+      <Td isNumeric borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>
+          {nutritionInfo?.energyKilocalories}kcal
+        </Skeleton>
       </Td>
-      <Td key={`${props.item.id}-proteinGrams`} isNumeric>
-        {nutritionInfo?.proteinGrams}g
+      <Td isNumeric borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>{nutritionInfo?.fatGrams}g</Skeleton>
+      </Td>
+      <Td isNumeric borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>
+          {nutritionInfo?.carbohydrateGrams}g
+        </Skeleton>
+      </Td>
+      <Td isNumeric borderColor={borderColor}>
+        <Skeleton isLoaded={isLoaded}>{nutritionInfo?.proteinGrams}g</Skeleton>
       </Td>
     </Tr>
   );

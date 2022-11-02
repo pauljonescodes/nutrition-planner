@@ -13,7 +13,7 @@ import { ItemTypeEnum } from "../../data/ItemTypeEnum";
 import { currencyFormatter } from "../../data/number-formatter";
 import {
   baseNutritionInfo,
-  CalcTypeEnum,
+  CalculationTypeEnum,
   divideNutritionInfo,
   multiplyNutritionInfo,
   NutritionInfo,
@@ -62,7 +62,7 @@ export default function RecipeForm(props: RecipeFormProps) {
             if (queriedSubitem !== undefined) {
               const queriedSubitemCalculatedNutritionInfo =
                 await queriedSubitem.calculatedNutritionInfo(
-                  CalcTypeEnum.perServing
+                  CalculationTypeEnum.perServing
                 );
               return [itemId, queriedSubitemCalculatedNutritionInfo];
             }
@@ -80,7 +80,7 @@ export default function RecipeForm(props: RecipeFormProps) {
             if (queriedSubitem !== undefined) {
               const queriedPriceCents =
                 await queriedSubitem.calculatedPriceCents(
-                  CalcTypeEnum.perServing
+                  CalculationTypeEnum.perServing
                 );
               return [itemId, queriedPriceCents];
             }
@@ -178,7 +178,7 @@ export default function RecipeForm(props: RecipeFormProps) {
       />
 
       <Center>
-        <VStack width={"100%"}>
+        <VStack width={"full"}>
           <Button
             type="submit"
             my={4}
@@ -186,7 +186,7 @@ export default function RecipeForm(props: RecipeFormProps) {
           >
             Submit
           </Button>
-          <Grid templateColumns="repeat(6, 1fr)" pb={2} width={"100%"}>
+          <Grid templateColumns="repeat(6, 1fr)" pb={2} width={"full"}>
             <GridItem color={alphaColor} fontSize="sm">
               {currencyFormatter.format(totalPriceInCents / 100)}
             </GridItem>

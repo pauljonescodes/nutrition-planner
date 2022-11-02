@@ -59,6 +59,7 @@ export function SubitemField(props: SubitemFieldProps) {
 
         return (
           <SubitemAutoCompleteInput
+            key={value.itemId}
             calculatedNutritionInfo={calculatedNutritionInfo}
             calculatedPriceInCents={calculatedPriceInCents}
             queriedSubitemName={queriedSubitemName}

@@ -2,7 +2,7 @@ import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
 import {
   addNutritionInfo,
   baseNutritionInfo,
-  CalcTypeEnum,
+  CalculationTypeEnum,
   divideNutritionInfo,
   multiplyNutritionInfo,
   NutritionInfo,
@@ -11,8 +11,10 @@ import { ItemInferredType } from "../yup/item";
 
 export type ItemDocumentMethods = {
   nutritionInfo: () => NutritionInfo;
-  calculatedNutritionInfo: (calcType: CalcTypeEnum) => Promise<NutritionInfo>;
-  calculatedPriceCents: (calcType: CalcTypeEnum) => Promise<number>;
+  calculatedNutritionInfo: (
+    calcType: CalculationTypeEnum
+  ) => Promise<NutritionInfo>;
+  calculatedPriceCents: (calcType: CalculationTypeEnum) => Promise<number>;
 };
 
 export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
@@ -113,14 +115,14 @@ export const itemDocumentMethods: ItemDocumentMethods = {
   },
   calculatedNutritionInfo: async function (
     this: ItemDocument,
-    calcType: CalcTypeEnum
+    calcType: CalculationTypeEnum
   ): Promise<NutritionInfo> {
     const thisSubitems = this.subitems ?? [];
     if (thisSubitems.length === 0) {
       switch (calcType) {
-        case CalcTypeEnum.perServing:
+        case CalculationTypeEnum.perServing:
           return this.nutritionInfo();
-        case CalcTypeEnum.total:
+        case CalculationTypeEnum.total:
           return multiplyNutritionInfo(this.nutritionInfo(), this.count);
       }
     } else {
@@ -129,13 +131,14 @@ export const itemDocumentMethods: ItemDocumentMethods = {
       for (const subitem of thisSubitems ?? []) {
         const item = await this.collection.findOne(subitem.itemId).exec();
         const itemNutritionInfo =
-          (await item?.calculatedNutritionInfo(CalcTypeEnum.perServing)) ??
-          baseNutritionInfo();
+          (await item?.calculatedNutritionInfo(
+            CalculationTypeEnum.perServing
+          )) ?? baseNutritionInfo();
         accumulatedNutritionInfo = addNutritionInfo(
           accumulatedNutritionInfo,
           divideNutritionInfo(
             multiplyNutritionInfo(itemNutritionInfo, subitem.count ?? 0),
-            calcType === CalcTypeEnum.perServing ? this.count : 1
+            calcType === CalculationTypeEnum.perServing ? this.count : 1
           )
         );
       }
@@ -145,14 +148,14 @@ export const itemDocumentMethods: ItemDocumentMethods = {
   },
   calculatedPriceCents: async function (
     this: ItemDocument,
-    calcType: CalcTypeEnum
+    calcType: CalculationTypeEnum
   ): Promise<number> {
     const thisSubitems = this.subitems ?? [];
     if (thisSubitems.length === 0) {
       switch (calcType) {
-        case CalcTypeEnum.perServing:
+        case CalculationTypeEnum.perServing:
           return this.priceCents / this.count;
-        case CalcTypeEnum.total:
+        case CalculationTypeEnum.total:
           return this.priceCents;
       }
     } else {
@@ -161,10 +164,11 @@ export const itemDocumentMethods: ItemDocumentMethods = {
       for (const subitem of thisSubitems ?? []) {
         const item = await this.collection.findOne(subitem.itemId).exec();
         const itemPrice =
-          (await item?.calculatedPriceCents(CalcTypeEnum.perServing)) ?? 0;
+          (await item?.calculatedPriceCents(CalculationTypeEnum.perServing)) ??
+          0;
         accumulatedServingPriceCents +=
           (itemPrice * (subitem.count ?? 0)) /
-          (calcType === CalcTypeEnum.perServing ? this.count : 1);
+          (calcType === CalculationTypeEnum.perServing ? this.count : 1);
       }
 
       return accumulatedServingPriceCents;
