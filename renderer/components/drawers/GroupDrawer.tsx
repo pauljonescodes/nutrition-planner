@@ -7,14 +7,14 @@ import {
   DrawerOverlay,
 } from "@chakra-ui/react";
 import { ItemInferredType } from "../../data/yup/item";
-import { RecipeFormik } from "../formik/RecipeFormik";
+import { GroupFormik } from "../formik/GroupFormik";
 
-type RecipeDrawerProps = {
+type GroupDrawerProps = {
   item: Partial<ItemInferredType> | null;
   onResult(item: Partial<ItemInferredType> | null): void;
 };
 
-export function RecipeDrawer(props: RecipeDrawerProps) {
+export function GroupDrawer(props: GroupDrawerProps) {
   return (
     <Drawer
       isOpen={props.item !== null}
@@ -28,10 +28,10 @@ export function RecipeDrawer(props: RecipeDrawerProps) {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Recipe</DrawerHeader>
+        <DrawerHeader>Group</DrawerHeader>
 
         <DrawerBody>
-          <RecipeFormik
+          <GroupFormik
             item={props.item}
             onSubmit={(item) => {
               props.onResult(item);

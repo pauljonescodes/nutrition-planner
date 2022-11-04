@@ -15,16 +15,16 @@ import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
+import { GroupDrawer } from "./drawers/GroupDrawer";
 import { ItemDrawer } from "./drawers/ItemDrawer";
 import { PlanDrawer } from "./drawers/PlanDrawer";
-import { RecipeDrawer } from "./drawers/RecipeDrawer";
 import { SettingsDrawer } from "./drawers/SettingsDrawer";
 
 export function MenuHStack() {
   const router = useRouter();
   const [itemDrawerItem, setItemDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
-  const [recipeDrawerItem, setRecipeDrawerItem] =
+  const [recipeDrawerItem, setGroupDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
   const [planDrawerItem, setPlanDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
@@ -89,7 +89,7 @@ export function MenuHStack() {
           </Button>
           <IconButton
             onClick={() => {
-              setRecipeDrawerItem({
+              setGroupDrawerItem({
                 ...yupItemSchema.getDefault(),
                 id: dataid(),
                 type: ItemTypeEnum.recipe,
@@ -140,10 +140,10 @@ export function MenuHStack() {
           }
         }}
       />
-      <RecipeDrawer
+      <GroupDrawer
         item={recipeDrawerItem}
         onResult={(item) => {
-          setRecipeDrawerItem(null);
+          setGroupDrawerItem(null);
           if (item) {
             item.createdAt = new Date();
             collection?.upsert(item);

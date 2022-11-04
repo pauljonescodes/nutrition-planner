@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { RecipeDrawer } from "../components/drawers/RecipeDrawer";
+import { GroupDrawer } from "../components/drawers/GroupDrawer";
 import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
@@ -12,7 +12,7 @@ import {
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType } from "../data/yup/item";
 
-export default function RecipesPage() {
+export default function GroupsPage() {
   const [nameSearch, setNameSearch] = useState<string>("");
   const [editItem, setEditItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
@@ -60,7 +60,7 @@ export default function RecipesPage() {
           setDeleteItem(value);
         }}
       />
-      <RecipeDrawer
+      <GroupDrawer
         item={editItem}
         onResult={async (item) => {
           setEditItem(null);

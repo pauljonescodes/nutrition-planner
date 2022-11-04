@@ -3,15 +3,15 @@ import { RefObject } from "react";
 import { dataid } from "../../data/dataid";
 import { ItemTypeEnum } from "../../data/ItemTypeEnum";
 import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
-import RecipeForm from "../form/RecipeForm";
+import GroupForm from "../form/GroupForm";
 
-export interface RecipeFormProps {
+export interface GroupFormikProps {
   item: Partial<ItemInferredType> | null;
   onSubmit: (item: Partial<ItemInferredType>) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
-export function RecipeFormik(props: RecipeFormProps) {
+export function GroupFormik(props: GroupFormikProps) {
   const thisItemId = props.item?.id ?? dataid();
 
   return (
@@ -45,7 +45,7 @@ export function RecipeFormik(props: RecipeFormProps) {
       validateOnBlur={false}
       component={(formikProps) => {
         return (
-          <RecipeForm
+          <GroupForm
             formikProps={formikProps}
             firstInputFieldRef={props.firstInputFieldRef}
           />

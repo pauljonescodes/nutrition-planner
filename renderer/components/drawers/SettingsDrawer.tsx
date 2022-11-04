@@ -86,6 +86,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
       <Drawer
         isOpen={props.isOpen}
         placement="right"
+        size="md"
         onClose={props.onClose}
         finalFocusRef={undefined}
       >

@@ -25,12 +25,12 @@ import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
 
-type RecipeFormProps = {
+type GroupFormProps = {
   formikProps: FormikProps<Partial<ItemInferredType>>;
   firstInputFieldRef: RefObject<HTMLInputElement> | undefined;
 };
 
-export default function RecipeForm(props: RecipeFormProps) {
+export default function GroupForm(props: GroupFormProps) {
   const subitems = props.formikProps.values.subitems ?? [];
   const collection = useRxCollection<ItemDocument>("item");
 
