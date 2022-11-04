@@ -32,7 +32,7 @@ export function MenuHStack() {
     useState<boolean>(false);
 
   const collection = useRxCollection<ItemDocument>("item");
-  const hStackBackgroundColor = useColorModeValue("gray.50", "gray.800");
+  const hStackBackgroundColor = useColorModeValue("gray.50", "gray.900");
 
   return (
     <Fragment>
@@ -80,12 +80,12 @@ export function MenuHStack() {
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
-            isActive={router.pathname === "/recipes"}
+            isActive={router.pathname === "/groups"}
             onClick={() => {
-              router.push("/recipes");
+              router.push("/groups");
             }}
           >
-            Recipes
+            Groups
           </Button>
           <IconButton
             onClick={() => {

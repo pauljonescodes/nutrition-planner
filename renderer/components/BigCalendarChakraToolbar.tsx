@@ -2,11 +2,15 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Button,
   ButtonGroup,
+  Center,
   HStack,
   IconButton,
+  Show,
   Spacer,
+  Text,
 } from "@chakra-ui/react";
 import { ToolbarProps } from "react-big-calendar";
+import { dateIsToday } from "../utilities/dateIsToday";
 
 export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
   const goToBack = () => {
@@ -37,35 +41,72 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
 
   return (
     <HStack>
-      <ButtonGroup isAttached pb={3} pt={3}>
+      <ButtonGroup
+        isAttached
+        pb={3}
+        pt={3}
+        width={{ base: "full", sm: "initial" }}
+      >
         <IconButton
           onClick={goToBack}
           icon={<ArrowBackIcon />}
           aria-label={"Back"}
           variant="outline"
+          flexGrow={{ base: 1, sm: "initial" }}
         />
-        <Button onClick={goToCurrent} variant="outline">
-          Today
+        <Button
+          onClick={goToCurrent}
+          variant="outline"
+          flexGrow={{ base: 1, sm: "initial" }}
+          isActive={dateIsToday(toolbar.date)}
+        >
+          <Show below="sm">{toolbar.label}</Show>
+          <Show above="sm">Today</Show>
         </Button>
         <IconButton
+          flexGrow={{ base: 1, sm: "initial" }}
           onClick={goToNext}
           icon={<ArrowForwardIcon />}
           aria-label={"Next"}
           variant="outline"
         />
       </ButtonGroup>
-      <Spacer />
-      <ButtonGroup isAttached pb={3} pt={3}>
-        <Button onClick={() => toolbar.onView("day")} variant="outline">
-          Day
-        </Button>
-        <Button onClick={() => toolbar.onView("week")} variant="outline">
-          Week
-        </Button>
-        <Button onClick={() => toolbar.onView("month")} variant="outline">
-          Month
-        </Button>
-      </ButtonGroup>
+      <Show above="sm">
+        <Spacer />
+      </Show>
+      <Show above="sm">
+        <Center>
+          <Text>{toolbar.label}</Text>
+        </Center>
+      </Show>
+      <Show above="sm">
+        <Spacer />
+        <ButtonGroup isAttached pb={3} pt={3}>
+          <Button
+            onClick={() => toolbar.onView("day")}
+            variant="outline"
+            isActive={toolbar.view === "day"}
+          >
+            Day
+          </Button>
+          <Button
+            onClick={() => toolbar.onView("week")}
+            variant="outline"
+            isActive={toolbar.view === "week"}
+          >
+            Week
+          </Button>
+          <Show above="md">
+            <Button
+              onClick={() => toolbar.onView("month")}
+              variant="outline"
+              isActive={toolbar.view === "month"}
+            >
+              Month
+            </Button>
+          </Show>
+        </ButtonGroup>
+      </Show>
     </HStack>
   );
 };

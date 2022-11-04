@@ -1,0 +1,21 @@
+sudo socat TCP4-LISTEN:443,fork,reuseaddr TCP4:localhost:6984
+
+sysctl net.ipv4.ip_forward=1
+iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:5984
+iptables -t nat -A POSTROUTING -j MASQUERADE
+
+        sx={{
+          ".rbc-day-bg + .rbc-day-bg, .rbc-month-row + .rbc-month-row, .rbc-month-view, .rbc-header":
+            {
+              borderColor: "var(--chakra-colors-chakra-border-color)",
+            },
+          ".rbc-off-range-bg": { bg: offRangeBg },
+          ".rbc-toolbar button": {
+            color: "var(--chakra-colors-chakra-body-text)",
+            backgroundColor: "transparent",
+            boxShadow: "none !imporant;",
+          },
+          ".rbc-today": {
+            bg: todayBg,
+          },
+        }}

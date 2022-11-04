@@ -1,26 +1,32 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
+import { Size } from "electron";
 import { Fragment, useState } from "react";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import {
+  Calendar,
+  Culture,
+  dateFnsLocalizer,
+  DateLocalizer,
+  DateRange,
+  View,
+} from "react-big-calendar";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
+import { useWindowSize } from "usehooks-ts";
 import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
-import { CalculationTypeEnum } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
 
 export default function LogPage() {
   const [nameSearch, setNameSearch] = useState<string>("");
-  const [drawerItem, setEditItem] = useState<ItemDocument | null>(null);
+  const [editItem, setEditItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
   const collection = useRxCollection<ItemDocument>("item");
-  const [calculationType, setCalculationType] = useState<CalculationTypeEnum>(
-    CalculationTypeEnum.perServing
-  );
+  const [viewState, setViewState] = useState<View>("day");
 
   const { result, fetchMore, isExhausted } = useRxQuery(
     collection?.find({
@@ -38,6 +44,16 @@ export default function LogPage() {
     "en-US": enUS,
   };
 
+  const size: Size = useWindowSize();
+
+  if (size.width < 480) {
+    if (viewState !== "day") {
+      setViewState("day");
+    }
+  } else if (size.width < 768 && viewState === "month") {
+    setViewState("week");
+  }
+
   const localizer = dateFnsLocalizer({
     format,
     parse,
@@ -46,42 +62,35 @@ export default function LogPage() {
     locales,
   });
 
-  const offRangeBg = useColorModeValue("gray.100", "gray.700");
-
-  const todayBg = useColorModeValue(
-    "rgba(49, 130, 206, 0.12)",
-    "rgba(49, 130, 206, 0.12)"
-  );
-
   return (
     <Fragment>
-      <Box
-        minHeight="calc(100vh - 64px)"
-        px={3}
-        sx={{
-          ".rbc-day-bg + .rbc-day-bg, .rbc-month-row + .rbc-month-row, .rbc-month-view, .rbc-header":
-            {
-              borderColor: "var(--chakra-colors-chakra-border-color)",
-            },
-          ".rbc-off-range-bg": { bg: offRangeBg },
-          ".rbc-toolbar button": {
-            color: "var(--chakra-colors-chakra-body-text)",
-            backgroundColor: "transparent",
-            boxShadow: "none !imporant;",
-          },
-          ".rbc-today": {
-            bg: todayBg,
-          },
-        }}
-      >
+      <Box height="calc(100vh - 76px)" overflow={"scroll"} px={3}>
         <Calendar
+          view={viewState}
+          onView={(view: View) => {
+            setViewState(view);
+          }}
           selectable
           localizer={localizer}
+          formats={{
+            dayHeaderFormat: "eee LLL d",
+            dayRangeHeaderFormat: (
+              // October 30 - November 05
+              range: DateRange,
+              culture?: Culture,
+              localizer?: DateLocalizer
+            ) => {
+              return `${localizer?.format(
+                range.start,
+                "LLL d",
+                culture
+              )}-${localizer?.format(range.end, "LLL d", culture)}`;
+            },
+          }}
           events={[]}
           views={{ day: true, month: true, week: true }}
           startAccessor="start"
           endAccessor="end"
-          style={{ minHeight: "calc(100vh - 64px - 24px)" }}
           components={{
             toolbar: BigCalendarChakraToolbar,
           }}
