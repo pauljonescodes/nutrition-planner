@@ -13,32 +13,6 @@ import { ToolbarProps } from "react-big-calendar";
 import { dateIsToday } from "../utilities/dateIsToday";
 
 export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
-  const goToBack = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() - 1);
-    toolbar.onNavigate("PREV");
-  };
-
-  const goToNext = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() + 1);
-    toolbar.onNavigate("NEXT");
-  };
-
-  const goToCurrent = () => {
-    const now = new Date();
-    toolbar.date.setMonth(now.getMonth());
-    toolbar.date.setFullYear(now.getFullYear());
-    toolbar.onNavigate("TODAY");
-  };
-
-  const label = () => {
-    const date = new Date();
-    return (
-      <span>
-        <b>{date.toISOString()}</b>
-      </span>
-    );
-  };
-
   return (
     <HStack>
       <ButtonGroup
@@ -48,14 +22,14 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
         width={{ base: "full", sm: "initial" }}
       >
         <IconButton
-          onClick={goToBack}
+          onClick={() => toolbar.onNavigate("PREV")}
           icon={<ArrowBackIcon />}
           aria-label={"Back"}
           variant="outline"
           flexGrow={{ base: 1, sm: "initial" }}
         />
         <Button
-          onClick={goToCurrent}
+          onClick={() => toolbar.onNavigate("TODAY")}
           variant="outline"
           flexGrow={{ base: 1, sm: "initial" }}
           isActive={dateIsToday(toolbar.date)}
@@ -65,7 +39,7 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
         </Button>
         <IconButton
           flexGrow={{ base: 1, sm: "initial" }}
-          onClick={goToNext}
+          onClick={() => toolbar.onNavigate("NEXT")}
           icon={<ArrowForwardIcon />}
           aria-label={"Next"}
           variant="outline"
