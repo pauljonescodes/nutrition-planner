@@ -7,8 +7,8 @@ import {
 } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Provider as RxDbProvider } from "rxdb-hooks";
+import "../../styles/react-big-calendar.scss";
 import { MenuHStack } from "../components/MenuHStack";
 import { createDatabase, DatabaseType } from "../data/rxdb/database";
 

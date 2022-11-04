@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
@@ -61,6 +61,12 @@ export default function LogPage() {
     getDay,
     locales,
   });
+
+  const offRangeBg = useColorModeValue("gray.100", "gray.700");
+  const todayBg = useColorModeValue(
+    "rgba(49, 130, 206, 0.12)",
+    "rgba(49, 130, 206, 0.12)"
+  );
 
   return (
     <Fragment>
