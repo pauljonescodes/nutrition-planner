@@ -1,18 +1,19 @@
+import { Box, useColorModeValue } from "@chakra-ui/react";
+import format from "date-fns/format";
+import getDay from "date-fns/getDay";
+import enUS from "date-fns/locale/en-US";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
 import { Fragment, useState } from "react";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
+import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { ItemDrawer } from "../components/drawers/ItemDrawer";
-import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
-import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
-import {
-  CalculationTypeEnum,
-  toggleCalculationType,
-} from "../data/nutrition-info";
+import { CalculationTypeEnum } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
-import { ItemInferredType } from "../data/yup/item";
 
-export default function ItemsPage() {
+export default function LogPage() {
   const [nameSearch, setNameSearch] = useState<string>("");
   const [drawerItem, setEditItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
@@ -20,6 +21,7 @@ export default function ItemsPage() {
   const [calculationType, setCalculationType] = useState<CalculationTypeEnum>(
     CalculationTypeEnum.perServing
   );
+
   const { result, fetchMore, isExhausted } = useRxQuery(
     collection?.find({
       selector: {
@@ -32,45 +34,62 @@ export default function ItemsPage() {
       pagination: "Infinite",
     }
   );
+  const locales = {
+    "en-US": enUS,
+  };
+
+  const localizer = dateFnsLocalizer({
+    format,
+    parse,
+    startOfWeek,
+    getDay,
+    locales,
+  });
+
+  const offRangeBg = useColorModeValue("gray.100", "gray.700");
+
+  const todayBg = useColorModeValue(
+    "rgba(49, 130, 206, 0.12)",
+    "rgba(49, 130, 206, 0.12)"
+  );
 
   return (
     <Fragment>
-      <ItemInfiniteTableContainer
-        items={result}
-        nameSearch={nameSearch}
-        onNameSearchChange={(value: string) => {
-          setNameSearch(value);
+      <Box
+        minHeight="calc(100vh - 64px)"
+        px={3}
+        sx={{
+          ".rbc-day-bg + .rbc-day-bg, .rbc-month-row + .rbc-month-row, .rbc-month-view, .rbc-header":
+            {
+              borderColor: "var(--chakra-colors-chakra-border-color)",
+            },
+          ".rbc-off-range-bg": { bg: offRangeBg },
+          ".rbc-toolbar button": {
+            color: "var(--chakra-colors-chakra-body-text)",
+            backgroundColor: "transparent",
+            boxShadow: "none !imporant;",
+          },
+          ".rbc-today": {
+            bg: todayBg,
+          },
         }}
-        calculationType={calculationType}
-        onToggleCalculationType={() =>
-          setCalculationType(toggleCalculationType(calculationType))
-        }
-        queryFetchMore={fetchMore}
-        queryIsExhausted={isExhausted}
-        onEdit={(value) => setEditItem(value)}
-        onCopy={(value) => {
-          const newValue = value.toMutableJSON() as ItemInferredType;
-          const id = dataid();
-          newValue.id = id;
-          newValue.createdAt = new Date();
-          newValue.name = `${newValue.name}-copy`;
-          collection?.upsert(newValue);
-        }}
-        onDelete={(value) => setDeleteItem(value)}
-      />
-      <ItemDrawer
-        item={drawerItem}
-        onResult={(item) => {
-          setEditItem(null);
-          if (item) {
-            item.createdAt = new Date();
-            collection?.upsert(item);
-          }
-        }}
-      />
+      >
+        <Calendar
+          selectable
+          localizer={localizer}
+          events={[]}
+          views={{ day: true, month: true, week: true }}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ minHeight: "calc(100vh - 64px - 24px)" }}
+          components={{
+            toolbar: BigCalendarChakraToolbar,
+          }}
+        />
+      </Box>
       <DeleteAlertDialog
         isOpen={deleteItem !== null}
-        onResult={(result: boolean) => {
+        onResult={async (result: boolean) => {
           if (result) {
             deleteItem?.remove();
           }

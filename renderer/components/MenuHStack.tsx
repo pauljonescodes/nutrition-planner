@@ -4,6 +4,7 @@ import {
   ButtonGroup,
   HStack,
   IconButton,
+  Spacer,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -17,6 +18,7 @@ import { ItemInferredType, yupItemSchema } from "../data/yup/item";
 import { ItemDrawer } from "./drawers/ItemDrawer";
 import { PlanDrawer } from "./drawers/PlanDrawer";
 import { RecipeDrawer } from "./drawers/RecipeDrawer";
+import { SettingsDrawer } from "./drawers/SettingsDrawer";
 
 export function MenuHStack() {
   const router = useRouter();
@@ -26,6 +28,8 @@ export function MenuHStack() {
     useState<Partial<ItemInferredType> | null>(null);
   const [planDrawerItem, setPlanDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
+  const [settingsDrawerIsOpen, setSettingsDrawerIsOpen] =
+    useState<boolean>(false);
 
   const collection = useRxCollection<ItemDocument>("item");
   const hStackBackgroundColor = useColorModeValue("gray.50", "gray.800");
@@ -34,7 +38,7 @@ export function MenuHStack() {
     <Fragment>
       <HStack
         p={3}
-        pr={5}
+        pr={3}
         bg={hStackBackgroundColor}
         width={"100vw"}
         overflowX="scroll"
@@ -47,6 +51,17 @@ export function MenuHStack() {
             isActive={router.pathname === "/"}
             onClick={() => {
               router.push("/");
+            }}
+          >
+            Log
+          </Button>
+          <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
+        </ButtonGroup>
+        <ButtonGroup isAttached>
+          <Button
+            isActive={router.pathname === "/items"}
+            onClick={() => {
+              router.push("/items");
             }}
           >
             Items
@@ -105,8 +120,11 @@ export function MenuHStack() {
             aria-label="Add"
           />
         </ButtonGroup>
+        <Spacer />
         <IconButton
-          onClick={() => router.push("/settings")}
+          onClick={() => {
+            setSettingsDrawerIsOpen(true);
+          }}
           isActive={router.pathname === "/settings"}
           icon={<SettingsIcon />}
           aria-label="Settings"
@@ -141,6 +159,10 @@ export function MenuHStack() {
             collection?.upsert(item);
           }
         }}
+      />
+      <SettingsDrawer
+        isOpen={settingsDrawerIsOpen}
+        onClose={() => setSettingsDrawerIsOpen(false)}
       />
     </Fragment>
   );

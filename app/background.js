@@ -4365,13 +4365,17 @@ if (isProd) {
   await electron__WEBPACK_IMPORTED_MODULE_0__.app.whenReady();
   const mainWindow = (0,_helpers__WEBPACK_IMPORTED_MODULE_2__.createWindow)("main", {
     width: 1000,
-    height: 600
+    height: 600,
+    webPreferences: {
+      webSecurity: false
+    }
   });
   mainWindow.removeMenu();
+  var port = "";
   if (isProd) {
     await mainWindow.loadURL("app://./");
   } else {
-    const port = process.argv[2];
+    port = process.argv[2];
     await mainWindow.loadURL(`http://localhost:${port}/`);
     mainWindow.webContents.openDevTools();
   }

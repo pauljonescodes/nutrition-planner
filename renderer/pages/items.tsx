@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { RecipeDrawer } from "../components/drawers/RecipeDrawer";
+import { ItemDrawer } from "../components/drawers/ItemDrawer";
 import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
@@ -12,18 +12,18 @@ import {
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType } from "../data/yup/item";
 
-export default function RecipesPage() {
+export default function ItemsPage() {
   const [nameSearch, setNameSearch] = useState<string>("");
-  const [editItem, setEditItem] = useState<ItemDocument | null>(null);
+  const [drawerItem, setEditItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
+  const collection = useRxCollection<ItemDocument>("item");
   const [calculationType, setCalculationType] = useState<CalculationTypeEnum>(
     CalculationTypeEnum.perServing
   );
-  const collection = useRxCollection<ItemDocument>("item");
-  const { result, fetchMore, isExhausted, resetList } = useRxQuery(
+  const { result, fetchMore, isExhausted } = useRxQuery(
     collection?.find({
       selector: {
-        type: ItemTypeEnum.recipe,
+        type: ItemTypeEnum.item,
         name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
       },
     })!,
@@ -56,23 +56,23 @@ export default function RecipesPage() {
           newValue.name = `${newValue.name}-copy`;
           collection?.upsert(newValue);
         }}
-        onDelete={(value) => {
+        onDelete={async (value) => {
           setDeleteItem(value);
         }}
       />
-      <RecipeDrawer
-        item={editItem}
-        onResult={async (item) => {
+      <ItemDrawer
+        item={drawerItem}
+        onResult={(item) => {
           setEditItem(null);
           if (item) {
             item.createdAt = new Date();
-            collection?.upsert(item as ItemInferredType);
+            collection?.upsert(item);
           }
         }}
       />
       <DeleteAlertDialog
         isOpen={deleteItem !== null}
-        onResult={function (result: boolean): void {
+        onResult={async (result: boolean) => {
           if (result) {
             deleteItem?.remove();
           }
