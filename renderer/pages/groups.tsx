@@ -20,7 +20,7 @@ export default function GroupsPage() {
     CalculationTypeEnum.perServing
   );
   const collection = useRxCollection<ItemDocument>("item");
-  const { result, fetchMore, isExhausted, resetList } = useRxQuery(
+  const query = useRxQuery(
     collection?.find({
       selector: {
         type: ItemTypeEnum.group,
@@ -36,7 +36,6 @@ export default function GroupsPage() {
   return (
     <Fragment>
       <ItemInfiniteTableContainer
-        items={result}
         nameSearch={nameSearch}
         emptyStateText="Groups are collections of items or other groups, like a recipe or meal."
         onNameSearchChange={(value: string) => {
@@ -46,8 +45,7 @@ export default function GroupsPage() {
         onToggleCalculationType={() =>
           setCalculationType(toggleCalculationType(calculationType))
         }
-        queryFetchMore={fetchMore}
-        queryIsExhausted={isExhausted}
+        query={query}
         onEdit={(value) => setEditItem(value)}
         onCopy={(value) => {
           const newValue = value.toMutableJSON() as ItemInferredType;

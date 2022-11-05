@@ -5,6 +5,7 @@ import enUS from "date-fns/locale/en-US";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import { Size } from "electron";
+import moment from "moment";
 import { Fragment, useState } from "react";
 import {
   Calendar,
@@ -21,6 +22,11 @@ import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
 
+export interface RangeType {
+  start: Date;
+  end: Date;
+}
+
 export default function LogPage() {
   const [nameSearch, setNameSearch] = useState<string>("");
   const [editItem, setEditItem] = useState<ItemDocument | null>(null);
@@ -28,11 +34,19 @@ export default function LogPage() {
   const collection = useRxCollection<ItemDocument>("item");
   const [viewState, setViewState] = useState<View>("day");
 
+  const [dateRangeState, setDateRangeState] = useState<RangeType>({
+    start: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+    end: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+  });
+
   const { result, fetchMore, isExhausted } = useRxQuery(
     collection?.find({
       selector: {
-        type: ItemTypeEnum.item,
-        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+        type: ItemTypeEnum.log,
+        date: {
+          $lt: dateRangeState.end.toISOString(),
+          $gt: dateRangeState.start.toISOString(),
+        },
       },
     })!,
     {
@@ -78,6 +92,32 @@ export default function LogPage() {
           }}
           selectable
           localizer={localizer}
+          onNavigate={(date, view) => {
+            if (view === "day") {
+              setDateRangeState({
+                start: moment(date).startOf("day").toDate(),
+                end: moment(date).endOf("day").toDate(),
+              });
+            } else if (view === "week") {
+              setDateRangeState({
+                start: moment(date).startOf("isoWeek").toDate(),
+                end: moment(date).endOf("isoWeek").toDate(),
+              });
+            } else if (view === "month") {
+              setDateRangeState({
+                start: moment(date)
+                  .startOf("month")
+                  .subtract(7, "days")
+                  .toDate(),
+                end: moment(date).endOf("month").add(7, "days").toDate(),
+              });
+            } else if (view === "agenda") {
+              setDateRangeState({
+                start: moment(date).toDate(),
+                end: moment(date).add(1, "month").toDate(),
+              });
+            }
+          }}
           formats={{
             dayHeaderFormat: "eee LLL d",
             dayRangeHeaderFormat: (
@@ -94,13 +134,21 @@ export default function LogPage() {
             },
           }}
           events={
-            [
-              // {
-              //   title: "Workout day plan",
-              //   start: new Date(2022, 10, 4, 12, 0, 0),
-              //   end: new Date(2022, 10, 4, 13, 0, 0),
-              // },
-            ]
+            // {
+            //   title: "Workout day plan",
+            //   start: new Date(2022, 10, 4, 12, 0, 0),
+            //   end: new Date(2022, 10, 4, 13, 0, 0),
+            // },
+            result.map((value) => {
+              return {
+                title: "",
+                start: new Date(value.date),
+                end: new Date(
+                  new Date(value.date).getTime() + 0.5 * 60 * 60 * 1000
+                ),
+                allDay: false,
+              };
+            })
           }
           views={{ day: true, month: true, week: true }}
           startAccessor="start"

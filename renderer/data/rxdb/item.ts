@@ -1,4 +1,6 @@
 import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
+import { dataid } from "../dataid";
+import { ItemTypeEnum } from "../ItemTypeEnum";
 import {
   addNutritionInfo,
   baseNutritionInfo,
@@ -8,6 +10,10 @@ import {
   NutritionInfo,
 } from "../nutrition-info";
 import { ItemInferredType } from "../yup/item";
+import { SubitemInferredType } from "../yup/subitem";
+
+export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
+export type ItemCollection = RxCollection<ItemDocument, ItemDocumentMethods>;
 
 export type ItemDocumentMethods = {
   nutritionInfo: () => NutritionInfo;
@@ -15,11 +21,8 @@ export type ItemDocumentMethods = {
     calcType: CalculationTypeEnum
   ) => Promise<NutritionInfo>;
   calculatedPriceCents: (calcType: CalculationTypeEnum) => Promise<number>;
-  populateSubitems: () => Promise<RxDocument<ItemInferredType>> | null;
+  upsertedLogCopy: () => Promise<ItemDocument>;
 };
-
-export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
-export type ItemCollection = RxCollection<ItemDocument, ItemDocumentMethods>;
 
 export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
   version: 0,
@@ -88,6 +91,7 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
             type: "number",
           },
           itemId: {
+            ref: "item",
             type: "string",
           },
         },
@@ -174,16 +178,31 @@ export const itemDocumentMethods: ItemDocumentMethods = {
       return accumulatedServingPriceCents;
     }
   },
-  async populateSubitems(
-    this: ItemDocument
-  ): Promise<Promise<RxDocument<ItemInferredType>> | null> {
+
+  async upsertedLogCopy(this: ItemDocument): Promise<ItemDocument> {
+    const thisToJson = this.toMutableJSON();
+    thisToJson.id = dataid();
+    thisToJson.type = ItemTypeEnum.copy;
     if (this.subitems === undefined || this.subitems.length === 0) {
-      return null;
+      return await this.collection.upsert(thisToJson);
     } else {
-      const foundByIds = await this.collection.findByIds(
-        this.subitems.map((value) => value.itemId!)
-      );
-      return null;
+      const upsertedLogCopySubitems: Array<SubitemInferredType> = [];
+      for (const rawSubitem of this.subitems) {
+        const foundItem = await this.collection
+          .findOne(rawSubitem.itemId!)
+          .exec();
+        if (foundItem !== null) {
+          const upsertedLogCopy = await foundItem.upsertedLogCopy();
+          if (upsertedLogCopy !== null) {
+            upsertedLogCopySubitems.push({
+              count: rawSubitem.count ?? 0,
+              itemId: upsertedLogCopy.id,
+            });
+          }
+        }
+      }
+      thisToJson.subitems = upsertedLogCopySubitems;
+      return await this.collection.upsert(thisToJson);
     }
   },
 };

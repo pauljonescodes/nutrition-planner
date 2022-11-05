@@ -3,4 +3,5 @@ export enum ItemTypeEnum {
   group = "group",
   plan = "plan",
   log = "log",
+  copy = "copy",
 }

@@ -17,7 +17,7 @@ export default function PlansPage() {
     CalculationTypeEnum.total
   );
   const collection = useRxCollection<ItemDocument>("item");
-  const { result, fetchMore, isExhausted } = useRxQuery(
+  const query = useRxQuery(
     collection?.find({
       selector: {
         type: ItemTypeEnum.plan,
@@ -33,15 +33,13 @@ export default function PlansPage() {
   return (
     <Fragment>
       <ItemInfiniteTableContainer
-        items={result}
+        query={query}
         nameSearch={nameSearch}
         emptyStateText="Plans are collections of Groups and Items, and can be used to calculate and log a day's worth of nutrition."
         onNameSearchChange={(value: string) => {
           setNameSearch(value);
         }}
         calculationType={calculationType}
-        queryFetchMore={fetchMore}
-        queryIsExhausted={isExhausted}
         onEdit={(value) => setEditItem(value)}
         onCopy={(value) => {
           const newValue = value.toMutableJSON() as ItemInferredType;

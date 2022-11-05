@@ -20,7 +20,7 @@ export default function ItemsPage() {
   const [calculationType, setCalculationType] = useState<CalculationTypeEnum>(
     CalculationTypeEnum.perServing
   );
-  const { result, fetchMore, isExhausted } = useRxQuery(
+  const query = useRxQuery(
     collection?.find({
       selector: {
         type: ItemTypeEnum.item,
@@ -36,7 +36,7 @@ export default function ItemsPage() {
   return (
     <Fragment>
       <ItemInfiniteTableContainer
-        items={result}
+        query={query}
         nameSearch={nameSearch}
         emptyStateText="Items are what you buy, and you can add one with the plus button above."
         onNameSearchChange={(value: string) => {
@@ -46,8 +46,6 @@ export default function ItemsPage() {
         onToggleCalculationType={() =>
           setCalculationType(toggleCalculationType(calculationType))
         }
-        queryFetchMore={fetchMore}
-        queryIsExhausted={isExhausted}
         onEdit={(value) => setEditItem(value)}
         onCopy={(value) => {
           const newValue = value.toMutableJSON() as ItemInferredType;

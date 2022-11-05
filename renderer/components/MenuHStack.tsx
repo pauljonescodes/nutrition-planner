@@ -15,6 +15,7 @@ import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
 import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
+import { SubitemInferredType } from "../data/yup/subitem";
 import { GroupDrawer } from "./drawers/GroupDrawer";
 import { ItemDrawer } from "./drawers/ItemDrawer";
 import { LogDrawer } from "./drawers/LogDrawer";
@@ -175,10 +176,25 @@ export function MenuHStack() {
       />
       <LogDrawer
         item={logDrawerItem}
-        onResult={(item) => {
+        onResult={async (item) => {
           setLogDrawerItem(null);
           if (item) {
-            item.date = new Date();
+            const originalSubitems = item.subitems ?? [];
+            const upsertedLogCopies: Array<SubitemInferredType> = [];
+            for (const originalSubitem of originalSubitems) {
+              const originalItem = await collection
+                ?.findOne(originalSubitem.itemId!)
+                .exec();
+              const upsertedLogCopy = await originalItem?.upsertedLogCopy();
+              console.log(upsertedLogCopy);
+              if (upsertedLogCopy) {
+                upsertedLogCopies.push({
+                  itemId: upsertedLogCopy.id,
+                  count: originalSubitem.count,
+                });
+              }
+            }
+            item.subitems = upsertedLogCopies;
             collection?.upsert(item);
           }
         }}

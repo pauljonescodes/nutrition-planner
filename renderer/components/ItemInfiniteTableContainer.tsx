@@ -13,20 +13,19 @@ import {
 import { Fragment } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { RxDocument } from "rxdb";
+import { RxQueryResultDoc } from "rxdb-hooks";
 import { CalculationTypeEnum } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
 import { yupItemSchema } from "../data/yup/item";
 import { ItemTableRow } from "./ItemTableRow";
 
 type ItemTableContainerProps = {
-  items: RxDocument<ItemDocument>[];
   nameSearch: string;
   emptyStateText?: string;
   onNameSearchChange: (value: string) => void;
   calculationType: CalculationTypeEnum;
   onToggleCalculationType?: () => void;
-  queryFetchMore: () => void;
-  queryIsExhausted: boolean;
+  query?: RxQueryResultDoc<ItemDocument>;
   onEdit: (value: RxDocument<ItemDocument>) => void;
   onCopy: (value: RxDocument<ItemDocument>) => void;
   onDelete: (value: RxDocument<ItemDocument>) => void;
@@ -85,11 +84,11 @@ export default function ItemInfiniteTableContainer(
           </Thead>
           <InfiniteScroll
             pageStart={0}
-            loadMore={props.queryFetchMore}
-            hasMore={!props.queryIsExhausted}
+            loadMore={() => props.query?.fetchMore()}
+            hasMore={!props.query?.isExhausted}
             element="tbody"
           >
-            {props.items.map((value: RxDocument<ItemDocument>) => (
+            {props.query?.result.map((value: RxDocument<ItemDocument>) => (
               <ItemTableRow
                 key={`${value.id}-itr`}
                 item={value}
@@ -108,13 +107,15 @@ export default function ItemInfiniteTableContainer(
           </InfiniteScroll>
         </Table>
       </TableContainer>
-      {props.items.length === 0 && props.emptyStateText !== undefined && (
-        <Center pt="30vh">
-          <Text color={subtleTextColor} align="center" px={3}>
-            {props.emptyStateText}
-          </Text>
-        </Center>
-      )}
+      {props.query?.result.length === 0 &&
+        props.emptyStateText !== undefined &&
+        !props.query?.isFetching && (
+          <Center pt="30vh">
+            <Text color={subtleTextColor} align="center" px={3}>
+              {props.emptyStateText}
+            </Text>
+          </Center>
+        )}
     </Fragment>
   );
 }
