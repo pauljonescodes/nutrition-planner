@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
@@ -6,7 +6,7 @@ import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import { Size } from "electron";
 import moment from "moment";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Calendar,
   Culture,
@@ -15,11 +15,14 @@ import {
   DateRange,
   View,
 } from "react-big-calendar";
+import { RxDocument } from "rxdb";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { useWindowSize } from "usehooks-ts";
 import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { ItemTypeEnum } from "../data/ItemTypeEnum";
+import { currencyFormatter } from "../data/number-formatter";
+import { CalculationTypeEnum, NutritionInfo } from "../data/nutrition-info";
 import { ItemDocument } from "../data/rxdb/item";
 
 export interface RangeType {
@@ -28,8 +31,6 @@ export interface RangeType {
 }
 
 export default function LogPage() {
-  const [nameSearch, setNameSearch] = useState<string>("");
-  const [editItem, setEditItem] = useState<ItemDocument | null>(null);
   const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
   const collection = useRxCollection<ItemDocument>("item");
   const [viewState, setViewState] = useState<View>("day");
@@ -39,7 +40,16 @@ export default function LogPage() {
     end: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
   });
 
-  const { result, fetchMore, isExhausted } = useRxQuery(
+  const [calculatedResultState, setCalculatedResultState] = useState<
+    | {
+        result: RxDocument<ItemDocument, {}>;
+        nutritionInfo: NutritionInfo;
+        priceCents: number;
+      }[]
+    | null
+  >(null);
+
+  const { result } = useRxQuery(
     collection?.find({
       selector: {
         type: ItemTypeEnum.log,
@@ -48,11 +58,7 @@ export default function LogPage() {
           $gt: dateRangeState.start.toISOString(),
         },
       },
-    })!,
-    {
-      pageSize: 12,
-      pagination: "Infinite",
-    }
+    })!
   );
   const locales = {
     "en-US": enUS,
@@ -76,11 +82,26 @@ export default function LogPage() {
     locales,
   });
 
-  const offRangeBg = useColorModeValue("gray.100", "gray.700");
-  const todayBg = useColorModeValue(
-    "rgba(49, 130, 206, 0.12)",
-    "rgba(49, 130, 206, 0.12)"
-  );
+  useEffect(() => {
+    async function calculate() {
+      const calculatedLogs = await Promise.all(
+        result.map(async (value) => {
+          return {
+            result: value,
+            nutritionInfo: await value.calculatedNutritionInfo(
+              CalculationTypeEnum.total
+            ),
+            priceCents: await value.calculatedPriceCents(
+              CalculationTypeEnum.total
+            ),
+          };
+        })
+      );
+      setCalculatedResultState(calculatedLogs);
+    }
+    calculate();
+    return;
+  }, [result]);
 
   return (
     <Fragment>
@@ -139,12 +160,14 @@ export default function LogPage() {
             //   start: new Date(2022, 10, 4, 12, 0, 0),
             //   end: new Date(2022, 10, 4, 13, 0, 0),
             // },
-            result.map((value) => {
+            calculatedResultState?.map((value) => {
               return {
-                title: "",
-                start: new Date(value.date),
+                title: `${currencyFormatter.format(
+                  (value.priceCents ?? 0) / 100
+                )} ${value.nutritionInfo.energyKilocalories}kcal`,
+                start: new Date(value.result.date),
                 end: new Date(
-                  new Date(value.date).getTime() + 0.5 * 60 * 60 * 1000
+                  new Date(value.result.date).getTime() + 0.75 * 60 * 60 * 1000
                 ),
                 allDay: false,
               };

@@ -195,6 +195,7 @@ export function MenuHStack() {
               }
             }
             item.subitems = upsertedLogCopies;
+            console.log(item);
             collection?.upsert(item);
           }
         }}
