@@ -177,29 +177,9 @@ export function MenuHStack() {
       <LogDrawer
         item={logDrawerItem}
         onResult={async (item) => {
+          setLogDrawerItem(null);
           if (item) {
-            item.date = new Date();
             collection?.upsert(item);
-          }
-          /*
-          if (item) {
-            const originalSubitems = item.subitems ?? [];
-            const upsertedLogCopies: Array<SubitemInferredType> = [];
-            for (const originalSubitem of originalSubitems) {
-              const originalItem = await collection
-                ?.findOne(originalSubitem.itemId!)
-                .exec();
-              const upsertedLogCopy = await originalItem?.upsertedLogCopy();
-              console.log(upsertedLogCopy);
-              if (upsertedLogCopy) {
-                upsertedLogCopies.push({
-                  itemId: upsertedLogCopy.id,
-                  count: originalSubitem.count,
-                });
-              }
-            }
-            item.subitems = upsertedLogCopies;
-            console.log(item);*/
           }
         }}
       />
