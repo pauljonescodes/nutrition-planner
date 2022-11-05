@@ -177,7 +177,11 @@ export function MenuHStack() {
       <LogDrawer
         item={logDrawerItem}
         onResult={async (item) => {
-          setLogDrawerItem(null);
+          if (item) {
+            item.date = new Date();
+            collection?.upsert(item);
+          }
+          /*
           if (item) {
             const originalSubitems = item.subitems ?? [];
             const upsertedLogCopies: Array<SubitemInferredType> = [];
@@ -195,8 +199,7 @@ export function MenuHStack() {
               }
             }
             item.subitems = upsertedLogCopies;
-            console.log(item);
-            collection?.upsert(item);
+            console.log(item);*/
           }
         }}
       />
