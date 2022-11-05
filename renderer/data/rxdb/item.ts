@@ -15,6 +15,7 @@ export type ItemDocumentMethods = {
     calcType: CalculationTypeEnum
   ) => Promise<NutritionInfo>;
   calculatedPriceCents: (calcType: CalculationTypeEnum) => Promise<number>;
+  populateSubitems: () => Promise<RxDocument<ItemInferredType>> | null;
 };
 
 export type ItemDocument = RxDocument<ItemInferredType, ItemDocumentMethods>;
@@ -32,7 +33,7 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
     type: {
       type: "string",
     },
-    createdAt: {
+    date: {
       format: "date-time",
       type: "string",
     },
@@ -86,8 +87,7 @@ export const itemDocumentSchema: RxJsonSchema<ItemDocument> = {
           count: {
             type: "number",
           },
-          item: {
-            ref: "item",
+          itemId: {
             type: "string",
           },
         },
@@ -172,6 +172,18 @@ export const itemDocumentMethods: ItemDocumentMethods = {
       }
 
       return accumulatedServingPriceCents;
+    }
+  },
+  async populateSubitems(
+    this: ItemDocument
+  ): Promise<Promise<RxDocument<ItemInferredType>> | null> {
+    if (this.subitems === undefined || this.subitems.length === 0) {
+      return null;
+    } else {
+      const foundByIds = await this.collection.findByIds(
+        this.subitems.map((value) => value.itemId!)
+      );
+      return null;
     }
   },
 };

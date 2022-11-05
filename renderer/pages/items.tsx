@@ -38,6 +38,7 @@ export default function ItemsPage() {
       <ItemInfiniteTableContainer
         items={result}
         nameSearch={nameSearch}
+        emptyStateText="Items are what you buy, and you can add one with the plus button above."
         onNameSearchChange={(value: string) => {
           setNameSearch(value);
         }}
@@ -52,8 +53,8 @@ export default function ItemsPage() {
           const newValue = value.toMutableJSON() as ItemInferredType;
           const id = dataid();
           newValue.id = id;
-          newValue.createdAt = new Date();
-          newValue.name = `${newValue.name}-copy`;
+          newValue.date = new Date();
+          newValue.name = `Copied ${newValue.name}`;
           collection?.upsert(newValue);
         }}
         onDelete={async (value) => {
@@ -65,7 +66,7 @@ export default function ItemsPage() {
         onResult={(item) => {
           setEditItem(null);
           if (item) {
-            item.createdAt = new Date();
+            item.date = new Date();
             collection?.upsert(item);
           }
         }}

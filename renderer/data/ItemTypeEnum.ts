@@ -1,5 +1,6 @@
 export enum ItemTypeEnum {
   item = "item",
-  recipe = "recipe",
+  group = "group",
   plan = "plan",
+  log = "log",
 }

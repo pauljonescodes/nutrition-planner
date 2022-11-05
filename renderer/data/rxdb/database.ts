@@ -1,6 +1,7 @@
 import {
   addRxPlugin,
   createRxDatabase,
+  removeRxDatabase,
   RxCollection,
   RxCouchDBReplicationState,
   RxDatabase,
@@ -26,9 +27,9 @@ export type DatabaseCollections = {
 
 export type DatabaseType = RxDatabase<DatabaseCollections>;
 
-export async function createDatabase(): Promise<DatabaseType | undefined> {
-  var database: DatabaseType | undefined;
+const databaseName = "nutrition-rxdatabase";
 
+export function addRxDbPlugins() {
   addPouchPlugin(require("pouchdb-adapter-idb"));
   addRxPlugin(RxDBQueryBuilderPlugin);
   addRxPlugin(RxDBJsonDumpPlugin);
@@ -36,10 +37,14 @@ export async function createDatabase(): Promise<DatabaseType | undefined> {
   addRxPlugin(RxDBReplicationCouchDBPlugin);
   addRxPlugin(RxDBLeaderElectionPlugin);
   addPouchPlugin(require("pouchdb-adapter-http"));
+}
+
+export async function createDatabase(): Promise<DatabaseType | undefined> {
+  var database: DatabaseType | undefined;
 
   try {
     database = await createRxDatabase<DatabaseCollections>({
-      name: "nutrition-rxdatabase",
+      name: databaseName,
       storage: getRxStoragePouch("idb", {}),
     });
   } catch (error) {
@@ -54,6 +59,10 @@ export async function createDatabase(): Promise<DatabaseType | undefined> {
   });
 
   return database;
+}
+
+export async function removeDatabase() {
+  return await removeRxDatabase(databaseName, getRxStoragePouch("idb", {}));
 }
 
 export function syncCollection(

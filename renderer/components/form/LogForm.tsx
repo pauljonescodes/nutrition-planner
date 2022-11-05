@@ -1,4 +1,4 @@
-import { Button, Center, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Button, Center, VStack } from "@chakra-ui/react";
 import { Form, FormikProps } from "formik";
 import { FormEvent, RefObject, useEffect, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
@@ -14,17 +14,15 @@ import {
 import { ItemDocument } from "../../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
-import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
-import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
+import { ValidatedDatetimeControl } from "../form-controls/ValidatedDateTimeControl";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
-type GroupFormProps = {
+type LogFormProps = {
   formikProps: FormikProps<Partial<ItemInferredType>>;
   firstInputFieldRef: RefObject<HTMLInputElement> | undefined;
 };
 
-export default function GroupForm(props: GroupFormProps) {
-  const subitems = props.formikProps.values.subitems ?? [];
+export default function LogForm(props: LogFormProps) {
   const collection = useRxCollection<ItemDocument>("item");
 
   const [calculatedNutritionInfoMapState, setCalculatedNutritionInfoMapState] =
@@ -33,7 +31,8 @@ export default function GroupForm(props: GroupFormProps) {
     useState<Map<string, number> | null>(null);
   const [queriedSubitemNameMapState, setQueriedSubitemNameMapState] =
     useState<Map<string, string> | null>(null);
-  const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+
+  const subitems = props.formikProps.values.subitems ?? [];
 
   useEffect(() => {
     calculate();
@@ -134,37 +133,26 @@ export default function GroupForm(props: GroupFormProps) {
         .reduce((previous, current) => previous + current, 0) /
       (props.formikProps.values.count ?? 1);
   }
-
   return (
     <Form
       noValidate={true}
       onSubmit={(e) => {
         e.preventDefault();
         props.formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
+        console.log(props.formikProps.errors);
       }}
     >
-      <ValidatedFormikControl
-        value={props.formikProps.values.name}
-        error={props.formikProps.errors.name}
-        isRequired={true}
-        yupSchemaField={yupItemSchema.fields.name}
-        formikProps={props.formikProps}
-        spaceProps={{ pb: 2 }}
-        inputFieldRef={props.firstInputFieldRef}
-      />
-
-      <ValidatedFormikNumberControl
-        value={props.formikProps.values.count}
-        error={props.formikProps.errors.count}
-        isRequired
-        yupSchemaField={yupItemSchema.fields.count}
+      <ValidatedDatetimeControl
+        value={props.formikProps.values.date}
+        error={props.formikProps.errors.date}
+        yupSchemaField={yupItemSchema.fields.date}
         formikProps={props.formikProps}
         spaceProps={{ pb: 2 }}
       />
 
       <SubitemFieldArray
         formikProps={props.formikProps}
-        itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
+        itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group, ItemTypeEnum.plan]}
         calculatedNutritionInfoMap={calculatedNutritionInfoMapState}
         calculatedPriceInCentsMap={calculatedPriceInCentsMapState}
         queriedSubitemNameMap={queriedSubitemNameMapState}
@@ -179,6 +167,7 @@ export default function GroupForm(props: GroupFormProps) {
           >
             Submit
           </Button>
+
           <PriceNutritionGrid
             priceCents={totalPriceInCents}
             nutritionInfo={totalNutritionInfo}

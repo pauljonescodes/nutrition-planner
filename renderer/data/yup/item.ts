@@ -4,7 +4,13 @@ import { yupSubitemSchema } from "./subitem";
 
 export const yupItemSchema = Yup.object({
   id: Yup.string().label("ID").required(),
-  createdAt: Yup.date().optional(),
+  date: Yup.date()
+    .label("Date")
+    .meta({
+      placeholder: "Date & time",
+      key: "date",
+    })
+    .required(),
   type: Yup.mixed<ItemTypeEnum>().oneOf(Object.values(ItemTypeEnum)).required(),
   name: Yup.string()
     .label("Name")

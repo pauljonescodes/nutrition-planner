@@ -1,9 +1,14 @@
-import { Button, Center } from "@chakra-ui/react";
+import { Button, Center, VStack } from "@chakra-ui/react";
 import { Form, FormikProps } from "formik";
 import { FormEvent, RefObject } from "react";
+import {
+  baseNutritionInfo,
+  multiplyNutritionInfo,
+} from "../../data/nutrition-info";
 import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
+import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 type ItemFormProps = {
   formikProps: FormikProps<Partial<ItemInferredType>>;
@@ -14,6 +19,12 @@ type ItemFormProps = {
 export default function ItemForm(props: ItemFormProps) {
   const formikProps = props.formikProps;
   const onPaste = props.onPaste;
+  const servingPriceCents =
+    (formikProps.values.priceCents ?? 0) / (formikProps.values.count ?? 1);
+  const servingNutritionInfo = multiplyNutritionInfo(
+    baseNutritionInfo({ ...formikProps.values }),
+    formikProps.values.count ?? 0
+  );
   return (
     <Form
       onSubmit={(e) => {
@@ -128,9 +139,16 @@ export default function ItemForm(props: ItemFormProps) {
       />
 
       <Center>
-        <Button type="submit" my={4} isLoading={formikProps.isSubmitting}>
-          Submit
-        </Button>
+        <VStack>
+          <Button type="submit" my={4} isLoading={formikProps.isSubmitting}>
+            Submit
+          </Button>
+          <PriceNutritionGrid
+            priceCents={servingPriceCents}
+            priceLabel={"per serving"}
+            nutritionInfo={servingNutritionInfo}
+          />
+        </VStack>
       </Center>
     </Form>
   );

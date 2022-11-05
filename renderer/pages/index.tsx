@@ -93,7 +93,15 @@ export default function LogPage() {
               )}-${localizer?.format(range.end, "LLL d", culture)}`;
             },
           }}
-          events={[]}
+          events={
+            [
+              // {
+              //   title: "Workout day plan",
+              //   start: new Date(2022, 10, 4, 12, 0, 0),
+              //   end: new Date(2022, 10, 4, 13, 0, 0),
+              // },
+            ]
+          }
           views={{ day: true, month: true, week: true }}
           startAccessor="start"
           endAccessor="end"

@@ -37,8 +37,8 @@ export function ValidatedFormikNumberControl<T>(
       {...props.spaceProps}
       isInvalid={props.error !== undefined}
       isRequired={
-        props.isRequired ??
-        props.yupSchemaField.describe().tests[0].name === "required"
+        props.isRequired
+        // props.yupSchemaField.describe().tests[0].name === "required"
       }
     >
       <FormLabel htmlFor={props.yupSchemaField.spec.meta["key"]}>

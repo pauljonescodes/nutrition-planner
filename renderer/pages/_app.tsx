@@ -9,13 +9,19 @@ import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { Provider as RxDbProvider } from "rxdb-hooks";
 import "../../styles/react-big-calendar.scss";
+import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
-import { createDatabase, DatabaseType } from "../data/rxdb/database";
+import {
+  addRxDbPlugins,
+  createDatabase,
+  DatabaseType,
+} from "../data/rxdb/database";
 
 export default function App(props: AppProps) {
   const [database, setDatabase] = useState<DatabaseType | undefined>(undefined);
 
   useEffect(() => {
+    addRxDbPlugins();
     createDatabase().then(setDatabase);
   }, []);
 

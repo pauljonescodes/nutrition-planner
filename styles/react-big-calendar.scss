@@ -30,7 +30,7 @@ $event-zindex: 4 !default;
 $btn-color: #373a3c !default;
 $btn-bg: #fff !default;
 $btn-border: #ccc !default;
-$current-time-color: #74ad31 !default;
+$current-time-color: var(--chakra-colors-red-500) !default;
 $rbc-css-prefix: rbc-i !default;
 $today-highlight-bg: var(--rbg-today-highlight-background) !default;
 @import "~react-big-calendar/lib/sass/reset";

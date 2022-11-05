@@ -1,16 +1,8 @@
-import {
-  Button,
-  Center,
-  Grid,
-  GridItem,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, useColorModeValue, VStack } from "@chakra-ui/react";
 import { Form, FormikProps } from "formik";
 import { FormEvent, RefObject, useEffect, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
 import { ItemTypeEnum } from "../../data/ItemTypeEnum";
-import { currencyFormatter } from "../../data/number-formatter";
 import {
   baseNutritionInfo,
   CalculationTypeEnum,
@@ -23,6 +15,7 @@ import { ItemDocument } from "../../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
+import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 type PlanFormProps = {
   formikProps: FormikProps<Partial<ItemInferredType>>;
@@ -38,7 +31,7 @@ export default function PlanForm(props: PlanFormProps) {
     useState<Map<string, number> | null>(null);
   const [queriedSubitemNameMapState, setQueriedSubitemNameMapState] =
     useState<Map<string, string> | null>(null);
-  const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   const subitems = props.formikProps.values.subitems ?? [];
 
@@ -72,7 +65,7 @@ export default function PlanForm(props: PlanFormProps) {
       );
       setCalculatedNutritionInfoMapState(new Map(nutritionEntries));
 
-      const priceInCentsEntries = await Promise.all(
+      const priceCentsEntries = await Promise.all(
         subitems.map(async (value): Promise<[string, number]> => {
           const itemId = value.itemId;
           if (itemId !== undefined) {
@@ -88,7 +81,7 @@ export default function PlanForm(props: PlanFormProps) {
           return [itemId ?? "", 0];
         })
       );
-      setCalculatedPriceInCentsMapState(new Map(priceInCentsEntries));
+      setCalculatedPriceInCentsMapState(new Map(priceCentsEntries));
 
       const subitemNameEntries = await Promise.all(
         subitems.map(async (value): Promise<[string, string]> => {
@@ -160,7 +153,7 @@ export default function PlanForm(props: PlanFormProps) {
 
       <SubitemFieldArray
         formikProps={props.formikProps}
-        itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.recipe]}
+        itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
         calculatedNutritionInfoMap={calculatedNutritionInfoMapState}
         calculatedPriceInCentsMap={calculatedPriceInCentsMapState}
         queriedSubitemNameMap={queriedSubitemNameMapState}
@@ -175,26 +168,10 @@ export default function PlanForm(props: PlanFormProps) {
           >
             Submit
           </Button>
-          <Grid templateColumns="repeat(6, 1fr)" pb={2} width={"full"}>
-            <GridItem color={alphaColor} fontSize="sm">
-              {currencyFormatter.format(totalPriceInCents / 100)}
-            </GridItem>
-            <GridItem color={alphaColor} fontSize="sm">
-              {totalNutritionInfo.massGrams}g
-            </GridItem>
-            <GridItem color={alphaColor} fontSize="sm">
-              {totalNutritionInfo.energyKilocalories}kcal
-            </GridItem>
-            <GridItem color={alphaColor} fontSize="sm">
-              {totalNutritionInfo.fatGrams}g fat
-            </GridItem>
-            <GridItem color={alphaColor} fontSize="sm">
-              {totalNutritionInfo.carbohydrateGrams}g carbs
-            </GridItem>
-            <GridItem color={alphaColor} fontSize="sm">
-              {totalNutritionInfo.proteinGrams}g protein
-            </GridItem>
-          </Grid>
+          <PriceNutritionGrid
+            priceCents={totalPriceInCents}
+            nutritionInfo={totalNutritionInfo}
+          />
         </VStack>
       </Center>
     </Form>

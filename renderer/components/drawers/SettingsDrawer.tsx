@@ -22,11 +22,7 @@ import FileSaver from "file-saver";
 import { Fragment, useEffect, useState } from "react";
 import { useRxCollection, useRxDB } from "rxdb-hooks";
 import { useFilePicker } from "use-file-picker";
-import {
-  addCollections,
-  removeCollections,
-  syncCollection,
-} from "../../data/rxdb/database";
+import { removeCollections, syncCollection } from "../../data/rxdb/database";
 import { isValidUrl } from "../../utilities/isValidUrl";
 import useLocalStorage from "../../utilities/useLocalStorage";
 import { DeleteAlertDialog } from "../DeleteAlertDialog";
@@ -51,10 +47,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const collection = useRxCollection("item");
   const toast = useToast();
 
-  const textColorModeValue = useColorModeValue(
-    "blackAlpha.600",
-    "whiteAlpha.600"
-  );
+  const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   const [openFileSelector, { filesContent, loading: filesLoading }] =
     useFilePicker({
@@ -172,7 +165,10 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               >
                 Reset database
               </Button>
-              <Text color={textColorModeValue} fontSize="xs">
+              <Text color={subtleTextColor} fontSize="sm">
+                This permentantly deletes <Text as="em">everything</Text>
+              </Text>
+              <Text color={subtleTextColor} fontSize="xs">
                 {process.env.version}
               </Text>
             </VStack>
@@ -184,8 +180,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
         onResult={async (result) => {
           setShowDeleteDialogState(false);
           if (result) {
-            await removeCollections(collection);
-            await addCollections(database);
+            await collection?.find().remove();
             toast({
               title: "Reset successful.",
               status: "success",

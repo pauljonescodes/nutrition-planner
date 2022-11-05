@@ -32,19 +32,21 @@ export function nutritionInfoDescription(value: NutritionInfo): string {
   return `${value.massGrams}g / ${value.energyKilocalories}kcal / ${value.fatGrams}g fat / ${value.carbohydrateGrams}g carb / ${value.proteinGrams}g protein`;
 }
 
-export function baseNutritionInfo(): NutritionInfo {
+export function baseNutritionInfo(
+  basis?: Partial<NutritionInfo>
+): NutritionInfo {
   return {
-    massGrams: 0,
-    energyKilocalories: 0,
-    fatGrams: 0,
-    saturatedFatGrams: 0,
-    transFatGrams: 0,
-    cholesterolMilligrams: 0,
-    sodiumMilligrams: 0,
-    carbohydrateGrams: 0,
-    fiberGrams: 0,
-    sugarGrams: 0,
-    proteinGrams: 0,
+    massGrams: basis?.massGrams ?? 0,
+    energyKilocalories: basis?.energyKilocalories ?? 0,
+    fatGrams: basis?.fatGrams ?? 0,
+    saturatedFatGrams: basis?.saturatedFatGrams ?? 0,
+    transFatGrams: basis?.transFatGrams ?? 0,
+    cholesterolMilligrams: basis?.cholesterolMilligrams ?? 0,
+    sodiumMilligrams: basis?.sodiumMilligrams ?? 0,
+    carbohydrateGrams: basis?.carbohydrateGrams ?? 0,
+    fiberGrams: basis?.fiberGrams ?? 0,
+    sugarGrams: basis?.sugarGrams ?? 0,
+    proteinGrams: basis?.proteinGrams ?? 0,
   };
 }
 

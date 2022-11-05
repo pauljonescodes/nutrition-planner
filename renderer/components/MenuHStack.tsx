@@ -17,6 +17,7 @@ import { ItemDocument } from "../data/rxdb/item";
 import { ItemInferredType, yupItemSchema } from "../data/yup/item";
 import { GroupDrawer } from "./drawers/GroupDrawer";
 import { ItemDrawer } from "./drawers/ItemDrawer";
+import { LogDrawer } from "./drawers/LogDrawer";
 import { PlanDrawer } from "./drawers/PlanDrawer";
 import { SettingsDrawer } from "./drawers/SettingsDrawer";
 
@@ -24,9 +25,11 @@ export function MenuHStack() {
   const router = useRouter();
   const [itemDrawerItem, setItemDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
-  const [recipeDrawerItem, setGroupDrawerItem] =
+  const [groupDrawerItem, setGroupDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
   const [planDrawerItem, setPlanDrawerItem] =
+    useState<Partial<ItemInferredType> | null>(null);
+  const [logDrawerItem, setLogDrawerItem] =
     useState<Partial<ItemInferredType> | null>(null);
   const [settingsDrawerIsOpen, setSettingsDrawerIsOpen] =
     useState<boolean>(false);
@@ -55,7 +58,17 @@ export function MenuHStack() {
           >
             Log
           </Button>
-          <IconButton onClick={() => {}} icon={<AddIcon />} aria-label="Add" />
+          <IconButton
+            onClick={() => {
+              setLogDrawerItem({
+                ...yupItemSchema.getDefault(),
+                id: dataid(),
+                type: ItemTypeEnum.log,
+              });
+            }}
+            icon={<AddIcon />}
+            aria-label="Add"
+          />
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
@@ -92,7 +105,7 @@ export function MenuHStack() {
               setGroupDrawerItem({
                 ...yupItemSchema.getDefault(),
                 id: dataid(),
-                type: ItemTypeEnum.recipe,
+                type: ItemTypeEnum.group,
               });
             }}
             icon={<AddIcon />}
@@ -135,17 +148,17 @@ export function MenuHStack() {
         onResult={(item) => {
           setItemDrawerItem(null);
           if (item) {
-            item.createdAt = new Date();
+            item.date = new Date();
             collection?.upsert(item);
           }
         }}
       />
       <GroupDrawer
-        item={recipeDrawerItem}
+        item={groupDrawerItem}
         onResult={(item) => {
           setGroupDrawerItem(null);
           if (item) {
-            item.createdAt = new Date();
+            item.date = new Date();
             collection?.upsert(item);
           }
         }}
@@ -155,7 +168,17 @@ export function MenuHStack() {
         onResult={(item) => {
           setPlanDrawerItem(null);
           if (item) {
-            item.createdAt = new Date();
+            item.date = new Date();
+            collection?.upsert(item);
+          }
+        }}
+      />
+      <LogDrawer
+        item={logDrawerItem}
+        onResult={(item) => {
+          setLogDrawerItem(null);
+          if (item) {
+            item.date = new Date();
             collection?.upsert(item);
           }
         }}

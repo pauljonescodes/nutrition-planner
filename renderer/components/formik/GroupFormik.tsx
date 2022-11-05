@@ -19,8 +19,9 @@ export function GroupFormik(props: GroupFormikProps) {
       initialValues={{
         ...yupItemSchema.getDefault(),
         id: thisItemId,
-        type: ItemTypeEnum.recipe,
+        type: ItemTypeEnum.group,
         name: props.item?.name,
+        date: props.item?.date ?? new Date(),
         priceCents: 0,
         massGrams: 0,
         count: props.item?.count,

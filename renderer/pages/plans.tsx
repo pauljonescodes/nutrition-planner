@@ -35,6 +35,7 @@ export default function PlansPage() {
       <ItemInfiniteTableContainer
         items={result}
         nameSearch={nameSearch}
+        emptyStateText="Plans are collections of Groups and Items, and can be used to calculate and log a day's worth of nutrition."
         onNameSearchChange={(value: string) => {
           setNameSearch(value);
         }}
@@ -46,8 +47,8 @@ export default function PlansPage() {
           const newValue = value.toMutableJSON() as ItemInferredType;
           const id = dataid();
           newValue.id = id;
-          newValue.createdAt = new Date();
-          newValue.name = `${newValue.name}-copy`;
+          newValue.date = new Date();
+          newValue.name = `$Copied {newValue.name}`;
           collection?.upsert(newValue);
         }}
         onDelete={(value) => setDeleteItem(value)}
@@ -57,7 +58,7 @@ export default function PlansPage() {
         onResult={async (item) => {
           setEditItem(null);
           if (item) {
-            item.createdAt = new Date();
+            item.date = new Date();
             collection?.upsert(item as ItemInferredType);
           }
         }}

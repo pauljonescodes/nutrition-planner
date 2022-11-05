@@ -1,7 +1,5 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Grid,
-  GridItem,
   HStack,
   IconButton,
   NumberInput,
@@ -18,7 +16,6 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useState } from "react";
-import { currencyFormatter } from "../../data/number-formatter";
 import {
   multiplyNutritionInfo,
   NutritionInfo,
@@ -26,6 +23,7 @@ import {
 import { ItemDocument } from "../../data/rxdb/item";
 import { ItemInferredType } from "../../data/yup/item";
 import { SubitemInferredType, yupSubitemSchema } from "../../data/yup/subitem";
+import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 interface SubitemAutoCompleteInputProps {
   value: SubitemInferredType;
@@ -113,30 +111,10 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
           }}
         />
       </HStack>
-
-      <Grid templateColumns="repeat(6, 1fr)" pb={2}>
-        <GridItem color={alphaColor} fontSize="sm">
-          {currencyFormatter.format(
-            ((props.calculatedPriceInCents ?? 0) / 100) *
-              (props.value.count ?? 0)
-          )}
-        </GridItem>
-        <GridItem color={alphaColor} fontSize="sm">
-          {calculatedTotalNutritionInfo.massGrams}g
-        </GridItem>
-        <GridItem color={alphaColor} fontSize="sm">
-          {calculatedTotalNutritionInfo.energyKilocalories}kcal
-        </GridItem>
-        <GridItem color={alphaColor} fontSize="sm">
-          {calculatedTotalNutritionInfo.fatGrams}g fat
-        </GridItem>
-        <GridItem color={alphaColor} fontSize="sm">
-          {calculatedTotalNutritionInfo.carbohydrateGrams}g carbs
-        </GridItem>
-        <GridItem color={alphaColor} fontSize="sm">
-          {calculatedTotalNutritionInfo.proteinGrams}g protein
-        </GridItem>
-      </Grid>
+      <PriceNutritionGrid
+        priceCents={props.calculatedPriceInCents}
+        nutritionInfo={props.calculatedNutritionInfo}
+      />
     </VStack>
   );
 }

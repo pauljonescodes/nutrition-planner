@@ -23,7 +23,7 @@ export default function GroupsPage() {
   const { result, fetchMore, isExhausted, resetList } = useRxQuery(
     collection?.find({
       selector: {
-        type: ItemTypeEnum.recipe,
+        type: ItemTypeEnum.group,
         name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
       },
     })!,
@@ -38,6 +38,7 @@ export default function GroupsPage() {
       <ItemInfiniteTableContainer
         items={result}
         nameSearch={nameSearch}
+        emptyStateText="Groups are collections of items or other groups, like a recipe or meal."
         onNameSearchChange={(value: string) => {
           setNameSearch(value);
         }}
@@ -52,8 +53,8 @@ export default function GroupsPage() {
           const newValue = value.toMutableJSON() as ItemInferredType;
           const id = dataid();
           newValue.id = id;
-          newValue.createdAt = new Date();
-          newValue.name = `${newValue.name}-copy`;
+          newValue.date = new Date();
+          newValue.name = `Copied ${newValue.name}`;
           collection?.upsert(newValue);
         }}
         onDelete={(value) => {
@@ -65,7 +66,7 @@ export default function GroupsPage() {
         onResult={async (item) => {
           setEditItem(null);
           if (item) {
-            item.createdAt = new Date();
+            item.date = new Date();
             collection?.upsert(item as ItemInferredType);
           }
         }}
