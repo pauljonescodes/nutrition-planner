@@ -1,0 +1,13 @@
+appId: com.pauljonescodes.nutrition-planner
+productName: Nutrition Planner
+copyright: Copyright © 2022 pauljonescodes
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+      - .pass
+publish: null
