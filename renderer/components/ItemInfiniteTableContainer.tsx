@@ -10,25 +10,27 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
+
 import { Fragment } from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import { RxDocument } from "rxdb";
-import { RxQueryResultDoc } from "rxdb-hooks";
-import { CalculationTypeEnum } from "../data/nutrition-info";
-import { ItemDocument } from "../data/rxdb/item";
-import { yupItemSchema } from "../data/yup/item";
+import { RxDBItemDocument } from "../data/rxdb";
+import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
+import { yupItemSchema } from "../data/yup-schema";
 import { ItemTableRow } from "./ItemTableRow";
 
 type ItemTableContainerProps = {
   nameSearch: string;
   emptyStateText?: string;
   onNameSearchChange: (value: string) => void;
-  calculationType: CalculationTypeEnum;
-  onToggleCalculationType?: () => void;
-  query?: RxQueryResultDoc<ItemDocument>;
-  onEdit: (value: RxDocument<ItemDocument>) => void;
-  onCopy: (value: RxDocument<ItemDocument>) => void;
-  onDelete: (value: RxDocument<ItemDocument>) => void;
+  servingOrTotal: ServingOrTotalEnum;
+  onToggleServingOrTotal?: () => void;
+  documents?: RxDBItemDocument[] | undefined;
+  isFetching: boolean;
+  isExhausted: boolean;
+  fetchMore: () => void;
+  onEdit: (value: RxDBItemDocument) => void;
+  onCopy: (value: RxDBItemDocument) => void;
+  onDelete: (value: RxDBItemDocument) => void;
 };
 
 export default function ItemInfiniteTableContainer(
@@ -62,12 +64,12 @@ export default function ItemInfiniteTableContainer(
                   size="xs"
                   color={normalTextColor}
                   onClick={() => {
-                    if (props.onToggleCalculationType) {
-                      props.onToggleCalculationType();
+                    if (props.onToggleServingOrTotal) {
+                      props.onToggleServingOrTotal();
                     }
                   }}
                 >
-                  {props.calculationType}
+                  {props.servingOrTotal}
                 </Button>
               </Th>
               <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
@@ -84,15 +86,15 @@ export default function ItemInfiniteTableContainer(
           </Thead>
           <InfiniteScroll
             pageStart={0}
-            loadMore={() => props.query?.fetchMore()}
-            hasMore={!props.query?.isExhausted}
+            loadMore={() => props.fetchMore()}
+            hasMore={!props.isExhausted}
             element="tbody"
           >
-            {props.query?.result.map((value: RxDocument<ItemDocument>) => (
+            {props.documents?.map((value: RxDBItemDocument) => (
               <ItemTableRow
                 key={`${value.id}-itr`}
-                item={value}
-                priceType={props.calculationType}
+                document={value}
+                priceType={props.servingOrTotal}
                 onEdit={function (): void {
                   props.onEdit(value);
                 }}
@@ -107,9 +109,9 @@ export default function ItemInfiniteTableContainer(
           </InfiniteScroll>
         </Table>
       </TableContainer>
-      {props.query?.result.length === 0 &&
+      {props.documents?.length === 0 &&
         props.emptyStateText !== undefined &&
-        !props.query?.isFetching && (
+        !props.isFetching && (
           <Center pt="30vh">
             <Text color={subtleTextColor} align="center" px={3}>
               {props.emptyStateText}

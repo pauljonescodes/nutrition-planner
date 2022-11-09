@@ -22,7 +22,6 @@ import FileSaver from "file-saver";
 import { Fragment, useEffect, useState } from "react";
 import { useRxCollection, useRxDB } from "rxdb-hooks";
 import { useFilePicker } from "use-file-picker";
-import { removeCollections, syncCollection } from "../../data/rxdb/database";
 import { isValidUrl } from "../../utilities/isValidUrl";
 import useLocalStorage from "../../utilities/useLocalStorage";
 import { DeleteAlertDialog } from "../DeleteAlertDialog";
@@ -58,7 +57,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   async function importFile() {
     if (filesContent.length > 0) {
       setImportLoadingState(true);
-      await removeCollections(collection);
+      await collection?.find().remove();
       await database.importJSON(JSON.parse(filesContent[0].content));
       setImportLoadingState(false);
       toast({
@@ -111,7 +110,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                         isValidUrl(databaseUrlStringState ?? undefined)
                       ) {
                         setDatabaseUrlLocalStorage(databaseUrlStringState);
-                        syncCollection(databaseUrlStringState, collection);
                       }
                     }}
                   >

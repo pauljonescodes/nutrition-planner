@@ -4,24 +4,23 @@ import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { PlanDrawer } from "../components/drawers/PlanDrawer";
 import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
 import { dataid } from "../data/dataid";
-import { ItemTypeEnum } from "../data/ItemTypeEnum";
-import { CalculationTypeEnum } from "../data/nutrition-info";
-import { ItemDocument } from "../data/rxdb/item";
-import { ItemInferredType } from "../data/yup/item";
+import { ItemTypeEnum } from "../data/item-type-enum";
+import { RxDBItemDocument } from "../data/rxdb";
+import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
 
 export default function PlansPage() {
-  const [nameSearch, setNameSearch] = useState<string>("");
-  const [editItem, setEditItem] = useState<ItemDocument | null>(null);
-  const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
-  const [calculationType] = useState<CalculationTypeEnum>(
-    CalculationTypeEnum.total
+  const [nameSearchState, setNameSearchState] = useState<string>("");
+  const [editItemState, setEditItemState] = useState<RxDBItemDocument | null>(
+    null
   );
-  const collection = useRxCollection<ItemDocument>("item");
+  const [deleteItemState, setDeleteItemState] =
+    useState<RxDBItemDocument | null>(null);
+  const rxCollection = useRxCollection<RxDBItemDocument>("item");
   const query = useRxQuery(
-    collection?.find({
+    rxCollection?.find({
       selector: {
         type: ItemTypeEnum.plan,
-        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
       },
     })!,
     {
@@ -33,41 +32,44 @@ export default function PlansPage() {
   return (
     <Fragment>
       <ItemInfiniteTableContainer
-        query={query}
-        nameSearch={nameSearch}
+        documents={query.result}
+        fetchMore={query.fetchMore}
+        isFetching={query.isFetching}
+        isExhausted={query.isExhausted}
+        nameSearch={nameSearchState}
         emptyStateText="Plans are collections of Groups and Items, and can be used to calculate and log a day's worth of nutrition."
         onNameSearchChange={(value: string) => {
-          setNameSearch(value);
+          setNameSearchState(value);
         }}
-        calculationType={calculationType}
-        onEdit={(value) => setEditItem(value)}
+        servingOrTotal={ServingOrTotalEnum.total}
+        onEdit={(value) => setEditItemState(value)}
         onCopy={(value) => {
-          const newValue = value.toMutableJSON() as ItemInferredType;
+          const newValue = value.toMutableJSON();
           const id = dataid();
           newValue.id = id;
           newValue.date = new Date();
           newValue.name = `$Copied {newValue.name}`;
-          collection?.upsert(newValue);
+          rxCollection?.upsert(newValue);
         }}
-        onDelete={(value) => setDeleteItem(value)}
+        onDelete={(value) => setDeleteItemState(value)}
       />
       <PlanDrawer
-        item={editItem}
+        item={editItemState}
         onResult={async (item) => {
-          setEditItem(null);
+          setEditItemState(null);
           if (item) {
             item.date = new Date();
-            collection?.upsert(item as ItemInferredType);
+            rxCollection?.upsert(item);
           }
         }}
       />
       <DeleteAlertDialog
-        isOpen={deleteItem !== null}
+        isOpen={deleteItemState !== null}
         onResult={function (result: boolean): void {
           if (result) {
-            deleteItem?.remove();
+            deleteItemState?.remove();
           }
-          setDeleteItem(null);
+          setDeleteItemState(null);
         }}
       />
     </Fragment>

@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/packages/*/node_modules
+/packages/*/bin
 /.pnp
 .pnp.js
 
@@ -13,7 +15,6 @@
 /renderer/out/
 
 # production
-/main
 /dist
 
 # misc

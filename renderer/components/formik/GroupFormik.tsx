@@ -1,13 +1,15 @@
 import { Formik } from "formik";
 import { RefObject } from "react";
 import { dataid } from "../../data/dataid";
-import { ItemTypeEnum } from "../../data/ItemTypeEnum";
-import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
+import { ItemInterface } from "../../data/interfaces";
+import { ItemTypeEnum } from "../../data/item-type-enum";
+import { yupItemSchema } from "../../data/yup-schema";
+
 import GroupForm from "../form/GroupForm";
 
 export interface GroupFormikProps {
-  item: Partial<ItemInferredType> | null;
-  onSubmit: (item: Partial<ItemInferredType>) => void;
+  item: ItemInterface | null;
+  onSubmit: (item: ItemInterface) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -15,7 +17,7 @@ export function GroupFormik(props: GroupFormikProps) {
   const thisItemId = props.item?.id ?? dataid();
 
   return (
-    <Formik<Partial<ItemInferredType>>
+    <Formik<ItemInterface>
       initialValues={{
         ...yupItemSchema.getDefault(),
         id: thisItemId,
@@ -23,8 +25,8 @@ export function GroupFormik(props: GroupFormikProps) {
         name: props.item?.name,
         date: props.item?.date ?? new Date(),
         priceCents: 0,
-        massGrams: 0,
         count: props.item?.count,
+        massGrams: 0,
         energyKilocalories: 0,
         fatGrams: 0,
         saturatedFatGrams: 0,

@@ -4366,16 +4366,12 @@ if (isProd) {
   const mainWindow = (0,_helpers__WEBPACK_IMPORTED_MODULE_2__.createWindow)("main", {
     width: 1000,
     height: 600,
-    webPreferences: {
-      webSecurity: false
-    }
+    autoHideMenuBar: true
   });
-  mainWindow.removeMenu();
-  var port = "";
   if (isProd) {
     await mainWindow.loadURL("app://./");
   } else {
-    port = process.argv[2];
+    const port = process.argv[2];
     await mainWindow.loadURL(`http://localhost:${port}/`);
     mainWindow.webContents.openDevTools();
   }

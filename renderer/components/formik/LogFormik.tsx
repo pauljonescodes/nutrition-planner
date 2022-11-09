@@ -1,20 +1,21 @@
 import { Formik } from "formik";
 import { RefObject, useState } from "react";
 import { dataid } from "../../data/dataid";
-import { ItemTypeEnum } from "../../data/ItemTypeEnum";
-import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
+import { ItemInterface } from "../../data/interfaces";
+import { ItemTypeEnum } from "../../data/item-type-enum";
+import { yupItemSchema } from "../../data/yup-schema";
 import LogForm from "../form/LogForm";
 
 export interface LogFormProps {
-  item: Partial<ItemInferredType> | null;
-  onSubmit: (item: Partial<ItemInferredType>) => void;
+  item: ItemInterface | null;
+  onSubmit: (item: ItemInterface) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
 export function LogFormik(props: LogFormProps) {
   const thisItemId = props.item?.id ?? dataid();
 
-  const [initialValuesState] = useState<Partial<ItemInferredType>>({
+  const [initialValuesState] = useState<ItemInterface>({
     ...yupItemSchema.getDefault(),
     id: thisItemId,
     type: ItemTypeEnum.log,
@@ -37,7 +38,7 @@ export function LogFormik(props: LogFormProps) {
   });
 
   return (
-    <Formik<Partial<ItemInferredType>>
+    <Formik<ItemInterface>
       enableReinitialize
       initialValues={{
         ...initialValuesState,

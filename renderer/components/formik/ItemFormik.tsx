@@ -1,22 +1,21 @@
 import { Formik } from "formik";
 import { RefObject, useState } from "react";
 import { dataid } from "../../data/dataid";
-import { ItemTypeEnum } from "../../data/ItemTypeEnum";
-import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
+import { ItemInterface } from "../../data/interfaces";
+import { ItemTypeEnum } from "../../data/item-type-enum";
+import { yupItemSchema } from "../../data/yup-schema";
 import ItemForm from "../form/ItemForm";
 
 export interface ItemFormProps {
-  item: Partial<ItemInferredType> | null;
-  onSubmit: (item: Partial<ItemInferredType>) => void;
+  item: ItemInterface | null;
+  onSubmit: (item: ItemInterface) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
 export function ItemFormik(props: ItemFormProps) {
   const thisItemId = props.item?.id ?? dataid();
 
-  const [initialValuesState, setInitialValuesState] = useState<
-    Partial<ItemInferredType>
-  >({
+  const [initialValuesState, setInitialValuesState] = useState<ItemInterface>({
     id: thisItemId,
     type: ItemTypeEnum.item,
     date: props.item?.date ?? new Date(),
@@ -38,7 +37,7 @@ export function ItemFormik(props: ItemFormProps) {
   });
 
   return (
-    <Formik<Partial<ItemInferredType>>
+    <Formik<ItemInterface>
       enableReinitialize
       initialValues={{
         ...initialValuesState,

@@ -1,20 +1,21 @@
 import { Formik } from "formik";
 import { RefObject, useState } from "react";
 import { dataid } from "../../data/dataid";
-import { ItemTypeEnum } from "../../data/ItemTypeEnum";
-import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
+import { ItemInterface } from "../../data/interfaces";
+import { ItemTypeEnum } from "../../data/item-type-enum";
+import { yupItemSchema } from "../../data/yup-schema";
 import PlanForm from "../form/PlanForm";
 
 export interface PlanFormProps {
-  item: Partial<ItemInferredType> | null;
-  onSubmit: (item: Partial<ItemInferredType>) => void;
+  item: ItemInterface | null;
+  onSubmit: (item: ItemInterface) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
 export function PlanFormik(props: PlanFormProps) {
   const thisItemId = props.item?.id ?? dataid();
 
-  const [initialValuesState] = useState<Partial<ItemInferredType>>({
+  const [initialValuesState] = useState<ItemInterface>({
     ...yupItemSchema.getDefault(),
     id: thisItemId,
     type: ItemTypeEnum.plan,
@@ -37,7 +38,7 @@ export function PlanFormik(props: PlanFormProps) {
   });
 
   return (
-    <Formik<Partial<ItemInferredType>>
+    <Formik<ItemInterface>
       enableReinitialize
       initialValues={{
         ...initialValuesState,

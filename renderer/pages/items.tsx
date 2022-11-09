@@ -4,27 +4,29 @@ import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { ItemDrawer } from "../components/drawers/ItemDrawer";
 import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
 import { dataid } from "../data/dataid";
-import { ItemTypeEnum } from "../data/ItemTypeEnum";
+import { ItemTypeEnum } from "../data/item-type-enum";
+import { RxDBItemDocument } from "../data/rxdb";
 import {
-  CalculationTypeEnum,
-  toggleCalculationType,
-} from "../data/nutrition-info";
-import { ItemDocument } from "../data/rxdb/item";
-import { ItemInferredType } from "../data/yup/item";
+  ServingOrTotalEnum,
+  toggleServingOrTotal,
+} from "../data/serving-or-total-enum";
 
 export default function ItemsPage() {
-  const [nameSearch, setNameSearch] = useState<string>("");
-  const [drawerItem, setEditItem] = useState<ItemDocument | null>(null);
-  const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
-  const collection = useRxCollection<ItemDocument>("item");
-  const [calculationType, setCalculationType] = useState<CalculationTypeEnum>(
-    CalculationTypeEnum.perServing
+  const [nameSearchState, setNameSearchState] = useState<string>("");
+  const [drawerItemState, setEditItemState] = useState<RxDBItemDocument | null>(
+    null
+  );
+  const [deleteItemState, setDeleteItemState] =
+    useState<RxDBItemDocument | null>(null);
+  const collection = useRxCollection<RxDBItemDocument>("item");
+  const [servingOrTotalState, setServingOrTotalState] = useState(
+    ServingOrTotalEnum.serving
   );
   const query = useRxQuery(
     collection?.find({
       selector: {
         type: ItemTypeEnum.item,
-        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
       },
     })!,
     {
@@ -36,19 +38,22 @@ export default function ItemsPage() {
   return (
     <Fragment>
       <ItemInfiniteTableContainer
-        query={query}
-        nameSearch={nameSearch}
+        documents={query.result}
+        fetchMore={query.fetchMore}
+        isFetching={query.isFetching}
+        isExhausted={query.isExhausted}
+        nameSearch={nameSearchState}
         emptyStateText="Items are what you buy, and you can add one with the plus button above."
         onNameSearchChange={(value: string) => {
-          setNameSearch(value);
+          setNameSearchState(value);
         }}
-        calculationType={calculationType}
-        onToggleCalculationType={() =>
-          setCalculationType(toggleCalculationType(calculationType))
+        servingOrTotal={servingOrTotalState}
+        onToggleServingOrTotal={() =>
+          setServingOrTotalState(toggleServingOrTotal(servingOrTotalState))
         }
-        onEdit={(value) => setEditItem(value)}
+        onEdit={(value) => setEditItemState(value)}
         onCopy={(value) => {
-          const newValue = value.toMutableJSON() as ItemInferredType;
+          const newValue = value.toMutableJSON();
           const id = dataid();
           newValue.id = id;
           newValue.date = new Date();
@@ -56,13 +61,13 @@ export default function ItemsPage() {
           collection?.upsert(newValue);
         }}
         onDelete={async (value) => {
-          setDeleteItem(value);
+          setDeleteItemState(value);
         }}
       />
       <ItemDrawer
-        item={drawerItem}
+        item={drawerItemState}
         onResult={(item) => {
-          setEditItem(null);
+          setEditItemState(null);
           if (item) {
             item.date = new Date();
             collection?.upsert(item);
@@ -70,12 +75,12 @@ export default function ItemsPage() {
         }}
       />
       <DeleteAlertDialog
-        isOpen={deleteItem !== null}
+        isOpen={deleteItemState !== null}
         onResult={async (result: boolean) => {
           if (result) {
-            deleteItem?.remove();
+            deleteItemState?.remove();
           }
-          setDeleteItem(null);
+          setDeleteItemState(null);
         }}
       />
     </Fragment>

@@ -4,7 +4,6 @@ import {
   IconButton,
   NumberInput,
   NumberInputField,
-  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import {
@@ -14,50 +13,96 @@ import {
   AutoCompleteList,
   Item,
 } from "@choc-ui/chakra-autocomplete";
+
 import { FieldArrayRenderProps, FormikProps } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import {
-  multiplyNutritionInfo,
-  NutritionInfo,
-} from "../../data/nutrition-info";
-import { ItemDocument } from "../../data/rxdb/item";
-import { ItemInferredType } from "../../data/yup/item";
-import { SubitemInferredType, yupSubitemSchema } from "../../data/yup/subitem";
+  ItemInterface,
+  itemMultiplyNutrition,
+  itemZeroNutrition,
+  populatedItemServingNutrition,
+  populatedItemServingPriceCents,
+  SubitemInterface,
+} from "../../data/interfaces";
+import { ItemTypeEnum } from "../../data/item-type-enum";
+import { RxDBItemDocument } from "../../data/rxdb";
+import { yupSubitemSchema } from "../../data/yup-schema";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 interface SubitemAutoCompleteInputProps {
-  value: SubitemInferredType;
-  calculatedNutritionInfo: NutritionInfo;
-  calculatedPriceInCents: number;
-  queriedSubitemName: string;
+  value: SubitemInterface;
   index: number;
-  formikProps: FormikProps<Partial<ItemInferredType>>;
+  formikProps: FormikProps<ItemInterface>;
   fieldArrayHelpers: FieldArrayRenderProps;
-  options: Array<ItemDocument>;
-  autoCompleteOnChange: (value: string) => void;
+  itemTypesIn: Array<ItemTypeEnum>;
 }
 
 export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
-  const [fieldValueState, setFieldValueState] = useState<string | undefined>(
-    undefined
-  );
-  const alphaColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const thisSubitem = props.formikProps.values.subitems![props.index];
 
-  const calculatedTotalNutritionInfo = multiplyNutritionInfo(
-    props.calculatedNutritionInfo,
-    props.value.count ?? 1
+  const [nameSearch, setNameSearch] = useState("");
+  const [subitemNameState, setSubitemNameState] = useState<string | null>(null);
+  const [nutritionAndPriceState, setNutritionAndPriceState] = useState<{
+    nutrition: ItemInterface;
+    priceCents: number;
+  } | null>(null);
+  const collection = useRxCollection<RxDBItemDocument>("item");
+  const { result } = useRxQuery(
+    collection?.find({
+      selector: {
+        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+        type: {
+          $in: props.itemTypesIn,
+        },
+      },
+    })!,
+    {
+      pageSize: 6,
+      pagination: "Traditional",
+    }
   );
+
+  async function query() {
+    if (thisSubitem.itemId !== undefined) {
+      const thisSubitemItemDocument = await collection
+        ?.findOne(thisSubitem.itemId)
+        .exec();
+      if (thisSubitemItemDocument === undefined) {
+        return;
+      }
+      setSubitemNameState(thisSubitemItemDocument?.name ?? null);
+
+      const populatedSubitemItem =
+        await thisSubitemItemDocument?.recursivelyPopulateSubitems();
+      if (populatedSubitemItem === undefined) {
+        return;
+      }
+
+      const nutrition = populatedItemServingNutrition(populatedSubitemItem);
+      const priceCents = populatedItemServingPriceCents(populatedSubitemItem);
+      setNutritionAndPriceState({ nutrition, priceCents });
+    }
+  }
+
+  useEffect(() => {
+    query();
+
+    return;
+  }, [thisSubitem.count, thisSubitem.itemId, collection]);
 
   return (
     <VStack key={props.index} align="stretch" spacing={0} pb={2}>
       <HStack pb={1}>
         <NumberInput
-          w="30%"
+          w="25%"
           defaultValue={props.value.count}
           min={-9999.99}
           max={9999.99}
         >
           <NumberInputField
+            px={"8px"}
+            pr={"8px"}
             pattern="(-)?[0-9]*(.[0-9]+)?"
             name={`subitems.${props.index}.count`}
             value={props.value.count}
@@ -69,25 +114,24 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
         <AutoComplete
           openOnFocus
           onChange={async (_value, item) => {
-            const itemDocument = (item as Item).originalValue as ItemDocument;
+            const itemDocument = (item as Item)
+              .originalValue as RxDBItemDocument;
 
             props.formikProps.setFieldValue(
               `subitems.${props.index}.itemId`,
               itemDocument.id
             );
-            setFieldValueState(itemDocument.name);
           }}
         >
           <AutoCompleteInput
             placeholder={yupSubitemSchema.fields.itemId.spec.label}
-            value={fieldValueState ?? props.queriedSubitemName}
+            value={subitemNameState ?? ""}
             onChange={async (event) => {
-              setFieldValueState(event.target.value);
-              props.autoCompleteOnChange(event.target.value);
+              setNameSearch(event.target.value);
             }}
           />
           <AutoCompleteList>
-            {props.options.map((value) => {
+            {result.map((value) => {
               return (
                 <AutoCompleteItem
                   key={value.id}
@@ -112,8 +156,13 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
         />
       </HStack>
       <PriceNutritionGrid
-        priceCents={props.calculatedPriceInCents}
-        nutritionInfo={props.calculatedNutritionInfo}
+        priceCents={
+          (nutritionAndPriceState?.priceCents ?? 0) * (thisSubitem.count ?? 0)
+        }
+        nutritionInfo={itemMultiplyNutrition(
+          nutritionAndPriceState?.nutrition ?? itemZeroNutrition(),
+          thisSubitem.count ?? 0
+        )}
       />
     </VStack>
   );

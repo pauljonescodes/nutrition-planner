@@ -15,15 +15,21 @@ import {
   DateRange,
   View,
 } from "react-big-calendar";
-import { RxDocument } from "rxdb";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { useWindowSize } from "usehooks-ts";
 import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { ItemTypeEnum } from "../data/ItemTypeEnum";
-import { currencyFormatter } from "../data/number-formatter";
-import { CalculationTypeEnum, NutritionInfo } from "../data/nutrition-info";
-import { ItemDocument } from "../data/rxdb/item";
+import {
+  ItemInterface,
+  populatedItemServingNutrition,
+  populatedItemServingPriceCents,
+} from "../data/interfaces";
+import { ItemTypeEnum } from "../data/item-type-enum";
+import {
+  recursivelyPopulateSubitemsOfItems,
+  RxDBItemDocument,
+} from "../data/rxdb";
+import { currencyFormatter } from "../utilities/currency-formatter";
 
 export interface RangeType {
   start: Date;
@@ -31,8 +37,9 @@ export interface RangeType {
 }
 
 export default function LogPage() {
-  const [deleteItem, setDeleteItem] = useState<ItemDocument | null>(null);
-  const collection = useRxCollection<ItemDocument>("item");
+  const [deleteItemState, setDeleteItemState] =
+    useState<RxDBItemDocument | null>(null);
+  const collection = useRxCollection<RxDBItemDocument>("item");
   const [viewState, setViewState] = useState<View>("day");
 
   const [dateRangeState, setDateRangeState] = useState<RangeType>({
@@ -40,16 +47,10 @@ export default function LogPage() {
     end: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
   });
 
-  const [calculatedResultState, setCalculatedResultState] = useState<
-    | {
-        result: RxDocument<ItemDocument, {}>;
-        nutritionInfo: NutritionInfo;
-        priceCents: number;
-      }[]
-    | null
-  >(null);
-
-  const { result } = useRxQuery(
+  const [populatedResultState, setPopulatedResultState] = useState<
+    Array<ItemInterface>
+  >([]);
+  const query = useRxQuery(
     collection?.find({
       selector: {
         type: ItemTypeEnum.log,
@@ -63,6 +64,16 @@ export default function LogPage() {
   const locales = {
     "en-US": enUS,
   };
+
+  async function calculate() {
+    setPopulatedResultState(
+      await recursivelyPopulateSubitemsOfItems(query.result)
+    );
+  }
+
+  useEffect(() => {
+    calculate();
+  }, [query.result, collection]);
 
   const size: Size = useWindowSize();
 
@@ -81,27 +92,6 @@ export default function LogPage() {
     getDay,
     locales,
   });
-
-  useEffect(() => {
-    async function calculate() {
-      const calculatedLogs = await Promise.all(
-        result.map(async (value) => {
-          return {
-            result: value,
-            nutritionInfo: await value.calculatedNutritionInfo(
-              CalculationTypeEnum.total
-            ),
-            priceCents: await value.calculatedPriceCents(
-              CalculationTypeEnum.total
-            ),
-          };
-        })
-      );
-      setCalculatedResultState(calculatedLogs);
-    }
-    calculate();
-    return;
-  }, [result]);
 
   return (
     <Fragment>
@@ -154,25 +144,28 @@ export default function LogPage() {
               )}-${localizer?.format(range.end, "LLL d", culture)}`;
             },
           }}
-          events={
-            // {
-            //   title: "Workout day plan",
-            //   start: new Date(2022, 10, 4, 12, 0, 0),
-            //   end: new Date(2022, 10, 4, 13, 0, 0),
-            // },
-            calculatedResultState?.map((value) => {
-              return {
-                title: `${currencyFormatter.format(
-                  (value.priceCents ?? 0) / 100
-                )} ${value.nutritionInfo.energyKilocalories}kcal`,
-                start: new Date(value.result.date),
-                end: new Date(
-                  new Date(value.result.date).getTime() + 0.75 * 60 * 60 * 1000
-                ),
-                allDay: false,
-              };
-            })
-          }
+          onDoubleClickEvent={async (event) => {
+            if (event.resource.id) {
+              (
+                await collection?.findOne(event.resource.id).exec()
+              )?.recursivelyRemove();
+            }
+          }}
+          events={populatedResultState?.map((value) => {
+            const nutrition = populatedItemServingNutrition(value);
+            const priceCents = populatedItemServingPriceCents(value);
+            return {
+              title: `${currencyFormatter.format((priceCents ?? 0) / 100)} ${
+                nutrition.energyKilocalories
+              }kcal`,
+              start: new Date(value.date!),
+              end: new Date(
+                new Date(value.date!).getTime() + 0.75 * 60 * 60 * 1000
+              ),
+              allDay: false,
+              resource: value,
+            };
+          })}
           views={{ day: true, month: true, week: true }}
           startAccessor="start"
           endAccessor="end"
@@ -182,12 +175,12 @@ export default function LogPage() {
         />
       </Box>
       <DeleteAlertDialog
-        isOpen={deleteItem !== null}
+        isOpen={deleteItemState !== null}
         onResult={async (result: boolean) => {
           if (result) {
-            deleteItem?.remove();
+            deleteItemState?.remove();
           }
-          setDeleteItem(null);
+          setDeleteItemState(null);
         }}
       />
     </Fragment>

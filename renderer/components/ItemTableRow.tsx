@@ -10,43 +10,46 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-
-import { currencyFormatter } from "../data/number-formatter";
-import { CalculationTypeEnum, NutritionInfo } from "../data/nutrition-info";
-import { ItemDocument } from "../data/rxdb/item";
+import {
+  ItemInterface,
+  populatedItemServingNutrition,
+  populatedItemServingPriceCents,
+} from "../data/interfaces";
+import { RxDBItemDocument } from "../data/rxdb";
+import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
+import { currencyFormatter } from "../utilities/currency-formatter";
 
 type ItemTableRowProps = {
-  item: ItemDocument;
-  priceType: CalculationTypeEnum;
+  document: RxDBItemDocument;
+  priceType: ServingOrTotalEnum;
   onEdit: () => void;
   onCopy: () => void;
   onDelete: () => void;
 };
 
 export function ItemTableRow(props: ItemTableRowProps) {
-  const [nutritionInfo, setNutritionInfo] = useState<NutritionInfo | null>(
+  const [nutritionState, setNutritionState] = useState<ItemInterface | null>(
     null
   );
-  const [price, setPrice] = useState<number | null>(null);
+  const [priceCentsState, setPriceCentsState] = useState<number | null>(null);
   const borderColorValue = useColorModeValue("gray.100", "gray.700");
 
-  useEffect(() => {
-    props.item
-      .calculatedPriceCents(props.priceType)
-      .then((value) => setPrice(value));
-    props.item
-      .calculatedNutritionInfo(props.priceType)
-      .then((value) => setNutritionInfo(value));
-  }, [props.item, props.priceType, props.item.subitems]);
+  async function populate(document: RxDBItemDocument) {
+    const populatedItem = await document.recursivelyPopulateSubitems();
+    setNutritionState(populatedItemServingNutrition(populatedItem));
+    setPriceCentsState(populatedItemServingPriceCents(populatedItem));
+  }
 
-  const isPriceLoaded = price !== null;
-  const isNutritionLoaded = nutritionInfo !== null;
-  const isLoaded = isPriceLoaded && isNutritionLoaded;
-  const borderColor = isLoaded ? borderColorValue : "transparent";
+  useEffect(() => {
+    populate(props.document);
+    return;
+  }, [props.document.revision]);
+
+  const isLoaded = nutritionState !== null && priceCentsState !== null;
 
   return (
-    <Tr key={props.item.id} height="73px">
-      <Td width={"144px"} borderColor={borderColor}>
+    <Tr key={props.document.id} height="73px">
+      <Td width={"144px"} borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
           <Center>
             <ButtonGroup isAttached size="sm">
@@ -69,7 +72,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
           </Center>
         </Skeleton>
       </Td>
-      <Td borderColor={borderColor}>
+      <Td borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
           <Text
             minW={"176px"}
@@ -77,36 +80,36 @@ export function ItemTableRow(props: ItemTableRowProps) {
             noOfLines={2}
             whiteSpace={"initial"}
           >
-            {props.item.name}
+            {props.document.name}
           </Text>
         </Skeleton>
       </Td>
-      <Td isNumeric borderColor={borderColor}>
+      <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {currencyFormatter.format((price ?? 999) / 100)}
+          {currencyFormatter.format((priceCentsState ?? 999) / 100)}
         </Skeleton>
       </Td>
-      <Td isNumeric borderColor={borderColor}>
-        <Skeleton isLoaded={isLoaded}>{props.item.count}</Skeleton>
+      <Td isNumeric borderColor={borderColorValue}>
+        <Skeleton isLoaded={isLoaded}>{props.document.count}</Skeleton>
       </Td>
-      <Td isNumeric borderColor={borderColor}>
-        <Skeleton isLoaded={isLoaded}>{nutritionInfo?.massGrams}g</Skeleton>
+      <Td isNumeric borderColor={borderColorValue}>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.massGrams}g</Skeleton>
       </Td>
-      <Td isNumeric borderColor={borderColor}>
+      <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {nutritionInfo?.energyKilocalories}kcal
+          {nutritionState?.energyKilocalories}kcal
         </Skeleton>
       </Td>
-      <Td isNumeric borderColor={borderColor}>
-        <Skeleton isLoaded={isLoaded}>{nutritionInfo?.fatGrams}g</Skeleton>
+      <Td isNumeric borderColor={borderColorValue}>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.fatGrams}g</Skeleton>
       </Td>
-      <Td isNumeric borderColor={borderColor}>
+      <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {nutritionInfo?.carbohydrateGrams}g
+          {nutritionState?.carbohydrateGrams}g
         </Skeleton>
       </Td>
-      <Td isNumeric borderColor={borderColor}>
-        <Skeleton isLoaded={isLoaded}>{nutritionInfo?.proteinGrams}g</Skeleton>
+      <Td isNumeric borderColor={borderColorValue}>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.proteinGrams}g</Skeleton>
       </Td>
     </Tr>
   );

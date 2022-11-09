@@ -7,15 +7,14 @@ import {
   Spacer,
   useColorModeValue,
 } from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
-
 import { dataid } from "../data/dataid";
-import { ItemTypeEnum } from "../data/ItemTypeEnum";
-import { ItemDocument } from "../data/rxdb/item";
-import { ItemInferredType, yupItemSchema } from "../data/yup/item";
-import { SubitemInferredType } from "../data/yup/subitem";
+import { ItemInterface, upsertLogInterface } from "../data/interfaces";
+import { ItemTypeEnum } from "../data/item-type-enum";
+import { RxDBItemDocument } from "../data/rxdb";
 import { GroupDrawer } from "./drawers/GroupDrawer";
 import { ItemDrawer } from "./drawers/ItemDrawer";
 import { LogDrawer } from "./drawers/LogDrawer";
@@ -24,18 +23,22 @@ import { SettingsDrawer } from "./drawers/SettingsDrawer";
 
 export function MenuHStack() {
   const router = useRouter();
-  const [itemDrawerItem, setItemDrawerItem] =
-    useState<Partial<ItemInferredType> | null>(null);
-  const [groupDrawerItem, setGroupDrawerItem] =
-    useState<Partial<ItemInferredType> | null>(null);
-  const [planDrawerItem, setPlanDrawerItem] =
-    useState<Partial<ItemInferredType> | null>(null);
-  const [logDrawerItem, setLogDrawerItem] =
-    useState<Partial<ItemInferredType> | null>(null);
+  const [itemDrawerItem, setItemDrawerItem] = useState<ItemInterface | null>(
+    null
+  );
+  const [groupDrawerItem, setGroupDrawerItem] = useState<ItemInterface | null>(
+    null
+  );
+  const [planDrawerItem, setPlanDrawerItem] = useState<ItemInterface | null>(
+    null
+  );
+  const [logDrawerItem, setLogDrawerItem] = useState<ItemInterface | null>(
+    null
+  );
   const [settingsDrawerIsOpen, setSettingsDrawerIsOpen] =
     useState<boolean>(false);
 
-  const collection = useRxCollection<ItemDocument>("item");
+  const collection = useRxCollection<RxDBItemDocument>("item");
   const hStackBackgroundColor = useColorModeValue("gray.50", "gray.900");
 
   return (
@@ -62,7 +65,6 @@ export function MenuHStack() {
           <IconButton
             onClick={() => {
               setLogDrawerItem({
-                ...yupItemSchema.getDefault(),
                 id: dataid(),
                 type: ItemTypeEnum.log,
               });
@@ -83,7 +85,6 @@ export function MenuHStack() {
           <IconButton
             onClick={() => {
               setItemDrawerItem({
-                ...yupItemSchema.getDefault(),
                 id: dataid(),
                 type: ItemTypeEnum.item,
               });
@@ -104,7 +105,6 @@ export function MenuHStack() {
           <IconButton
             onClick={() => {
               setGroupDrawerItem({
-                ...yupItemSchema.getDefault(),
                 id: dataid(),
                 type: ItemTypeEnum.group,
               });
@@ -125,7 +125,6 @@ export function MenuHStack() {
           <IconButton
             onClick={() => {
               setPlanDrawerItem({
-                ...yupItemSchema.getDefault(),
                 id: dataid(),
                 type: ItemTypeEnum.plan,
               });
@@ -160,6 +159,9 @@ export function MenuHStack() {
           setGroupDrawerItem(null);
           if (item) {
             item.date = new Date();
+            item.subitems = item.subitems?.map((value) => {
+              return { itemId: value.itemId, count: value.count };
+            });
             collection?.upsert(item);
           }
         }}
@@ -170,6 +172,10 @@ export function MenuHStack() {
           setPlanDrawerItem(null);
           if (item) {
             item.date = new Date();
+            item.subitems = item.subitems?.map((value) => {
+              return { itemId: value.itemId, count: value.count };
+            });
+
             collection?.upsert(item);
           }
         }}
@@ -179,7 +185,8 @@ export function MenuHStack() {
         onResult={async (item) => {
           setLogDrawerItem(null);
           if (item) {
-            collection?.upsert(item);
+            const a1 = await upsertLogInterface(item, collection ?? undefined);
+            console.log(a1);
           }
         }}
       />

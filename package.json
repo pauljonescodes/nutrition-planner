@@ -1,9 +1,9 @@
 {
-    "private": true,
     "main": "app/background.js",
     "productName": "Nutrition Planner",
     "name": "nutrition-planner",
     "version": "0.0.4",
+    "private": true,
     "scripts": {
         "clean": "rimraf dist main renderer/out renderer/.next",
         "next-build": "next build renderer",

@@ -12,7 +12,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useRxCollection, useRxDB } from "rxdb-hooks";
 import { useFilePicker } from "use-file-picker";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { itemDocumentMethods, itemDocumentSchema } from "../data/rxdb/item";
+import { rxdbItemDocumentMethods, rxdbItemSchema } from "../data/rxdb";
 
 const SettingsPage = () => {
   const database = useRxDB();
@@ -31,8 +31,8 @@ const SettingsPage = () => {
     await itemCollection?.remove();
     await database?.addCollections({
       item: {
-        schema: itemDocumentSchema,
-        methods: itemDocumentMethods,
+        schema: rxdbItemSchema,
+        methods: rxdbItemDocumentMethods,
       },
     });
   }

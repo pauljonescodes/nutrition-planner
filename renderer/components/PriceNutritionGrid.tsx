@@ -1,10 +1,10 @@
 import { Grid, GridItem, Text, useColorModeValue } from "@chakra-ui/react";
-import { currencyFormatter } from "../data/number-formatter";
-import { NutritionInfo } from "../data/nutrition-info";
+import { ItemInterface } from "../data/interfaces";
+import { currencyFormatter } from "../utilities/currency-formatter";
 
 type PriceNutritionGridProps = {
-  nutritionInfo: NutritionInfo;
-  priceCents: number;
+  nutritionInfo?: ItemInterface;
+  priceCents?: number;
   priceLabel?: string;
 };
 
@@ -15,32 +15,33 @@ export function PriceNutritionGrid(props: PriceNutritionGridProps) {
     <Grid templateColumns="repeat(6, 1fr)" pb={2} width={"full"}>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {currencyFormatter.format(props.priceCents / 100)} {props.priceLabel}
+          {currencyFormatter.format((props.priceCents ?? 0) / 100)}{" "}
+          {props.priceLabel}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo.massGrams}g
+          {props.nutritionInfo?.massGrams ?? 0}g
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo.energyKilocalories}kcal
+          {props.nutritionInfo?.energyKilocalories ?? 0}kcal
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo.fatGrams}g fat
+          {props.nutritionInfo?.fatGrams ?? 0}g fat
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo.carbohydrateGrams}g carbs
+          {props.nutritionInfo?.carbohydrateGrams ?? 0}g carbs
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor}>
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo.proteinGrams}g protein
+          {props.nutritionInfo?.proteinGrams ?? 0}g protein
         </Text>
       </GridItem>
     </Grid>

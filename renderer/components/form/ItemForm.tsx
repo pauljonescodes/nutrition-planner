@@ -1,17 +1,14 @@
 import { Button, Center, VStack } from "@chakra-ui/react";
 import { Form, FormikProps } from "formik";
 import { FormEvent, RefObject } from "react";
-import {
-  baseNutritionInfo,
-  multiplyNutritionInfo,
-} from "../../data/nutrition-info";
-import { ItemInferredType, yupItemSchema } from "../../data/yup/item";
+import { ItemInterface, itemMultiplyNutrition } from "../../data/interfaces";
+import { yupItemSchema } from "../../data/yup-schema";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 type ItemFormProps = {
-  formikProps: FormikProps<Partial<ItemInferredType>>;
+  formikProps: FormikProps<ItemInterface>;
   onPaste: (text: string) => Promise<void>;
   firstInputFieldRef: RefObject<HTMLInputElement> | undefined;
 };
@@ -21,8 +18,8 @@ export default function ItemForm(props: ItemFormProps) {
   const onPaste = props.onPaste;
   const servingPriceCents =
     (formikProps.values.priceCents ?? 0) / (formikProps.values.count ?? 1);
-  const servingNutritionInfo = multiplyNutritionInfo(
-    baseNutritionInfo({ ...formikProps.values }),
+  const servingNutritionInfo = itemMultiplyNutrition(
+    { ...formikProps.values },
     formikProps.values.count ?? 0
   );
   return (
@@ -43,6 +40,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.count}
         error={formikProps.errors.count}
         yupSchemaField={yupItemSchema.fields.count}
+        helperText="Paste nutrition info in this field to auto-populate."
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
         onPaste={onPaste}

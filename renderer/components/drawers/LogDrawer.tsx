@@ -6,12 +6,12 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { ItemInferredType } from "../../data/yup/item";
+import { ItemInterface } from "../../data/interfaces";
 import { LogFormik } from "../formik/LogFormik";
 
 type LogDrawerProps = {
-  item: Partial<ItemInferredType> | null;
-  onResult(item: Partial<ItemInferredType> | null): void;
+  item: ItemInterface | null;
+  onResult(item: ItemInterface | null): void;
 };
 
 export function LogDrawer(props: LogDrawerProps) {

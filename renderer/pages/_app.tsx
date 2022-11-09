@@ -5,24 +5,38 @@ import {
   VStack,
   type ThemeConfig,
 } from "@chakra-ui/react";
+
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
+import { addRxPlugin } from "rxdb";
 import { Provider as RxDbProvider } from "rxdb-hooks";
+import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
+import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
+import { RxDBLeaderElectionPlugin } from "rxdb/plugins/leader-election";
+import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
+import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
+import { RxDBReplicationCouchDBPlugin } from "rxdb/plugins/replication-couchdb";
 import "../../styles/react-big-calendar.scss";
 import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
-import {
-  addRxDbPlugins,
-  createDatabase,
-  DatabaseType,
-} from "../data/rxdb/database";
+import { initRxDBDatabase, RxDBDatabaseType } from "../data/database";
 
 export default function App(props: AppProps) {
-  const [database, setDatabase] = useState<DatabaseType | undefined>(undefined);
+  const [database, setDatabase] = useState<RxDBDatabaseType | undefined>(
+    undefined
+  );
 
   useEffect(() => {
-    addRxDbPlugins();
-    createDatabase().then(setDatabase);
+    addPouchPlugin(require("pouchdb-adapter-idb"));
+    addRxPlugin(RxDBQueryBuilderPlugin);
+    addRxPlugin(RxDBJsonDumpPlugin);
+    addRxPlugin(RxDBDevModePlugin);
+    addRxPlugin(RxDBReplicationCouchDBPlugin);
+    addRxPlugin(RxDBLeaderElectionPlugin);
+    addPouchPlugin(require("pouchdb-adapter-http"));
+    initRxDBDatabase("nutrition-planner-db", getRxStoragePouch("idb", {})).then(
+      setDatabase
+    );
   }, []);
 
   const config: ThemeConfig = {
