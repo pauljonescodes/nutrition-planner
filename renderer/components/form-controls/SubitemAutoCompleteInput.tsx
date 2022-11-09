@@ -41,7 +41,9 @@ interface SubitemAutoCompleteInputProps {
 export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
   const thisSubitem = props.formikProps.values.subitems![props.index];
 
-  const [nameSearch, setNameSearch] = useState("");
+  const [nameSearchState, setNameSearchState] = useState<string | undefined>(
+    undefined
+  );
   const [subitemNameState, setSubitemNameState] = useState<string | null>(null);
   const [nutritionAndPriceState, setNutritionAndPriceState] = useState<{
     nutrition: ItemInterface;
@@ -51,7 +53,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
   const { result } = useRxQuery(
     collection?.find({
       selector: {
-        name: { $regex: new RegExp("\\b" + nameSearch + ".*", "i") },
+        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
         type: {
           $in: props.itemTypesIn,
         },
@@ -121,13 +123,14 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
               `subitems.${props.index}.itemId`,
               itemDocument.id
             );
+            setNameSearchState(undefined);
           }}
         >
           <AutoCompleteInput
             placeholder={yupSubitemSchema.fields.itemId.spec.label}
-            value={subitemNameState ?? ""}
+            value={nameSearchState ?? subitemNameState ?? ""}
             onChange={async (event) => {
-              setNameSearch(event.target.value);
+              setNameSearchState(event.target.value);
             }}
           />
           <AutoCompleteList>

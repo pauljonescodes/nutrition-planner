@@ -21,6 +21,7 @@ import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import {
   ItemInterface,
+  itemSumNutrition,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
 } from "../data/interfaces";
@@ -41,15 +42,21 @@ export default function LogPage() {
     useState<RxDBItemDocument | null>(null);
   const collection = useRxCollection<RxDBItemDocument>("item");
   const [viewState, setViewState] = useState<View>("day");
-
   const [dateRangeState, setDateRangeState] = useState<RangeType>({
-    start: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
-    end: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+    start: moment().startOf("day").toDate(),
+    end: moment().endOf("day").toDate(),
   });
-
-  const [populatedResultState, setPopulatedResultState] = useState<
-    Array<ItemInterface>
+  const [eventsState, setEventsState] = useState<
+    | {
+        title: string;
+        start: Date;
+        end: Date;
+        allDay: boolean;
+        resource: ItemInterface;
+      }[]
+    | undefined
   >([]);
+
   const query = useRxQuery(
     collection?.find({
       selector: {
@@ -61,22 +68,69 @@ export default function LogPage() {
       },
     })!
   );
-  const locales = {
-    "en-US": enUS,
-  };
-
-  async function calculate() {
-    setPopulatedResultState(
-      await recursivelyPopulateSubitemsOfItems(query.result)
-    );
-  }
 
   useEffect(() => {
+    function formatTitle(priceCents: number, nutrition: ItemInterface) {
+      return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${
+        nutrition.energyKilocalories
+      }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${
+        nutrition.carbohydrateGrams
+      }g carbs | ${nutrition.proteinGrams}g protein`;
+    }
+
+    async function calculate() {
+      var datesInRange = new Array<Date>();
+      var currentDate = dateRangeState.start;
+      while (currentDate <= dateRangeState.end) {
+        datesInRange.push(currentDate);
+        currentDate = moment(currentDate).add(1, "day").toDate();
+      }
+      const populatedResults = await recursivelyPopulateSubitemsOfItems(
+        query.result
+      );
+
+      const events = populatedResults.map((value) => {
+        const nutrition = populatedItemServingNutrition(value);
+        const priceCents = populatedItemServingPriceCents(value);
+
+        return {
+          title: formatTitle(priceCents, nutrition),
+          start: new Date(value.date!),
+          end: new Date(new Date(value.date!).getTime() + 1 * 60 * 60 * 1000),
+          allDay: false,
+          resource: value,
+        };
+      });
+
+      for (const dateInRange of datesInRange) {
+        const populatedLogsOnDate = populatedResults.filter((value) =>
+          moment(dateInRange).isSame(moment(value.date), "day")
+        );
+
+        const summedNutrition = itemSumNutrition(
+          populatedLogsOnDate.map((value) =>
+            populatedItemServingNutrition(value)
+          )
+        );
+        const summedPrice = populatedLogsOnDate.reduce((previous, current) => {
+          return previous + (populatedItemServingPriceCents(current) ?? 0);
+        }, 0);
+        events.push({
+          title: formatTitle(summedPrice, summedNutrition),
+          start: dateInRange,
+          end: moment(dateInRange).add(1, "hour").toDate(),
+          allDay: true,
+          resource: summedNutrition,
+        });
+      }
+
+      setEventsState(events);
+    }
+
     calculate();
-  }, [query.result, collection]);
+  }, [query.result, collection, dateRangeState]);
 
   const size: Size = useWindowSize();
-
   if (size.width < 480) {
     if (viewState !== "day") {
       setViewState("day");
@@ -85,6 +139,9 @@ export default function LogPage() {
     setViewState("week");
   }
 
+  const locales = {
+    "en-US": enUS,
+  };
   const localizer = dateFnsLocalizer({
     format,
     parse,
@@ -103,6 +160,14 @@ export default function LogPage() {
           }}
           selectable
           localizer={localizer}
+          onRangeChange={(range: any) => {
+            if (range.start && range.end) {
+              setDateRangeState({
+                start: range.start,
+                end: range.end,
+              });
+            }
+          }}
           onNavigate={(date, view) => {
             if (view === "day") {
               setDateRangeState({
@@ -111,21 +176,11 @@ export default function LogPage() {
               });
             } else if (view === "week") {
               setDateRangeState({
-                start: moment(date).startOf("isoWeek").toDate(),
-                end: moment(date).endOf("isoWeek").toDate(),
-              });
-            } else if (view === "month") {
-              setDateRangeState({
                 start: moment(date)
-                  .startOf("month")
-                  .subtract(7, "days")
+                  .startOf("isoWeek")
+                  .subtract(1, "day")
                   .toDate(),
-                end: moment(date).endOf("month").add(7, "days").toDate(),
-              });
-            } else if (view === "agenda") {
-              setDateRangeState({
-                start: moment(date).toDate(),
-                end: moment(date).add(1, "month").toDate(),
+                end: moment(date).endOf("isoWeek").subtract(1, "day").toDate(),
               });
             }
           }}
@@ -151,21 +206,7 @@ export default function LogPage() {
               )?.recursivelyRemove();
             }
           }}
-          events={populatedResultState?.map((value) => {
-            const nutrition = populatedItemServingNutrition(value);
-            const priceCents = populatedItemServingPriceCents(value);
-            return {
-              title: `${currencyFormatter.format((priceCents ?? 0) / 100)} ${
-                nutrition.energyKilocalories
-              }kcal`,
-              start: new Date(value.date!),
-              end: new Date(
-                new Date(value.date!).getTime() + 0.75 * 60 * 60 * 1000
-              ),
-              allDay: false,
-              resource: value,
-            };
-          })}
+          events={eventsState}
           views={{ day: true, month: true, week: true }}
           startAccessor="start"
           endAccessor="end"

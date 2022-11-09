@@ -37,15 +37,6 @@ export default function ItemForm(props: ItemFormProps) {
         inputFieldRef={props.firstInputFieldRef}
       />
       <ValidatedFormikNumberControl
-        value={formikProps.values.count}
-        error={formikProps.errors.count}
-        yupSchemaField={yupItemSchema.fields.count}
-        helperText="Paste nutrition info in this field to auto-populate."
-        formikProps={formikProps}
-        spaceProps={{ pb: 2 }}
-        onPaste={onPaste}
-      />
-      <ValidatedFormikNumberControl
         value={
           formikProps.values.priceCents
             ? formikProps.values.priceCents / 100
@@ -57,6 +48,15 @@ export default function ItemForm(props: ItemFormProps) {
         format={(value) => (value ?? 0) / 100}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
+      />
+      <ValidatedFormikNumberControl
+        value={formikProps.values.count}
+        error={formikProps.errors.count}
+        yupSchemaField={yupItemSchema.fields.count}
+        helperText="Paste nutrition info in this field to auto-populate."
+        formikProps={formikProps}
+        spaceProps={{ pb: 2 }}
+        onPaste={onPaste}
       />
       <ValidatedFormikNumberControl
         value={formikProps.values.massGrams}
