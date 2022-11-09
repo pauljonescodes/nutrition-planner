@@ -110,6 +110,9 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                         isValidUrl(databaseUrlStringState ?? undefined)
                       ) {
                         setDatabaseUrlLocalStorage(databaseUrlStringState);
+                        collection.syncCouchDB({
+                          remote: databaseUrlStringState,
+                        });
                       }
                     }}
                   >

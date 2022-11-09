@@ -20,11 +20,25 @@ import "../../styles/react-big-calendar.scss";
 import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
 import { initRxDBDatabase, RxDBDatabaseType } from "../data/database";
+import useLocalStorage from "../utilities/useLocalStorage";
 
 export default function App(props: AppProps) {
   const [database, setDatabase] = useState<RxDBDatabaseType | undefined>(
     undefined
   );
+
+  const [databaseUrlLocalStorage] = useLocalStorage<string | null>(
+    "nutrition-planner-database-url",
+    null
+  );
+
+  useEffect(() => {
+    if (databaseUrlLocalStorage !== null) {
+      database?.collections.item.syncCouchDB({
+        remote: databaseUrlLocalStorage,
+      });
+    }
+  }, [databaseUrlLocalStorage, database]);
 
   useEffect(() => {
     addPouchPlugin(require("pouchdb-adapter-idb"));

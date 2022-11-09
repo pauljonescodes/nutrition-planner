@@ -69,7 +69,7 @@ export async function upsertLogInterface(
 
   return collection?.upsert({
     id: dataid(),
-    date: item.date?.toISOString(),
+    date: item.date?.toISOString() as any,
     type: ItemTypeEnum.log,
     subitems: item.subitems,
   });
