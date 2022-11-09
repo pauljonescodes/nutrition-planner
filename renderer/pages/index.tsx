@@ -1,4 +1,11 @@
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+} from "@chakra-ui/react";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
@@ -37,6 +44,14 @@ export interface RangeType {
   end: Date;
 }
 
+type EventType = {
+  title: string;
+  start: Date;
+  end: Date;
+  allDay: boolean;
+  resource: ItemInterface;
+};
+
 export default function LogPage() {
   const [deleteItemState, setDeleteItemState] =
     useState<RxDBItemDocument | null>(null);
@@ -46,16 +61,8 @@ export default function LogPage() {
     start: moment().startOf("day").toDate(),
     end: moment().endOf("day").toDate(),
   });
-  const [eventsState, setEventsState] = useState<
-    | {
-        title: string;
-        start: Date;
-        end: Date;
-        allDay: boolean;
-        resource: ItemInterface;
-      }[]
-    | undefined
-  >([]);
+  const [eventsState, setEventsState] = useState<EventType[] | undefined>([]);
+  const [selectedEvent, setSelectedEvent] = useState<EventType | null>(null);
 
   const query = useRxQuery(
     collection?.find({
@@ -69,15 +76,21 @@ export default function LogPage() {
     })!
   );
 
-  useEffect(() => {
-    function formatTitle(priceCents: number, nutrition: ItemInterface) {
-      return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${
-        nutrition.energyKilocalories
-      }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${
-        nutrition.carbohydrateGrams
-      }g carbs | ${nutrition.proteinGrams}g protein`;
-    }
+  function formatTitle(priceCents: number, nutrition: ItemInterface) {
+    return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${
+      nutrition.energyKilocalories
+    }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${
+      nutrition.carbohydrateGrams
+    }g carbs | ${nutrition.proteinGrams}g protein`;
+  }
 
+  function titleForItemInterface(item: ItemInterface) {
+    const nutrition = populatedItemServingNutrition(item);
+    const priceCents = populatedItemServingPriceCents(item);
+    return formatTitle(priceCents, nutrition);
+  }
+
+  useEffect(() => {
     async function calculate() {
       var datesInRange = new Array<Date>();
       var currentDate = dateRangeState.start;
@@ -90,11 +103,8 @@ export default function LogPage() {
       );
 
       const events = populatedResults.map((value) => {
-        const nutrition = populatedItemServingNutrition(value);
-        const priceCents = populatedItemServingPriceCents(value);
-
         return {
-          title: formatTitle(priceCents, nutrition),
+          title: titleForItemInterface(value),
           start: new Date(value.date!),
           end: new Date(new Date(value.date!).getTime() + 1 * 60 * 60 * 1000),
           allDay: false,
@@ -200,11 +210,12 @@ export default function LogPage() {
             },
           }}
           onDoubleClickEvent={async (event) => {
-            if (event.resource.id) {
-              (
-                await collection?.findOne(event.resource.id).exec()
-              )?.recursivelyRemove();
-            }
+            setDeleteItemState(
+              (await collection?.findOne(event.resource.id).exec()) ?? null
+            );
+          }}
+          onSelectEvent={(event) => {
+            setSelectedEvent(event);
           }}
           events={eventsState}
           views={{ day: true, month: true, week: true }}
@@ -224,6 +235,20 @@ export default function LogPage() {
           setDeleteItemState(null);
         }}
       />
+      <Modal
+        isOpen={selectedEvent !== null}
+        onClose={() => setSelectedEvent(null)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+            {selectedEvent?.resource &&
+              titleForItemInterface(selectedEvent.resource)}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Fragment>
   );
 }
