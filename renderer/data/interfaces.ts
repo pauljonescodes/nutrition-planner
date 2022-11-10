@@ -98,15 +98,22 @@ export async function recursivelyPopulateSubitems(
 }
 
 export function populatedItemServingNutrition(
-  item: ItemInterface
+  item: ItemInterface,
+  depth?: number
 ): ItemInterface {
+  const theDepth = depth ?? 0;
+
+  if (theDepth === 32) {
+    return itemZeroNutrition();
+  }
+
   if (item.subitems && item.subitems.length > 0) {
     return itemDivideNutrition(
       itemSumNutrition(
         item.subitems.map((value) => {
           if (value.item) {
             return itemMultiplyNutrition(
-              populatedItemServingNutrition(value.item!),
+              populatedItemServingNutrition(value.item!, theDepth + 1),
               value.count!
             );
           } else {
@@ -121,15 +128,24 @@ export function populatedItemServingNutrition(
   return item;
 }
 
-export function populatedItemServingPriceCents(item: ItemInterface): number {
+export function populatedItemServingPriceCents(
+  item: ItemInterface,
+  depth?: number
+): number {
+  const theDepth = depth ?? 0;
+
+  if (theDepth === 32) {
+    return 0;
+  }
+
   if (item.subitems && item.subitems.length > 0) {
     return (
       item.subitems
         .map((value) => {
           if (value.item) {
-            return (
-              populatedItemServingPriceCents(value.item ?? 0) *
-              (value.count ?? 0)
+            return populatedItemServingPriceCents(
+              value.item ?? 0,
+              theDepth + 1
             );
           } else {
             return 0;

@@ -1,4 +1,4 @@
-import { CopyIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   ButtonGroup,
   Center,
@@ -71,11 +71,11 @@ export function ItemTableRow(props: ItemTableRowProps) {
                 aria-label="Edit"
                 onClick={props.onEdit}
               />
-              <IconButton
+              {/* <IconButton
                 icon={<CopyIcon />}
                 aria-label="Duplicate"
                 onClick={props.onCopy}
-              />
+              /> */}
               <IconButton
                 icon={<DeleteIcon />}
                 aria-label="Delete"

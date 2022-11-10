@@ -1,13 +1,13 @@
 import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
 import { dataid } from "./dataid";
-import { ItemInterface } from "./interfaces";
+import { ItemInterface, itemZeroNutrition } from "./interfaces";
 import { ItemTypeEnum } from "./item-type-enum";
 import { YupItemType } from "./yup-schema";
 
 export type RxDBItemDocumentMethods = {
-  recursivelyPopulateSubitems: () => Promise<ItemInterface>;
-  recursivelyUpsertNewSubitems: () => Promise<ItemInterface>;
-  recursivelyRemove: () => Promise<boolean>;
+  recursivelyPopulateSubitems: (depth?: number) => Promise<ItemInterface>;
+  recursivelyUpsertNewSubitems: (depth?: number) => Promise<ItemInterface>;
+  recursivelyRemove: (depth?: number) => Promise<boolean>;
 };
 export type RxDBItemDocument = RxDocument<YupItemType, RxDBItemDocumentMethods>;
 export type RxDBItemCollection = RxCollection<
@@ -93,15 +93,24 @@ export const rxdbItemSchema: RxJsonSchema<YupItemType> = {
 
 export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
   recursivelyPopulateSubitems: async function (
-    this: RxDBItemDocument
+    this: RxDBItemDocument,
+    depth?: number
   ): Promise<ItemInterface> {
+    const theDepth = depth ?? 0;
+
+    if (theDepth === 32) {
+      return itemZeroNutrition();
+    }
+
     const mutableThis = this.toMutableJSON();
 
     if (mutableThis.subitems && mutableThis.subitems.length > 0) {
       const ids = mutableThis.subitems.map((value) => value.itemId!) ?? [];
       const findByIdsMap = await this.collection.findByIds(ids);
       for (const [subitemId, subitem] of Array.from(findByIdsMap)) {
-        const populatedSubitem = await subitem.recursivelyPopulateSubitems();
+        const populatedSubitem = await subitem.recursivelyPopulateSubitems(
+          theDepth + 1
+        );
         mutableThis.subitems.forEach(function (value, index) {
           if (value.itemId == subitemId) {
             mutableThis.subitems![index].item = populatedSubitem;
@@ -113,8 +122,14 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
     return mutableThis;
   },
   recursivelyUpsertNewSubitems: async function (
-    this: RxDBItemDocument
+    this: RxDBItemDocument,
+    depth?: number
   ): Promise<ItemInterface> {
+    const theDepth = depth ?? 0;
+
+    if (theDepth === 32) {
+      return itemZeroNutrition();
+    }
     const mutableThis = this.toMutableJSON();
 
     if (mutableThis.subitems && mutableThis.subitems.length > 0) {
@@ -125,7 +140,7 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
         findByOriginalIdsMap
       )) {
         const newUpsertedSubitem =
-          await originalSubitem.recursivelyUpsertNewSubitems();
+          await originalSubitem.recursivelyUpsertNewSubitems(theDepth + 1);
         mutableThis.subitems.forEach(function (value, index) {
           if (value.itemId == originalId) {
             mutableThis.subitems![index].itemId = newUpsertedSubitem.id;
@@ -141,12 +156,20 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
       type: ItemTypeEnum.copy,
     });
   },
-  recursivelyRemove: async function (this: RxDBItemDocument): Promise<boolean> {
+  recursivelyRemove: async function (
+    this: RxDBItemDocument,
+    depth?: number
+  ): Promise<boolean> {
+    const theDepth = depth ?? 0;
+
+    if (theDepth === 32) {
+      return false;
+    }
     if (this.subitems && this.subitems.length > 0) {
       const ids = this.subitems.map((value) => value.itemId!) ?? [];
       const findByIdsMap = await this.collection.findByIds(ids);
       for (const [subitemId, subitem] of Array.from(findByIdsMap)) {
-        await subitem.recursivelyRemove();
+        await subitem.recursivelyRemove(theDepth + 1);
       }
     }
 
