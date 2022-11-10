@@ -113,6 +113,8 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                         collection.syncCouchDB({
                           remote: databaseUrlStringState,
                         });
+                      } else {
+                        setDatabaseUrlLocalStorage(null);
                       }
                     }}
                   >

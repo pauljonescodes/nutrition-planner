@@ -8,7 +8,7 @@ import {
 
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import { addRxPlugin } from "rxdb";
+import { addRxPlugin, RxCouchDBReplicationState } from "rxdb";
 import { Provider as RxDbProvider } from "rxdb-hooks";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
@@ -27,6 +27,9 @@ export default function App(props: AppProps) {
     undefined
   );
 
+  const [replicationState, setReplicationState] =
+    useState<RxCouchDBReplicationState | null>(null);
+
   const [databaseUrlLocalStorage] = useLocalStorage<string | null>(
     "nutrition-planner-database-url",
     null
@@ -34,9 +37,13 @@ export default function App(props: AppProps) {
 
   useEffect(() => {
     if (databaseUrlLocalStorage !== null) {
-      database?.collections.item.syncCouchDB({
-        remote: databaseUrlLocalStorage,
-      });
+      setReplicationState(
+        database?.collections.item.syncCouchDB({
+          remote: databaseUrlLocalStorage,
+        }) ?? null
+      );
+    } else if (replicationState !== null) {
+      replicationState.cancel();
     }
   }, [databaseUrlLocalStorage, database]);
 

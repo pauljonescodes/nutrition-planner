@@ -37,15 +37,6 @@ export default function GroupsPage() {
     }
   );
 
-  // useEffect(() => {
-  //   const newResults = query.result.filter(
-  //     (newResult) =>
-  //       !queryResultState.find((stateResult) => stateResult.id === newResult.id)
-  //   );
-
-  //   return;
-  // }, [query.result]);
-
   return (
     <Fragment>
       <ItemInfiniteTableContainer

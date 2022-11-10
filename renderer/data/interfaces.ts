@@ -104,10 +104,14 @@ export function populatedItemServingNutrition(
     return itemDivideNutrition(
       itemSumNutrition(
         item.subitems.map((value) => {
-          return itemMultiplyNutrition(
-            populatedItemServingNutrition(value.item!),
-            value.count!
-          );
+          if (value.item) {
+            return itemMultiplyNutrition(
+              populatedItemServingNutrition(value.item!),
+              value.count!
+            );
+          } else {
+            return itemZeroNutrition();
+          }
         })
       ),
       item.count ?? 1
@@ -122,10 +126,14 @@ export function populatedItemServingPriceCents(item: ItemInterface): number {
     return (
       item.subitems
         .map((value) => {
-          return (
-            (populatedItemServingPriceCents(value.item!) ?? 0) *
-            (value.count ?? 0)
-          );
+          if (value.item) {
+            return (
+              populatedItemServingPriceCents(value.item ?? 0) *
+              (value.count ?? 0)
+            );
+          } else {
+            return 0;
+          }
         })
         .reduce((previous, current) => previous + current, 0) /
       (item.count ?? 1)
