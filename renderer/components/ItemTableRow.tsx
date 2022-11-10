@@ -15,6 +15,7 @@ import {
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
 } from "../data/interfaces";
+import { ItemTypeEnum } from "../data/item-type-enum";
 import { RxDBItemDocument } from "../data/rxdb";
 import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
 import { currencyFormatter } from "../utilities/currency-formatter";
@@ -46,6 +47,18 @@ export function ItemTableRow(props: ItemTableRowProps) {
   }, [props.document.revision]);
 
   const isLoaded = nutritionState !== null && priceCentsState !== null;
+  var priceDenominator = 1;
+  var priceMultiple = 1;
+
+  if (props.document.type === ItemTypeEnum.item) {
+    if (props.priceType === ServingOrTotalEnum.total) {
+      priceMultiple = props.document.count ?? 1;
+    }
+  } else {
+    if (props.priceType === ServingOrTotalEnum.serving) {
+      priceDenominator = props.document.count ?? 1;
+    }
+  }
 
   return (
     <Tr key={props.document.id} height="73px">
@@ -86,7 +99,9 @@ export function ItemTableRow(props: ItemTableRowProps) {
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {currencyFormatter.format((priceCentsState ?? 999) / 100)}
+          {currencyFormatter.format(
+            ((priceCentsState ?? 999) / 100 / priceDenominator) * priceMultiple
+          )}
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>

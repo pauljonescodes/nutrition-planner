@@ -29,6 +29,7 @@ export default function ItemForm(props: ItemFormProps) {
       }}
     >
       <ValidatedFormikControl
+        isRequired={true}
         value={formikProps.values.name}
         error={formikProps.errors.name}
         yupSchemaField={yupItemSchema.fields.name}
@@ -37,6 +38,7 @@ export default function ItemForm(props: ItemFormProps) {
         inputFieldRef={props.firstInputFieldRef}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={
           formikProps.values.priceCents
             ? formikProps.values.priceCents / 100
@@ -50,6 +52,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.count}
         error={formikProps.errors.count}
         yupSchemaField={yupItemSchema.fields.count}
@@ -59,6 +62,7 @@ export default function ItemForm(props: ItemFormProps) {
         onPaste={onPaste}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.massGrams}
         error={formikProps.errors.massGrams}
         yupSchemaField={yupItemSchema.fields.massGrams}
@@ -66,6 +70,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.energyKilocalories}
         error={formikProps.errors.energyKilocalories}
         yupSchemaField={yupItemSchema.fields.energyKilocalories}
@@ -73,6 +78,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.fatGrams}
         error={formikProps.errors.fatGrams}
         yupSchemaField={yupItemSchema.fields.fatGrams}
@@ -80,6 +86,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.saturatedFatGrams}
         error={formikProps.errors.saturatedFatGrams}
         yupSchemaField={yupItemSchema.fields.saturatedFatGrams}
@@ -87,6 +94,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.transFatGrams}
         error={formikProps.errors.transFatGrams}
         yupSchemaField={yupItemSchema.fields.transFatGrams}
@@ -94,6 +102,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.cholesterolMilligrams}
         error={formikProps.errors.cholesterolMilligrams}
         yupSchemaField={yupItemSchema.fields.cholesterolMilligrams}
@@ -101,6 +110,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.sodiumMilligrams}
         error={formikProps.errors.sodiumMilligrams}
         yupSchemaField={yupItemSchema.fields.sodiumMilligrams}
@@ -108,6 +118,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.carbohydrateGrams}
         error={formikProps.errors.carbohydrateGrams}
         yupSchemaField={yupItemSchema.fields.carbohydrateGrams}
@@ -115,6 +126,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.fiberGrams}
         error={formikProps.errors.fiberGrams}
         yupSchemaField={yupItemSchema.fields.fiberGrams}
@@ -122,6 +134,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.sugarGrams}
         error={formikProps.errors.sugarGrams}
         yupSchemaField={yupItemSchema.fields.sugarGrams}
@@ -129,6 +142,7 @@ export default function ItemForm(props: ItemFormProps) {
         spaceProps={{ pb: 2 }}
       />
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={formikProps.values.proteinGrams}
         error={formikProps.errors.proteinGrams}
         yupSchemaField={yupItemSchema.fields.proteinGrams}

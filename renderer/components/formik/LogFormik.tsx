@@ -9,6 +9,7 @@ import LogForm from "../form/LogForm";
 export interface LogFormProps {
   item: ItemInterface | null;
   onSubmit: (item: ItemInterface) => void;
+  onDelete?: (item: ItemInterface | null) => void;
   firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
@@ -19,7 +20,7 @@ export function LogFormik(props: LogFormProps) {
     ...yupItemSchema.getDefault(),
     id: thisItemId,
     type: ItemTypeEnum.log,
-    date: props.item?.date ?? new Date(),
+    date: new Date(props.item?.date ?? new Date()),
     name: props.item?.name ?? `log`,
     massGrams: 0,
     count: 1,
@@ -58,6 +59,7 @@ export function LogFormik(props: LogFormProps) {
           <LogForm
             formikProps={formikProps}
             firstInputFieldRef={props.firstInputFieldRef}
+            onDelete={props.onDelete}
           />
         );
       }}

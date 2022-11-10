@@ -12,6 +12,7 @@ import { LogFormik } from "../formik/LogFormik";
 type LogDrawerProps = {
   item: ItemInterface | null;
   onResult(item: ItemInterface | null): void;
+  onDelete?(item: ItemInterface | null): void;
 };
 
 export function LogDrawer(props: LogDrawerProps) {
@@ -29,7 +30,11 @@ export function LogDrawer(props: LogDrawerProps) {
         <DrawerHeader>Log</DrawerHeader>
 
         <DrawerBody>
-          <LogFormik item={props.item} onSubmit={props.onResult} />
+          <LogFormik
+            item={props.item}
+            onSubmit={props.onResult}
+            onDelete={props.onDelete}
+          />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

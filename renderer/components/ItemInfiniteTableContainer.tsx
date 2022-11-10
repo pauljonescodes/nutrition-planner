@@ -37,7 +37,6 @@ export default function ItemInfiniteTableContainer(
   props: ItemTableContainerProps
 ) {
   const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
-  const normalTextColor = useColorModeValue("gray.100", "gray.400");
 
   return (
     <Fragment>
@@ -62,7 +61,6 @@ export default function ItemInfiniteTableContainer(
                   variant="ghost"
                   textTransform="uppercase"
                   size="xs"
-                  color={normalTextColor}
                   onClick={() => {
                     if (props.onToggleServingOrTotal) {
                       props.onToggleServingOrTotal();

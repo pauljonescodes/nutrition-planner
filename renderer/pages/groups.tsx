@@ -20,9 +20,6 @@ export default function GroupsPage() {
     useState<RxDBItemDocument | null>(null);
   const [servingOrTotalState, setServingOrTotalState] =
     useState<ServingOrTotalEnum>(ServingOrTotalEnum.serving);
-  const [queryResultState, setQueryResultState] = useState<RxDBItemDocument[]>(
-    []
-  );
   const collection = useRxCollection<RxDBItemDocument>("item");
   const query = useRxQuery(
     collection?.find({

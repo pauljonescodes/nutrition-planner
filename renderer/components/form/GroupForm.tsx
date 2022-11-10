@@ -34,9 +34,9 @@ export default function GroupForm(props: GroupFormProps) {
       />
 
       <ValidatedFormikNumberControl
+        isRequired={true}
         value={props.formikProps.values.count}
         error={props.formikProps.errors.count}
-        isRequired
         yupSchemaField={yupItemSchema.fields.count}
         formikProps={props.formikProps}
         spaceProps={{ pb: 2 }}

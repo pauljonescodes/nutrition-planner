@@ -26,6 +26,7 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { useWindowSize } from "usehooks-ts";
 import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
+import { LogDrawer } from "../components/drawers/LogDrawer";
 import {
   ItemInterface,
   itemSumNutrition,
@@ -62,7 +63,10 @@ export default function LogPage() {
     end: moment().endOf("day").toDate(),
   });
   const [eventsState, setEventsState] = useState<EventType[] | undefined>([]);
-  const [selectedEvent, setSelectedEvent] = useState<EventType | null>(null);
+  const [selectedEvent, setModalEvent] = useState<EventType | null>(null);
+  const [editItemState, setEditItemState] = useState<RxDBItemDocument | null>(
+    null
+  );
 
   const query = useRxQuery(
     collection?.find({
@@ -215,7 +219,16 @@ export default function LogPage() {
             );
           }}
           onSelectEvent={(event) => {
-            setSelectedEvent(event);
+            if (event.allDay) {
+              setModalEvent(event);
+            } else if (event.resource) {
+              const found = query.result.find(
+                (value) => value.id === event.resource.id
+              );
+              if (found) {
+                setEditItemState(found);
+              }
+            }
           }}
           events={eventsState}
           views={{ day: true, month: true, week: true }}
@@ -235,9 +248,24 @@ export default function LogPage() {
           setDeleteItemState(null);
         }}
       />
+      <LogDrawer
+        item={editItemState}
+        onResult={(item) => {
+          setEditItemState(null);
+          if (item) {
+            collection?.upsert(item);
+          }
+        }}
+        onDelete={(item) => {
+          setEditItemState(null);
+          if (item) {
+            collection?.findOne(item.id).remove();
+          }
+        }}
+      />
       <Modal
         isOpen={selectedEvent !== null}
-        onClose={() => setSelectedEvent(null)}
+        onClose={() => setModalEvent(null)}
         isCentered
       >
         <ModalOverlay />

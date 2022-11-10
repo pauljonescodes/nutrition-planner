@@ -24,6 +24,7 @@ export default function PlanForm(props: PlanFormProps) {
       }}
     >
       <ValidatedFormikControl
+        isRequired={true}
         value={props.formikProps.values.name}
         error={props.formikProps.errors.name}
         yupSchemaField={yupItemSchema.fields.name}
