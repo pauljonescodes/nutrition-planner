@@ -52,7 +52,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
   const { result } = useRxQuery(
     collection?.find({
       selector: {
-        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
+        name: { $regex: `\\b${nameSearchState}.*` },
         type: {
           $in: props.itemTypesIn,
         },

@@ -19,6 +19,8 @@ export default function GroupForm(props: GroupFormProps) {
       noValidate={true}
       onSubmit={(e) => {
         e.preventDefault();
+        console.log("submitting");
+        console.log(props.formikProps.errors);
         props.formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
       }}
     >
@@ -46,7 +48,7 @@ export default function GroupForm(props: GroupFormProps) {
       <SubitemFieldArray
         formikProps={props.formikProps}
         itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
-        name={""}
+        name={"subitems"}
       />
 
       <Center>

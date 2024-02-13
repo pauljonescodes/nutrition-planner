@@ -148,7 +148,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setItemDrawerItem(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             collection?.upsert(item);
           }
         }}
@@ -158,7 +158,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setGroupDrawerItem(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             item.subitems = item.subitems?.map((value) => {
               return { itemId: value.itemId, count: value.count };
             });
@@ -171,7 +171,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setPlanDrawerItem(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             item.subitems = item.subitems?.map((value) => {
               return { itemId: value.itemId, count: value.count };
             });

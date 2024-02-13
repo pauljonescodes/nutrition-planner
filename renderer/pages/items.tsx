@@ -26,7 +26,7 @@ export default function ItemsPage() {
     collection?.find({
       selector: {
         type: ItemTypeEnum.item,
-        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
+        name: { $regex: `\\b${nameSearchState}.*` },
       },
     })!,
     {
@@ -58,7 +58,7 @@ export default function ItemsPage() {
           const newValue = value.toMutableJSON();
           const id = dataid();
           newValue.id = id;
-          newValue.date = new Date();
+          newValue.date = new Date().toISOString();
           newValue.name = `Copied ${newValue.name}`;
           collection?.upsert(newValue);
         }}
@@ -71,7 +71,7 @@ export default function ItemsPage() {
         onResult={(item) => {
           setEditItemState(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString(); 
             collection?.upsert(item);
           }
         }}

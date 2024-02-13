@@ -1,8 +1,8 @@
 import { Fragment, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { PlanDrawer } from "../components/drawers/PlanDrawer";
 import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
+import { PlanDrawer } from "../components/drawers/PlanDrawer";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/item-type-enum";
 import { RxDBItemDocument } from "../data/rxdb";
@@ -20,7 +20,7 @@ export default function PlansPage() {
     rxCollection?.find({
       selector: {
         type: ItemTypeEnum.plan,
-        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
+        name: { $regex: `\\b${nameSearchState}.*` },
       },
     })!,
     {
@@ -47,8 +47,8 @@ export default function PlansPage() {
           const newValue = value.toMutableJSON();
           const id = dataid();
           newValue.id = id;
-          newValue.date = new Date();
-          newValue.name = `$Copied {newValue.name}`;
+          newValue.date = new Date().toISOString();
+          newValue.name = `$Copied ${newValue.name}`;
           rxCollection?.upsert(newValue);
         }}
         onDelete={(value) => setDeleteItemState(value)}
@@ -58,7 +58,7 @@ export default function PlansPage() {
         onResult={async (item) => {
           setEditItemState(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             rxCollection?.upsert(item);
           }
         }}

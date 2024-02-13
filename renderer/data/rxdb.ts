@@ -106,7 +106,7 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
 
     if (mutableThis.subitems && mutableThis.subitems.length > 0) {
       const ids = mutableThis.subitems.map((value) => value.itemId!) ?? [];
-      const findByIdsMap = await this.collection.findByIds(ids);
+      const findByIdsMap = await (this.collection.findByIds(ids).exec());
       for (const [subitemId, subitem] of Array.from(findByIdsMap)) {
         const populatedSubitem = await subitem.recursivelyPopulateSubitems(
           theDepth + 1
@@ -135,7 +135,7 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
     if (mutableThis.subitems && mutableThis.subitems.length > 0) {
       const originalIds =
         mutableThis.subitems.map((value) => value.itemId!) ?? [];
-      const findByOriginalIdsMap = await this.collection.findByIds(originalIds);
+      const findByOriginalIdsMap = await this.collection.findByIds(originalIds).exec();
       for (const [originalId, originalSubitem] of Array.from(
         findByOriginalIdsMap
       )) {
@@ -167,13 +167,13 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
     }
     if (this.subitems && this.subitems.length > 0) {
       const ids = this.subitems.map((value) => value.itemId!) ?? [];
-      const findByIdsMap = await this.collection.findByIds(ids);
+      const findByIdsMap = await (this.collection.findByIds(ids).exec());
       for (const [subitemId, subitem] of Array.from(findByIdsMap)) {
         await subitem.recursivelyRemove(theDepth + 1);
       }
     }
 
-    return this.remove();
+    return this.remove() != undefined;
   },
 };
 

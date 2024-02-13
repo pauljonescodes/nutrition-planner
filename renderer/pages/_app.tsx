@@ -8,19 +8,19 @@ import {
 
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import { RxCouchDBReplicationState, addRxPlugin } from "rxdb";
+import { addRxPlugin } from "rxdb";
 import { Provider as RxDbProvider } from "rxdb-hooks";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
 import { RxDBLeaderElectionPlugin } from "rxdb/plugins/leader-election";
-import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
-import { RxDBReplicationCouchDBPlugin } from "rxdb/plugins/replication-couchdb";
+import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import "../../styles/react-big-calendar.scss";
 import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
 import { RxDBDatabaseType, initRxDBDatabase } from "../data/database";
 import useLocalStorage from "../utilities/useLocalStorage";
+import { replicateCouchDB } from 'rxdb/plugins/replication-couchdb';
 
 export default function App(props: AppProps) {
   const [database, setDatabase] = useState<RxDBDatabaseType | undefined>(
@@ -28,7 +28,7 @@ export default function App(props: AppProps) {
   );
 
   const [replicationState, setReplicationState] =
-    useState<RxCouchDBReplicationState | null>(null);
+    useState<any | null>(null);
 
   const [databaseUrlLocalStorage] = useLocalStorage<string | null>(
     "nutrition-planner-database-url",
@@ -36,26 +36,27 @@ export default function App(props: AppProps) {
   );
 
   useEffect(() => {
-    if (databaseUrlLocalStorage !== null) {
-      setReplicationState(
-        database?.collections.item.syncCouchDB({
-          remote: databaseUrlLocalStorage,
-        }) ?? null
+    if (databaseUrlLocalStorage !== null && database?.item !== null) {
+      const replicated = replicateCouchDB(
+        {
+          replicationIdentifier: 'np-couchdb-replication',
+          collection: database?.item,
+          url: databaseUrlLocalStorage,
+          live: true
+        }
       );
+      setReplicationState(replicated);
     } else if (replicationState !== null) {
       replicationState.cancel();
     }
   }, [databaseUrlLocalStorage, database]);
 
   useEffect(() => {
-    addPouchPlugin(require("pouchdb-adapter-idb"));
     addRxPlugin(RxDBQueryBuilderPlugin);
     addRxPlugin(RxDBJsonDumpPlugin);
     addRxPlugin(RxDBDevModePlugin);
-    addRxPlugin(RxDBReplicationCouchDBPlugin);
     addRxPlugin(RxDBLeaderElectionPlugin);
-    addPouchPlugin(require("pouchdb-adapter-http"));
-    initRxDBDatabase("nutrition-planner-db", getRxStoragePouch("idb", {})).then(
+    initRxDBDatabase("nutrition-planner-db", getRxStorageDexie()).then(
       setDatabase
     );
   }, []);

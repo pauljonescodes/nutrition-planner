@@ -20,7 +20,7 @@ export function PlanFormik(props: PlanFormProps) {
     id: thisItemId,
     type: ItemTypeEnum.plan,
     name: props.item?.name,
-    date: props.item?.date ?? new Date(),
+    date: props.item?.date ?? new Date().toISOString(),
     massGrams: 0,
     count: 1,
     priceCents: 0,
