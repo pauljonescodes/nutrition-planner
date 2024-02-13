@@ -17,10 +17,10 @@ import { Fragment, useEffect, useState } from "react";
 import {
   Calendar,
   Culture,
-  dateFnsLocalizer,
   DateLocalizer,
   DateRange,
   View,
+  dateFnsLocalizer,
 } from "react-big-calendar";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { useWindowSize } from "usehooks-ts";
@@ -35,8 +35,8 @@ import {
 } from "../data/interfaces";
 import { ItemTypeEnum } from "../data/item-type-enum";
 import {
-  recursivelyPopulateSubitemsOfItems,
   RxDBItemDocument,
+  recursivelyPopulateSubitemsOfItems,
 } from "../data/rxdb";
 import { currencyFormatter } from "../utilities/currency-formatter";
 

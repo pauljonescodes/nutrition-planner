@@ -1,8 +1,8 @@
 import { Fragment, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { ItemDrawer } from "../components/drawers/ItemDrawer";
 import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
+import { ItemDrawer } from "../components/drawers/ItemDrawer";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/item-type-enum";
 import { RxDBItemDocument } from "../data/rxdb";
@@ -34,6 +34,8 @@ export default function ItemsPage() {
       pagination: "Infinite",
     }
   );
+
+  console.log(query.result);
 
   return (
     <Fragment>

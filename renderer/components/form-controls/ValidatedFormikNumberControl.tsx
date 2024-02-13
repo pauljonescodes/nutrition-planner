@@ -12,11 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { FormikProps } from "formik";
 import { ChangeEvent } from "react";
-import { BaseSchema } from "yup";
 
 interface ValidatedFormikNumberControlProps<T> {
   formikProps: FormikProps<T>;
-  yupSchemaField: BaseSchema;
+  name: string;
+  placeholder?: string;
   value?: number; // props.formikProps.values.name as string | undefined
   error?: string; // props.formikProps.errors.name
   spaceProps?: SpaceProps;
@@ -41,8 +41,8 @@ export function ValidatedFormikNumberControl<T>(
         // props.yupSchemaField.describe().tests[0].name === "required"
       }
     >
-      <FormLabel htmlFor={props.yupSchemaField.spec.meta["key"]}>
-        {props.labelText ?? props.yupSchemaField.spec.label}
+      <FormLabel htmlFor={props.name}>
+        {props.labelText ?? props.placeholder}
       </FormLabel>
       <NumberInput
         defaultValue={props.value}
@@ -50,7 +50,7 @@ export function ValidatedFormikNumberControl<T>(
       >
         <NumberInputField
           formNoValidate
-          name={props.yupSchemaField.spec.meta["key"]}
+          name={props.name}
           value={props.format ? props.format(props.value) : props.value}
           onPaste={(e) => {
             e.preventDefault();
@@ -62,7 +62,7 @@ export function ValidatedFormikNumberControl<T>(
             if (props.transform) {
               const valueFloat = parseFloat(e.currentTarget.value);
               props.formikProps.setFieldValue(
-                props.yupSchemaField.spec.meta["key"],
+                props.name,
                 props.transform(valueFloat)
               );
             } else {
@@ -70,7 +70,7 @@ export function ValidatedFormikNumberControl<T>(
             }
           }}
           onBlur={props.formikProps.handleBlur}
-          placeholder={props.yupSchemaField.spec.meta["placeholder"]}
+          placeholder={props.placeholder}
         />
         {props.showStepper && (
           <NumberInputStepper>
@@ -87,7 +87,3 @@ export function ValidatedFormikNumberControl<T>(
     </FormControl>
   );
 }
-
-/*
-
-*/

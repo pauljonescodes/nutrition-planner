@@ -13,10 +13,10 @@ import {
   HStack,
   Input,
   Text,
+  VStack,
   useColorMode,
   useColorModeValue,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import FileSaver from "file-saver";
 import { Fragment, useEffect, useState } from "react";
@@ -48,11 +48,14 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
 
   const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
-  const [openFileSelector, { filesContent, loading: filesLoading }] =
-    useFilePicker({
-      accept: ".json",
-      multiple: false,
-    });
+  const {
+    filesContent,
+    loading: filesLoading,
+    openFilePicker,
+  } = useFilePicker({
+    accept: ".json",
+    multiple: false,
+  });
 
   async function importFile() {
     if (filesContent.length > 0) {
@@ -151,7 +154,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 width={"full"}
                 disabled={loading}
                 onClick={() => {
-                  openFileSelector();
+                  openFilePicker();
                 }}
                 leftIcon={<DownloadIcon transform={"scaleY(-1)"} />}
               >

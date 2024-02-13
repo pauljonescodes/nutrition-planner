@@ -19,15 +19,14 @@ import { useEffect, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import {
   ItemInterface,
+  SubitemInterface,
   itemMultiplyNutrition,
   itemZeroNutrition,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
-  SubitemInterface,
 } from "../../data/interfaces";
 import { ItemTypeEnum } from "../../data/item-type-enum";
 import { RxDBItemDocument } from "../../data/rxdb";
-import { yupSubitemSchema } from "../../data/yup-schema";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 interface SubitemAutoCompleteInputProps {
@@ -110,7 +109,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
             value={props.value.count}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            placeholder={yupSubitemSchema.fields.count.spec.label}
+            //placeholder={yupSubitemSchema.fields.count.spec.label}
           />
         </NumberInput>
         <AutoComplete
@@ -127,7 +126,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
           }}
         >
           <AutoCompleteInput
-            placeholder={yupSubitemSchema.fields.itemId.spec.label}
+            //placeholder={yupSubitemSchema.fields.itemId.spec.label}
             value={nameSearchState ?? subitemNameState ?? ""}
             onChange={async (event) => {
               setNameSearchState(event.target.value);

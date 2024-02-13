@@ -1,14 +1,14 @@
 import {
   Box,
   ChakraProvider,
-  extendTheme,
   VStack,
+  extendTheme,
   type ThemeConfig,
 } from "@chakra-ui/react";
 
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import { addRxPlugin, RxCouchDBReplicationState } from "rxdb";
+import { RxCouchDBReplicationState, addRxPlugin } from "rxdb";
 import { Provider as RxDbProvider } from "rxdb-hooks";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
@@ -19,7 +19,7 @@ import { RxDBReplicationCouchDBPlugin } from "rxdb/plugins/replication-couchdb";
 import "../../styles/react-big-calendar.scss";
 import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
-import { initRxDBDatabase, RxDBDatabaseType } from "../data/database";
+import { RxDBDatabaseType, initRxDBDatabase } from "../data/database";
 import useLocalStorage from "../utilities/useLocalStorage";
 
 export default function App(props: AppProps) {
@@ -85,7 +85,7 @@ export default function App(props: AppProps) {
   });
 
   return (
-    <RxDbProvider db={database} idAttribute="id">
+    <RxDbProvider db={database}>
       <ChakraProvider theme={theme}>
         <VStack spacing={0} align="stretch" minH="100vh">
           <MenuHStack />

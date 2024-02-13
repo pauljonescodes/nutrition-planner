@@ -3,7 +3,6 @@ import { Form, FormikProps } from "formik";
 import { FormEvent, Fragment, RefObject, useState } from "react";
 import { ItemInterface } from "../../data/interfaces";
 import { ItemTypeEnum } from "../../data/item-type-enum";
-import { yupItemSchema } from "../../data/yup-schema";
 import { DeleteAlertDialog } from "../DeleteAlertDialog";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedDatetimeControl } from "../form-controls/ValidatedDateTimeControl";
@@ -30,7 +29,8 @@ export default function LogForm(props: LogFormProps) {
           isRequired={true}
           value={props.formikProps.values.date}
           error={props.formikProps.errors.date}
-          yupSchemaField={yupItemSchema.fields.date}
+          name="date"
+          placeholder="Date"
           formikProps={props.formikProps}
           spaceProps={{ pb: 2 }}
         />
@@ -42,6 +42,7 @@ export default function LogForm(props: LogFormProps) {
             ItemTypeEnum.group,
             ItemTypeEnum.plan,
           ]}
+          name={""}
         />
 
         <Center>
