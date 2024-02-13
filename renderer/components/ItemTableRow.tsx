@@ -14,7 +14,6 @@ import {
   ItemInterface,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
-  populatedItemTotalPriceCents
 } from "../data/interfaces";
 import { ItemTypeEnum } from "../data/item-type-enum";
 import { RxDBItemDocument } from "../data/rxdb";
