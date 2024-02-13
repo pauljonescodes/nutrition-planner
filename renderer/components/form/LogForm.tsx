@@ -27,7 +27,7 @@ export default function LogForm(props: LogFormProps) {
       >
         <ValidatedDatetimeControl
           isRequired={true}
-          value={props.formikProps.values.date}
+          value={props.formikProps.values.date ? new Date(props.formikProps.values!.date!) : undefined}
           error={props.formikProps.errors.date}
           name="date"
           placeholder="Date"

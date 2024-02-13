@@ -48,7 +48,7 @@ export function LogFormik(props: LogFormProps) {
       onSubmit={(values, helpers) => {
         props.onSubmit({
           ...values,
-          name: `${values.date?.toISOString()}`,
+          name: values.date,
         });
         helpers.resetForm();
       }}

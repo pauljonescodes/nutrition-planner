@@ -35,8 +35,6 @@ export default function ItemsPage() {
     }
   );
 
-  console.log(query.result);
-
   return (
     <Fragment>
       <ItemInfiniteTableContainer
