@@ -78,7 +78,6 @@ export async function recursivelyPopulateSubitems(
   item: ItemInterface,
   collection?: RxCollection<RxDBItemDocument>
 ): Promise<ItemInterface> {
-  console.log("recursivelyPopulateSubitems")
   const mutableThis = item;
 
   if (mutableThis.subitems && mutableThis.subitems.length > 0) {
@@ -150,7 +149,7 @@ export function populatedItemServingPriceCents(
             return populatedItemServingPriceCents(
               value.item ?? 0,
               theDepth + 1
-            );
+            ) * (value.count ?? 1);
           } else {
             return 0;
           }
@@ -159,9 +158,10 @@ export function populatedItemServingPriceCents(
     );
   }
 
-  console.log(item.priceCents);
-  console.log(item.count);
-  return (item.priceCents ?? 0) / (item.count ?? 1);
+
+  const priceCents = (item.priceCents ?? 0) / (item.count ?? 1);
+
+  return priceCents;
 }
 
 export function itemZeroNutrition(): ItemInterface {

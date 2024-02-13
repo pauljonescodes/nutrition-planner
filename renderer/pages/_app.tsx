@@ -27,29 +27,36 @@ export default function App(props: AppProps) {
     undefined
   );
 
-  const [replicationState, setReplicationState] =
-    useState<any | null>(null);
+  // const [replicationState, setReplicationState] =
+  //   useState<any | null>(null);
 
-  const [databaseUrlLocalStorage] = useLocalStorage<string | null>(
-    "nutrition-planner-database-url",
-    null
-  );
+  // const [databaseUrlLocalStorage] = useLocalStorage<string | null>(
+  //   "nutrition-planner-database-url",
+  //   null
+  // );
 
-  useEffect(() => {
-    if (databaseUrlLocalStorage !== null && database?.item !== null) {
-      const replicated = replicateCouchDB(
-        {
-          replicationIdentifier: 'np-couchdb-replication',
-          collection: database?.item,
-          url: databaseUrlLocalStorage,
-          live: true
-        }
-      );
-      setReplicationState(replicated);
-    } else if (replicationState !== null) {
-      replicationState.cancel();
-    }
-  }, [databaseUrlLocalStorage, database]);
+  // useEffect(() => {
+  //   if (databaseUrlLocalStorage !== null && database?.collections.item != undefined) {
+  //     console.log(databaseUrlLocalStorage);
+  //     const replicated = replicateCouchDB(
+  //       {
+  //         replicationIdentifier: 'np-couchdb-replication',
+  //         collection: database?.collections.item,
+  //         url: databaseUrlLocalStorage,
+  //         live: true,
+  //         fetch: (input, init) =>
+  //         {
+  //           console.log(input);
+  //         }
+  //       }
+  //     );
+  //     replicated.reSync();
+  //     console.log(replicated.isStopped());
+  //     setReplicationState(replicated);
+  //   } else if (replicationState !== null) {
+  //     replicationState.cancel();
+  //   }
+  // }, [databaseUrlLocalStorage, database]);
 
   useEffect(() => {
     addRxPlugin(RxDBQueryBuilderPlugin);

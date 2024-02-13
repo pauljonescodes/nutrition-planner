@@ -14,6 +14,7 @@ import {
   ItemInterface,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
+  populatedItemTotalPriceCents
 } from "../data/interfaces";
 import { ItemTypeEnum } from "../data/item-type-enum";
 import { RxDBItemDocument } from "../data/rxdb";
@@ -50,13 +51,12 @@ export function ItemTableRow(props: ItemTableRowProps) {
   var priceDenominator = 1;
   var priceMultiple = 1;
 
-  console.log(props.document.type);
-
   if (props.document.type === ItemTypeEnum.item) {
     if (props.priceType === ServingOrTotalEnum.total) {
       priceMultiple = props.document.count ?? 1;
     }
   } else {
+    priceMultiple = props.document.count ?? 1;
     if (props.priceType === ServingOrTotalEnum.serving) {
       priceDenominator = props.document.count ?? 1;
     }

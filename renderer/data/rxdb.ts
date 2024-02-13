@@ -12,7 +12,9 @@ export type RxDBItemDocumentMethods = {
 export type RxDBItemDocument = RxDocument<YupItemType, RxDBItemDocumentMethods>;
 export type RxDBItemCollection = RxCollection<
   RxDBItemDocument,
-  RxDBItemDocumentMethods
+  RxDBItemDocumentMethods,
+  any,
+  any
 >;
 export const rxdbItemSchema: RxJsonSchema<YupItemType> = {
   version: 0,

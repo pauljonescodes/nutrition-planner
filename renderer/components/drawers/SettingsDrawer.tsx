@@ -95,7 +95,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               <Button onClick={toggleColorMode} width={"full"}>
                 Toggle {colorMode === "light" ? "Dark" : "Light"} UI
               </Button>
-              <FormControl>
+              {/* <FormControl>
                 <FormLabel>Database URL</FormLabel>
                 <HStack>
                   <Input
@@ -113,9 +113,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                         isValidUrl(databaseUrlStringState ?? undefined)
                       ) {
                         setDatabaseUrlLocalStorage(databaseUrlStringState);
-                        // collection.syncCouchDB({
-                        //   remote: databaseUrlStringState,
-                        // });
                       } else {
                         setDatabaseUrlLocalStorage(null);
                       }
@@ -129,7 +126,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   To sync your data, paste a URL pointing to a CouchDB database
                   above.
                 </FormHelperText>
-              </FormControl>
+              </FormControl> */}
 
               <Button
                 width={"full"}

@@ -109,7 +109,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
             value={props.value.count}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            //placeholder={yupSubitemSchema.fields.count.spec.label}
+            placeholder={"Servings"}
           />
         </NumberInput>
         <AutoComplete
@@ -126,7 +126,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
           }}
         >
           <AutoCompleteInput
-            //placeholder={yupSubitemSchema.fields.itemId.spec.label}
+            placeholder={"Name"}
             value={nameSearchState ?? subitemNameState ?? ""}
             onChange={async (event) => {
               setNameSearchState(event.target.value);
