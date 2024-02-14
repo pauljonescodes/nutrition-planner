@@ -48,7 +48,7 @@ export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
 export async function upsertLogInterface(
   item: ItemInterface,
   collection?: RxCollection<RxDBItemDocument>
-): Promise<RxDBItemDocument | undefined> {
+) {
   if (item.subitems && item.subitems.length > 0) {
     const originalIds = item.subitems.map((value) => value.itemId!) ?? [];
     const findByOriginalIdsMap = await collection?.findByIds(originalIds).exec();
@@ -65,12 +65,14 @@ export async function upsertLogInterface(
     }
   }
 
-  return await collection?.upsert({
+  const thing: any = {
     id: dataid(),
-    date: item.date.toISOString(),
+    date: item.date ?? new Date().toISOString(),
     type: ItemTypeEnum.log,
     subitems: item.subitems,
-  });
+  } as any;
+
+  await collection?.upsert(thing);
 }
 
 export async function recursivelyPopulateSubitems(
