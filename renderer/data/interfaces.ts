@@ -154,7 +154,7 @@ export function populatedItemServingPriceCents(
         .map((value) => {
           if (value.item) {
             return populatedItemServingPriceCents(
-              value.item ?? 0,
+              value.item,
               theDepth + 1
             ) * (value.count ?? 1);
           } else {

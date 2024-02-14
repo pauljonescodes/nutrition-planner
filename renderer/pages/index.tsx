@@ -16,6 +16,7 @@ import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import {
   Calendar,
+  Event,
   Culture,
   DateLocalizer,
   DateRange,
@@ -45,14 +46,6 @@ export interface RangeType {
   end: Date;
 }
 
-type EventType = {
-  title: string;
-  start: Date;
-  end: Date;
-  allDay: boolean;
-  resource: ItemInterface;
-};
-
 export default function LogPage() {
   const [deleteItemState, setDeleteItemState] =
     useState<RxDBItemDocument | null>(null);
@@ -62,12 +55,13 @@ export default function LogPage() {
     start: moment().startOf("day").toDate(),
     end: moment().endOf("day").toDate(),
   });
-  const [eventsState, setEventsState] = useState<EventType[] | undefined>([]);
-  const [selectedEvent, setModalEvent] = useState<EventType | null>(null);
+  const [eventsState, setEventsState] = useState<Event[] | undefined>([]);
+  const [selectedEvent, setModalEvent] = useState<Event | null>(null);
   const [editItemState, setEditItemState] = useState<RxDBItemDocument | null>(
     null
   );
 
+  // @ts-ignore-start
   const query = useRxQuery(
     collection?.find({
       selector: {
@@ -79,13 +73,12 @@ export default function LogPage() {
       },
     })!
   );
+  // @ts-ignore-end
 
   function formatTitle(priceCents: number, nutrition: ItemInterface) {
-    return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${
-      nutrition.energyKilocalories
-    }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${
-      nutrition.carbohydrateGrams
-    }g carbs | ${nutrition.proteinGrams}g protein`;
+    return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${nutrition.energyKilocalories
+      }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${nutrition.carbohydrateGrams
+      }g carbs | ${nutrition.proteinGrams}g protein`;
   }
 
   function titleForItemInterface(item: ItemInterface) {
