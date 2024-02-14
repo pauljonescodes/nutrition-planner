@@ -122,6 +122,10 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
               `subitems.${props.index}.itemId`,
               itemDocument.id
             );
+            props.formikProps.setFieldValue(
+              `subitems.${props.index}.item`,
+              undefined
+            );
             setNameSearchState(undefined);
           }}
         >

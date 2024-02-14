@@ -51,14 +51,18 @@ export async function upsertLogInterface(
 ) {
   if (item.subitems && item.subitems.length > 0) {
     const originalIds = item.subitems.map((value) => value.itemId!) ?? [];
+    console.log(originalIds);
     const findByOriginalIdsMap = await collection?.findByIds(originalIds).exec();
+    console.log(findByOriginalIdsMap);
     for (const [originalSubitemId, originalSubitem] of Array.from(
       findByOriginalIdsMap ?? []
     )) {
       const newSubitem = await originalSubitem.recursivelyUpsertNewSubitems();
+      console.log(newSubitem);
       item.subitems.forEach(function (value, index) {
         if (value.itemId == originalSubitemId) {
           item.subitems![index].itemId = newSubitem.id;
+          console.log("SETTING UNDEFINED");
           item.subitems![index].item = undefined;
         }
       });
@@ -71,6 +75,8 @@ export async function upsertLogInterface(
     type: ItemTypeEnum.log,
     subitems: item.subitems,
   } as any;
+
+  console.log(thing);
 
   await collection?.upsert(thing);
 }

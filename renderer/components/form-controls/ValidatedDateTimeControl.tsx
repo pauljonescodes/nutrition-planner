@@ -6,6 +6,7 @@ import {
   SpaceProps,
 } from "@chakra-ui/react";
 import { FormikProps } from "formik";
+import moment from "moment";
 import { RefObject } from "react";
 import Datetime from "react-datetime";
 
@@ -51,7 +52,11 @@ export function ValidatedDatetimeControl<T>(
         }}
         closeOnSelect
         onChange={(value: string | moment.Moment) => {
-          props.formikProps.setFieldValue(props.name, value);
+          let formattedValue = value;
+          if (moment.isMoment(value)) {
+            formattedValue = value.toISOString(); 
+          }
+          props.formikProps.setFieldValue(props.name, formattedValue);
         }}
         //
         value={props.value ?? ""}

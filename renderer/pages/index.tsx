@@ -102,6 +102,7 @@ export default function LogPage() {
         datesInRange.push(currentDate);
         currentDate = moment(currentDate).add(1, "day").toDate();
       }
+
       const populatedResults = await recursivelyPopulateSubitemsOfItems(
         query.result
       );
