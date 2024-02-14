@@ -7,7 +7,6 @@ import {
   Spacer,
   useColorModeValue,
 } from "@chakra-ui/react";
-
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
@@ -182,7 +181,7 @@ export function MenuHStack() {
       />
       <LogDrawer
         item={logDrawerItem}
-        onResult={async (item) => {
+        onResult={async (item: ItemInterface | null) => {
           setLogDrawerItem(null);
           if (item) {
             await upsertLogInterface(item, collection ?? undefined);

@@ -26,7 +26,7 @@ export const yupSubitemSchema = object({
 export type YupItemType = InferType<typeof yupItemSchema>;
 export const yupItemSchema: Schema<ItemInterface> = object({
   id: string().label("ID"),
-  date: date().label("Date").meta({
+  date: string().label("Date").meta({
     placeholder: "Date & time",
     key: "date",
   }),
