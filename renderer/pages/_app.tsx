@@ -19,8 +19,8 @@ import "../../styles/react-big-calendar.scss";
 import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
 import { RxDBDatabaseType, initRxDBDatabase } from "../data/database";
-import useLocalStorage from "../utilities/useLocalStorage";
-import { replicateCouchDB } from 'rxdb/plugins/replication-couchdb';
+// import useLocalStorage from "../utilities/useLocalStorage";
+// import { replicateCouchDB } from 'rxdb/plugins/replication-couchdb';
 
 export default function App(props: AppProps) {
   const [database, setDatabase] = useState<RxDBDatabaseType | undefined>(
@@ -61,7 +61,7 @@ export default function App(props: AppProps) {
   useEffect(() => {
     addRxPlugin(RxDBQueryBuilderPlugin);
     addRxPlugin(RxDBJsonDumpPlugin);
-    addRxPlugin(RxDBDevModePlugin);
+    //addRxPlugin(RxDBDevModePlugin);
     addRxPlugin(RxDBLeaderElectionPlugin);
     initRxDBDatabase("nutrition-planner-db", getRxStorageDexie()).then(
       setDatabase
