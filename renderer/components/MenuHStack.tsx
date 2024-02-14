@@ -185,8 +185,7 @@ export function MenuHStack() {
         onResult={async (item) => {
           setLogDrawerItem(null);
           if (item) {
-            const a1 = await upsertLogInterface(item, collection ?? undefined);
-            console.log(a1);
+            await upsertLogInterface(item, collection ?? undefined);
           }
         }}
       />
