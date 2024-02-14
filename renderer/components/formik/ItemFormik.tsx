@@ -18,7 +18,7 @@ export function ItemFormik(props: ItemFormProps) {
   const [initialValuesState, setInitialValuesState] = useState<ItemInterface>({
     id: thisItemId,
     type: ItemTypeEnum.item,
-    date: props.item?.date ?? new Date(),
+    date: props.item?.date ?? new Date().toISOString(),
     name: props.item?.name,
     priceCents: props.item?.priceCents,
     massGrams: props.item?.massGrams,

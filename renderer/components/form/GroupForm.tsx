@@ -4,10 +4,10 @@ import { Form, FormikProps } from "formik";
 import { FormEvent, RefObject } from "react";
 import { ItemInterface } from "../../data/interfaces";
 import { ItemTypeEnum } from "../../data/item-type-enum";
-import { yupItemSchema } from "../../data/yup-schema";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
+// import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 type GroupFormProps = {
   formikProps: FormikProps<ItemInterface>;
@@ -20,6 +20,7 @@ export default function GroupForm(props: GroupFormProps) {
       noValidate={true}
       onSubmit={(e) => {
         e.preventDefault();
+        console.log(props.formikProps.errors);
         props.formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
       }}
     >
@@ -27,7 +28,8 @@ export default function GroupForm(props: GroupFormProps) {
         value={props.formikProps.values.name}
         error={props.formikProps.errors.name}
         isRequired={true}
-        yupSchemaField={yupItemSchema.fields.name}
+        name="name"
+        placeholder="Name"
         formikProps={props.formikProps}
         spaceProps={{ pb: 2 }}
         inputFieldRef={props.firstInputFieldRef}
@@ -37,7 +39,8 @@ export default function GroupForm(props: GroupFormProps) {
         isRequired={true}
         value={props.formikProps.values.count}
         error={props.formikProps.errors.count}
-        yupSchemaField={yupItemSchema.fields.count}
+        name="count"
+        placeholder="Servings"
         formikProps={props.formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -45,6 +48,7 @@ export default function GroupForm(props: GroupFormProps) {
       <SubitemFieldArray
         formikProps={props.formikProps}
         itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
+        name={"subitems"}
       />
 
       <Center>
@@ -56,6 +60,10 @@ export default function GroupForm(props: GroupFormProps) {
           >
             Submit
           </Button>
+          {/* <PriceNutritionGrid
+            priceCents={totalPriceInCents}
+            nutritionInfo={totalNutritionInfo}
+          /> */}
         </VStack>
       </Center>
     </Form>

@@ -19,15 +19,14 @@ import { useEffect, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import {
   ItemInterface,
+  SubitemInterface,
   itemMultiplyNutrition,
   itemZeroNutrition,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
-  SubitemInterface,
 } from "../../data/interfaces";
 import { ItemTypeEnum } from "../../data/item-type-enum";
 import { RxDBItemDocument } from "../../data/rxdb";
-import { yupSubitemSchema } from "../../data/yup-schema";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 interface SubitemAutoCompleteInputProps {
@@ -53,7 +52,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
   const { result } = useRxQuery(
     collection?.find({
       selector: {
-        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
+        name: { $regex: `\\b${nameSearchState}.*` },
         type: {
           $in: props.itemTypesIn,
         },
@@ -110,7 +109,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
             value={props.value.count}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            placeholder={yupSubitemSchema.fields.count.spec.label}
+            placeholder={"Servings"}
           />
         </NumberInput>
         <AutoComplete
@@ -123,11 +122,15 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
               `subitems.${props.index}.itemId`,
               itemDocument.id
             );
+            props.formikProps.setFieldValue(
+              `subitems.${props.index}.item`,
+              undefined
+            );
             setNameSearchState(undefined);
           }}
         >
           <AutoCompleteInput
-            placeholder={yupSubitemSchema.fields.itemId.spec.label}
+            placeholder={"Name"}
             value={nameSearchState ?? subitemNameState ?? ""}
             onChange={async (event) => {
               setNameSearchState(event.target.value);

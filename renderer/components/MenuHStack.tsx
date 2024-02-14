@@ -7,7 +7,6 @@ import {
   Spacer,
   useColorModeValue,
 } from "@chakra-ui/react";
-
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { useRxCollection } from "rxdb-hooks";
@@ -148,7 +147,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setItemDrawerItem(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             collection?.upsert(item);
           }
         }}
@@ -158,7 +157,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setGroupDrawerItem(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             item.subitems = item.subitems?.map((value) => {
               return { itemId: value.itemId, count: value.count };
             });
@@ -171,7 +170,7 @@ export function MenuHStack() {
         onResult={(item) => {
           setPlanDrawerItem(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             item.subitems = item.subitems?.map((value) => {
               return { itemId: value.itemId, count: value.count };
             });
@@ -182,11 +181,10 @@ export function MenuHStack() {
       />
       <LogDrawer
         item={logDrawerItem}
-        onResult={async (item) => {
+        onResult={async (item: ItemInterface | null) => {
           setLogDrawerItem(null);
           if (item) {
-            const a1 = await upsertLogInterface(item, collection ?? undefined);
-            console.log(a1);
+            await upsertLogInterface(item, collection ?? undefined);
           }
         }}
       />

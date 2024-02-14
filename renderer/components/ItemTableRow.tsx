@@ -55,6 +55,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
       priceMultiple = props.document.count ?? 1;
     }
   } else {
+    priceMultiple = props.document.count ?? 1;
     if (props.priceType === ServingOrTotalEnum.serving) {
       priceDenominator = props.document.count ?? 1;
     }

@@ -6,13 +6,14 @@ import {
   SpaceProps,
 } from "@chakra-ui/react";
 import { FormikProps } from "formik";
+import moment from "moment";
 import { RefObject } from "react";
 import Datetime from "react-datetime";
-import { BaseSchema } from "yup";
 
 interface ValidatedDatetimeControlProps<T> {
   formikProps: FormikProps<T>;
-  yupSchemaField: BaseSchema;
+  name: string;
+  placeholder?: string;
   value?: Date; // props.formikProps.values.name as string | undefined
   error?: string; // props.formikProps.errors.name
   spaceProps?: SpaceProps;
@@ -35,16 +36,14 @@ export function ValidatedDatetimeControl<T>(
         // props.yupSchemaField.describe().tests[0].name === "required"
       }
     >
-      <FormLabel>
-        {props.formLabelText ?? props.yupSchemaField.spec.label}
-      </FormLabel>
+      <FormLabel>{props.formLabelText ?? props.placeholder}</FormLabel>
       <Datetime
         inputProps={{
           ref: props.inputFieldRef,
           onChange: props.formikProps.handleChange,
           onBlur: props.formikProps.handleBlur,
-          placeholder: props.yupSchemaField.spec.meta["placeholder"],
-          name: props.yupSchemaField.spec.meta["key"], // not sure about this
+          placeholder: props.placeholder,
+          name: props.name,
           onPaste: (e) => {
             if (props.onPaste) {
               props.onPaste(e.clipboardData.getData("Text"));
@@ -53,10 +52,11 @@ export function ValidatedDatetimeControl<T>(
         }}
         closeOnSelect
         onChange={(value: string | moment.Moment) => {
-          props.formikProps.setFieldValue(
-            props.yupSchemaField.spec.meta["key"],
-            value
-          );
+          let formattedValue = value;
+          if (moment.isMoment(value)) {
+            formattedValue = value.toISOString(); 
+          }
+          props.formikProps.setFieldValue(props.name, formattedValue);
         }}
         //
         value={props.value ?? ""}

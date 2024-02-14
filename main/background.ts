@@ -1,8 +1,9 @@
-import { app } from "electron";
+import { app, ipcMain } from "electron";
 import serve from "electron-serve";
+import path from "path";
 import { createWindow } from "./helpers";
 
-const isProd: boolean = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV === "production";
 
 if (isProd) {
   serve({ directory: "app" });
@@ -17,6 +18,9 @@ if (isProd) {
     width: 1000,
     height: 600,
     autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
   });
 
   if (isProd) {
@@ -30,4 +34,8 @@ if (isProd) {
 
 app.on("window-all-closed", () => {
   app.quit();
+});
+
+ipcMain.on("message", async (event, arg) => {
+  event.reply("message", `${arg} World!`);
 });

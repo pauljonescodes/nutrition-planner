@@ -16,11 +16,12 @@ import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import {
   Calendar,
+  Event,
   Culture,
-  dateFnsLocalizer,
   DateLocalizer,
   DateRange,
   View,
+  dateFnsLocalizer,
 } from "react-big-calendar";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { useWindowSize } from "usehooks-ts";
@@ -35,8 +36,8 @@ import {
 } from "../data/interfaces";
 import { ItemTypeEnum } from "../data/item-type-enum";
 import {
-  recursivelyPopulateSubitemsOfItems,
   RxDBItemDocument,
+  recursivelyPopulateSubitemsOfItems,
 } from "../data/rxdb";
 import { currencyFormatter } from "../utilities/currency-formatter";
 
@@ -44,14 +45,6 @@ export interface RangeType {
   start: Date;
   end: Date;
 }
-
-type EventType = {
-  title: string;
-  start: Date;
-  end: Date;
-  allDay: boolean;
-  resource: ItemInterface;
-};
 
 export default function LogPage() {
   const [deleteItemState, setDeleteItemState] =
@@ -62,12 +55,13 @@ export default function LogPage() {
     start: moment().startOf("day").toDate(),
     end: moment().endOf("day").toDate(),
   });
-  const [eventsState, setEventsState] = useState<EventType[] | undefined>([]);
-  const [selectedEvent, setModalEvent] = useState<EventType | null>(null);
+  const [eventsState, setEventsState] = useState<Event[] | undefined>([]);
+  const [selectedEvent, setModalEvent] = useState<Event | null>(null);
   const [editItemState, setEditItemState] = useState<RxDBItemDocument | null>(
     null
   );
 
+  // @ts-ignore-start
   const query = useRxQuery(
     collection?.find({
       selector: {
@@ -79,13 +73,12 @@ export default function LogPage() {
       },
     })!
   );
+  // @ts-ignore-end
 
   function formatTitle(priceCents: number, nutrition: ItemInterface) {
-    return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${
-      nutrition.energyKilocalories
-    }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${
-      nutrition.carbohydrateGrams
-    }g carbs | ${nutrition.proteinGrams}g protein`;
+    return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${nutrition.energyKilocalories
+      }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${nutrition.carbohydrateGrams
+      }g carbs | ${nutrition.proteinGrams}g protein`;
   }
 
   function titleForItemInterface(item: ItemInterface) {
@@ -102,6 +95,7 @@ export default function LogPage() {
         datesInRange.push(currentDate);
         currentDate = moment(currentDate).add(1, "day").toDate();
       }
+
       const populatedResults = await recursivelyPopulateSubitemsOfItems(
         query.result
       );

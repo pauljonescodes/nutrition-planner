@@ -20,7 +20,7 @@ export function LogFormik(props: LogFormProps) {
     ...yupItemSchema.getDefault(),
     id: thisItemId,
     type: ItemTypeEnum.log,
-    date: new Date(props.item?.date ?? new Date()),
+    date: props.item?.date ?? new Date().toISOString(),
     name: props.item?.name ?? `log`,
     massGrams: 0,
     count: 1,
@@ -48,7 +48,7 @@ export function LogFormik(props: LogFormProps) {
       onSubmit={(values, helpers) => {
         props.onSubmit({
           ...values,
-          name: `${values.date?.toISOString()}`,
+          name: values.date,
         });
         helpers.resetForm();
       }}

@@ -15,7 +15,6 @@ import { Fragment } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { RxDBItemDocument } from "../data/rxdb";
 import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
-import { yupItemSchema } from "../data/yup-schema";
 import { ItemTableRow } from "./ItemTableRow";
 
 type ItemTableContainerProps = {
@@ -47,7 +46,7 @@ export default function ItemInfiniteTableContainer(
               <Th width={"144px"}>Actions</Th>
               <Th width={"496px"}>
                 <Input
-                  placeholder={yupItemSchema.fields.name.spec.label}
+                  placeholder={"Name"}
                   value={props.nameSearch}
                   onChange={(e) => {
                     props.onNameSearchChange(e.currentTarget.value);
@@ -70,16 +69,12 @@ export default function ItemInfiniteTableContainer(
                   {props.servingOrTotal}
                 </Button>
               </Th>
-              <Th isNumeric>{yupItemSchema.fields.count.spec.label}</Th>
-              <Th isNumeric>{yupItemSchema.fields.massGrams.spec.label}</Th>
-              <Th isNumeric>
-                {yupItemSchema.fields.energyKilocalories.spec.label}
-              </Th>
-              <Th isNumeric>{yupItemSchema.fields.fatGrams.spec.label}</Th>
-              <Th isNumeric>
-                {yupItemSchema.fields.carbohydrateGrams.spec.label}
-              </Th>
-              <Th isNumeric>{yupItemSchema.fields.proteinGrams.spec.label}</Th>
+              <Th isNumeric>{"Count"}</Th>
+              <Th isNumeric>{"Mass (g)"}</Th>
+              <Th isNumeric>{"Energy (kcal)"}</Th>
+              <Th isNumeric>{"Fat (g)"}</Th>
+              <Th isNumeric>{"Carbohydrates (g)"}</Th>
+              <Th isNumeric>{"Protein (g)"}</Th>
             </Tr>
           </Thead>
           <InfiniteScroll

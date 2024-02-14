@@ -8,11 +8,11 @@ import {
 } from "@chakra-ui/react";
 import { FormikProps } from "formik";
 import { RefObject } from "react";
-import { BaseSchema } from "yup";
 
 interface ValidatedFormikControlProps<T> {
   formikProps: FormikProps<T>;
-  yupSchemaField: BaseSchema;
+  placeholder: string;
+  name: string;
   value?: string; // props.formikProps.values.name as string | undefined
   error?: string; // props.formikProps.errors.name
   spaceProps?: SpaceProps;
@@ -35,15 +35,13 @@ export function ValidatedFormikControl<T>(
         // props.yupSchemaField.describe().tests[0].name === "required"
       }
     >
-      <FormLabel>
-        {props.formLabelText ?? props.yupSchemaField.spec.label}
-      </FormLabel>
+      <FormLabel>{props.formLabelText ?? props.placeholder}</FormLabel>
       <Input
         ref={props.inputFieldRef}
         onChange={props.formikProps.handleChange}
         onBlur={props.formikProps.handleBlur}
-        placeholder={props.yupSchemaField.spec.meta["placeholder"]}
-        name={props.yupSchemaField.spec.meta["key"]} // not sure about this
+        placeholder={props.placeholder}
+        name={props.name} // not sure about this
         value={props.value ?? ""}
         isInvalid={props.error ? true : false}
         onPaste={(e) => {

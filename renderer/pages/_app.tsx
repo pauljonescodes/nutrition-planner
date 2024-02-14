@@ -1,61 +1,69 @@
 import {
   Box,
   ChakraProvider,
-  extendTheme,
   VStack,
+  extendTheme,
   type ThemeConfig,
 } from "@chakra-ui/react";
 
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import { addRxPlugin, RxCouchDBReplicationState } from "rxdb";
+import { addRxPlugin } from "rxdb";
 import { Provider as RxDbProvider } from "rxdb-hooks";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
 import { RxDBLeaderElectionPlugin } from "rxdb/plugins/leader-election";
-import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
-import { RxDBReplicationCouchDBPlugin } from "rxdb/plugins/replication-couchdb";
+import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import "../../styles/react-big-calendar.scss";
 import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
-import { initRxDBDatabase, RxDBDatabaseType } from "../data/database";
-import useLocalStorage from "../utilities/useLocalStorage";
+import { RxDBDatabaseType, initRxDBDatabase } from "../data/database";
+// import useLocalStorage from "../utilities/useLocalStorage";
+// import { replicateCouchDB } from 'rxdb/plugins/replication-couchdb';
 
 export default function App(props: AppProps) {
   const [database, setDatabase] = useState<RxDBDatabaseType | undefined>(
     undefined
   );
 
-  const [replicationState, setReplicationState] =
-    useState<RxCouchDBReplicationState | null>(null);
+  // const [replicationState, setReplicationState] =
+  //   useState<any | null>(null);
 
-  const [databaseUrlLocalStorage] = useLocalStorage<string | null>(
-    "nutrition-planner-database-url",
-    null
-  );
+  // const [databaseUrlLocalStorage] = useLocalStorage<string | null>(
+  //   "nutrition-planner-database-url",
+  //   null
+  // );
+
+  // useEffect(() => {
+  //   if (databaseUrlLocalStorage !== null && database?.collections.item != undefined) {
+  //     console.log(databaseUrlLocalStorage);
+  //     const replicated = replicateCouchDB(
+  //       {
+  //         replicationIdentifier: 'np-couchdb-replication',
+  //         collection: database?.collections.item,
+  //         url: databaseUrlLocalStorage,
+  //         live: true,
+  //         fetch: (input, init) =>
+  //         {
+  //           console.log(input);
+  //         }
+  //       }
+  //     );
+  //     replicated.reSync();
+  //     console.log(replicated.isStopped());
+  //     setReplicationState(replicated);
+  //   } else if (replicationState !== null) {
+  //     replicationState.cancel();
+  //   }
+  // }, [databaseUrlLocalStorage, database]);
 
   useEffect(() => {
-    if (databaseUrlLocalStorage !== null) {
-      setReplicationState(
-        database?.collections.item.syncCouchDB({
-          remote: databaseUrlLocalStorage,
-        }) ?? null
-      );
-    } else if (replicationState !== null) {
-      replicationState.cancel();
-    }
-  }, [databaseUrlLocalStorage, database]);
-
-  useEffect(() => {
-    addPouchPlugin(require("pouchdb-adapter-idb"));
     addRxPlugin(RxDBQueryBuilderPlugin);
     addRxPlugin(RxDBJsonDumpPlugin);
-    addRxPlugin(RxDBDevModePlugin);
-    addRxPlugin(RxDBReplicationCouchDBPlugin);
+    //addRxPlugin(RxDBDevModePlugin);
     addRxPlugin(RxDBLeaderElectionPlugin);
-    addPouchPlugin(require("pouchdb-adapter-http"));
-    initRxDBDatabase("nutrition-planner-db", getRxStoragePouch("idb", {})).then(
+    initRxDBDatabase("nutrition-planner-db", getRxStorageDexie()).then(
       setDatabase
     );
   }, []);
@@ -85,7 +93,7 @@ export default function App(props: AppProps) {
   });
 
   return (
-    <RxDbProvider db={database} idAttribute="id">
+    <RxDbProvider db={database}>
       <ChakraProvider theme={theme}>
         <VStack spacing={0} align="stretch" minH="100vh">
           <MenuHStack />

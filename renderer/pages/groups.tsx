@@ -1,8 +1,8 @@
 import { Fragment, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { GroupDrawer } from "../components/drawers/GroupDrawer";
 import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
+import { GroupDrawer } from "../components/drawers/GroupDrawer";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/item-type-enum";
 import { RxDBItemDocument } from "../data/rxdb";
@@ -21,12 +21,15 @@ export default function GroupsPage() {
   const [servingOrTotalState, setServingOrTotalState] =
     useState<ServingOrTotalEnum>(ServingOrTotalEnum.serving);
   const collection = useRxCollection<RxDBItemDocument>("item");
+
+  const selector: any = {
+    type: ItemTypeEnum.group,
+    name: { $regex: `\\b${nameSearchState}.*` },
+  };
+
   const query = useRxQuery(
     collection?.find({
-      selector: {
-        type: ItemTypeEnum.group,
-        name: { $regex: new RegExp("\\b" + nameSearchState + ".*", "i") },
-      },
+      selector: selector,
     })!,
     {
       pageSize: 12,
@@ -55,7 +58,7 @@ export default function GroupsPage() {
           const newValue = value.toMutableJSON();
           const id = dataid();
           newValue.id = id;
-          newValue.date = new Date();
+          newValue.date = new Date().toISOString();
           newValue.name = `Copied ${newValue.name}`;
           collection?.upsert(newValue);
         }}
@@ -68,7 +71,7 @@ export default function GroupsPage() {
         onResult={async (item) => {
           setEditItemState(null);
           if (item) {
-            item.date = new Date();
+            item.date = new Date().toISOString();
             collection?.upsert(item);
             query.resetList();
           }

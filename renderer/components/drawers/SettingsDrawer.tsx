@@ -13,10 +13,10 @@ import {
   HStack,
   Input,
   Text,
+  VStack,
   useColorMode,
   useColorModeValue,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import FileSaver from "file-saver";
 import { Fragment, useEffect, useState } from "react";
@@ -48,11 +48,14 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
 
   const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
-  const [openFileSelector, { filesContent, loading: filesLoading }] =
-    useFilePicker({
-      accept: ".json",
-      multiple: false,
-    });
+  const {
+    filesContent,
+    loading: filesLoading,
+    openFilePicker,
+  } = useFilePicker({
+    accept: ".json",
+    multiple: false,
+  });
 
   async function importFile() {
     if (filesContent.length > 0) {
@@ -92,7 +95,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               <Button onClick={toggleColorMode} width={"full"}>
                 Toggle {colorMode === "light" ? "Dark" : "Light"} UI
               </Button>
-              <FormControl>
+              {/* <FormControl>
                 <FormLabel>Database URL</FormLabel>
                 <HStack>
                   <Input
@@ -110,9 +113,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                         isValidUrl(databaseUrlStringState ?? undefined)
                       ) {
                         setDatabaseUrlLocalStorage(databaseUrlStringState);
-                        collection.syncCouchDB({
-                          remote: databaseUrlStringState,
-                        });
                       } else {
                         setDatabaseUrlLocalStorage(null);
                       }
@@ -126,7 +126,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   To sync your data, paste a URL pointing to a CouchDB database
                   above.
                 </FormHelperText>
-              </FormControl>
+              </FormControl> */}
 
               <Button
                 width={"full"}
@@ -151,7 +151,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 width={"full"}
                 disabled={loading}
                 onClick={() => {
-                  openFileSelector();
+                  openFilePicker();
                 }}
                 leftIcon={<DownloadIcon transform={"scaleY(-1)"} />}
               >

@@ -1,7 +1,9 @@
-import { expect, test } from "@jest/globals";
+
 import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
-import { addPouchPlugin, getRxStoragePouch } from "rxdb/plugins/pouchdb";
+import {
+  getRxStorageMemory
+} from 'rxdb/plugins/storage-memory';
 import { initRxDBDatabase } from "./database";
 import { dataid } from "./dataid";
 import {
@@ -10,13 +12,12 @@ import {
 } from "./interfaces";
 import { ItemTypeEnum } from "./item-type-enum";
 
-addPouchPlugin(require("pouchdb-adapter-memory"));
 addRxPlugin(RxDBDevModePlugin);
 
 test("database to init", async () => {
   const database = await initRxDBDatabase(
     "nutrition-planner-testdb",
-    getRxStoragePouch("memory")
+    getRxStorageMemory()
   );
   expect(database).toBeTruthy();
 
@@ -25,7 +26,7 @@ test("database to init", async () => {
   const item01Id = dataid();
   await database?.collections.item.upsert({
     id: item01Id,
-    date: new Date(),
+    date: new Date().toISOString(),
     type: ItemTypeEnum.item,
     name: "Test item 01",
     priceCents: 100, // 10
@@ -47,7 +48,7 @@ test("database to init", async () => {
   const item02Id = dataid();
   await database?.collections.item.upsert({
     id: item02Id,
-    date: new Date(),
+    date: new Date().toISOString(),
     type: ItemTypeEnum.item,
     name: "Test item 02",
     priceCents: 200, // 20
@@ -69,7 +70,7 @@ test("database to init", async () => {
   const group01IdVal40 = dataid();
   await database?.collections.item.upsert({
     id: group01IdVal40,
-    date: new Date(),
+    date: new Date().toISOString(),
     type: ItemTypeEnum.group,
     name: "Test group 01",
     count: 2, // 0.40
@@ -82,7 +83,7 @@ test("database to init", async () => {
   const group02IdVal20 = dataid();
   await database?.collections.item.upsert({
     id: group02IdVal20,
-    date: new Date(),
+    date: new Date().toISOString(),
     type: ItemTypeEnum.group,
     name: "Test group 02",
     count: 7, // 0.20 2
@@ -95,7 +96,7 @@ test("database to init", async () => {
   const plan01Id = dataid();
   await database?.collections.item.upsert({
     id: plan01Id,
-    date: new Date(),
+    date: new Date().toISOString(),
     type: ItemTypeEnum.plan,
     name: "Test place 01",
     count: 2, // 70
@@ -105,7 +106,7 @@ test("database to init", async () => {
     ],
   });
 
-  const foundItems01 = (await itemCollection?.findOne(plan01Id).exec())!;
+  const foundItems01 = (await itemCollection!.findOne(plan01Id).exec())!;
   const populatedItem = await foundItems01.recursivelyPopulateSubitems();
   const servingNutrtion = populatedItemNutrition(populatedItem);
   const servingPriceCents = populatedItemPriceCents(populatedItem);

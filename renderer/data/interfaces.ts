@@ -5,7 +5,7 @@ import { RxDBItemDocument } from "./rxdb";
 
 export interface ItemInterface {
   id?: string;
-  date?: Date;
+  date?: string;
   type?: ItemTypeEnum;
   name?: string;
   priceCents?: number;
@@ -42,37 +42,43 @@ export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
     }
     return result;
   },
-  []);
+    []);
 }
 
 export async function upsertLogInterface(
   item: ItemInterface,
   collection?: RxCollection<RxDBItemDocument>
-): Promise<RxDBItemDocument | undefined> {
+) {
   if (item.subitems && item.subitems.length > 0) {
     const originalIds = item.subitems.map((value) => value.itemId!) ?? [];
-    const findByOriginalIdsMap = await collection?.findByIds(originalIds);
+    console.log(originalIds);
+    const findByOriginalIdsMap = await collection?.findByIds(originalIds).exec();
+    console.log(findByOriginalIdsMap);
     for (const [originalSubitemId, originalSubitem] of Array.from(
       findByOriginalIdsMap ?? []
     )) {
       const newSubitem = await originalSubitem.recursivelyUpsertNewSubitems();
+      console.log(newSubitem);
       item.subitems.forEach(function (value, index) {
         if (value.itemId == originalSubitemId) {
           item.subitems![index].itemId = newSubitem.id;
+          console.log("SETTING UNDEFINED");
           item.subitems![index].item = undefined;
         }
       });
     }
   }
 
-  console.log(item);
-
-  return collection?.upsert({
+  const thing: any = {
     id: dataid(),
-    date: item.date?.toISOString() as any,
+    date: item.date ?? new Date().toISOString(),
     type: ItemTypeEnum.log,
     subitems: item.subitems,
-  });
+  } as any;
+
+  console.log(thing);
+
+  await collection?.upsert(thing);
 }
 
 export async function recursivelyPopulateSubitems(
@@ -83,7 +89,7 @@ export async function recursivelyPopulateSubitems(
 
   if (mutableThis.subitems && mutableThis.subitems.length > 0) {
     const ids = mutableThis.subitems.map((value) => value.itemId!) ?? [];
-    const findByIdsMap = await collection?.findByIds(ids);
+    const findByIdsMap = await collection?.findByIds(ids).exec();
     for (const [subitemId, subitem] of Array.from(findByIdsMap ?? [])) {
       const populatedSubitem = await subitem.recursivelyPopulateSubitems();
       mutableThis.subitems.forEach(function (value, index) {
@@ -108,18 +114,22 @@ export function populatedItemServingNutrition(
   }
 
   if (item.subitems && item.subitems.length > 0) {
+
+    const toSum = item.subitems.map((value) => {
+      if (value.item) {
+        const item = itemMultiplyNutrition(
+          populatedItemServingNutrition(value.item!, theDepth + 1),
+          value.count!
+        );
+        return item;
+      } else {
+        return itemZeroNutrition();
+      }
+    });
+
     return itemDivideNutrition(
       itemSumNutrition(
-        item.subitems.map((value) => {
-          if (value.item) {
-            return itemMultiplyNutrition(
-              populatedItemServingNutrition(value.item!, theDepth + 1),
-              value.count!
-            );
-          } else {
-            return itemZeroNutrition();
-          }
-        })
+        toSum
       ),
       item.count ?? 1
     );
@@ -144,19 +154,21 @@ export function populatedItemServingPriceCents(
         .map((value) => {
           if (value.item) {
             return populatedItemServingPriceCents(
-              value.item ?? 0,
+              value.item,
               theDepth + 1
-            );
+            ) * (value.count ?? 1);
           } else {
             return 0;
           }
         })
-        .reduce((previous, current) => previous + current, 0) /
-      (item.count ?? 1)
+        .reduce((previous, current) => previous + current, 0) / (item.count ?? 1)
     );
   }
 
-  return (item.priceCents ?? 0) / (item.count ?? 1);
+
+  const priceCents = (item.priceCents ?? 0) / (item.count ?? 1);
+
+  return priceCents;
 }
 
 export function itemZeroNutrition(): ItemInterface {

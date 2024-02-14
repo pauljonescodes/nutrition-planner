@@ -23,7 +23,7 @@ export function GroupFormik(props: GroupFormikProps) {
         id: thisItemId,
         type: ItemTypeEnum.group,
         name: props.item?.name,
-        date: props.item?.date ?? new Date(),
+        date: props.item?.date ?? new Date().toISOString(),
         priceCents: 0,
         count: props.item?.count,
         massGrams: 0,
