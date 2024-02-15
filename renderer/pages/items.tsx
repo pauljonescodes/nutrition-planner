@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
+import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
 import { ItemDrawer } from "../components/drawers/ItemDrawer";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/item-type-enum";
@@ -69,7 +69,7 @@ export default function ItemsPage() {
         onResult={(item) => {
           setEditItemState(null);
           if (item) {
-            item.date = new Date().toISOString(); 
+            item.date = new Date().toISOString();
             collection?.upsert(item);
           }
         }}

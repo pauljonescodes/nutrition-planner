@@ -10,7 +10,6 @@ import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { addRxPlugin } from "rxdb";
 import { Provider as RxDbProvider } from "rxdb-hooks";
-import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
 import { RxDBLeaderElectionPlugin } from "rxdb/plugins/leader-election";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
