@@ -97,7 +97,7 @@ export default function App(props: AppProps) {
     if (!database) {
       addRxPlugin(RxDBQueryBuilderPlugin);
       addRxPlugin(RxDBJsonDumpPlugin);
-      addRxPlugin(RxDBDevModePlugin);
+      //addRxPlugin(RxDBDevModePlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
       initRxDBDatabase("nutrition-planner-db", getRxStorageDexie()).then(
         setDatabase
