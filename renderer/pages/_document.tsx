@@ -11,9 +11,7 @@ export default class Document extends NextDocument {
         styles: (
           <>
             {initialProps.styles}
-            {/* Stitches CSS for SSR */}
             <style
-              id="stitches"
               dangerouslySetInnerHTML={{
                 __html: `* {
                   -ms-overflow-style: none;  /* Internet Explorer 10+ */

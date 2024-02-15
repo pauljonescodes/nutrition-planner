@@ -16,10 +16,10 @@ import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import {
   Calendar,
-  Event,
   Culture,
   DateLocalizer,
   DateRange,
+  Event,
   View,
   dateFnsLocalizer,
 } from "react-big-calendar";
@@ -61,7 +61,6 @@ export default function LogPage() {
     null
   );
 
-  // @ts-ignore-start
   const query = useRxQuery(
     collection?.find({
       selector: {
@@ -73,7 +72,6 @@ export default function LogPage() {
       },
     })!
   );
-  // @ts-ignore-end
 
   function formatTitle(priceCents: number, nutrition: ItemInterface) {
     return `${currencyFormatter.format((priceCents ?? 0) / 100)} | ${nutrition.energyKilocalories

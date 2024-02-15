@@ -32,7 +32,7 @@ type ItemTableContainerProps = {
   onDelete: (value: RxDBItemDocument) => void;
 };
 
-export default function ItemInfiniteTableContainer(
+export function ItemInfiniteTableContainer(
   props: ItemTableContainerProps
 ) {
   const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");

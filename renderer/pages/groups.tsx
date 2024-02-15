@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import ItemInfiniteTableContainer from "../components/ItemInfiniteTableContainer";
+import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
 import { GroupDrawer } from "../components/drawers/GroupDrawer";
 import { dataid } from "../data/dataid";
 import { ItemTypeEnum } from "../data/item-type-enum";
