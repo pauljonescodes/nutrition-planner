@@ -1,6 +1,7 @@
 import { DeleteIcon, DownloadIcon } from "@chakra-ui/icons";
 import {
   Button,
+  Divider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -10,7 +11,7 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  HStack,
+
   Input,
   Text,
   VStack,
@@ -25,6 +26,9 @@ import { useFilePicker } from "use-file-picker";
 import { isValidUrl } from "../../utilities/isValidUrl";
 import useLocalStorage from "../../utilities/useLocalStorage";
 import { DeleteAlertDialog } from "../DeleteAlertDialog";
+import { FIREBASE_PROJECT_ID_LOCAL_STORAGE_KEY, FIREBASE_API_KEY_LOCAL_STORAGE_KEY, FIREBASE_APP_ID_LOCAL_STORAGE_KEY } from "../../constants";
+import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+
 
 type SettingsDrawerProps = {
   isOpen: boolean;
@@ -35,12 +39,27 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const [importLoadingState, setImportLoadingState] = useState(false);
   const [showDeleteDialogState, setShowDeleteDialogState] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
-  const [databaseUrlLocalStorage, setDatabaseUrlLocalStorage] = useLocalStorage<
+
+  const [firebaseProjectIdLocalStorage, setFirebaseProjectIdLocalStorage] = useLocalStorage<
     string | null
-  >("nutrition-planner-database-url", null);
-  const [databaseUrlStringState, setDatabaseUrlStringState] = useState<
+  >(FIREBASE_PROJECT_ID_LOCAL_STORAGE_KEY, null);
+  const [firebaseProjectIdStringState, setFirebaseProjectIdStringState] = useState<
     string | null
-  >(databaseUrlLocalStorage);
+  >(firebaseProjectIdLocalStorage);
+
+  const [firebaseApiKeyLocalStorage, setFirebaseApiKeyLocalStorage] = useLocalStorage<
+    string | null
+  >(FIREBASE_API_KEY_LOCAL_STORAGE_KEY, null);
+  const [firebaseApiKeyStringState, setFirebaseApiKeyStringState] = useState<
+    string | null
+  >(firebaseApiKeyLocalStorage);
+
+  const [firebaseAppIdLocalStorage, setFirebaseAppIdLocalStorage] = useLocalStorage<
+    string | null
+  >(FIREBASE_APP_ID_LOCAL_STORAGE_KEY, null);
+  const [firebaseAppIdStringState, setFirebaseAppIdStringState] = useState<
+    string | null
+  >(firebaseAppIdLocalStorage);
 
   const database = useRxDB();
   const collection = useRxCollection("item");
@@ -95,39 +114,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               <Button onClick={toggleColorMode} width={"full"}>
                 Toggle {colorMode === "light" ? "Dark" : "Light"} UI
               </Button>
-              {/* <FormControl>
-                <FormLabel>Database URL</FormLabel>
-                <HStack>
-                  <Input
-                    value={databaseUrlStringState ?? undefined}
-                    onChange={(e) => {
-                      setDatabaseUrlStringState(e.target.value);
-                    }}
-                  />
-                  <Button
-                    w="30%"
-                    onClick={async () => {
-                      if (
-                        databaseUrlStringState !== null &&
-                        collection !== null &&
-                        isValidUrl(databaseUrlStringState ?? undefined)
-                      ) {
-                        setDatabaseUrlLocalStorage(databaseUrlStringState);
-                      } else {
-                        setDatabaseUrlLocalStorage(null);
-                      }
-                    }}
-                  >
-                    Apply
-                  </Button>
-                </HStack>
-
-                <FormHelperText>
-                  To sync your data, paste a URL pointing to a CouchDB database
-                  above.
-                </FormHelperText>
-              </FormControl> */}
-
               <Button
                 width={"full"}
                 disabled={loading}
@@ -157,6 +143,73 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               >
                 Import JSON data
               </Button>
+           
+              <Card>
+  <CardBody>
+                <FormControl>
+                
+                <VStack>
+                <FormLabel>Firebase Project ID</FormLabel>
+                  <Input
+                    value={firebaseProjectIdStringState ?? undefined}
+                    onChange={(e) => {
+                      setFirebaseProjectIdStringState(e.target.value);
+                    }}
+                  />
+                  <FormLabel>Firebase API Key</FormLabel>
+                  <Input
+                    value={firebaseApiKeyStringState ?? undefined}
+                    onChange={(e) => {
+                      setFirebaseApiKeyStringState(e.target.value);
+                    }}
+                  />
+                  <FormLabel>Firebase App ID</FormLabel>
+                  <Input
+                    value={firebaseAppIdStringState ?? undefined}
+                    onChange={(e) => {
+                      setFirebaseAppIdStringState(e.target.value);
+                    }}
+                  />
+                  <Button
+                    w="30%"
+                    onClick={async () => {
+                      if (
+                        firebaseProjectIdStringState !== null
+                      ) {
+                        setFirebaseProjectIdLocalStorage(firebaseProjectIdStringState);
+                      } else {
+                        setFirebaseProjectIdLocalStorage(null);
+                      }
+
+                      if (
+                        firebaseApiKeyStringState !== null
+                      ) {
+                        setFirebaseApiKeyLocalStorage(firebaseApiKeyStringState);
+                      } else {
+                        setFirebaseApiKeyLocalStorage(null);
+                      }
+                      
+                      if (
+                        firebaseAppIdStringState !== null
+                      ) {
+                        setFirebaseAppIdLocalStorage(firebaseAppIdStringState);
+                      } else {
+                        setFirebaseAppIdLocalStorage(null);
+                      }
+                    }}
+                  >
+                    Apply
+                  </Button>
+                </VStack>
+
+                <FormHelperText>
+                  To sync your information with Firebase, create a new project in the Firebase console and enter the project ID, API key, and app ID here.
+                </FormHelperText>
+              </FormControl>
+              </CardBody>
+              </Card>
+
+              
               <Button
                 width={"full"}
                 colorScheme="red"
