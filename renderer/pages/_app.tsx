@@ -9,8 +9,7 @@ import {
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { addRxPlugin, } from "rxdb";
-import { Provider as RxDbProvider, useRxCollection } from "rxdb-hooks";
-import { RxFirestoreReplicationState, replicateFirestore } from "rxdb/plugins/replication-firestore";
+import { Provider as RxDbProvider } from "rxdb-hooks";
 import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
 import { RxDBLeaderElectionPlugin } from "rxdb/plugins/leader-election";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
@@ -19,79 +18,11 @@ import "../../styles/react-big-calendar.scss";
 import "../../styles/react-datetime.scss";
 import { MenuHStack } from "../components/MenuHStack";
 import { RxDBDatabaseType, initRxDBDatabase } from "../data/database";
-import { useLocalStorage } from "usehooks-ts";
-import { FirebaseApp, initializeApp } from 'firebase/app';
-import { getFirestore, collection, Firestore } from 'firebase/firestore';
-import { FIREBASE_API_KEY_LOCAL_STORAGE_KEY, FIREBASE_APP_ID_LOCAL_STORAGE_KEY, FIREBASE_PROJECT_ID_LOCAL_STORAGE_KEY, FIREBASE_COLLECTION_NAME, FIREBASE_REPLICATION_IDENTIFIER } from "../constants";
-import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 
 export default function App(props: AppProps) {
   const [database, setDatabase] = useState<RxDBDatabaseType | undefined>(
     undefined
   );
-
-  const [firebaseAppState, setFirebaseAppState] =
-    useState<FirebaseApp | null>(null);
-  const [firestoreState, setFirestoreState] =
-    useState<Firestore | null>(null);
-  const [replicationState, setReplicationState] = useState<RxFirestoreReplicationState<any> | null>(null);
-
-  const [firebaseProjectId] = useLocalStorage<string | null>(
-    FIREBASE_PROJECT_ID_LOCAL_STORAGE_KEY,
-    null
-  );
-  const [firebaseApiKey] = useLocalStorage<string | null>(
-    FIREBASE_API_KEY_LOCAL_STORAGE_KEY,
-    null
-  );
-  const [firebaseAppId] = useLocalStorage<string | null>(
-    FIREBASE_APP_ID_LOCAL_STORAGE_KEY,
-    null
-  );
-
-  useEffect(() => {
-    async function initializeFirebase() {
-      if (firebaseProjectId !== null && firebaseAppId !== null && firebaseApiKey !== null && database != undefined && !replicationState) {
-        const firebaseApp = initializeApp({
-          apiKey: firebaseApiKey,
-          authDomain: `${firebaseProjectId}.firebaseapp.com`,
-          projectId: firebaseProjectId,
-          storageBucket: `${firebaseProjectId}.appspot.com`,
-          messagingSenderId: "399115775795",
-          appId: firebaseAppId
-        });
-        setFirebaseAppState(firebaseApp);
-        const firestore = getFirestore(firebaseApp);
-        setFirestoreState(firestore);
-        const firebaseCollection = collection(firestore, FIREBASE_COLLECTION_NAME);
-
-        const replicationState = replicateFirestore(
-          {
-            collection: database.item,
-            firestore: {
-              projectId: firebaseProjectId,
-              database: firestore,
-              collection: firebaseCollection
-            },
-            pull: {},
-            push: {
-              filter: (doc) => {
-                return true;
-              }
-            },
-            live: true,
-            replicationIdentifier: FIREBASE_REPLICATION_IDENTIFIER,
-            serverTimestampField: "serverTimestamp",
-          });
-        setReplicationState(replicationState);
-        replicationState.awaitInitialReplication();
-        replicationState.awaitInSync();
-        replicationState.reSync();
-      }
-    }
-
-    initializeFirebase();
-  }, [firebaseProjectId, firebaseAppId, firebaseApiKey, database, replicationState]);
 
   useEffect(() => {
     if (!database) {
