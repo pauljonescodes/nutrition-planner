@@ -3,22 +3,22 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
 import { ItemDrawer } from "../components/drawers/ItemDrawer";
-import { dataid } from "../data/dataid";
-import { ItemTypeEnum } from "../data/item-type-enum";
-import { RxDBItemDocument } from "../data/rxdb";
+import { dataid } from "../utilities/dataid";
+import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
+import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
 import {
   ServingOrTotalEnum,
   toggleServingOrTotal,
-} from "../data/serving-or-total-enum";
+} from "../data/interfaces/ServingOrTotalEnum";
 
 export default function ItemsPage() {
   const [nameSearchState, setNameSearchState] = useState<string>("");
-  const [drawerItemState, setEditItemState] = useState<RxDBItemDocument | null>(
+  const [drawerItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null
   );
   const [deleteItemState, setDeleteItemState] =
-    useState<RxDBItemDocument | null>(null);
-  const collection = useRxCollection<RxDBItemDocument>("item");
+    useState<RxNPItemDocument | null>(null);
+  const collection = useRxCollection<RxNPItemDocument>("item");
   const [servingOrTotalState, setServingOrTotalState] = useState(
     ServingOrTotalEnum.serving
   );

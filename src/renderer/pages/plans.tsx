@@ -3,19 +3,19 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
 import { PlanDrawer } from "../components/drawers/PlanDrawer";
-import { dataid } from "../data/dataid";
-import { ItemTypeEnum } from "../data/item-type-enum";
-import { RxDBItemDocument } from "../data/rxdb";
-import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
+import { dataid } from "../utilities/dataid";
+import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
+import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
+import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
 
 export default function PlansPage() {
   const [nameSearchState, setNameSearchState] = useState<string>("");
-  const [editItemState, setEditItemState] = useState<RxDBItemDocument | null>(
+  const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null
   );
   const [deleteItemState, setDeleteItemState] =
-    useState<RxDBItemDocument | null>(null);
-  const rxCollection = useRxCollection<RxDBItemDocument>("item");
+    useState<RxNPItemDocument | null>(null);
+  const rxCollection = useRxCollection<RxNPItemDocument>("item");
   const query = useRxQuery(
     rxCollection?.find({
       selector: {

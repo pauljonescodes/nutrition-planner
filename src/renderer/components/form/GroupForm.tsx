@@ -2,8 +2,8 @@ import { Button, Center, VStack } from "@chakra-ui/react";
 
 import { Form, FormikProps } from "formik";
 import { FormEvent, RefObject } from "react";
-import { ItemInterface } from "../../data/interfaces";
-import { ItemTypeEnum } from "../../data/item-type-enum";
+import { ItemInterface } from "../../data/interfaces/ItemInterface";
+import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";

@@ -2,26 +2,15 @@ import {
   array,
   date,
   InferType,
-  lazy,
   mixed,
   number,
   object,
   Schema,
   string,
 } from "yup";
-import { ItemInterface } from "./interfaces";
-import { ItemTypeEnum } from "./item-type-enum";
-
-export type YupSubitemType = InferType<typeof yupSubitemSchema>;
-export const yupSubitemSchema = object({
-  itemId: string().meta({
-    key: "itemId",
-  }),
-  item: lazy(() => yupItemSchema),
-  count: number().label("Servings").meta({
-    key: "count",
-  }),
-});
+import { ItemInterface } from "../interfaces/ItemInterface";
+import { ItemTypeEnum } from "../interfaces/ItemTypeEnum";
+import { yupSubitemSchema } from "./YupSubitemSchema";
 
 export type YupItemType = InferType<typeof yupItemSchema>;
 export const yupItemSchema: Schema<ItemInterface> = object({

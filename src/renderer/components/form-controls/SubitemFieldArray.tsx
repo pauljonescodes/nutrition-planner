@@ -1,6 +1,6 @@
 import { FieldArray, FormikProps } from "formik";
-import { ItemInterface } from "../../data/interfaces";
-import { ItemTypeEnum } from "../../data/item-type-enum";
+import { ItemInterface } from "../../data/interfaces/ItemInterface";
+import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
 import { SubitemField } from "./SubitemField";
 
 interface SubitemFieldArrayProps {

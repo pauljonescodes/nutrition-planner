@@ -13,8 +13,8 @@ import {
 
 import { Fragment } from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import { RxDBItemDocument } from "../data/rxdb";
-import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
+import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
+import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
 import { ItemTableRow } from "./ItemTableRow";
 
 type ItemTableContainerProps = {
@@ -23,13 +23,13 @@ type ItemTableContainerProps = {
   onNameSearchChange: (value: string) => void;
   servingOrTotal: ServingOrTotalEnum;
   onToggleServingOrTotal?: () => void;
-  documents?: RxDBItemDocument[] | undefined;
+  documents?: RxNPItemDocument[] | undefined;
   isFetching: boolean;
   isExhausted: boolean;
   fetchMore: () => void;
-  onEdit: (value: RxDBItemDocument) => void;
-  onCopy: (value: RxDBItemDocument) => void;
-  onDelete: (value: RxDBItemDocument) => void;
+  onEdit: (value: RxNPItemDocument) => void;
+  onCopy: (value: RxNPItemDocument) => void;
+  onDelete: (value: RxNPItemDocument) => void;
 };
 
 export function ItemInfiniteTableContainer(
@@ -83,7 +83,7 @@ export function ItemInfiniteTableContainer(
             hasMore={!props.isExhausted}
             element="tbody"
           >
-            {props.documents?.map((value: RxDBItemDocument) => (
+            {props.documents?.map((value: RxNPItemDocument) => (
               <ItemTableRow
                 key={`${value.id}-itr`}
                 document={value}

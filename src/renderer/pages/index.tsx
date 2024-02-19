@@ -29,16 +29,16 @@ import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { LogDrawer } from "../components/drawers/LogDrawer";
 import {
-  ItemInterface,
   itemSumNutrition,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
-} from "../data/interfaces";
-import { ItemTypeEnum } from "../data/item-type-enum";
+} from "../data/interfaces/ItemHelpers";
+import { ItemInterface } from "../data/interfaces/ItemInterface";
+import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
 import {
-  RxDBItemDocument,
+  RxNPItemDocument,
   recursivelyPopulateSubitemsOfItems,
-} from "../data/rxdb";
+} from "../data/rxnp/RxNPItemSchema";
 import { currencyFormatter } from "../utilities/currency-formatter";
 
 export interface RangeType {
@@ -48,8 +48,8 @@ export interface RangeType {
 
 export default function LogPage() {
   const [deleteItemState, setDeleteItemState] =
-    useState<RxDBItemDocument | null>(null);
-  const collection = useRxCollection<RxDBItemDocument>("item");
+    useState<RxNPItemDocument | null>(null);
+  const collection = useRxCollection<RxNPItemDocument>("item");
   const [viewState, setViewState] = useState<View>("day");
   const [dateRangeState, setDateRangeState] = useState<RangeType>({
     start: moment().startOf("day").toDate(),
@@ -57,7 +57,7 @@ export default function LogPage() {
   });
   const [eventsState, setEventsState] = useState<Event[] | undefined>([]);
   const [selectedEvent, setModalEvent] = useState<Event | null>(null);
-  const [editItemState, setEditItemState] = useState<RxDBItemDocument | null>(
+  const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null
   );
 

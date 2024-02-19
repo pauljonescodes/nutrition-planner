@@ -18,15 +18,15 @@ import { FieldArrayRenderProps, FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import {
-  ItemInterface,
-  SubitemInterface,
   itemMultiplyNutrition,
   itemZeroNutrition,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
-} from "../../data/interfaces";
-import { ItemTypeEnum } from "../../data/item-type-enum";
-import { RxDBItemDocument } from "../../data/rxdb";
+} from "../../data/interfaces/ItemHelpers";
+import { SubitemInterface } from "../../data/interfaces/SubitemInterface";
+import { ItemInterface } from "../../data/interfaces/ItemInterface";
+import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
+import { RxNPItemDocument } from "../../data/rxnp/RxNPItemSchema";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 interface SubitemAutoCompleteInputProps {
@@ -48,7 +48,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
     nutrition: ItemInterface;
     priceCents: number;
   } | null>(null);
-  const collection = useRxCollection<RxDBItemDocument>("item");
+  const collection = useRxCollection<RxNPItemDocument>("item");
   const { result } = useRxQuery(
     collection?.find({
       selector: {
@@ -116,7 +116,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
           openOnFocus
           onChange={async (_value, item) => {
             const itemDocument = (item as Item)
-              .originalValue as RxDBItemDocument;
+              .originalValue as RxNPItemDocument;
 
             props.formikProps.setFieldValue(
               `subitems.${props.index}.itemId`,

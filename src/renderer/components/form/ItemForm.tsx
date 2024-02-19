@@ -1,7 +1,8 @@
 import { Button, Center, VStack } from "@chakra-ui/react";
 import { Form, FormikProps } from "formik";
 import { FormEvent, RefObject } from "react";
-import { ItemInterface, itemMultiplyNutrition } from "../../data/interfaces";
+import { itemMultiplyNutrition } from "../../data/interfaces/ItemHelpers";
+import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";

@@ -1,4 +1,4 @@
-import { AddIcon, SettingsIcon } from "@chakra-ui/icons";
+import { AddIcon, InfoIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
   Button,
   ButtonGroup,
@@ -6,40 +6,43 @@ import {
   IconButton,
   Spacer,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { Fragment, useState } from "react";
-import { useRxCollection } from "rxdb-hooks";
-import { dataid } from "../data/dataid";
-import { ItemInterface, upsertLogInterface } from "../data/interfaces";
-import { ItemTypeEnum } from "../data/item-type-enum";
-import { RxDBItemDocument } from "../data/rxdb";
-import { GroupDrawer } from "./drawers/GroupDrawer";
-import { ItemDrawer } from "./drawers/ItemDrawer";
-import { LogDrawer } from "./drawers/LogDrawer";
-import { PlanDrawer } from "./drawers/PlanDrawer";
-import { SettingsDrawer } from "./drawers/SettingsDrawer";
-import { useNavigate, useLocation } from "react-router-dom";
+} from '@chakra-ui/react';
+import { Fragment, useState } from 'react';
+import { useRxCollection } from 'rxdb-hooks';
+import { dataid } from '../utilities/dataid';
+import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
+import { ItemInterface } from "../data/interfaces/ItemInterface";
+import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
+import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
+import { GroupDrawer } from './drawers/GroupDrawer';
+import { ItemDrawer } from './drawers/ItemDrawer';
+import { LogDrawer } from './drawers/LogDrawer';
+import { PlanDrawer } from './drawers/PlanDrawer';
+import { SettingsDrawer } from './drawers/SettingsDrawer';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { InfoDrawer } from './drawers/InfoDrawer';
 
 export function MenuHStack() {
   const navigate = useNavigate();
   const location = useLocation();
   const [itemDrawerItem, setItemDrawerItem] = useState<ItemInterface | null>(
-    null
+    null,
   );
   const [groupDrawerItem, setGroupDrawerItem] = useState<ItemInterface | null>(
-    null
+    null,
   );
   const [planDrawerItem, setPlanDrawerItem] = useState<ItemInterface | null>(
-    null
+    null,
   );
   const [logDrawerItem, setLogDrawerItem] = useState<ItemInterface | null>(
-    null
+    null,
   );
   const [settingsDrawerIsOpen, setSettingsDrawerIsOpen] =
     useState<boolean>(false);
+  const [infoDrawerIsOpen, setInfoDrawerIsOpen] = useState<boolean>(false);
 
-  const collection = useRxCollection<RxDBItemDocument>("item");
-  const hStackBackgroundColor = useColorModeValue("gray.50", "gray.900");
+  const collection = useRxCollection<RxNPItemDocument>('item');
+  const hStackBackgroundColor = useColorModeValue('gray.50', 'gray.900');
 
   return (
     <Fragment>
@@ -47,7 +50,7 @@ export function MenuHStack() {
         p={3}
         pr={3}
         bg={hStackBackgroundColor}
-        width={"100vw"}
+        width={'100vw'}
         overflowX="scroll"
         position="fixed"
         zIndex={999}
@@ -55,9 +58,9 @@ export function MenuHStack() {
       >
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === "/"}
+            isActive={location.pathname === '/'}
             onClick={() => {
-              navigate("/");
+              navigate('/');
             }}
           >
             Log
@@ -75,9 +78,9 @@ export function MenuHStack() {
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === "/items"}
+            isActive={location.pathname === '/items'}
             onClick={() => {
-              navigate("/items");
+              navigate('/items');
             }}
           >
             Items
@@ -95,9 +98,9 @@ export function MenuHStack() {
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === "/groups"}
+            isActive={location.pathname === '/groups'}
             onClick={() => {
-              navigate("/groups");
+              navigate('/groups');
             }}
           >
             Groups
@@ -115,9 +118,9 @@ export function MenuHStack() {
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === "/plans"}
+            isActive={location.pathname === '/plans'}
             onClick={() => {
-              navigate("/plans");
+              navigate('/plans');
             }}
           >
             Plans
@@ -136,9 +139,17 @@ export function MenuHStack() {
         <Spacer />
         <IconButton
           onClick={() => {
+            setInfoDrawerIsOpen(true);
+          }}
+          isActive={location.pathname === '/info'}
+          icon={<InfoIcon />}
+          aria-label="Info"
+        />
+        <IconButton
+          onClick={() => {
             setSettingsDrawerIsOpen(true);
           }}
-          isActive={location.pathname === "/settings"}
+          isActive={location.pathname === '/settings'}
           icon={<SettingsIcon />}
           aria-label="Settings"
         />
@@ -192,6 +203,10 @@ export function MenuHStack() {
       <SettingsDrawer
         isOpen={settingsDrawerIsOpen}
         onClose={() => setSettingsDrawerIsOpen(false)}
+      />
+      <InfoDrawer
+        isOpen={infoDrawerIsOpen}
+        onClose={() => setInfoDrawerIsOpen(false)}
       />
     </Fragment>
   );

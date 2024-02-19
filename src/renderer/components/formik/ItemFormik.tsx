@@ -1,9 +1,9 @@
 import { Formik } from "formik";
 import { RefObject, useState } from "react";
-import { dataid } from "../../data/dataid";
-import { ItemInterface } from "../../data/interfaces";
-import { ItemTypeEnum } from "../../data/item-type-enum";
-import { yupItemSchema } from "../../data/yup-schema";
+import { dataid } from "../../utilities/dataid";
+import { ItemInterface } from "../../data/interfaces/ItemInterface";
+import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
+import { yupItemSchema } from "../../data/yup/YupItemSchema";
 import ItemForm from "../form/ItemForm";
 
 export interface ItemFormProps {

@@ -6,7 +6,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { ItemInterface } from "../../data/interfaces";
+import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { LogFormik } from "../formik/LogFormik";
 
 type LogDrawerProps = {

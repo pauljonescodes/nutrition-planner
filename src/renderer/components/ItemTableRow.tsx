@@ -11,17 +11,17 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {
-  ItemInterface,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
-} from "../data/interfaces";
-import { ItemTypeEnum } from "../data/item-type-enum";
-import { RxDBItemDocument } from "../data/rxdb";
-import { ServingOrTotalEnum } from "../data/serving-or-total-enum";
+} from "../data/interfaces/ItemHelpers";
+import { ItemInterface } from "../data/interfaces/ItemInterface";
+import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
+import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
+import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
 import { currencyFormatter } from "../utilities/currency-formatter";
 
 type ItemTableRowProps = {
-  document: RxDBItemDocument;
+  document: RxNPItemDocument;
   priceType: ServingOrTotalEnum;
   onEdit: () => void;
   onCopy: () => void;
@@ -35,7 +35,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
   const [priceCentsState, setPriceCentsState] = useState<number | null>(null);
   const borderColorValue = useColorModeValue("gray.100", "gray.700");
 
-  async function populate(document: RxDBItemDocument) {
+  async function populate(document: RxNPItemDocument) {
     const populatedItem = await document.recursivelyPopulateSubitems();
     setNutritionState(populatedItemServingNutrition(populatedItem));
     setPriceCentsState(populatedItemServingPriceCents(populatedItem));

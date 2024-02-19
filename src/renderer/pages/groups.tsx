@@ -3,24 +3,24 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
 import { GroupDrawer } from "../components/drawers/GroupDrawer";
-import { dataid } from "../data/dataid";
-import { ItemTypeEnum } from "../data/item-type-enum";
-import { RxDBItemDocument } from "../data/rxdb";
+import { dataid } from "../utilities/dataid";
+import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
+import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
 import {
   ServingOrTotalEnum,
   toggleServingOrTotal,
-} from "../data/serving-or-total-enum";
+} from "../data/interfaces/ServingOrTotalEnum";
 
 export default function GroupsPage() {
   const [nameSearchState, setNameSearchState] = useState<string>("");
-  const [editItemState, setEditItemState] = useState<RxDBItemDocument | null>(
+  const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null
   );
   const [deleteItemState, setDeleteItemState] =
-    useState<RxDBItemDocument | null>(null);
+    useState<RxNPItemDocument | null>(null);
   const [servingOrTotalState, setServingOrTotalState] =
     useState<ServingOrTotalEnum>(ServingOrTotalEnum.serving);
-  const collection = useRxCollection<RxDBItemDocument>("item");
+  const collection = useRxCollection<RxNPItemDocument>("item");
 
   const selector: any = {
     type: ItemTypeEnum.group,

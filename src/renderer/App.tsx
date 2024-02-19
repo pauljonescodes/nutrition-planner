@@ -11,7 +11,8 @@ import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { MenuHStack } from './components/MenuHStack';
-import { RxDBDatabaseType, initRxDBDatabase } from './data/database';
+import { initRxNPDatabase } from './data/rxnp/RxNPDatabaseHelpers';
+import { RxNPDatabaseType } from "./data/rxnp/RxNPDatabaseType";
 import {
   Box,
   ChakraProvider,
@@ -25,7 +26,7 @@ import '../../styles/react-big-calendar.scss';
 import '../../styles/react-datetime.scss';
 
 export default function App() {
-  const [database, setDatabase] = useState<RxDBDatabaseType | undefined>(
+  const [database, setDatabase] = useState<RxNPDatabaseType | undefined>(
     undefined,
   );
 
@@ -35,7 +36,7 @@ export default function App() {
       addRxPlugin(RxDBJsonDumpPlugin);
       //addRxPlugin(RxDBDevModePlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
-      initRxDBDatabase('nutrition-planner-db', getRxStorageDexie()).then(
+      initRxNPDatabase('nutrition-planner-db', getRxStorageDexie()).then(
         setDatabase,
       );
     }

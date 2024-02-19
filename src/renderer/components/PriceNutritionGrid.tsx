@@ -1,5 +1,5 @@
 import { Grid, GridItem, Text, useColorModeValue } from "@chakra-ui/react";
-import { ItemInterface } from "../data/interfaces";
+import { ItemInterface } from "../data/interfaces/ItemInterface";
 import { currencyFormatter } from "../utilities/currency-formatter";
 
 type PriceNutritionGridProps = {

@@ -1,22 +1,23 @@
 import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
-import { dataid } from "./dataid";
-import { ItemInterface, itemZeroNutrition } from "./interfaces";
-import { ItemTypeEnum } from "./item-type-enum";
-import { YupItemType } from "./yup-schema";
+import { dataid } from "../../utilities/dataid";
+import { itemZeroNutrition } from "../interfaces/ItemHelpers";
+import { ItemInterface } from "../interfaces/ItemInterface";
+import { ItemTypeEnum } from "../interfaces/ItemTypeEnum";
+import { YupItemType } from "../yup/YupItemSchema";
 
-export type RxDBItemDocumentMethods = {
+export type RxNPItemDocumentMethods = {
   recursivelyPopulateSubitems: (depth?: number) => Promise<ItemInterface>;
   recursivelyUpsertNewSubitems: (depth?: number) => Promise<ItemInterface>;
   recursivelyRemove: (depth?: number) => Promise<boolean>;
 };
-export type RxDBItemDocument = RxDocument<YupItemType, RxDBItemDocumentMethods>;
-export type RxDBItemCollection = RxCollection<
-  RxDBItemDocument,
-  RxDBItemDocumentMethods,
+export type RxNPItemDocument = RxDocument<YupItemType, RxNPItemDocumentMethods>;
+export type RxNPItemCollection = RxCollection<
+  RxNPItemDocument,
+  RxNPItemDocumentMethods,
   any,
   any
 >;
-export const rxdbItemSchema: RxJsonSchema<YupItemType> = {
+export const rxnpItemSchema: RxJsonSchema<YupItemType> = {
   version: 0,
   primaryKey: "id",
   type: "object",
@@ -93,9 +94,9 @@ export const rxdbItemSchema: RxJsonSchema<YupItemType> = {
   required: [],
 };
 
-export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
+export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
   recursivelyPopulateSubitems: async function (
-    this: RxDBItemDocument,
+    this: RxNPItemDocument,
     depth?: number
   ): Promise<ItemInterface> {
     const theDepth = depth ?? 0;
@@ -128,7 +129,7 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
     return mutableThis;
   },
   recursivelyUpsertNewSubitems: async function (
-    this: RxDBItemDocument,
+    this: RxNPItemDocument,
     depth?: number
   ): Promise<ItemInterface> {
     const theDepth = depth ?? 0;
@@ -163,7 +164,7 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
     });
   },
   recursivelyRemove: async function (
-    this: RxDBItemDocument,
+    this: RxNPItemDocument,
     depth?: number
   ): Promise<boolean> {
     const theDepth = depth ?? 0;
@@ -184,7 +185,7 @@ export const rxdbItemDocumentMethods: RxDBItemDocumentMethods = {
 };
 
 export async function recursivelyPopulateSubitemsOfItems(
-  items: Array<RxDBItemDocument>
+  items: Array<RxNPItemDocument>
 ): Promise<Array<ItemInterface>> {
   const returning: Array<ItemInterface> = [];
 
