@@ -1,0 +1,392 @@
+:root[data-theme="light"] {
+    --rbg-today-highlight-background: var(--chakra-colors-gray-200);
+    --rbg-out-of-range-color: var(--chakra-colors-gray-200);
+    --rbg-out-of-range-bg-color: transparent;
+}
+
+:root[data-theme="dark"] {
+    --rbg-today-highlight-background: var(--chakra-colors-whiteAlpha-300);
+    --rbg-out-of-range-color: var(--chakra-colors-whiteAlpha-300);
+    --rbg-out-of-range-bg-color: transparent;
+}
+
+$out-of-range-color: var(--rbg-out-of-range-color) !default;
+$out-of-range-bg-color: var(--rbg-out-of-range-bg-color) !default;
+$calendar-border: var(--chakra-colors-chakra-border-color) !default;
+$cell-border: var(--chakra-colors-chakra-border-color) !default;
+$border-color: #ccc !default;
+// Each calendar segment is 1/7th.
+$segment-width: 0.14286% !default;
+$time-selection-color: white !default;
+$time-selection-bg-color: rgba(0, 0, 0, 0.5) !default;
+$date-selection-bg-color: rgba(0, 0, 0, 0.1) !default;
+$event-bg: #3174ad !default;
+$event-border: darken(#3174ad, 10%) !default;
+$event-outline: #3b99fc !default;
+$event-color: #fff !default;
+$event-border-radius: 5px !default;
+$event-padding: 2px 5px !default;
+$event-zindex: 4 !default;
+$btn-color: #373a3c !default;
+$btn-bg: #fff !default;
+$btn-border: #ccc !default;
+$current-time-color: var(--chakra-colors-red-500) !default;
+$rbc-css-prefix: rbc-i !default;
+$today-highlight-bg: var(--rbg-today-highlight-background) !default;
+@import "~react-big-calendar/lib/sass/reset";
+.rbc-calendar {
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.rbc-calendar *,
+.rbc-calendar *:before,
+.rbc-calendar *:after {
+    box-sizing: inherit;
+}
+
+.rbc-abs-full {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.rbc-ellipsis {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rbc-rtl {
+    direction: rtl;
+}
+
+.rbc-off-range {
+    color: $out-of-range-color;
+}
+
+.rbc-off-range-bg {
+    background: $out-of-range-bg-color;
+}
+
+.rbc-header {
+    overflow: hidden;
+    flex: 1 0 0%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 3px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 90%;
+    min-height: 0;
+    border-bottom: 1px solid $cell-border;
+    &+& {
+        border-left: 1px solid $cell-border;
+    }
+    .rbc-rtl &+& {
+        border-left-width: 0;
+        border-right: 1px solid $cell-border;
+    }
+    &>a {
+        &,
+        &:active,
+        &:visited {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+}
+
+.rbc-button-link {
+    color: inherit;
+    background: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    user-select: text;
+}
+
+.rbc-row-content {
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    z-index: 4;
+}
+
+.rbc-row-content-scrollable {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .rbc-row-content-scroll-container {
+        height: 100%;
+        overflow-y: scroll;
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+    }
+}
+
+.rbc-today {
+    background-color: $today-highlight-bg;
+}
+
+@import "~react-big-calendar/lib/sass/toolbar";
+@import "~react-big-calendar/lib/sass/event";
+@import "~react-big-calendar/lib/sass/month";
+@import "~react-big-calendar/lib/sass/agenda";
+.rbc-time-column {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    .rbc-timeslot-group {
+        flex: 1;
+    }
+}
+
+.rbc-timeslot-group {
+    border-bottom: 1px solid $cell-border;
+    min-height: 40px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.rbc-time-gutter,
+.rbc-header-gutter {
+    flex: none;
+}
+
+.rbc-label {
+    padding: 0 5px;
+}
+
+.rbc-day-slot {
+    position: relative;
+    .rbc-events-container {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        margin-right: 10px;
+        top: 0;
+        &.rbc-rtl {
+            left: 10px;
+            right: 0;
+        }
+    }
+    .rbc-event {
+        border: 1px solid $event-border;
+        display: flex;
+        max-height: 100%;
+        min-height: 20px;
+        flex-flow: column wrap;
+        align-items: flex-start;
+        overflow: hidden;
+        position: absolute;
+    }
+    .rbc-background-event {
+        @extend .rbc-event;
+        opacity: 0.75;
+    }
+    .rbc-event-label {
+        flex: none;
+        padding-right: 5px;
+        width: auto;
+    }
+    .rbc-event-content {
+        width: 100%;
+        flex: 1 1 0;
+        word-wrap: break-word;
+        line-height: 1;
+        height: 100%;
+        min-height: 1em;
+    }
+    .rbc-time-slot {
+        border-top: 1px solid $cell-border;
+    }
+}
+
+.rbc-time-view-resources {
+    .rbc-time-gutter,
+    .rbc-time-header-gutter {
+        position: sticky;
+        left: 0;
+        background-color: white;
+        border-right: 1px solid $cell-border;
+        z-index: 10;
+        margin-right: -1px;
+    }
+    .rbc-time-header {
+        overflow: hidden;
+    }
+    .rbc-time-header-content {
+        min-width: auto;
+        flex: 1 0 0;
+        flex-basis: 0px;
+    }
+    .rbc-time-header-cell-single-day {
+        display: none;
+    }
+    .rbc-day-slot {
+        min-width: 140px;
+    }
+    .rbc-header,
+    .rbc-day-bg {
+        width: 140px;
+        // min-width: 0;
+        flex: 1 1 0;
+        flex-basis: 0 px;
+    }
+}
+
+.rbc-time-header-content+.rbc-time-header-content {
+    margin-left: -1px;
+}
+
+.rbc-time-slot {
+    flex: 1 0 0;
+    &.rbc-now {
+        font-weight: bold;
+    }
+}
+
+.rbc-day-header {
+    text-align: center;
+}
+
+.rbc-slot-selection {
+    z-index: 10;
+    position: absolute;
+    background-color: $time-selection-bg-color;
+    color: $time-selection-color;
+    font-size: 75%;
+    width: 100%;
+    padding: 3px;
+}
+
+.rbc-slot-selecting {
+    cursor: move;
+}
+
+.rbc-time-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    border: 1px solid $calendar-border;
+    min-height: 0;
+    .rbc-time-gutter {
+        white-space: nowrap;
+        text-align: right;
+    }
+    .rbc-allday-cell {
+        box-sizing: content-box;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    .rbc-allday-cell+.rbc-allday-cell {
+        border-left: 1px solid $cell-border;
+    }
+    .rbc-allday-events {
+        position: relative;
+        z-index: 4;
+    }
+    .rbc-row {
+        box-sizing: border-box;
+        min-height: 20px;
+    }
+}
+
+.rbc-time-header {
+    display: flex;
+    flex: 0 0 auto; // should not shrink below height
+    flex-direction: row;
+    &.rbc-overflowing {
+        border-right: 1px solid $cell-border;
+    }
+    .rbc-rtl &.rbc-overflowing {
+        border-right-width: 0;
+        border-left: 1px solid $cell-border;
+    }
+    >.rbc-row:first-child {
+        border-bottom: 1px solid $cell-border;
+    }
+    >.rbc-row.rbc-row-resource {
+        border-bottom: 1px solid $cell-border;
+    }
+    // .rbc-gutter-cell {
+    //   flex: none;
+    // }
+    // > .rbc-gutter-cell + * {
+    //   width: 100%;
+    // }
+}
+
+.rbc-time-header-cell-single-day {
+    display: none;
+}
+
+.rbc-time-header-content {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    border-left: 1px solid $cell-border;
+    .rbc-rtl & {
+        border-left-width: 0;
+        border-right: 1px solid $cell-border;
+    }
+    >.rbc-row.rbc-row-resource {
+        border-bottom: 1px solid $cell-border;
+        flex-shrink: 0;
+    }
+}
+
+.rbc-time-content {
+    display: flex;
+    flex: 1 0 0%;
+    align-items: flex-start;
+    width: 100%;
+    border-top: 2px solid $calendar-border;
+    overflow-y: auto;
+    position: relative;
+    >.rbc-time-gutter {
+        flex: none;
+    }
+    >*+*>* {
+        border-left: 1px solid $cell-border;
+    }
+    .rbc-rtl &>*+*>* {
+        border-left-width: 0;
+        border-right: 1px solid $cell-border;
+    }
+    >.rbc-day-slot {
+        width: 100%;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+}
+
+.rbc-current-time-indicator {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: $current-time-color;
+    pointer-events: none;
+}
