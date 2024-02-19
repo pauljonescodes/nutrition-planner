@@ -3,7 +3,6 @@ import GroupsPage from './pages/groups';
 import ItemsPage from './pages/items';
 import PlansPage from './pages/plans';
 import LogPage from './pages';
-
 import { Provider as RxDbProvider } from 'rxdb-hooks';
 import { useState, useEffect } from 'react';
 import { addRxPlugin } from 'rxdb';
@@ -19,6 +18,7 @@ import {
   VStack,
   extendTheme,
   type ThemeConfig,
+  ColorModeScript,
 } from '@chakra-ui/react';
 import '../../styles/style.scss';
 import '../../styles/react-big-calendar.scss';
@@ -68,6 +68,7 @@ export default function App() {
   return (
     <Router>
       <RxDbProvider db={database}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ChakraProvider theme={theme}>
           <VStack spacing={0} align="stretch" minH="100vh">
             <MenuHStack />
