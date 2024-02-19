@@ -29,7 +29,9 @@ import { BigCalendarChakraToolbar } from "../components/BigCalendarChakraToolbar
 import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
 import { LogDrawer } from "../components/drawers/LogDrawer";
 import {
+  itemEquals,
   itemSumNutrition,
+  itemZeroNutrition,
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
 } from "../data/interfaces/ItemHelpers";
@@ -50,7 +52,7 @@ export default function LogPage() {
   const [deleteItemState, setDeleteItemState] =
     useState<RxNPItemDocument | null>(null);
   const collection = useRxCollection<RxNPItemDocument>("item");
-  const [viewState, setViewState] = useState<View>("day");
+  const [viewState, setViewState] = useState<View>("week");
   const [dateRangeState, setDateRangeState] = useState<RangeType>({
     start: moment().startOf("day").toDate(),
     end: moment().endOf("day").toDate(),
@@ -113,7 +115,7 @@ export default function LogPage() {
           moment(dateInRange).isSame(moment(value.date), "day")
         );
 
-        const summedNutrition = itemSumNutrition(
+        const summedItem = itemSumNutrition(
           populatedLogsOnDate.map((value) =>
             populatedItemServingNutrition(value)
           )
@@ -121,13 +123,15 @@ export default function LogPage() {
         const summedPrice = populatedLogsOnDate.reduce((previous, current) => {
           return previous + (populatedItemServingPriceCents(current) ?? 0);
         }, 0);
-        events.push({
-          title: formatTitle(summedPrice, summedNutrition),
-          start: dateInRange,
-          end: moment(dateInRange).add(1, "hour").toDate(),
-          allDay: true,
-          resource: summedNutrition,
-        });
+        if (!itemEquals(summedItem, itemZeroNutrition)) {
+          events.push({
+            title: formatTitle(summedPrice, summedItem),
+            start: dateInRange,
+            end: moment(dateInRange).add(1, "hour").toDate(),
+            allDay: true,
+            resource: summedItem,
+          });
+        }
       }
 
       setEventsState(events);

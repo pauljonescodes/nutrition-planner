@@ -23,9 +23,9 @@ import {
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
 } from "../../data/interfaces/ItemHelpers";
-import { SubitemInterface } from "../../data/interfaces/SubitemInterface";
 import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
+import { SubitemInterface } from "../../data/interfaces/SubitemInterface";
 import { RxNPItemDocument } from "../../data/rxnp/RxNPItemSchema";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
@@ -166,7 +166,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
           (nutritionAndPriceState?.priceCents ?? 0) * (thisSubitem.count ?? 0)
         }
         nutritionInfo={itemMultiplyNutrition(
-          nutritionAndPriceState?.nutrition ?? itemZeroNutrition(),
+          nutritionAndPriceState?.nutrition ?? itemZeroNutrition,
           thisSubitem.count ?? 0
         )}
       />

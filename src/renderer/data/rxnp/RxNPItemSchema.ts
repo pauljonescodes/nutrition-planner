@@ -102,7 +102,7 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
     const theDepth = depth ?? 0;
 
     if (theDepth === 32) {
-      return itemZeroNutrition();
+      return itemZeroNutrition;
     }
 
     const mutableThis = this.toMutableJSON();
@@ -135,7 +135,7 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
     const theDepth = depth ?? 0;
 
     if (theDepth === 32) {
-      return itemZeroNutrition();
+      return itemZeroNutrition;
     }
     const mutableThis = this.toMutableJSON();
 

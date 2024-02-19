@@ -1,10 +1,10 @@
-import { ItemInterface } from "./ItemInterface";
-import { SubitemInterface } from "./SubitemInterface";
+import { ItemInterface } from './ItemInterface';
+import { SubitemInterface } from './SubitemInterface';
 
 export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
   return data.reduce(function (
     result: SubitemInterface[],
-    next: SubitemInterface
+    next: SubitemInterface,
   ) {
     result.push(next);
     if (next.item?.subitems) {
@@ -12,40 +12,33 @@ export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
       next.item.subitems = [];
     }
     return result;
-  },
-    []);
+  }, []);
 }
 
 export function populatedItemServingNutrition(
   item: ItemInterface,
-  depth?: number
+  depth?: number,
 ): ItemInterface {
   const theDepth = depth ?? 0;
 
   if (theDepth === 32) {
-    return itemZeroNutrition();
+    return itemZeroNutrition;
   }
 
   if (item.subitems && item.subitems.length > 0) {
-
     const toSum = item.subitems.map((value) => {
       if (value.item) {
         const item = itemMultiplyNutrition(
           populatedItemServingNutrition(value.item!, theDepth + 1),
-          value.count!
+          value.count!,
         );
         return item;
       } else {
-        return itemZeroNutrition();
+        return itemZeroNutrition;
       }
     });
 
-    return itemDivideNutrition(
-      itemSumNutrition(
-        toSum
-      ),
-      item.count ?? 1
-    );
+    return itemDivideNutrition(itemSumNutrition(toSum), item.count ?? 1);
   }
 
   return item;
@@ -53,7 +46,7 @@ export function populatedItemServingNutrition(
 
 export function populatedItemServingPriceCents(
   item: ItemInterface,
-  depth?: number
+  depth?: number,
 ): number {
   const theDepth = depth ?? 0;
 
@@ -66,43 +59,41 @@ export function populatedItemServingPriceCents(
       item.subitems
         .map((value) => {
           if (value.item) {
-            return populatedItemServingPriceCents(
-              value.item,
-              theDepth + 1
-            ) * (value.count ?? 1);
+            return (
+              populatedItemServingPriceCents(value.item, theDepth + 1) *
+              (value.count ?? 1)
+            );
           } else {
             return 0;
           }
         })
-        .reduce((previous, current) => previous + current, 0) / (item.count ?? 1)
+        .reduce((previous, current) => previous + current, 0) /
+      (item.count ?? 1)
     );
   }
-
 
   const priceCents = (item.priceCents ?? 0) / (item.count ?? 1);
 
   return priceCents;
 }
 
-export function itemZeroNutrition(): ItemInterface {
-  return {
-    massGrams: 0,
-    energyKilocalories: 0,
-    fatGrams: 0,
-    saturatedFatGrams: 0,
-    transFatGrams: 0,
-    cholesterolMilligrams: 0,
-    sodiumMilligrams: 0,
-    carbohydrateGrams: 0,
-    fiberGrams: 0,
-    sugarGrams: 0,
-    proteinGrams: 0,
-  };
+export const itemZeroNutrition: ItemInterface = {
+  massGrams: 0,
+  energyKilocalories: 0,
+  fatGrams: 0,
+  saturatedFatGrams: 0,
+  transFatGrams: 0,
+  cholesterolMilligrams: 0,
+  sodiumMilligrams: 0,
+  carbohydrateGrams: 0,
+  fiberGrams: 0,
+  sugarGrams: 0,
+  proteinGrams: 0,
 }
 
 export function itemAddNutrition(
   lhs: ItemInterface,
-  rhs: ItemInterface
+  rhs: ItemInterface,
 ): ItemInterface {
   return {
     massGrams: (lhs.massGrams ?? 0) + (rhs.massGrams ?? 0),
@@ -123,17 +114,33 @@ export function itemAddNutrition(
   };
 }
 
+export function itemEquals(rhs: ItemInterface, lhs: ItemInterface): boolean {
+  return (
+    rhs.massGrams === lhs.massGrams &&
+    rhs.energyKilocalories === lhs.energyKilocalories &&
+    rhs.fatGrams === lhs.fatGrams &&
+    rhs.saturatedFatGrams === lhs.saturatedFatGrams &&
+    rhs.transFatGrams === lhs.transFatGrams &&
+    rhs.cholesterolMilligrams === lhs.cholesterolMilligrams &&
+    rhs.sodiumMilligrams === lhs.sodiumMilligrams &&
+    rhs.carbohydrateGrams === lhs.carbohydrateGrams &&
+    rhs.fiberGrams === lhs.fiberGrams &&
+    rhs.sugarGrams === lhs.sugarGrams &&
+    rhs.proteinGrams === lhs.proteinGrams
+  );
+}
+
 export function itemSumNutrition(info: Array<ItemInterface>): ItemInterface {
   return info.reduce(
     (previousValue, currentValue) =>
       itemAddNutrition(previousValue, currentValue),
-    itemZeroNutrition()
+    itemZeroNutrition,
   );
 }
 
 export function itemDivideNutrition(
   lhs: ItemInterface,
-  rhs: number
+  rhs: number,
 ): ItemInterface {
   return {
     massGrams: Math.round((lhs.massGrams ?? 0) / rhs),
@@ -152,7 +159,7 @@ export function itemDivideNutrition(
 
 export function itemMultiplyNutrition(
   lhs: ItemInterface,
-  rhs: number
+  rhs: number,
 ): ItemInterface {
   return {
     massGrams: Math.round((lhs?.massGrams ?? 0) * rhs),

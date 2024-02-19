@@ -5,7 +5,7 @@ import {
   Schema,
   string
 } from "yup";
-import { SubitemInterface } from "./interfaces/SubitemInterface";
+import { SubitemInterface } from "../interfaces/SubitemInterface";
 import { yupItemSchema } from "./YupItemSchema";
 
 export type YupSubitemType = InferType<typeof yupSubitemSchema>;
