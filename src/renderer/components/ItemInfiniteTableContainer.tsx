@@ -75,7 +75,7 @@ export function ItemInfiniteTableContainer(
               <Th isNumeric>{t("mass")}</Th>
               <Th isNumeric>{t("energy")}</Th>
               <Th isNumeric>{t("fat")}</Th>
-              <Th isNumeric>{t("carbohydrate")}</Th>
+              <Th isNumeric>{t("carb")}</Th>
               <Th isNumeric>{t("protein")}</Th>
             </Tr>
           </Thead>

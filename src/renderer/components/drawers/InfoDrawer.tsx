@@ -19,15 +19,21 @@ import {
   SliderTrack,
   Stat,
   StatGroup,
+  StatHelpText,
   StatLabel,
   StatNumber,
   VStack,
-  useColorModeValue,
-  useToast,
 } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import Datetime from 'react-datetime';
-import { useRxDB } from 'rxdb-hooks';
+import { useTranslation } from 'react-i18next';
+import { useLocalStorage } from 'usehooks-ts';
+import { LocalStorageKeysEnum } from '../../constants';
+import moment from 'moment';
+import {
+  calculateBasalMetabolicRateKcal,
+  calculateEnergyTargetKcal,
+} from '../../data/CalculationHelpers';
 
 type InfoDrawerProps = {
   isOpen: boolean;
@@ -35,11 +41,74 @@ type InfoDrawerProps = {
 };
 
 export function InfoDrawer(props: InfoDrawerProps) {
-  const database = useRxDB();
-  //const collection = useRxCollection("item");
-  const toast = useToast();
+  const { t } = useTranslation();
 
-  const subtleTextColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
+  const [sexLocalStorage, setSexLocalStorage] = useLocalStorage<
+    string | undefined
+  >(LocalStorageKeysEnum.sex, undefined);
+
+  const [birthdayLocalStorage, setBirthdayLocalStorage] = useLocalStorage<
+    string | undefined
+  >(LocalStorageKeysEnum.birthday, undefined);
+
+  const [weightKilogramsLocalStorage, setWeightKilogramsLocalStorage] =
+    useLocalStorage<number | undefined>(
+      LocalStorageKeysEnum.weightKilograms,
+      undefined,
+    );
+
+  const [heightCentimetersLocalStorage, setHeightCentimetersLocalStorage] =
+    useLocalStorage<number | undefined>(
+      LocalStorageKeysEnum.heightCentimeters,
+      undefined,
+    );
+
+  const [goalWeightKilogramsLocalStorage, setGoalWeightKilogramsLocalStorage] =
+    useLocalStorage<number | undefined>(
+      LocalStorageKeysEnum.goalWeightKilograms,
+      undefined,
+    );
+
+  const [goalDateLocalStorage, setGoalDateLocalStorage] = useLocalStorage<
+    string | undefined
+  >(LocalStorageKeysEnum.goalDate, undefined);
+
+  const [dietaryFatPercentLocalStorage, setDietaryFatPercentLocalStorage] =
+    useLocalStorage<number | undefined>(
+      LocalStorageKeysEnum.dietaryFatPercent,
+      40,
+    );
+
+  const [
+    dietaryCarbohydratePercentLocalStorage,
+    setDietaryCarbohydratePercentLocalStorage,
+  ] = useLocalStorage<number | undefined>(
+    LocalStorageKeysEnum.dietaryCarbohydratePercent,
+    20,
+  );
+
+  const [
+    dietaryProteinPercentLocalStorage,
+    setDietaryProteinPercentLocalStorage,
+  ] = useLocalStorage<number | undefined>(
+    LocalStorageKeysEnum.dietaryProteinPercent,
+    40,
+  );
+
+  const basalMetabolicRate = calculateBasalMetabolicRateKcal({
+    sexIsMale: sexLocalStorage == 'male',
+    weightKilograms: weightKilogramsLocalStorage,
+    heightCentimeters: heightCentimetersLocalStorage,
+    ageYears: moment().diff(birthdayLocalStorage, 'years'),
+  });
+  const energyTarget = calculateEnergyTargetKcal({
+    weightKilograms: weightKilogramsLocalStorage,
+    sexIsMale: sexLocalStorage == 'male',
+    ageYears: moment().diff(birthdayLocalStorage, 'years'),
+    heightCentimeters: heightCentimetersLocalStorage,
+    goalWeightKilograms: goalWeightKilogramsLocalStorage,
+    goalDays: moment(goalDateLocalStorage).diff(moment(), 'days'),
+  });
 
   return (
     <Fragment>
@@ -53,47 +122,86 @@ export function InfoDrawer(props: InfoDrawerProps) {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Info</DrawerHeader>
+          <DrawerHeader>{t('info')}</DrawerHeader>
           <DrawerBody>
             <VStack alignItems={'start'}>
-              <StatGroup width={'full'}>
+              <StatGroup width={'full'} textAlign={"center"}>
                 <Stat>
-                  <StatLabel>Energy target (kcal)</StatLabel>
-                  <StatNumber>2,800</StatNumber>
+                  <StatLabel>{t('energyTarget')}</StatLabel>
+                  <StatNumber>
+                    {energyTarget ? Math.round(energyTarget) : 'NA'}
+                  </StatNumber>
+                  <StatHelpText>{t("kcal")}</StatHelpText>
                 </Stat>
 
                 <Stat>
-                  <StatLabel>Basal Metabolic Rate (kcal)</StatLabel>
-                  <StatNumber>3,100</StatNumber>
+                  <StatLabel>{t('basalMetabolicRate')}</StatLabel>
+                  <StatNumber>
+                    {basalMetabolicRate ? Math.round(basalMetabolicRate) : 'NA'}
+                  </StatNumber>
+                  <StatHelpText>{t("kcal")}</StatHelpText>
+                </Stat>
+                
+              </StatGroup >
+              <StatGroup width={'full'} textAlign={"center"}>
+                <Stat>
+                  <StatLabel>{t('fatTarget')}</StatLabel>
+                  <StatNumber>
+                    {energyTarget && dietaryFatPercentLocalStorage
+                      ? Math.round((energyTarget * (dietaryFatPercentLocalStorage/100))/9)
+                      : 'NA'}
+                  </StatNumber>
+                  <StatHelpText>{t("grams")}</StatHelpText>
+                </Stat>
+
+                <Stat>
+                  <StatLabel>{t('carbohydrateTarget')}</StatLabel>
+                  <StatNumber>{energyTarget && dietaryCarbohydratePercentLocalStorage
+                      ? Math.round((energyTarget * (dietaryCarbohydratePercentLocalStorage/100))/4)
+                      : 'NA'}</StatNumber>
+                      <StatHelpText>{t("grams")}</StatHelpText>
+                </Stat>
+                <Stat>
+                  <StatLabel>{t('proteinTarget')}</StatLabel>
+                  <StatNumber>{energyTarget && dietaryProteinPercentLocalStorage
+                      ? Math.round((energyTarget * (dietaryProteinPercentLocalStorage/100))/4)
+                      : 'NA'}</StatNumber>
+                      <StatHelpText>{t("grams")}</StatHelpText>
                 </Stat>
               </StatGroup>
-              <StatGroup width={'full'}>
-                <Stat>
-                  <StatLabel>Fat target (g)</StatLabel>
-                  <StatNumber>100 </StatNumber>
-                </Stat>
 
-                <Stat>
-                  <StatLabel>Carb target (g)</StatLabel>
-                  <StatNumber>100</StatNumber>
-                </Stat>
-                <Stat>
-                  <StatLabel>Protein target (g)</StatLabel>
-                  <StatNumber>150</StatNumber>
-                </Stat>
-              </StatGroup>
-
-              <FormLabel>Sex</FormLabel>
-              <Select>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+              <FormLabel>{t('sex')}</FormLabel>
+              <Select
+                value={sexLocalStorage}
+                onChange={(event) => setSexLocalStorage(event.target.value)}
+                placeholder={t('sex')}
+              >
+                <option value="male">{t('male')}</option>
+                <option value="female">{t('female')}</option>
               </Select>
 
-              <FormLabel>Birthday</FormLabel>
-              <Datetime closeOnSelect className="rdt-full-width" />
+              <FormLabel>{t('birthday')}</FormLabel>
+              <Datetime
+                closeOnSelect
+                className="rdt-full-width"
+                value={new Date(birthdayLocalStorage)}
+                onChange={(value) => {
+                  let formattedValue = value;
+                  if (moment.isMoment(value)) {
+                    formattedValue = value.toISOString();
+                  }
+                  setBirthdayLocalStorage(formattedValue);
+                }}
+              />
 
-              <FormLabel>Weight (kg)</FormLabel>
-              <NumberInput width={'full'}>
+              <FormLabel>{t('weight')} ({t("kgKilograms")})</FormLabel>
+              <NumberInput
+                width={'full'}
+                value={weightKilogramsLocalStorage}
+                onChange={(value, valueAsNumber) =>
+                  setWeightKilogramsLocalStorage(valueAsNumber)
+                }
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -101,8 +209,14 @@ export function InfoDrawer(props: InfoDrawerProps) {
                 </NumberInputStepper>
               </NumberInput>
 
-              <FormLabel>Height (cm)</FormLabel>
-              <NumberInput width={'full'}>
+              <FormLabel>{t('height')} ({t("cmCentimeters")})</FormLabel>
+              <NumberInput
+                width={'full'}
+                value={heightCentimetersLocalStorage}
+                onChange={(value, valueAsNumber) =>
+                  setHeightCentimetersLocalStorage(valueAsNumber)
+                }
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -110,8 +224,14 @@ export function InfoDrawer(props: InfoDrawerProps) {
                 </NumberInputStepper>
               </NumberInput>
 
-              <FormLabel>Goal weight (kg)</FormLabel>
-              <NumberInput width={'full'}>
+              <FormLabel>{t('goalWeight')} ({t("kgKilograms")})</FormLabel>
+              <NumberInput
+                width={'full'}
+                value={goalWeightKilogramsLocalStorage}
+                onChange={(value, valueAsNumber) =>
+                  setGoalWeightKilogramsLocalStorage(valueAsNumber)
+                }
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -119,56 +239,67 @@ export function InfoDrawer(props: InfoDrawerProps) {
                 </NumberInputStepper>
               </NumberInput>
 
-              <FormLabel>Goal date</FormLabel>
-              <Datetime closeOnSelect className="rdt-full-width" />
-              
-              <FormLabel>Dietary fat percent</FormLabel>
+              <FormLabel>{t('goalDate')}</FormLabel>
+              <Datetime
+                closeOnSelect
+                className="rdt-full-width"
+                value={new Date(goalDateLocalStorage)}
+                onChange={(value) => {
+                  let formattedValue = value;
+                  if (moment.isMoment(value)) {
+                    formattedValue = value.toISOString();
+                  }
+                  setGoalDateLocalStorage(formattedValue);
+                }}
+              />
+
+              <FormLabel>{t('dietaryFatPercent')}</FormLabel>
               <Flex width={'full'}>
-                <NumberInput maxW="100px" mr="2rem">
+                <NumberInput
+                  width={'full'}
+                  value={dietaryFatPercentLocalStorage}
+                  onChange={(value, valueAsNumber) =>
+                    setDietaryFatPercentLocalStorage(valueAsNumber)
+                  }
+                >
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
-                <Slider flex="1" focusThumbOnChange={false}>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <SliderThumb />
-                </Slider>
               </Flex>
-              <FormLabel>Dietary carbohydrates percent</FormLabel>
+              <FormLabel>{t('dietaryCarbohydratePercent')}</FormLabel>
               <Flex width={'full'}>
-                <NumberInput maxW="100px" mr="2rem">
+                <NumberInput
+                  width={'full'}
+                  value={dietaryCarbohydratePercentLocalStorage}
+                  onChange={(value, valueAsNumber) =>
+                    setDietaryCarbohydratePercentLocalStorage(valueAsNumber)
+                  }
+                >
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
-                <Slider flex="1" focusThumbOnChange={false}>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <SliderThumb />
-                </Slider>
               </Flex>
-              <FormLabel>Dietary protein percent</FormLabel>
+              <FormLabel>{t('dietaryProteinPercent')}</FormLabel>
               <Flex width={'full'}>
-                <NumberInput maxW="100px" mr="2rem">
+                <NumberInput
+                  width={'full'}
+                  value={dietaryProteinPercentLocalStorage}
+                  onChange={(value, valueAsNumber) =>
+                    setDietaryProteinPercentLocalStorage(valueAsNumber)
+                  }
+                >
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
-                <Slider flex="1" focusThumbOnChange={false}>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <SliderThumb />
-                </Slider>
               </Flex>
             </VStack>
           </DrawerBody>

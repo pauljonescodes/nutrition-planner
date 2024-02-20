@@ -19,6 +19,7 @@ import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
 import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
 import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
 import { currencyFormatter } from "../utilities/currency-formatter";
+import { useTranslation } from "react-i18next";
 
 type ItemTableRowProps = {
   document: RxNPItemDocument;
@@ -29,6 +30,7 @@ type ItemTableRowProps = {
 };
 
 export function ItemTableRow(props: ItemTableRowProps) {
+  const { t } = useTranslation();
   const [nutritionState, setNutritionState] = useState<ItemInterface | null>(
     null
   );
@@ -109,23 +111,23 @@ export function ItemTableRow(props: ItemTableRowProps) {
         <Skeleton isLoaded={isLoaded}>{props.document.count}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.massGrams}</Skeleton>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.massGrams}{t("massG")}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {nutritionState?.energyKilocalories}kcal
+          {nutritionState?.energyKilocalories}{t("kcal")}
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.fatGrams}</Skeleton>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.fatGrams}{t("massG")}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {nutritionState?.carbohydrateGrams}
+          {nutritionState?.carbohydrateGrams}{t("massG")}
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.proteinGrams}</Skeleton>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.proteinGrams}{t("massG")}</Skeleton>
       </Td>
     </Tr>
   );

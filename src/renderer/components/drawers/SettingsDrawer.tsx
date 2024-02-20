@@ -7,6 +7,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  FormLabel,
   Select,
   VStack,
   useColorMode,
@@ -18,10 +19,10 @@ import { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRxCollection, useRxDB } from 'rxdb-hooks';
 import { useFilePicker } from 'use-file-picker';
-import { DeleteAlertDialog } from '../DeleteAlertDialog';
-import languages from '../../i18n/languages';
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../../constants';
+import languages from '../../i18n/languages';
+import { DeleteAlertDialog } from '../DeleteAlertDialog';
 
 type SettingsDrawerProps = {
   isOpen: boolean;
@@ -32,11 +33,11 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const { t, i18n } = useTranslation();
   const [importLoadingState, setImportLoadingState] = useState(false);
   const [showDeleteDialogState, setShowDeleteDialogState] = useState(false);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { toggleColorMode } = useColorMode();
 
-  const [ languageLocaleStorage, setLanguageLocalStorage ] = useLocalStorage(
+  const [languageLocaleStorage, setLanguageLocalStorage] = useLocalStorage(
     LocalStorageKeysEnum.language,
-    "en",
+    'en',
   );
 
   const database = useRxDB();
@@ -61,7 +62,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
       await database.importJSON(JSON.parse(filesContent[0].content));
       setImportLoadingState(false);
       toast({
-        title: t("success"),
+        title: t('success'),
         status: 'success',
       });
     }
@@ -87,7 +88,8 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
           <DrawerCloseButton />
           <DrawerHeader>{t('settings')}</DrawerHeader>
           <DrawerBody>
-            <VStack>
+            <VStack alignItems={'start'}>
+              <FormLabel>Language</FormLabel>
               <Select
                 value={languageLocaleStorage}
                 onChange={(event) => {

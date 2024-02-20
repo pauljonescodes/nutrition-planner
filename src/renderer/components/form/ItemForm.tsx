@@ -71,7 +71,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.massGrams}
         error={formikProps.errors.massGrams}
         name="massGrams"
-        placeholder={t("mass")}
+        placeholder={t("mass") + " (" + t("massG") + ")"} 
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -80,7 +80,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.energyKilocalories}
         error={formikProps.errors.energyKilocalories}
         name="energyKilocalories"
-        placeholder={t("energy")}
+        placeholder={t("energy") + " (" + t("kcal") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -89,7 +89,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.fatGrams}
         error={formikProps.errors.fatGrams}
         name="fatGrams"
-        placeholder={t("fat")}
+        placeholder={t("fat") + " (" + t("massG") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -98,7 +98,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.saturatedFatGrams}
         error={formikProps.errors.saturatedFatGrams}
         name="saturatedFatGrams"
-        placeholder={t("saturatedFat")}
+        placeholder={t("saturatedFat") + " (" + t("massG") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -107,7 +107,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.transFatGrams}
         error={formikProps.errors.transFatGrams}
         name="transFatGrams"
-        placeholder={t("transFat")}
+        placeholder={t("transFat") + " (" + t("massG") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -116,7 +116,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.cholesterolMilligrams}
         error={formikProps.errors.cholesterolMilligrams}
         name="cholesterolMilligrams"
-        placeholder={t("cholesterol")}
+        placeholder={t("cholesterol") + " (" + t("milligramsMg") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -125,7 +125,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.sodiumMilligrams}
         error={formikProps.errors.sodiumMilligrams}
         name="sodiumMilligrams"
-        placeholder={t("sodium")}
+        placeholder={t("sodium") + " (" + t("milligramsMg") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -134,7 +134,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.carbohydrateGrams}
         error={formikProps.errors.carbohydrateGrams}
         name="carbohydrateGrams"
-        placeholder={t("carbohydrate")}
+        placeholder={t("carbohydrate") + " (" + t("massG") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -143,7 +143,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.fiberGrams}
         error={formikProps.errors.fiberGrams}
         name="fiberGrams"
-        placeholder={t("fiber")}
+        placeholder={t("fiber") + " (" + t("massG") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -152,7 +152,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.sugarGrams}
         error={formikProps.errors.sugarGrams}
         name="sugarGrams"
-        placeholder={t("sugar")}
+        placeholder={t("sugar") + " (" + t("massG") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -161,7 +161,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.proteinGrams}
         error={formikProps.errors.proteinGrams}
         name="proteinGrams"
-        placeholder={t("protein")}
+        placeholder={t("protein") + " (" + t("massG") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />

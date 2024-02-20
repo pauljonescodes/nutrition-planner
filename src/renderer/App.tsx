@@ -4,10 +4,10 @@ import {
   ColorModeScript,
   VStack,
   extendTheme,
-  type ThemeConfig,
+  type ThemeConfig
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { initReactI18next, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 import { addRxPlugin } from 'rxdb';
 import { Provider as RxDbProvider } from 'rxdb-hooks';
@@ -15,10 +15,12 @@ import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
+import { useLocalStorage } from 'usehooks-ts';
 import '../../styles/react-big-calendar.scss';
 import '../../styles/react-datetime.scss';
 import '../../styles/style.scss';
 import { MenuHStack } from './components/MenuHStack';
+import { LocalStorageKeysEnum } from './constants';
 import { initRxNPDatabase } from './data/rxnp/RxNPDatabaseHelpers';
 import { RxNPDatabaseType } from './data/rxnp/RxNPDatabaseType';
 import LogPage from './pages';
@@ -26,16 +28,16 @@ import GroupsPage from './pages/groups';
 import ItemsPage from './pages/items';
 import PlansPage from './pages/plans';
 import { PathEnum } from './paths';
-import { useLocalStorage } from 'usehooks-ts';
-import { LocalStorageKeysEnum } from './constants';
-import resources from './i18n/resources';
 
 export default function App() {
   const { i18n } = useTranslation();
   const [database, setDatabase] = useState<RxNPDatabaseType | undefined>(
     undefined,
   );
-  const [languageLocalStorage, setLanguageLocalStorage] = useLocalStorage(LocalStorageKeysEnum.language, 'en');
+  const [languageLocalStorage, setLanguageLocalStorage] = useLocalStorage(
+    LocalStorageKeysEnum.language,
+    'en',
+  );
 
   useEffect(() => {
     i18n.changeLanguage(languageLocalStorage);
@@ -68,15 +70,18 @@ export default function App() {
     '2xl': '96em', // 1536
   };
 
-  const theme = extendTheme({
-    breakpoints,
-    config,
-    fonts: {
-      body: `-apple-system, BlinkMacSystemFont, "Segoe UI",
+  const theme = extendTheme(
+    {
+      breakpoints,
+      config,
+      fonts: {
+        body: `-apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen-Sans, Ubuntu, Cantarell,
           "Helvetica Neue", sans-serif`,
+      },
     },
-  });
+    //withDefaultColorScheme({ colorScheme: 'green' }),
+  );
 
   return (
     <Router>

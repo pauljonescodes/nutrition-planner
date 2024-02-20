@@ -140,13 +140,13 @@ export function MenuHStack() {
           />
         </ButtonGroup>
         <Spacer />
-        {/* <IconButton
+        <IconButton
           onClick={() => {
             setInfoDrawerIsOpen(true);
           }}
           icon={<InfoIcon />}
           aria-label={t("info")}
-        /> */}
+        />
         <IconButton
           onClick={() => {
             setSettingsDrawerIsOpen(true);
