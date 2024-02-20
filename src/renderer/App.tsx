@@ -1,34 +1,46 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import GroupsPage from './pages/groups';
-import ItemsPage from './pages/items';
-import PlansPage from './pages/plans';
-import LogPage from './pages';
-import { Provider as RxDbProvider } from 'rxdb-hooks';
-import { useState, useEffect } from 'react';
+import {
+  Box,
+  ChakraProvider,
+  ColorModeScript,
+  VStack,
+  extendTheme,
+  type ThemeConfig,
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { initReactI18next, useTranslation } from 'react-i18next';
+import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 import { addRxPlugin } from 'rxdb';
+import { Provider as RxDbProvider } from 'rxdb-hooks';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { MenuHStack } from './components/MenuHStack';
-import { initRxNPDatabase } from './data/rxnp/RxNPDatabaseHelpers';
-import { RxNPDatabaseType } from "./data/rxnp/RxNPDatabaseType";
-import {
-  Box,
-  ChakraProvider,
-  VStack,
-  extendTheme,
-  type ThemeConfig,
-  ColorModeScript,
-} from '@chakra-ui/react';
-import '../../styles/style.scss';
 import '../../styles/react-big-calendar.scss';
 import '../../styles/react-datetime.scss';
+import '../../styles/style.scss';
+import { MenuHStack } from './components/MenuHStack';
+import { initRxNPDatabase } from './data/rxnp/RxNPDatabaseHelpers';
+import { RxNPDatabaseType } from './data/rxnp/RxNPDatabaseType';
+import LogPage from './pages';
+import GroupsPage from './pages/groups';
+import ItemsPage from './pages/items';
+import PlansPage from './pages/plans';
+import { PathEnum } from './paths';
+import { useLocalStorage } from 'usehooks-ts';
+import { LocalStorageKeysEnum } from './constants';
+import resources from './i18n/resources';
 
 export default function App() {
+  const { i18n } = useTranslation();
   const [database, setDatabase] = useState<RxNPDatabaseType | undefined>(
     undefined,
   );
+  const [languageLocalStorage, setLanguageLocalStorage] = useLocalStorage(LocalStorageKeysEnum.language, 'en');
+
+  useEffect(() => {
+    i18n.changeLanguage(languageLocalStorage);
+    console.log('languageLocalStorage', languageLocalStorage);
+  }, [languageLocalStorage]);
 
   useEffect(() => {
     if (!database) {
@@ -75,10 +87,10 @@ export default function App() {
             <MenuHStack />
             <Box pt="64px" minH="100vh">
               <Routes>
-                <Route path="/" element={<LogPage />} />
-                <Route path="/plans" element={<PlansPage />} />
-                <Route path="/items" element={<ItemsPage />} />
-                <Route path="/groups" element={<GroupsPage />} />
+                <Route path={PathEnum.log} element={<LogPage />} />
+                <Route path={PathEnum.plans} element={<PlansPage />} />
+                <Route path={PathEnum.items} element={<ItemsPage />} />
+                <Route path={PathEnum.groups} element={<GroupsPage />} />
               </Routes>
             </Box>
           </VStack>

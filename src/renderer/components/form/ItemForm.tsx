@@ -6,6 +6,7 @@ import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
+import { useTranslation } from "react-i18next";
 
 type ItemFormProps = {
   formikProps: FormikProps<ItemInterface>;
@@ -14,6 +15,7 @@ type ItemFormProps = {
 };
 
 export default function ItemForm(props: ItemFormProps) {
+  const { t } = useTranslation();
   const formikProps = props.formikProps;
   const onPaste = props.onPaste;
   const servingPriceCents =
@@ -33,7 +35,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.name}
         error={formikProps.errors.name}
         name="name"
-        placeholder="Name"
+        placeholder={t("name")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
         inputFieldRef={props.firstInputFieldRef}
@@ -47,7 +49,7 @@ export default function ItemForm(props: ItemFormProps) {
         }
         error={formikProps.errors.priceCents}
         name="priceCents"
-        placeholder="Price"
+        placeholder={t("price")}
         transform={(value) => value * 100}
         format={(value) => (value ?? 0) / 100}
         formikProps={formikProps}
@@ -58,8 +60,8 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.count}
         error={formikProps.errors.count}
         name="count"
-        placeholder="Servings"
-        helperText="Paste nutrition info in this field to auto-populate."
+        placeholder={t("servings")}
+        helperText={t("servingsHelperText")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
         onPaste={onPaste}
@@ -69,7 +71,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.massGrams}
         error={formikProps.errors.massGrams}
         name="massGrams"
-        placeholder="Mass"
+        placeholder={t("mass")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -78,7 +80,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.energyKilocalories}
         error={formikProps.errors.energyKilocalories}
         name="energyKilocalories"
-        placeholder="Energy (kcal)"
+        placeholder={t("energy")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -87,7 +89,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.fatGrams}
         error={formikProps.errors.fatGrams}
         name="fatGrams"
-        placeholder="Fat (g)"
+        placeholder={t("fat")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -96,7 +98,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.saturatedFatGrams}
         error={formikProps.errors.saturatedFatGrams}
         name="saturatedFatGrams"
-        placeholder="Saturated Fat (g)"
+        placeholder={t("saturatedFat")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -105,7 +107,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.transFatGrams}
         error={formikProps.errors.transFatGrams}
         name="transFatGrams"
-        placeholder="Trans Fat (g)"
+        placeholder={t("transFat")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -114,7 +116,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.cholesterolMilligrams}
         error={formikProps.errors.cholesterolMilligrams}
         name="cholesterolMilligrams"
-        placeholder="Cholesterol (mg)"
+        placeholder={t("cholesterol")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -123,7 +125,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.sodiumMilligrams}
         error={formikProps.errors.sodiumMilligrams}
         name="sodiumMilligrams"
-        placeholder="Sodium (mg)"
+        placeholder={t("sodium")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -132,7 +134,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.carbohydrateGrams}
         error={formikProps.errors.carbohydrateGrams}
         name="carbohydrateGrams"
-        placeholder="Carbohydrates (g)"
+        placeholder={t("carbohydrate")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -141,7 +143,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.fiberGrams}
         error={formikProps.errors.fiberGrams}
         name="fiberGrams"
-        placeholder="Fiber (g)"
+        placeholder={t("fiber")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -150,7 +152,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.sugarGrams}
         error={formikProps.errors.sugarGrams}
         name="sugarGrams"
-        placeholder="Sugar (g)"
+        placeholder={t("sugar")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -159,7 +161,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.proteinGrams}
         error={formikProps.errors.proteinGrams}
         name="proteinGrams"
-        placeholder="Protein (g)"
+        placeholder={t("protein")}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -167,11 +169,11 @@ export default function ItemForm(props: ItemFormProps) {
       <Center>
         <VStack>
           <Button type="submit" my={4} isLoading={formikProps.isSubmitting}>
-            Submit
+            {t("submit")}
           </Button>
           <PriceNutritionGrid
             priceCents={servingPriceCents}
-            priceLabel={"per serving"}
+            priceLabel={t("perServing")}
             nutritionInfo={servingNutritionInfo}
           />
         </VStack>

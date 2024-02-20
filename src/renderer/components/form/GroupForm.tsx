@@ -7,6 +7,7 @@ import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
 import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
+import { useTranslation } from "react-i18next";
 // import { PriceNutritionGrid } from "../PriceNutritionGrid";
 
 type GroupFormProps = {
@@ -15,6 +16,7 @@ type GroupFormProps = {
 };
 
 export default function GroupForm(props: GroupFormProps) {
+  const { t } = useTranslation();
   return (
     <Form
       noValidate={true}
@@ -29,7 +31,7 @@ export default function GroupForm(props: GroupFormProps) {
         error={props.formikProps.errors.name}
         isRequired={true}
         name="name"
-        placeholder="Name"
+        placeholder={t("name")}
         formikProps={props.formikProps}
         spaceProps={{ pb: 2 }}
         inputFieldRef={props.firstInputFieldRef}
@@ -40,7 +42,7 @@ export default function GroupForm(props: GroupFormProps) {
         value={props.formikProps.values.count}
         error={props.formikProps.errors.count}
         name="count"
-        placeholder="Servings"
+        placeholder={t("servings")}
         formikProps={props.formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -49,6 +51,7 @@ export default function GroupForm(props: GroupFormProps) {
         formikProps={props.formikProps}
         itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
         name={"subitems"}
+        label={t("items")}
       />
 
       <Center>
@@ -58,7 +61,7 @@ export default function GroupForm(props: GroupFormProps) {
             my={4}
             isLoading={props.formikProps.isSubmitting}
           >
-            Submit
+            {t("submit")}
           </Button>
           {/* <PriceNutritionGrid
             priceCents={totalPriceInCents}

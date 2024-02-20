@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { GroupFormik } from "../formik/GroupFormik";
+import { useTranslation } from "react-i18next";
 
 type GroupDrawerProps = {
   item: ItemInterface | null;
@@ -15,6 +16,7 @@ type GroupDrawerProps = {
 };
 
 export function GroupDrawer(props: GroupDrawerProps) {
+  const { t } = useTranslation();
   return (
     <Drawer
       isOpen={props.item !== null}
@@ -28,7 +30,7 @@ export function GroupDrawer(props: GroupDrawerProps) {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Group</DrawerHeader>
+        <DrawerHeader>{t("group")}</DrawerHeader>
 
         <DrawerBody>
           <GroupFormik

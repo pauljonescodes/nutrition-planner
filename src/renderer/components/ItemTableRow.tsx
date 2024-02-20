@@ -109,7 +109,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
         <Skeleton isLoaded={isLoaded}>{props.document.count}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.massGrams}g</Skeleton>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.massGrams}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
@@ -117,15 +117,15 @@ export function ItemTableRow(props: ItemTableRowProps) {
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.fatGrams}g</Skeleton>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.fatGrams}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {nutritionState?.carbohydrateGrams}g
+          {nutritionState?.carbohydrateGrams}
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.proteinGrams}g</Skeleton>
+        <Skeleton isLoaded={isLoaded}>{nutritionState?.proteinGrams}</Skeleton>
       </Td>
     </Tr>
   );

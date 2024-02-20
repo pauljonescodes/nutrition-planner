@@ -21,8 +21,11 @@ import { PlanDrawer } from './drawers/PlanDrawer';
 import { SettingsDrawer } from './drawers/SettingsDrawer';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { InfoDrawer } from './drawers/InfoDrawer';
+import { useTranslation } from "react-i18next";
+import { PathEnum } from "../paths";
 
 export function MenuHStack() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [itemDrawerItem, setItemDrawerItem] = useState<ItemInterface | null>(
@@ -58,12 +61,12 @@ export function MenuHStack() {
       >
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === '/'}
+            isActive={location.pathname === PathEnum.log}
             onClick={() => {
-              navigate('/');
+              navigate(PathEnum.log);
             }}
           >
-            Log
+            {t("log")}
           </Button>
           <IconButton
             onClick={() => {
@@ -73,17 +76,17 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label="Add"
+            aria-label={t("add")}
           />
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === '/items'}
+            isActive={location.pathname === PathEnum.items}
             onClick={() => {
-              navigate('/items');
+              navigate(PathEnum.items);
             }}
           >
-            Items
+            {t("items")}
           </Button>
           <IconButton
             onClick={() => {
@@ -93,17 +96,17 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label="Add"
+            aria-label={t("add")}
           />
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === '/groups'}
+            isActive={location.pathname === PathEnum.groups}
             onClick={() => {
-              navigate('/groups');
+              navigate(PathEnum.groups);
             }}
           >
-            Groups
+            {t("groups")}
           </Button>
           <IconButton
             onClick={() => {
@@ -113,17 +116,17 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label="Add"
+            aria-label={t("add")}
           />
         </ButtonGroup>
         <ButtonGroup isAttached>
           <Button
-            isActive={location.pathname === '/plans'}
+            isActive={location.pathname === PathEnum.plans}
             onClick={() => {
-              navigate('/plans');
+              navigate(PathEnum.plans);
             }}
           >
-            Plans
+            {t("plans")}
           </Button>
           <IconButton
             onClick={() => {
@@ -133,25 +136,23 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label="Add"
+            aria-label={t("add")}
           />
         </ButtonGroup>
         <Spacer />
-        <IconButton
+        {/* <IconButton
           onClick={() => {
             setInfoDrawerIsOpen(true);
           }}
-          isActive={location.pathname === '/info'}
           icon={<InfoIcon />}
-          aria-label="Info"
-        />
+          aria-label={t("info")}
+        /> */}
         <IconButton
           onClick={() => {
             setSettingsDrawerIsOpen(true);
           }}
-          isActive={location.pathname === '/settings'}
           icon={<SettingsIcon />}
-          aria-label="Settings"
+          aria-label={t("settings")}
         />
       </HStack>
       <ItemDrawer

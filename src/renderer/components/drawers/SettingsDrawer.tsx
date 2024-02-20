@@ -1,4 +1,4 @@
-import { DeleteIcon, DownloadIcon } from "@chakra-ui/icons";
+import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import {
   Button,
   Drawer,
@@ -7,17 +7,21 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Text,
+  Select,
   VStack,
   useColorMode,
   useColorModeValue,
   useToast,
-} from "@chakra-ui/react";
-import FileSaver from "file-saver";
-import { Fragment, useEffect, useState } from "react";
-import { useRxCollection, useRxDB } from "rxdb-hooks";
-import { useFilePicker } from "use-file-picker";
-import { DeleteAlertDialog } from "../DeleteAlertDialog";
+} from '@chakra-ui/react';
+import FileSaver from 'file-saver';
+import { Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useRxCollection, useRxDB } from 'rxdb-hooks';
+import { useFilePicker } from 'use-file-picker';
+import { DeleteAlertDialog } from '../DeleteAlertDialog';
+import languages from '../../i18n/languages';
+import { useLocalStorage } from 'usehooks-ts';
+import { LocalStorageKeysEnum } from '../../constants';
 
 type SettingsDrawerProps = {
   isOpen: boolean;
@@ -25,22 +29,28 @@ type SettingsDrawerProps = {
 };
 
 export function SettingsDrawer(props: SettingsDrawerProps) {
+  const { t, i18n } = useTranslation();
   const [importLoadingState, setImportLoadingState] = useState(false);
   const [showDeleteDialogState, setShowDeleteDialogState] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const [ languageLocaleStorage, setLanguageLocalStorage ] = useLocalStorage(
+    LocalStorageKeysEnum.language,
+    "en",
+  );
+
   const database = useRxDB();
-  const collection = useRxCollection("item");
+  const collection = useRxCollection('item');
   const toast = useToast();
 
-  const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const subtleTextColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
   const {
     filesContent,
     loading: filesLoading,
     openFilePicker,
   } = useFilePicker({
-    accept: ".json",
+    accept: '.json',
     multiple: false,
   });
 
@@ -51,8 +61,8 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
       await database.importJSON(JSON.parse(filesContent[0].content));
       setImportLoadingState(false);
       toast({
-        title: "Import successful.",
-        status: "success",
+        title: t("success"),
+        status: 'success',
       });
     }
   }
@@ -75,44 +85,54 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Settings</DrawerHeader>
-
+          <DrawerHeader>{t('settings')}</DrawerHeader>
           <DrawerBody>
             <VStack>
-              <Button onClick={toggleColorMode} width={"full"}>
-                Toggle {colorMode === "light" ? "Dark" : "Light"} UI
+              <Select
+                value={languageLocaleStorage}
+                onChange={(event) => {
+                  setLanguageLocalStorage(event.target.value);
+                }}
+              >
+                {languages.map((value) => (
+                  <option value={value}>{value}</option>
+                ))}
+              </Select>
+              <Button onClick={toggleColorMode} width={'full'}>
+                {t('toggleColorMode')}
               </Button>
+
               <Button
-                width={"full"}
+                width={'full'}
                 disabled={loading}
                 leftIcon={<DownloadIcon />}
                 onClick={async () => {
                   const json = await database.exportJSON();
                   const blob = new Blob([JSON.stringify(json)], {
-                    type: "text/plain;charset=utf-8",
+                    type: 'text/plain;charset=utf-8',
                   });
 
                   FileSaver.saveAs(
                     blob,
-                    `nutrition_export_${new Date().toJSON()}.json`
+                    `nutrition_export_${new Date().toJSON()}.json`,
                   );
                 }}
               >
-                Export JSON data
+                {t('exportJson')}
               </Button>
 
               <Button
-                width={"full"}
+                width={'full'}
                 disabled={loading}
                 onClick={() => {
                   openFilePicker();
                 }}
-                leftIcon={<DownloadIcon transform={"scaleY(-1)"} />}
+                leftIcon={<DownloadIcon transform={'scaleY(-1)'} />}
               >
-                Import JSON data
-              </Button>    
+                {t('importJson')}
+              </Button>
               <Button
-                width={"full"}
+                width={'full'}
                 colorScheme="red"
                 disabled={loading}
                 leftIcon={<DeleteIcon />}
@@ -120,11 +140,8 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   setShowDeleteDialogState(true);
                 }}
               >
-                Reset database
+                {t('reset')}
               </Button>
-              <Text color={subtleTextColor} fontSize="sm">
-                This permentantly deletes <Text as="em">everything</Text>
-              </Text>
             </VStack>
           </DrawerBody>
         </DrawerContent>
@@ -136,8 +153,8 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
           if (result) {
             await collection?.find().remove();
             toast({
-              title: "Reset successful.",
-              status: "success",
+              title: t('success'),
+              status: 'success',
             });
           }
         }}

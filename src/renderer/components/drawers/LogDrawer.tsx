@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { LogFormik } from "../formik/LogFormik";
+import { useTranslation } from "react-i18next";
 
 type LogDrawerProps = {
   item: ItemInterface | null;
@@ -16,6 +17,7 @@ type LogDrawerProps = {
 };
 
 export function LogDrawer(props: LogDrawerProps) {
+  const { t } = useTranslation();
   return (
     <Drawer
       isOpen={props.item !== null}
@@ -27,7 +29,7 @@ export function LogDrawer(props: LogDrawerProps) {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Log</DrawerHeader>
+        <DrawerHeader>{t("log")}</DrawerHeader>
 
         <DrawerBody>
           <LogFormik

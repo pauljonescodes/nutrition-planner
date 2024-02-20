@@ -16,6 +16,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
 import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
 import { ItemTableRow } from "./ItemTableRow";
+import { useTranslation } from "react-i18next";
 
 type ItemTableContainerProps = {
   nameSearch: string;
@@ -36,6 +37,7 @@ export function ItemInfiniteTableContainer(
   props: ItemTableContainerProps
 ) {
   const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const { t } = useTranslation();
 
   return (
     <Fragment>
@@ -43,10 +45,10 @@ export function ItemInfiniteTableContainer(
         <Table>
           <Thead>
             <Tr>
-              <Th width={"144px"}>Actions</Th>
+              <Th width={"144px"}>{t("actions")}</Th>
               <Th width={"496px"}>
                 <Input
-                  placeholder={"Name"}
+                  placeholder={t("name")}
                   value={props.nameSearch}
                   onChange={(e) => {
                     props.onNameSearchChange(e.currentTarget.value);
@@ -66,15 +68,15 @@ export function ItemInfiniteTableContainer(
                     }
                   }}
                 >
-                  {props.servingOrTotal}
+                  {t(props.servingOrTotal)}
                 </Button>
               </Th>
-              <Th isNumeric>{"Count"}</Th>
-              <Th isNumeric>{"Mass (g)"}</Th>
-              <Th isNumeric>{"Energy (kcal)"}</Th>
-              <Th isNumeric>{"Fat (g)"}</Th>
-              <Th isNumeric>{"Carbohydrates (g)"}</Th>
-              <Th isNumeric>{"Protein (g)"}</Th>
+              <Th isNumeric>{t("count")}</Th>
+              <Th isNumeric>{t("mass")}</Th>
+              <Th isNumeric>{t("energy")}</Th>
+              <Th isNumeric>{t("fat")}</Th>
+              <Th isNumeric>{t("carbohydrate")}</Th>
+              <Th isNumeric>{t("protein")}</Th>
             </Tr>
           </Thead>
           <InfiniteScroll

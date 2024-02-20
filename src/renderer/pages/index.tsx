@@ -8,7 +8,12 @@ import {
 } from "@chakra-ui/react";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
-import enUS from "date-fns/locale/en-US";
+import enUS from 'date-fns/locale/en-US';
+import zhCN from 'date-fns/locale/zh-CN';
+import arSA from 'date-fns/locale/ar-SA';
+import es from 'date-fns/locale/es';
+import fr from 'date-fns/locale/fr'; 
+import hi from 'date-fns/locale/hi';
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import { Size } from "electron";
@@ -42,6 +47,8 @@ import {
   recursivelyPopulateSubitemsOfItems,
 } from "../data/rxnp/RxNPItemSchema";
 import { currencyFormatter } from "../utilities/currency-formatter";
+import { useLocalStorage } from 'usehooks-ts';
+import { LocalStorageKeysEnum } from '../constants';
 
 export interface RangeType {
   start: Date;
@@ -149,8 +156,18 @@ export default function LogPage() {
     setViewState("week");
   }
 
+  const [ languageLocaleStorage, setLanguageLocalStorage ] = useLocalStorage(
+    LocalStorageKeysEnum.language,
+    "en",
+  );
+
   const locales = {
-    "en-US": enUS,
+    'en': enUS,
+    'cmn': zhCN,
+    'ar': arSA,
+    'fr': fr,
+    'hi': hi,
+    'es': es,
   };
   const localizer = dateFnsLocalizer({
     format,
@@ -170,6 +187,7 @@ export default function LogPage() {
           }}
           selectable
           localizer={localizer}
+          culture={languageLocaleStorage}
           onRangeChange={(range: any) => {
             if (range.start && range.end) {
               setDateRangeState({

@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { ItemFormik } from "../formik/ItemFormik";
+import { useTranslation } from "react-i18next";
 
 type ItemDrawerProps = {
   item: ItemInterface | null;
@@ -15,6 +16,7 @@ type ItemDrawerProps = {
 };
 
 export function ItemDrawer(props: ItemDrawerProps) {
+  const { t } = useTranslation();
   return (
     <Drawer
       isOpen={props.item !== null}
@@ -26,7 +28,7 @@ export function ItemDrawer(props: ItemDrawerProps) {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Ingredient</DrawerHeader>
+        <DrawerHeader>{t("item")}</DrawerHeader>
 
         <DrawerBody>
           <ItemFormik item={props.item} onSubmit={props.onResult} />

@@ -28,6 +28,7 @@ import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
 import { SubitemInterface } from "../../data/interfaces/SubitemInterface";
 import { RxNPItemDocument } from "../../data/rxnp/RxNPItemSchema";
 import { PriceNutritionGrid } from "../PriceNutritionGrid";
+import { useTranslation } from "react-i18next";
 
 interface SubitemAutoCompleteInputProps {
   value: SubitemInterface;
@@ -38,6 +39,7 @@ interface SubitemAutoCompleteInputProps {
 }
 
 export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
+  const { t } = useTranslation();
   const thisSubitem = props.formikProps.values.subitems![props.index];
 
   const [nameSearchState, setNameSearchState] = useState<string | undefined>(
@@ -109,7 +111,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
             value={props.value.count}
             onChange={props.formikProps.handleChange}
             onBlur={props.formikProps.handleBlur}
-            placeholder={"Servings"}
+            placeholder={t("servings")}
           />
         </NumberInput>
         <AutoComplete
@@ -130,7 +132,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
           }}
         >
           <AutoCompleteInput
-            placeholder={"Name"}
+            placeholder={t("name")}
             value={nameSearchState ?? subitemNameState ?? ""}
             onChange={async (event) => {
               setNameSearchState(event.target.value);
@@ -155,7 +157,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
 
         <IconButton
           icon={<DeleteIcon />}
-          aria-label="Remove item"
+          aria-label={t("delete")}
           onClick={() => {
             props.fieldArrayHelpers.remove(props.index);
           }}

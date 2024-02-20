@@ -7,8 +7,10 @@ import { dataid } from "../utilities/dataid";
 import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
 import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
 import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
+import { useTranslation } from "react-i18next";
 
 export default function PlansPage() {
+  const { t } = useTranslation();
   const [nameSearchState, setNameSearchState] = useState<string>("");
   const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null
@@ -37,7 +39,7 @@ export default function PlansPage() {
         isFetching={query.isFetching}
         isExhausted={query.isExhausted}
         nameSearch={nameSearchState}
-        emptyStateText="Plans are collections of Groups and Items, and can be used to calculate and log a day's worth of nutrition."
+        emptyStateText={t("plansEmpty")}
         onNameSearchChange={(value: string) => {
           setNameSearchState(value);
         }}

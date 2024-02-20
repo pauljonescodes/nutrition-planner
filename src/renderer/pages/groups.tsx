@@ -10,10 +10,12 @@ import {
   ServingOrTotalEnum,
   toggleServingOrTotal,
 } from "../data/interfaces/ServingOrTotalEnum";
+import { useTranslation } from "react-i18next";
 
 export default function GroupsPage() {
+  const { t } = useTranslation();
   const [nameSearchState, setNameSearchState] = useState<string>("");
-  const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
+  const [editItemState, setdEitItemState] = useState<RxNPItemDocument | null>(
     null
   );
   const [deleteItemState, setDeleteItemState] =
@@ -41,7 +43,7 @@ export default function GroupsPage() {
     <Fragment>
       <ItemInfiniteTableContainer
         nameSearch={nameSearchState}
-        emptyStateText="Groups are collections of Items or other Groups, like a recipe or meal."
+        emptyStateText={t("groupsEmpty")}
         onNameSearchChange={(value: string) => {
           setNameSearchState(value);
         }}

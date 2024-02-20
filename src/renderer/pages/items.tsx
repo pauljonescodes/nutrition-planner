@@ -10,8 +10,10 @@ import {
   ServingOrTotalEnum,
   toggleServingOrTotal,
 } from "../data/interfaces/ServingOrTotalEnum";
+import { useTranslation } from "react-i18next";
 
 export default function ItemsPage() {
+  const { t } = useTranslation();
   const [nameSearchState, setNameSearchState] = useState<string>("");
   const [drawerItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null
@@ -43,7 +45,7 @@ export default function ItemsPage() {
         isFetching={query.isFetching}
         isExhausted={query.isExhausted}
         nameSearch={nameSearchState}
-        emptyStateText="Items are what you buy, and you can add one with the plus button above."
+        emptyStateText={t("itemsEmpty")}
         onNameSearchChange={(value: string) => {
           setNameSearchState(value);
         }}

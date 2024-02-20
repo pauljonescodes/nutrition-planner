@@ -6,6 +6,7 @@ import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
 import { DeleteAlertDialog } from "../DeleteAlertDialog";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedDatetimeControl } from "../form-controls/ValidatedDateTimeControl";
+import { useTranslation } from "react-i18next";
 
 type LogFormProps = {
   formikProps: FormikProps<ItemInterface>;
@@ -14,6 +15,7 @@ type LogFormProps = {
 };
 
 export default function LogForm(props: LogFormProps) {
+  const { t } = useTranslation();
   const [showDeleteState, setShowDeleteState] = useState<boolean>(false);
   return (
     <Fragment>
@@ -30,7 +32,7 @@ export default function LogForm(props: LogFormProps) {
           value={props.formikProps.values.date ? new Date(props.formikProps.values!.date!) : undefined}
           error={props.formikProps.errors.date}
           name="date"
-          placeholder="Date"
+          placeholder={t("date")}
           formikProps={props.formikProps}
           spaceProps={{ pb: 2 }}
         />
@@ -52,7 +54,7 @@ export default function LogForm(props: LogFormProps) {
               my={4}
               isLoading={props.formikProps.isSubmitting}
             >
-              Submit
+              {t("submit")}
             </Button>
             {props.onDelete && (
               <Button
@@ -61,7 +63,7 @@ export default function LogForm(props: LogFormProps) {
                 isLoading={props.formikProps.isSubmitting}
                 onClick={() => setShowDeleteState(true)}
               >
-                Delete
+                {t("delete")}
               </Button>
             )}
           </VStack>

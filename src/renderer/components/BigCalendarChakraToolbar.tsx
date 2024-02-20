@@ -11,8 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { ToolbarProps } from "react-big-calendar";
 import { dateIsToday } from "../utilities/dateIsToday";
+import { useTranslation } from 'react-i18next';
 
 export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
+  const { t } = useTranslation();
   return (
     <HStack>
       <ButtonGroup
@@ -24,7 +26,7 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
         <IconButton
           onClick={() => toolbar.onNavigate("PREV")}
           icon={<ArrowBackIcon />}
-          aria-label={"Back"}
+          aria-label={t("previous")}
           variant="outline"
           flexGrow={{ base: 1, sm: "initial" }}
         />
@@ -35,13 +37,13 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
           isActive={dateIsToday(toolbar.date)}
         >
           <Show below="sm">{toolbar.label}</Show>
-          <Show above="sm">Today</Show>
+          <Show above="sm">{t("today")}</Show>
         </Button>
         <IconButton
           flexGrow={{ base: 1, sm: "initial" }}
           onClick={() => toolbar.onNavigate("NEXT")}
           icon={<ArrowForwardIcon />}
-          aria-label={"Next"}
+          aria-label={t("next")}
           variant="outline"
         />
       </ButtonGroup>
@@ -61,14 +63,14 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
             variant="outline"
             isActive={toolbar.view === "day"}
           >
-            Day
+            {t("day")}
           </Button>
           <Button
             onClick={() => toolbar.onView("week")}
             variant="outline"
             isActive={toolbar.view === "week"}
           >
-            Week
+             {t("week")}
           </Button>
           <Show above="md">
             <Button
@@ -76,7 +78,7 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
               variant="outline"
               isActive={toolbar.view === "month"}
             >
-              Month
+               {t("month")}
             </Button>
           </Show>
         </ButtonGroup>

@@ -9,6 +9,7 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { LegacyRef, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type IngredientDrawerProps = {
   isOpen: boolean;
@@ -17,7 +18,7 @@ type IngredientDrawerProps = {
 
 export function DeleteAlertDialog(props: IngredientDrawerProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
-
+  const { t } = useTranslation();
   return (
     <AlertDialog
       isOpen={props.isOpen}
@@ -26,10 +27,10 @@ export function DeleteAlertDialog(props: IngredientDrawerProps) {
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader>Delete</AlertDialogHeader>
+          <AlertDialogHeader>{t("delete")}</AlertDialogHeader>
 
           <AlertDialogBody>
-            Are you sure? You can't undo this action afterwards.
+            {t("areYouSure")}
           </AlertDialogBody>
 
           <AlertDialogFooter>
@@ -40,7 +41,7 @@ export function DeleteAlertDialog(props: IngredientDrawerProps) {
                 }}
                 ref={cancelRef as LegacyRef<HTMLButtonElement>}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button
                 colorScheme="red"
@@ -48,7 +49,7 @@ export function DeleteAlertDialog(props: IngredientDrawerProps) {
                   props.onResult(true);
                 }}
               >
-                Delete
+                {t("delete")}
               </Button>
             </ButtonGroup>
           </AlertDialogFooter>

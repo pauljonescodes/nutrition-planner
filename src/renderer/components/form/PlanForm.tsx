@@ -5,6 +5,7 @@ import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
 import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
 import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
+import { useTranslation } from "react-i18next";
 
 type PlanFormProps = {
   formikProps: FormikProps<ItemInterface>;
@@ -12,7 +13,7 @@ type PlanFormProps = {
 };
 
 export default function PlanForm(props: PlanFormProps) {
-  // const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const { t } = useTranslation();
 
   return (
     <Form
@@ -27,7 +28,7 @@ export default function PlanForm(props: PlanFormProps) {
         value={props.formikProps.values.name}
         error={props.formikProps.errors.name}
         name="name"
-        placeholder="Name"
+        placeholder={t("name")}
         formikProps={props.formikProps}
         spaceProps={{ pb: 2 }}
         inputFieldRef={props.firstInputFieldRef}
@@ -36,7 +37,7 @@ export default function PlanForm(props: PlanFormProps) {
       <SubitemFieldArray
         formikProps={props.formikProps}
         itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
-        name={"Count"}
+        name={t("count")}
       />
 
       <Center>
@@ -46,7 +47,7 @@ export default function PlanForm(props: PlanFormProps) {
             my={4}
             isLoading={props.formikProps.isSubmitting}
           >
-            Submit
+            {t("submit")}
           </Button>
           {/* <PriceNutritionGrid
             priceCents={totalPriceInCents}

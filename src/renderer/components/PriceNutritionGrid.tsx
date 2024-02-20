@@ -1,6 +1,7 @@
 import { Grid, GridItem, Text, useColorModeValue } from "@chakra-ui/react";
 import { ItemInterface } from "../data/interfaces/ItemInterface";
 import { currencyFormatter } from "../utilities/currency-formatter";
+import { useTranslation } from "react-i18next";
 
 type PriceNutritionGridProps = {
   nutritionInfo?: ItemInterface;
@@ -9,6 +10,7 @@ type PriceNutritionGridProps = {
 };
 
 export function PriceNutritionGrid(props: PriceNutritionGridProps) {
+  const { t } = useTranslation();
   const subtleTextColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
@@ -26,22 +28,22 @@ export function PriceNutritionGrid(props: PriceNutritionGridProps) {
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo?.energyKilocalories ?? 0}kcal
+          {props.nutritionInfo?.energyKilocalories ?? 0}{t("kcal")}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo?.fatGrams ?? 0}g fat
+          {props.nutritionInfo?.fatGrams ?? 0}{t("massG")} {t("fat")}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo?.carbohydrateGrams ?? 0}g carbs
+          {props.nutritionInfo?.carbohydrateGrams ?? 0}{t("massG")} {t("carbs")}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor}>
         <Text fontSize="xs" align={"center"}>
-          {props.nutritionInfo?.proteinGrams ?? 0}g protein
+          {props.nutritionInfo?.proteinGrams ?? 0}{t("massG")} {t("protein")}
         </Text>
       </GridItem>
     </Grid>

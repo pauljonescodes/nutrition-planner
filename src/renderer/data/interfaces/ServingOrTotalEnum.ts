@@ -1,6 +1,6 @@
 export enum ServingOrTotalEnum {
-  serving = "Serving price",
-  total = "Total price",
+  serving = "servingPrice",
+  total = "totalPrice",
 }
 
 export function toggleServingOrTotal(

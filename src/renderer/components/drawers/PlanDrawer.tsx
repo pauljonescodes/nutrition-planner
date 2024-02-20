@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { PlanFormik } from "../formik/PlanFormik";
+import { useTranslation } from "react-i18next";
 
 type PlanDrawerProps = {
   item: ItemInterface | null;
@@ -15,6 +16,7 @@ type PlanDrawerProps = {
 };
 
 export function PlanDrawer(props: PlanDrawerProps) {
+  const { t } = useTranslation();
   return (
     <Drawer
       isOpen={props.item !== null}
@@ -26,7 +28,7 @@ export function PlanDrawer(props: PlanDrawerProps) {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Plan</DrawerHeader>
+        <DrawerHeader>{t("plan")}</DrawerHeader>
 
         <DrawerBody>
           <PlanFormik item={props.item} onSubmit={props.onResult} />
