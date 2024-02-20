@@ -4,7 +4,7 @@ import {
   ColorModeScript,
   VStack,
   extendTheme,
-  type ThemeConfig
+  type ThemeConfig,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,9 +16,6 @@ import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { useLocalStorage } from 'usehooks-ts';
-import '../../styles/react-big-calendar.scss';
-import '../../styles/react-datetime.scss';
-import '../../styles/style.scss';
 import { MenuHStack } from './components/MenuHStack';
 import { LocalStorageKeysEnum } from './constants';
 import { initRxNPDatabase } from './data/rxnp/RxNPDatabaseHelpers';
@@ -29,26 +26,28 @@ import ItemsPage from './pages/items';
 import PlansPage from './pages/plans';
 import { PathEnum } from './paths';
 
+import '../../styles/react-big-calendar.scss';
+import '../../styles/react-datetime.scss';
+import '../../styles/style.scss';
+
 export default function App() {
   const { i18n } = useTranslation();
   const [database, setDatabase] = useState<RxNPDatabaseType | undefined>(
     undefined,
   );
-  const [languageLocalStorage, setLanguageLocalStorage] = useLocalStorage(
+  const [languageLocalStorage] = useLocalStorage(
     LocalStorageKeysEnum.language,
     'en',
   );
 
   useEffect(() => {
     i18n.changeLanguage(languageLocalStorage);
-    console.log('languageLocalStorage', languageLocalStorage);
-  }, [languageLocalStorage]);
+  }, [languageLocalStorage, i18n]);
 
   useEffect(() => {
     if (!database) {
       addRxPlugin(RxDBQueryBuilderPlugin);
       addRxPlugin(RxDBJsonDumpPlugin);
-      //addRxPlugin(RxDBDevModePlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
       initRxNPDatabase('nutrition-planner-db', getRxStorageDexie()).then(
         setDatabase,
@@ -70,18 +69,15 @@ export default function App() {
     '2xl': '96em', // 1536
   };
 
-  const theme = extendTheme(
-    {
-      breakpoints,
-      config,
-      fonts: {
-        body: `-apple-system, BlinkMacSystemFont, "Segoe UI",
+  const theme = extendTheme({
+    breakpoints,
+    config,
+    fonts: {
+      body: `-apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen-Sans, Ubuntu, Cantarell,
           "Helvetica Neue", sans-serif`,
-      },
     },
-    //withDefaultColorScheme({ colorScheme: 'green' }),
-  );
+  });
 
   return (
     <Router>

@@ -46,7 +46,7 @@ import {
   RxNPItemDocument,
   recursivelyPopulateSubitemsOfItems,
 } from "../data/rxnp/RxNPItemSchema";
-import { currencyFormatter } from "../utilities/currency-formatter";
+import { currencyFormatter } from "../utilities/currencyFormatter";
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../constants';
 

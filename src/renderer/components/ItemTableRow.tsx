@@ -18,7 +18,7 @@ import { ItemInterface } from "../data/interfaces/ItemInterface";
 import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
 import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
 import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
-import { currencyFormatter } from "../utilities/currency-formatter";
+import { currencyFormatter } from "../utilities/currencyFormatter";
 import { useTranslation } from "react-i18next";
 
 type ItemTableRowProps = {

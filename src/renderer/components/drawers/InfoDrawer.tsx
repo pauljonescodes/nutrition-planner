@@ -30,10 +30,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../../constants';
 import moment from 'moment';
-import {
-  calculateBasalMetabolicRateKcal,
-  calculateEnergyTargetKcal,
-} from '../../data/CalculationHelpers';
+import { calculateBasalMetabolicRateKcal } from "../../utilities/calculateBasalMetabolicRateKcal";
+import { calculateEnergyTargetKcal } from "../../utilities/calculateEnergyTargetKcal";
 
 type InfoDrawerProps = {
   isOpen: boolean;
