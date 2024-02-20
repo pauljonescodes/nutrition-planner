@@ -116,7 +116,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.cholesterolMilligrams}
         error={formikProps.errors.cholesterolMilligrams}
         name="cholesterolMilligrams"
-        placeholder={t("cholesterol") + " (" + t("milligramsMg") + ")"}
+        placeholder={t("cholesterol") + " (" + t("mgMilligrams") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
@@ -125,7 +125,7 @@ export default function ItemForm(props: ItemFormProps) {
         value={formikProps.values.sodiumMilligrams}
         error={formikProps.errors.sodiumMilligrams}
         name="sodiumMilligrams"
-        placeholder={t("sodium") + " (" + t("milligramsMg") + ")"}
+        placeholder={t("sodium") + " (" + t("mgMilligrams") + ")"}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />

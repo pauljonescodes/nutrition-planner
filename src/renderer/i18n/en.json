@@ -6,7 +6,7 @@
     "birthday": "Birthday",
     "cancel": "Cancel",
     "carbohydrate": "Carbohydrate",
-    "carbohydrateTarget": "Carbohydrate target",
+    "carbohydrateTarget": "Carb target",
     "carb": "Carb",
     "cholesterol": "Cholesterol",
     "count": "Count",
@@ -67,5 +67,8 @@
     "totalPrice": "Total price",
     "transFat": "Trans fat",
     "week": "Week",
-    "weight": "Weight"
+    "weight": "Weight",
+    "kgKilograms": "kg",
+    "cmCentimeters": "cm",
+    "mgMilligrams": "mg"
 }
