@@ -1,13 +1,13 @@
-import { Fragment, useState } from 'react';
-import { useRxCollection, useRxQuery } from 'rxdb-hooks';
-import { useTranslation } from 'react-i18next';
-import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
-import { ItemInfiniteTableContainer } from '../components/ItemInfiniteTableContainer';
-import { PlanDrawer } from '../components/drawers/PlanDrawer';
-import { dataid } from '../utilities/dataid';
-import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
-import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
-import { ServingOrTotalEnum } from '../data/interfaces/ServingOrTotalEnum';
+import { Fragment, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useRxCollection, useRxQuery } from "rxdb-hooks";
+import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
+import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
+import { PlanDrawer } from "../components/drawers/PlanDrawer";
+import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
+import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
+import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
+import { dataid } from "../utilities/dataid";
 
 export default function PlansPage() {
   const { t } = useTranslation();

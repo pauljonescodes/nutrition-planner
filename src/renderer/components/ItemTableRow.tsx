@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   ButtonGroup,
   Center,
@@ -8,18 +8,19 @@ import {
   Text,
   Tr,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   populatedItemServingNutrition,
   populatedItemServingPriceCents,
-} from "../data/interfaces/ItemHelpers";
-import { ItemInterface } from "../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
-import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
-import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
-import { currencyFormatter } from "../utilities/currencyFormatter";
-import { useTranslation } from "react-i18next";
+} from '../data/interfaces/ItemHelpers';
+import { ItemInterface } from '../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
+import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
+import { ServingOrTotalEnum } from '../data/interfaces/ServingOrTotalEnum';
+import { LocalStorageKeysEnum } from '../constants';
+import { useLocalStorage } from 'usehooks-ts';
 
 type ItemTableRowProps = {
   document: RxNPItemDocument;
@@ -32,10 +33,10 @@ type ItemTableRowProps = {
 export function ItemTableRow(props: ItemTableRowProps) {
   const { t } = useTranslation();
   const [nutritionState, setNutritionState] = useState<ItemInterface | null>(
-    null
+    null,
   );
   const [priceCentsState, setPriceCentsState] = useState<number | null>(null);
-  const borderColorValue = useColorModeValue("gray.100", "gray.700");
+  const borderColorValue = useColorModeValue('gray.100', 'gray.700');
 
   async function populate(document: RxNPItemDocument) {
     const populatedItem = await document.recursivelyPopulateSubitems();
@@ -43,14 +44,30 @@ export function ItemTableRow(props: ItemTableRowProps) {
     setPriceCentsState(populatedItemServingPriceCents(populatedItem));
   }
 
+  const [languageLocalStorage] = useLocalStorage(
+    LocalStorageKeysEnum.language,
+    'en',
+  );
+
+  const [currencyLocalStorage] = useLocalStorage(
+    LocalStorageKeysEnum.currency,
+    'USD',
+  );
+
+  const currencyDenominator = currencyLocalStorage === 'JPY' ? 1 : 100;
+
+  const currencyFormatter = new Intl.NumberFormat(languageLocalStorage, {
+    style: 'currency',
+    currency: currencyLocalStorage,
+  });
+
   useEffect(() => {
     populate(props.document);
-    return;
   }, [props.document.revision]);
 
   const isLoaded = nutritionState !== null && priceCentsState !== null;
-  var priceDenominator = 1;
-  var priceMultiple = 1;
+  let priceDenominator = 1;
+  let priceMultiple = 1;
 
   if (props.document.type === ItemTypeEnum.item) {
     if (props.priceType === ServingOrTotalEnum.total) {
@@ -65,7 +82,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
 
   return (
     <Tr key={props.document.id} height="73px">
-      <Td width={"144px"} borderColor={borderColorValue}>
+      <Td width="144px" borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
           <Center>
             <ButtonGroup isAttached size="sm">
@@ -90,12 +107,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
       </Td>
       <Td borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          <Text
-            minW={"176px"}
-            maxW={"448px"}
-            noOfLines={2}
-            whiteSpace={"initial"}
-          >
+          <Text minW="176px" maxW="448px" noOfLines={2} whiteSpace="initial">
             {props.document.name}
           </Text>
         </Skeleton>
@@ -103,7 +115,7 @@ export function ItemTableRow(props: ItemTableRowProps) {
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
           {currencyFormatter.format(
-            ((priceCentsState ?? 999) / 100 / priceDenominator) * priceMultiple
+            ((priceCentsState ?? 999) / currencyDenominator / priceDenominator) * priceMultiple,
           )}
         </Skeleton>
       </Td>
@@ -111,23 +123,34 @@ export function ItemTableRow(props: ItemTableRowProps) {
         <Skeleton isLoaded={isLoaded}>{props.document.count}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.massGrams}{t("massG")}</Skeleton>
-      </Td>
-      <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {nutritionState?.energyKilocalories}{t("kcal")}
+          {nutritionState?.massGrams}
+          {t('massG')}
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.fatGrams}{t("massG")}</Skeleton>
-      </Td>
-      <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
-          {nutritionState?.carbohydrateGrams}{t("massG")}
+          {nutritionState?.energyKilocalories}
+          {t('kcal')}
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{nutritionState?.proteinGrams}{t("massG")}</Skeleton>
+        <Skeleton isLoaded={isLoaded}>
+          {nutritionState?.fatGrams}
+          {t('massG')}
+        </Skeleton>
+      </Td>
+      <Td isNumeric borderColor={borderColorValue}>
+        <Skeleton isLoaded={isLoaded}>
+          {nutritionState?.carbohydrateGrams}
+          {t('massG')}
+        </Skeleton>
+      </Td>
+      <Td isNumeric borderColor={borderColorValue}>
+        <Skeleton isLoaded={isLoaded}>
+          {nutritionState?.proteinGrams}
+          {t('massG')}
+        </Skeleton>
       </Td>
     </Tr>
   );

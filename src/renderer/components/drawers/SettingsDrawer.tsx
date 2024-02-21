@@ -22,6 +22,7 @@ import { useFilePicker } from 'use-file-picker';
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../../constants';
 import languages from '../../i18n/languages';
+import currencies from '../../i18n/currencies';
 import { DeleteAlertDialog } from '../DeleteAlertDialog';
 
 type SettingsDrawerProps = {
@@ -38,6 +39,11 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const [languageLocaleStorage, setLanguageLocalStorage] = useLocalStorage(
     LocalStorageKeysEnum.language,
     'en',
+  );
+
+  const [currencyLocalStorage, setCurrencyLocalStorage] = useLocalStorage(
+    LocalStorageKeysEnum.currency,
+    'USD',
   );
 
   const database = useRxDB();
@@ -75,7 +81,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const loading = filesLoading || importLoadingState;
 
   return (
-    <Fragment>
+    <>
       <Drawer
         isOpen={props.isOpen}
         placement="right"
@@ -88,8 +94,8 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
           <DrawerCloseButton />
           <DrawerHeader>{t('settings')}</DrawerHeader>
           <DrawerBody>
-            <VStack alignItems={'start'}>
-              <FormLabel>Language</FormLabel>
+            <VStack alignItems="start">
+              <FormLabel>{t('language')}</FormLabel>
               <Select
                 value={languageLocaleStorage}
                 onChange={(event) => {
@@ -100,12 +106,23 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   <option value={value}>{value}</option>
                 ))}
               </Select>
-              <Button onClick={toggleColorMode} width={'full'}>
+              <FormLabel>{t('currency')}</FormLabel>
+              <Select
+                value={currencyLocalStorage}
+                onChange={(event) => {
+                  setCurrencyLocalStorage(event.target.value);
+                }}
+              >
+                {currencies.map((value) => (
+                  <option value={value}>{value}</option>
+                ))}
+              </Select>
+              <Button onClick={toggleColorMode} width="full">
                 {t('toggleColorMode')}
               </Button>
 
               <Button
-                width={'full'}
+                width="full"
                 disabled={loading}
                 leftIcon={<DownloadIcon />}
                 onClick={async () => {
@@ -124,17 +141,17 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               </Button>
 
               <Button
-                width={'full'}
+                width="full"
                 disabled={loading}
                 onClick={() => {
                   openFilePicker();
                 }}
-                leftIcon={<DownloadIcon transform={'scaleY(-1)'} />}
+                leftIcon={<DownloadIcon transform="scaleY(-1)" />}
               >
                 {t('importJson')}
               </Button>
               <Button
-                width={'full'}
+                width="full"
                 colorScheme="red"
                 disabled={loading}
                 leftIcon={<DeleteIcon />}
@@ -161,6 +178,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
           }
         }}
       />
-    </Fragment>
+    </>
   );
 }

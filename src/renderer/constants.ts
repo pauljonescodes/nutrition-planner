@@ -1,5 +1,6 @@
 export enum LocalStorageKeysEnum {
     language = 'nutrition-planner-language',
+    currency = 'nutrition-planner-currency',
     sex = 'nutrition-planner-sex',
     birthday = 'nutrition-planner-birthday',
     weightKilograms = 'nutrition-planner-weight',
