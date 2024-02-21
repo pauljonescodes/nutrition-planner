@@ -141,6 +141,13 @@ const configuration: webpack.Configuration = {
     }),
 
     new CopyPlugin({
+      patterns: [{ from: 'assets/icon.ico', to: 'icon.ico' }],
+      options: {
+        concurrency: 100,
+      },
+    }),
+
+    new CopyPlugin({
       patterns: [{ from: 'src/renderer/manifest.json', to: 'manifest.json' }],
       options: {
         concurrency: 100,
