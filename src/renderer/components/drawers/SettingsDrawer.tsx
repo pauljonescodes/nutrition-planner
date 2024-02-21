@@ -21,7 +21,7 @@ import { useRxCollection, useRxDB } from 'rxdb-hooks';
 import { useFilePicker } from 'use-file-picker';
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../../constants';
-import languages from '../../i18n/languages';
+import { languages, languageNames } from '../../i18n/languages';
 import currencies from '../../i18n/currencies';
 import { DeleteAlertDialog } from '../DeleteAlertDialog';
 
@@ -103,7 +103,9 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 }}
               >
                 {languages.map((value) => (
-                  <option value={value} key={value}>{value}</option>
+                  <option value={value} key={value}>
+                    {languageNames[value]}
+                  </option>
                 ))}
               </Select>
               <FormLabel>{t('currency')}</FormLabel>
@@ -114,7 +116,9 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 }}
               >
                 {currencies.map((value) => (
-                  <option value={value} key={value}>{value}</option>
+                  <option value={value} key={value}>
+                    {t(value)}
+                  </option>
                 ))}
               </Select>
               <Button onClick={toggleColorMode} width="full">

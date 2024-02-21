@@ -1,4 +1,12 @@
 {
+  "AUD": "Dollar australien",
+  "CAD": "Dollar canadien",
+  "CHF": "Franc suisse",
+  "CNY": "Yuan chinois",
+  "EUR": "Euro",
+  "GBP": "Livre sterling",
+  "JPY": "Yen japonais",
+  "USD": "Dollar américain",
   "actions": "Actions",
   "add": "Ajouter",
   "areYouSure": "Êtes-vous sûr ?",
