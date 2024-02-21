@@ -26,7 +26,7 @@ import GroupsPage from './pages/groups';
 import ItemsPage from './pages/items';
 import PlansPage from './pages/plans';
 import { PathEnum } from './paths';
-import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
+// import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 
 import '../../styles/react-big-calendar.scss';
 import '../../styles/react-datetime.scss';
@@ -73,10 +73,10 @@ export default function App() {
 
   useEffect(() => {
     if (!database) {
+      // addRxPlugin(RxDBDevModePlugin);
       addRxPlugin(RxDBQueryBuilderPlugin);
       addRxPlugin(RxDBJsonDumpPlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
-      addRxPlugin(RxDBDevModePlugin);
       initRxNPDatabase('nutrition-planner-db', getRxStorageDexie()).then(
         setDatabase,
       );
