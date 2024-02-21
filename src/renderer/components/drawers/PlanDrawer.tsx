@@ -5,10 +5,10 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-} from "@chakra-ui/react";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { PlanFormik } from "../formik/PlanFormik";
-import { useTranslation } from "react-i18next";
+} from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { PlanFormik } from '../formik/PlanFormik';
 
 type PlanDrawerProps = {
   item: ItemInterface | null;
@@ -28,7 +28,7 @@ export function PlanDrawer(props: PlanDrawerProps) {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{t("plan")}</DrawerHeader>
+        <DrawerHeader>{t('plan')}</DrawerHeader>
 
         <DrawerBody>
           <PlanFormik item={props.item} onSubmit={props.onResult} />

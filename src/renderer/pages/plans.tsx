@@ -1,23 +1,23 @@
-import { Fragment, useState } from "react";
-import { useRxCollection, useRxQuery } from "rxdb-hooks";
-import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
-import { PlanDrawer } from "../components/drawers/PlanDrawer";
-import { dataid } from "../utilities/dataid";
-import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
-import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
-import { ServingOrTotalEnum } from "../data/interfaces/ServingOrTotalEnum";
-import { useTranslation } from "react-i18next";
+import { Fragment, useState } from 'react';
+import { useRxCollection, useRxQuery } from 'rxdb-hooks';
+import { useTranslation } from 'react-i18next';
+import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
+import { ItemInfiniteTableContainer } from '../components/ItemInfiniteTableContainer';
+import { PlanDrawer } from '../components/drawers/PlanDrawer';
+import { dataid } from '../utilities/dataid';
+import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
+import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
+import { ServingOrTotalEnum } from '../data/interfaces/ServingOrTotalEnum';
 
 export default function PlansPage() {
   const { t } = useTranslation();
-  const [nameSearchState, setNameSearchState] = useState<string>("");
+  const [nameSearchState, setNameSearchState] = useState<string>('');
   const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
-    null
+    null,
   );
   const [deleteItemState, setDeleteItemState] =
     useState<RxNPItemDocument | null>(null);
-  const rxCollection = useRxCollection<RxNPItemDocument>("item");
+  const rxCollection = useRxCollection<RxNPItemDocument>('item');
   const query = useRxQuery(
     rxCollection?.find({
       selector: {
@@ -27,19 +27,19 @@ export default function PlansPage() {
     })!,
     {
       pageSize: 12,
-      pagination: "Infinite",
-    }
+      pagination: 'Infinite',
+    },
   );
 
   return (
-    <Fragment>
+    <>
       <ItemInfiniteTableContainer
         documents={query.result}
         fetchMore={query.fetchMore}
         isFetching={query.isFetching}
         isExhausted={query.isExhausted}
         nameSearch={nameSearchState}
-        emptyStateText={t("plansEmpty")}
+        emptyStateText={t('plansEmpty')}
         onNameSearchChange={(value: string) => {
           setNameSearchState(value);
         }}
@@ -67,13 +67,13 @@ export default function PlansPage() {
       />
       <DeleteAlertDialog
         isOpen={deleteItemState !== null}
-        onResult={function (result: boolean): void {
+        onResult={(result: boolean) => {
           if (result) {
             deleteItemState?.remove();
           }
           setDeleteItemState(null);
         }}
       />
-    </Fragment>
+    </>
   );
 }

@@ -1,9 +1,9 @@
-import { AddIcon } from "@chakra-ui/icons";
-import { Button, Center, FormLabel, VStack } from "@chakra-ui/react";
-import { FieldArrayRenderProps, FormikProps } from "formik";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
-import { SubitemAutoCompleteInput } from "./SubitemAutoCompleteInput";
+import { AddIcon } from '@chakra-ui/icons';
+import { Button, Center, FormLabel, VStack } from '@chakra-ui/react';
+import { FieldArrayRenderProps, FormikProps } from 'formik';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
+import { SubitemAutoCompleteInput } from './SubitemAutoCompleteInput';
 
 interface SubitemFieldProps {
   formikProps: FormikProps<ItemInterface>;
@@ -31,6 +31,8 @@ export function SubitemField(props: SubitemFieldProps) {
       <Center>
         <Button
           onClick={async () => {
+            console.log('hello');
+            console.log(props.fieldArrayHelpers);
             props.fieldArrayHelpers.push({
               count: 1,
             });
