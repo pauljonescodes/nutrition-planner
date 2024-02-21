@@ -37,8 +37,8 @@ import {
   itemEquals,
   itemSumNutrition,
   itemZeroNutrition,
-  populatedLogServingNutrition,
-  populatedItemServingPriceCents,
+  logServingNutrition,
+  itemServingPriceCents,
 } from '../data/interfaces/ItemHelpers';
 import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
@@ -105,8 +105,8 @@ export default function LogPage() {
   }
 
   function titleForItemInterface(item: ItemInterface) {
-    const nutrition = populatedLogServingNutrition(item);
-    const priceCents = populatedItemServingPriceCents(item);
+    const nutrition = logServingNutrition(item);
+    const priceCents = itemServingPriceCents(item);
     return formatTitle(priceCents, nutrition);
   }
 
@@ -140,11 +140,11 @@ export default function LogPage() {
 
         const summedItem = itemSumNutrition(
           populatedLogsOnDate.map((value) =>
-          populatedLogServingNutrition(value),
+          logServingNutrition(value),
           ),
         );
         const summedPrice = populatedLogsOnDate.reduce((previous, current) => {
-          return previous + (populatedItemServingPriceCents(current) ?? 0);
+          return previous + (itemServingPriceCents(current) ?? 0);
         }, 0);
         if (!itemEquals(summedItem, itemZeroNutrition)) {
           events.push({

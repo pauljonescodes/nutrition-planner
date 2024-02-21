@@ -15,7 +15,7 @@ export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
   }, []);
 }
 
-export function populatedItemServingNutrition(
+export function itemServingNutrition(
   item: ItemInterface,
   depth?: number,
 ): ItemInterface {
@@ -29,7 +29,7 @@ export function populatedItemServingNutrition(
     const toSum = item.subitems.map((value) => {
       if (value.item) {
         const item = itemMultiplyNutrition(
-          populatedItemServingNutrition(value.item!, theDepth + 1),
+          itemServingNutrition(value.item!, theDepth + 1),
           value.count!,
         );
         return item;
@@ -44,7 +44,7 @@ export function populatedItemServingNutrition(
   return item;
 }
 
-export function populatedLogServingNutrition(
+export function logServingNutrition(
   item: ItemInterface,
   depth?: number,
 ): ItemInterface {
@@ -58,7 +58,7 @@ export function populatedLogServingNutrition(
     const toSum = item.subitems.map((value) => {
       if (value.item) {
         const item = itemDivideNutrition(
-          populatedItemServingNutrition(value.item!, theDepth + 1),
+          itemServingNutrition(value.item!, theDepth + 1),
           value.count!,
         );
         return item;
@@ -73,7 +73,7 @@ export function populatedLogServingNutrition(
   return item;
 }
 
-export function populatedItemServingPriceCents(
+export function itemServingPriceCents(
   item: ItemInterface,
   depth?: number,
 ): number {
@@ -89,7 +89,7 @@ export function populatedItemServingPriceCents(
         .map((value) => {
           if (value.item) {
             return (
-              populatedItemServingPriceCents(value.item, theDepth + 1) *
+              itemServingPriceCents(value.item, theDepth + 1) *
               (value.count ?? 1)
             );
           } else {

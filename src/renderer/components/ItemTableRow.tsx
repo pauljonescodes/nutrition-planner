@@ -12,8 +12,8 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  populatedItemServingNutrition,
-  populatedItemServingPriceCents,
+  itemServingNutrition,
+  itemServingPriceCents,
 } from '../data/interfaces/ItemHelpers';
 import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
@@ -40,8 +40,8 @@ export function ItemTableRow(props: ItemTableRowProps) {
 
   async function populate(document: RxNPItemDocument) {
     const populatedItem = await document.recursivelyPopulateSubitems();
-    setNutritionState(populatedItemServingNutrition(populatedItem));
-    setPriceCentsState(populatedItemServingPriceCents(populatedItem));
+    setNutritionState(itemServingNutrition(populatedItem));
+    setPriceCentsState(itemServingPriceCents(populatedItem));
   }
 
   const [languageLocalStorage] = useLocalStorage(

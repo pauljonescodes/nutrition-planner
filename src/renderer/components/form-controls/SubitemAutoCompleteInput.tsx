@@ -20,8 +20,8 @@ import { useRxCollection, useRxQuery } from "rxdb-hooks";
 import {
   itemMultiplyNutrition,
   itemZeroNutrition,
-  populatedItemServingNutrition,
-  populatedItemServingPriceCents,
+  itemServingNutrition,
+  itemServingPriceCents,
 } from "../../data/interfaces/ItemHelpers";
 import { ItemInterface } from "../../data/interfaces/ItemInterface";
 import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
@@ -82,8 +82,8 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
         return;
       }
 
-      const nutrition = populatedItemServingNutrition(populatedSubitemItem);
-      const priceCents = populatedItemServingPriceCents(populatedSubitemItem);
+      const nutrition = itemServingNutrition(populatedSubitemItem);
+      const priceCents = itemServingPriceCents(populatedSubitemItem);
       setNutritionAndPriceState({ nutrition, priceCents });
     }
   }
