@@ -103,7 +103,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 }}
               >
                 {languages.map((value) => (
-                  <option value={value}>{value}</option>
+                  <option value={value} key={value}>{value}</option>
                 ))}
               </Select>
               <FormLabel>{t('currency')}</FormLabel>
@@ -114,7 +114,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 }}
               >
                 {currencies.map((value) => (
-                  <option value={value}>{value}</option>
+                  <option value={value} key={value}>{value}</option>
                 ))}
               </Select>
               <Button onClick={toggleColorMode} width="full">
