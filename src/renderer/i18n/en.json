@@ -18,6 +18,7 @@
   "carbohydrateTarget": "Carb target",
   "cholesterol": "Cholesterol",
   "cmCentimeters": "cm",
+  "couchDbUrl": "CouchDB URL",
   "count": "Count",
   "currency": "Currency",
   "date": "Date",

@@ -13,6 +13,9 @@ import {
   useColorMode,
   useColorModeValue,
   useToast,
+  FormControl,
+  HStack,
+  Input,
 } from '@chakra-ui/react';
 import FileSaver from 'file-saver';
 import { Fragment, useEffect, useState } from 'react';
@@ -24,6 +27,7 @@ import { LocalStorageKeysEnum } from '../../constants';
 import { languages, languageNames } from '../../i18n/languages';
 import currencies from '../../i18n/currencies';
 import { DeleteAlertDialog } from '../DeleteAlertDialog';
+import { isValidUrl } from '../../utilities/isValidUrl';
 
 type SettingsDrawerProps = {
   isOpen: boolean;
@@ -36,7 +40,14 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const [showDeleteDialogState, setShowDeleteDialogState] = useState(false);
   const { toggleColorMode } = useColorMode();
 
-  const [languageLocaleStorage, setLanguageLocalStorage] = useLocalStorage(
+  const [couchDbUrlLocalStorage, setCouchDbUrlLocalStorage] = useLocalStorage<
+    string | undefined
+  >(LocalStorageKeysEnum.couchdbUrl, undefined);
+  const [couchDbStringState, setCouchDbStringState] = useState<string | null>(
+    couchDbUrlLocalStorage,
+  );
+
+  const [languageLocalStorage, setLanguageLocalStorage] = useLocalStorage(
     LocalStorageKeysEnum.language,
     'en',
   );
@@ -97,7 +108,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
             <VStack alignItems="start">
               <FormLabel>{t('language')}</FormLabel>
               <Select
-                value={languageLocaleStorage}
+                value={languageLocalStorage}
                 onChange={(event) => {
                   setLanguageLocalStorage(event.target.value);
                 }}
@@ -121,6 +132,33 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   </option>
                 ))}
               </Select>
+              <FormControl pb={1}>
+                <FormLabel>{t('couchDbUrl')}</FormLabel>
+                <HStack>
+                  <Input
+                    value={couchDbStringState ?? undefined}
+                    onChange={(e) => {
+                      setCouchDbStringState(e.target.value);
+                    }}
+                  />
+                  <Button
+                    w="30%"
+                    onClick={async () => {
+                      if (
+                        couchDbStringState !== null &&
+                        collection !== null &&
+                        isValidUrl(couchDbStringState ?? undefined)
+                      ) {
+                        setCouchDbUrlLocalStorage(couchDbStringState);
+                      } else {
+                        setCouchDbUrlLocalStorage(null);
+                      }
+                    }}
+                  >
+                    {t('submit')}
+                  </Button>
+                </HStack>
+              </FormControl>
               <Button onClick={toggleColorMode} width="full">
                 {t('toggleColorMode')}
               </Button>

@@ -41,7 +41,7 @@ export function ValidatedFormikControl<T>(
         onChange={props.formikProps.handleChange}
         onBlur={props.formikProps.handleBlur}
         placeholder={props.placeholder}
-        name={props.name} // not sure about this
+        name={props.name} 
         value={props.value ?? ""}
         isInvalid={props.error ? true : false}
         onPaste={(e) => {

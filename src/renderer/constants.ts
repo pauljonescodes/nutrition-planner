@@ -2,6 +2,7 @@ export enum LocalStorageKeysEnum {
     language = 'nutrition-planner-language',
     currency = 'nutrition-planner-currency',
     sex = 'nutrition-planner-sex',
+    couchdbUrl = 'nutrition-planner-couchdb-url',
     birthday = 'nutrition-planner-birthday',
     weightKilograms = 'nutrition-planner-weight',
     heightCentimeters = 'nutrition-planner-height',
