@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 export default function GroupsPage() {
   const { t } = useTranslation();
   const [nameSearchState, setNameSearchState] = useState<string>("");
-  const [editItemState, setdEitItemState] = useState<RxNPItemDocument | null>(
+  const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null
   );
   const [deleteItemState, setDeleteItemState] =

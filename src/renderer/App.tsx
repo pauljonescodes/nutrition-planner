@@ -54,7 +54,6 @@ export default function App() {
   useEffect(() => {
     if (couchDbUrlLocalStorage != null && database != null) {
       try {
-        console.log('replicating');
         setReplicationState(
           replicateCouchDB({
             replicationIdentifier: 'nutrition-planner-couchdb-replication',
@@ -86,7 +85,7 @@ export default function App() {
 
   const config: ThemeConfig = {
     useSystemColorMode: true,
-    initialColorMode: 'light',
+    initialColorMode: 'system',
   };
 
   const breakpoints = {

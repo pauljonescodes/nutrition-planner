@@ -1,18 +1,18 @@
-import { createRxDatabase, RxStorage, RxCollection } from "rxdb";
+import { createRxDatabase, RxStorage, RxCollection } from 'rxdb';
 import {
   RxNPItemDocument,
   rxnpItemDocumentMethods,
   rxnpItemSchema,
-} from "./RxNPItemSchema";
-import { RxNPDatabaseCollections } from "./RxNPDatabaseCollections";
-import { RxNPDatabaseType } from "./RxNPDatabaseType";
-import { ItemInterface } from "../interfaces/ItemInterface";
-import { dataid } from "../../utilities/dataid";
-import { ItemTypeEnum } from "../interfaces/ItemTypeEnum";
+} from './RxNPItemSchema';
+import { RxNPDatabaseCollections } from './RxNPDatabaseCollections';
+import { RxNPDatabaseType } from './RxNPDatabaseType';
+import { ItemInterface } from '../interfaces/ItemInterface';
+import { dataid } from '../../utilities/dataid';
+import { ItemTypeEnum } from '../interfaces/ItemTypeEnum';
 
 export async function initRxNPDatabase(
   name: string,
-  storage: RxStorage<any, any>
+  storage: RxStorage<any, any>,
 ): Promise<RxNPDatabaseType | undefined> {
   var database: RxNPDatabaseType | undefined;
 
@@ -21,9 +21,7 @@ export async function initRxNPDatabase(
       name: name,
       storage: storage,
     });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 
   await database?.addCollections({
     item: {
@@ -37,13 +35,40 @@ export async function initRxNPDatabase(
 
 export async function upsertLogInterface(
   item: ItemInterface,
-  collection?: RxCollection<RxNPItemDocument>
+  collection?: RxCollection<RxNPItemDocument>,
 ) {
+  var newItem: ItemInterface | null = null;
+
+  if (item.name != 'log') {
+    newItem = {
+      id: dataid(),
+      date: item.date ?? new Date(),
+      type: ItemTypeEnum.copy,
+      name: item.name,
+      priceCents: item.priceCents,
+      massGrams: item.massGrams,
+      energyKilocalories: item.energyKilocalories,
+      fatGrams: item.fatGrams,
+      saturatedFatGrams: item.saturatedFatGrams,
+      transFatGrams: item.transFatGrams,
+      cholesterolMilligrams: item.cholesterolMilligrams,
+      sodiumMilligrams: item.sodiumMilligrams,
+      carbohydrateGrams: item.carbohydrateGrams,
+      fiberGrams: item.fiberGrams,
+      sugarGrams: item.sugarGrams,
+      proteinGrams: item.proteinGrams,
+      count: item.count,
+    };
+    await collection?.upsert(newItem);
+  }
+
   if (item.subitems && item.subitems.length > 0) {
     const originalIds = item.subitems.map((value) => value.itemId!) ?? [];
-    const findByOriginalIdsMap = await collection?.findByIds(originalIds).exec();
+    const findByOriginalIdsMap = await collection
+      ?.findByIds(originalIds)
+      .exec();
     for (const [originalSubitemId, originalSubitem] of Array.from(
-      findByOriginalIdsMap ?? []
+      findByOriginalIdsMap ?? [],
     )) {
       const newSubitem = await originalSubitem.recursivelyUpsertNewSubitems();
       item.subitems.forEach(function (value, index) {
@@ -55,11 +80,30 @@ export async function upsertLogInterface(
     }
   }
 
+  if (item.subitems.length == 1 && item.subitems[0].itemId == null) {
+    item.subitems[0].itemId = newItem?.id;
+  } else {
+  }
+
   const log: any = {
     id: dataid(),
     date: item.date ?? new Date().toISOString(),
     type: ItemTypeEnum.log,
     subitems: item.subitems,
+    name: 'log',
+    priceCents: 0,
+    massGrams: 0,
+    energyKilocalories: 0,
+    fatGrams: 0,
+    saturatedFatGrams: 0,
+    transFatGrams: 0,
+    cholesterolMilligrams: 0,
+    sodiumMilligrams: 0,
+    carbohydrateGrams: 0,
+    fiberGrams: 0,
+    sugarGrams: 0,
+    proteinGrams: 0,
+    count: 1,
   } as any;
 
   await collection?.upsert(log);
@@ -67,7 +111,7 @@ export async function upsertLogInterface(
 
 export async function recursivelyPopulateSubitems(
   item: ItemInterface,
-  collection?: RxCollection<RxNPItemDocument>
+  collection?: RxCollection<RxNPItemDocument>,
 ): Promise<ItemInterface> {
   const mutableThis = item;
 

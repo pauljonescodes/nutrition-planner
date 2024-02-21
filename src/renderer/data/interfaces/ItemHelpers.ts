@@ -44,6 +44,35 @@ export function populatedItemServingNutrition(
   return item;
 }
 
+export function populatedLogServingNutrition(
+  item: ItemInterface,
+  depth?: number,
+): ItemInterface {
+  const theDepth = depth ?? 0;
+
+  if (theDepth === 32) {
+    return itemZeroNutrition;
+  }
+
+  if (item.subitems && item.subitems.length > 0) {
+    const toSum = item.subitems.map((value) => {
+      if (value.item) {
+        const item = itemDivideNutrition(
+          populatedItemServingNutrition(value.item!, theDepth + 1),
+          value.count!,
+        );
+        return item;
+      } else {
+        return itemZeroNutrition;
+      }
+    });
+
+    return itemDivideNutrition(itemSumNutrition(toSum), item.count ?? 1);
+  }
+
+  return item;
+}
+
 export function populatedItemServingPriceCents(
   item: ItemInterface,
   depth?: number,

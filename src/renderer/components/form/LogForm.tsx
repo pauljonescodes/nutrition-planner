@@ -1,4 +1,13 @@
-import { Button, Center, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  VStack,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+} from '@chakra-ui/react';
 import { Form, FormikProps } from 'formik';
 import { FormEvent, Fragment, RefObject, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,17 +16,30 @@ import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
 import { DeleteAlertDialog } from '../DeleteAlertDialog';
 import { SubitemFieldArray } from '../form-controls/SubitemFieldArray';
 import { ValidatedDatetimeControl } from '../form-controls/ValidatedDateTimeControl';
+import { LogSubitemFormControls } from '../form-controls/LogSubitemFormControls';
 
 type LogFormProps = {
   formikProps: FormikProps<ItemInterface>;
   firstInputFieldRef: RefObject<HTMLInputElement> | undefined;
   onDelete?: (item: ItemInterface | null) => void;
+  onPaste: (text: string) => Promise<void>;
+  onChangeType: (isLog: boolean) => void;
+  isEditing: boolean;
 };
 
 export default function LogForm(props: LogFormProps) {
-  const { formikProps, onDelete } = props;
+  const { formikProps, onDelete, onPaste, isEditing } = props;
   const { t } = useTranslation();
   const [showDeleteState, setShowDeleteState] = useState<boolean>(false);
+
+  const subitemFieldArray = (
+    <SubitemFieldArray
+      formikProps={formikProps}
+      itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group, ItemTypeEnum.plan]}
+      name={'subitems'}
+    />
+  );
+
   return (
     <>
       <Form
@@ -41,16 +63,29 @@ export default function LogForm(props: LogFormProps) {
           spaceProps={{ pb: 2 }}
         />
 
-        <SubitemFieldArray
-          formikProps={formikProps}
-          itemTypesIn={[
-            ItemTypeEnum.item,
-            ItemTypeEnum.group,
-            ItemTypeEnum.plan,
-          ]}
-          name={"subitems"}
-          label={t("items")}
-        />
+        {isEditing && (subitemFieldArray)}
+        {!isEditing && (<Tabs
+          onChange={(index) => {
+            props.onChangeType(index === 0);
+          }}
+        >
+          <TabList>
+            <Tab>{t("subitems")}</Tab>
+            <Tab>{t("item")}</Tab>
+          </TabList>
+          
+          <TabPanels>
+            <TabPanel>
+              {subitemFieldArray}
+            </TabPanel>
+            <TabPanel>
+              <LogSubitemFormControls
+                formikProps={formikProps}
+                onPaste={onPaste}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>)}
 
         <Center>
           <VStack width="full">

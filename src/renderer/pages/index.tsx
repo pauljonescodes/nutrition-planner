@@ -37,7 +37,7 @@ import {
   itemEquals,
   itemSumNutrition,
   itemZeroNutrition,
-  populatedItemServingNutrition,
+  populatedLogServingNutrition,
   populatedItemServingPriceCents,
 } from '../data/interfaces/ItemHelpers';
 import { ItemInterface } from '../data/interfaces/ItemInterface';
@@ -105,7 +105,7 @@ export default function LogPage() {
   }
 
   function titleForItemInterface(item: ItemInterface) {
-    const nutrition = populatedItemServingNutrition(item);
+    const nutrition = populatedLogServingNutrition(item);
     const priceCents = populatedItemServingPriceCents(item);
     return formatTitle(priceCents, nutrition);
   }
@@ -140,7 +140,7 @@ export default function LogPage() {
 
         const summedItem = itemSumNutrition(
           populatedLogsOnDate.map((value) =>
-            populatedItemServingNutrition(value),
+          populatedLogServingNutrition(value),
           ),
         );
         const summedPrice = populatedLogsOnDate.reduce((previous, current) => {
@@ -231,7 +231,6 @@ export default function LogPage() {
           formats={{
             dayHeaderFormat: 'eee LLL d',
             dayRangeHeaderFormat: (
-              // October 30 - November 05
               range: DateRange,
               culture?: Culture,
               localizer?: DateLocalizer,
@@ -279,7 +278,7 @@ export default function LogPage() {
         }}
       />
       <LogDrawer
-        item={editItemState}
+        item={editItemState != null ? editItemState?.toMutableJSON() : null}
         onResult={(item) => {
           setEditItemState(null);
           if (item) {

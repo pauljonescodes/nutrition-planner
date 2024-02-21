@@ -20,7 +20,7 @@ export function SubitemField(props: SubitemFieldProps) {
         return (
           <SubitemAutoCompleteInput
             key={`${index}-${value.itemId}`}
-            value={value!}
+            value={value}
             index={index}
             itemTypesIn={props.itemTypesIn}
             formikProps={props.formikProps}
@@ -31,8 +31,6 @@ export function SubitemField(props: SubitemFieldProps) {
       <Center>
         <Button
           onClick={async () => {
-            console.log('hello');
-            console.log(props.fieldArrayHelpers);
             props.fieldArrayHelpers.push({
               count: 1,
             });

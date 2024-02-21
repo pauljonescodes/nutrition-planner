@@ -109,9 +109,7 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
 
     if (mutableThis.subitems && mutableThis.subitems.length > 0) {
       const ids = mutableThis.subitems.map((value) => value.itemId!) ?? [];
-      //console.log(ids);
       const findByIdsMap = await (this.collection.findByIds(ids).exec());
-      //console.log(findByIdsMap);
       for (const [subitemId, subitem] of Array.from(findByIdsMap)) {
         const populatedSubitem = await subitem.recursivelyPopulateSubitems(
           theDepth + 1
@@ -124,7 +122,6 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
       }
     }
 
-    //console.log(`mutableThis: ${JSON.stringify(mutableThis)}`)
 
     return mutableThis;
   },

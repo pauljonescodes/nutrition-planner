@@ -71,7 +71,6 @@ export function MenuHStack() {
           <IconButton
             onClick={() => {
               setLogDrawerItem({
-                id: dataid(),
                 type: ItemTypeEnum.log,
               });
             }}
@@ -167,6 +166,9 @@ export function MenuHStack() {
       />
       <GroupDrawer
         item={groupDrawerItem}
+        onEdit={(item) => {
+          setGroupDrawerItem(item);
+        }}
         onResult={(item) => {
           setGroupDrawerItem(null);
           if (item) {

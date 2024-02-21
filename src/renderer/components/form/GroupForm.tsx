@@ -22,7 +22,6 @@ export default function GroupForm(props: GroupFormProps) {
       noValidate={true}
       onSubmit={(e) => {
         e.preventDefault();
-        console.log(props.formikProps.errors);
         props.formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
       }}
     >
