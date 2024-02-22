@@ -1,5 +1,4 @@
 import { FormikProps } from 'formik';
-import { t } from 'i18next';
 import { RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from 'usehooks-ts';
@@ -13,24 +12,14 @@ export function LogSubitemFormControls(props: {
   onPaste: (text: string) => Promise<void>;
   firstInputFieldRef: RefObject<HTMLInputElement> | undefined;
 }) {
-  const { formikProps, onPaste } = props;
+  const { formikProps, onPaste, firstInputFieldRef } = props;
 
   const { t } = useTranslation();
-
-  const [languageLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.language,
-    'en',
-  );
 
   const [currencyLocalStorage] = useLocalStorage(
     LocalStorageKeysEnum.currency,
     'USD',
   );
-
-  const currencyFormatter = new Intl.NumberFormat(languageLocalStorage, {
-    style: 'currency',
-    currency: currencyLocalStorage,
-  });
 
   const currencyDenominator = currencyLocalStorage === 'JPY' ? 1 : 100;
 
@@ -44,7 +33,7 @@ export function LogSubitemFormControls(props: {
         placeholder={t('name')}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
-        inputFieldRef={props.firstInputFieldRef}
+        inputFieldRef={firstInputFieldRef}
       />
       <ValidatedFormikNumberControl
         isRequired

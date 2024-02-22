@@ -48,6 +48,7 @@ export function GroupFormik(props: GroupFormikProps) {
       }}
       validateOnChange={false}
       validateOnBlur={false}
+      // eslint-disable-next-line react/no-unstable-nested-components
       component={(formikProps) => {
         return (
           <GroupForm

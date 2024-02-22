@@ -5,8 +5,8 @@ const config: CapacitorConfig = {
   appName: 'Nutrition Planner',
   webDir: 'release/app/dist/renderer',
   server: {
-    androidScheme: 'https'
-  }
+    androidScheme: 'https',
+  },
 };
 
 export default config;

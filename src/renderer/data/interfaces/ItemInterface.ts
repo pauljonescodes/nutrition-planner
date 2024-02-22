@@ -1,5 +1,5 @@
-import { ItemTypeEnum } from "./ItemTypeEnum";
-import { SubitemInterface } from "./SubitemInterface";
+import { ItemTypeEnum } from './ItemTypeEnum';
+import { SubitemInterface } from './SubitemInterface';
 
 export interface ItemInterface {
   id?: string;

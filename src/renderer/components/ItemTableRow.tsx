@@ -8,7 +8,7 @@ import {
   Text,
   Tr,
   useColorModeValue,
-  useToast
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,8 +23,6 @@ import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
 import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
 import { ServingOrTotalEnum } from '../data/interfaces/ServingOrTotalEnum';
 import { LocalStorageKeysEnum } from '../constants';
-
-
 
 export function ItemTableRow(props: {
   document: RxNPItemDocument;
@@ -98,8 +96,10 @@ export function ItemTableRow(props: {
                 icon={<CopyIcon />}
                 aria-label={t('copy')}
                 onClick={async () => {
-                  const baseItems = getBaseItems(await document.recursivelyPopulateSubitems());
-                  navigator.clipboard.writeText(baseItems.join("\n"));
+                  const baseItems = getBaseItems(
+                    await document.recursivelyPopulateSubitems(),
+                  );
+                  navigator.clipboard.writeText(baseItems.join('\n'));
                   toast({
                     title: t('copied'),
                     status: 'success',
@@ -108,7 +108,7 @@ export function ItemTableRow(props: {
               />
               <IconButton
                 icon={<DeleteIcon />}
-                aria-label={t("delete")}
+                aria-label={t('delete')}
                 onClick={onDelete}
               />
             </ButtonGroup>

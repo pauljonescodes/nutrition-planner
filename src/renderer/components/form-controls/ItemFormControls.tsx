@@ -1,5 +1,4 @@
 import { FormikProps } from 'formik';
-import { t } from 'i18next';
 import { RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from 'usehooks-ts';

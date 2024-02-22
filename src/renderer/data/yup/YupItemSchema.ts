@@ -1,18 +1,8 @@
-import {
-  array,
-  date,
-  InferType,
-  mixed,
-  number,
-  object,
-  Schema,
-  string,
-} from 'yup';
+import { array, InferType, mixed, number, object, Schema, string } from 'yup';
 import { ItemInterface } from '../interfaces/ItemInterface';
 import { ItemTypeEnum } from '../interfaces/ItemTypeEnum';
 import { yupSubitemSchema } from './YupSubitemSchema';
 
-export type YupItemType = InferType<typeof yupItemSchema>;
 export const yupItemSchema: Schema<ItemInterface> = object({
   id: string().label('ID'),
   date: string().label('Date').meta({
@@ -36,3 +26,4 @@ export const yupItemSchema: Schema<ItemInterface> = object({
   proteinGrams: number(),
   subitems: array().of(yupSubitemSchema).default([]),
 });
+export type YupItemType = InferType<typeof yupItemSchema>;

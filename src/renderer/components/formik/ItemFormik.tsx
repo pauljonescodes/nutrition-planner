@@ -51,6 +51,7 @@ export function ItemFormik(props: ItemFormProps) {
       }}
       validateOnChange={false}
       validateOnBlur={false}
+      // eslint-disable-next-line react/no-unstable-nested-components
       component={(formikProps) => {
         async function onPaste(text: string) {
           const parsedNutritionDictionary: { [key: string]: number } =
@@ -72,6 +73,7 @@ export function ItemFormik(props: ItemFormProps) {
 
         return (
           <ItemForm
+            // eslint-disable-next-line react/jsx-no-bind
             onPaste={onPaste}
             firstInputFieldRef={firstInputFieldRef}
             formikProps={formikProps}

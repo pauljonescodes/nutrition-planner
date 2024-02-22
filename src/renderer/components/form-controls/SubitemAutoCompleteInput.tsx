@@ -134,16 +134,16 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
             }}
           />
           <AutoCompleteList>
-            {result.map((value) => {
+            {result.map((aValue) => {
               return (
                 <AutoCompleteItem
-                  key={value.id}
-                  value={value}
+                  key={aValue.id}
+                  value={aValue}
                   getValue={(item) => {
                     return item.name;
                   }}
                 >
-                  {value.name}
+                  {aValue.name}
                 </AutoCompleteItem>
               );
             })}

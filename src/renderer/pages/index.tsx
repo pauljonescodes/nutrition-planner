@@ -47,6 +47,7 @@ import {
   recursivelyPopulateSubitemsOfItems,
 } from '../data/rxnp/RxNPItemSchema';
 import { LocalStorageKeysEnum } from '../constants';
+import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
 
 export interface RangeType {
   start: Date;
@@ -62,6 +63,9 @@ export default function LogPage() {
     start: moment().startOf(viewState).toDate(),
     end: moment().endOf(viewState).toDate(),
   });
+  const [logDrawerItem, setLogDrawerItem] = useState<ItemInterface | null>(
+    null,
+  );
   const [eventsState, setEventsState] = useState<Event[] | undefined>([]);
   const [selectedEvent, setModalEvent] = useState<Event | null>(null);
   const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
@@ -97,13 +101,12 @@ export default function LogPage() {
   );
 
   function formatTitle(priceCents: number, nutrition: ItemInterface) {
-    return `${currencyFormatter.format(
-      (priceCents ?? 0) / currencyDenominator,
-    )} | ${nutrition.energyKilocalories}kcal | ${nutrition.massGrams}g mass | ${
-      nutrition.fatGrams
-    }g fat | ${nutrition.carbohydrateGrams}g carbs | ${
-      nutrition.proteinGrams
-    }g protein`;
+    const formattableCurrencyAmount = (priceCents ?? 0) / currencyDenominator;
+    const currencyString =
+      formattableCurrencyAmount !== 0
+        ? `${currencyFormatter.format(formattableCurrencyAmount)} | `
+        : ``;
+    return `${currencyString}${nutrition.energyKilocalories}kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${nutrition.carbohydrateGrams}g carbs | ${nutrition.proteinGrams}g protein`;
   }
 
   function titleForItemInterface(item: ItemInterface) {
@@ -114,7 +117,7 @@ export default function LogPage() {
 
   useEffect(() => {
     async function calculate() {
-      const datesInRange = new Array<Date>();
+      const datesInRange: Date[] = [];
       let currentDate = dateRangeState.start;
       while (currentDate <= dateRangeState.end) {
         datesInRange.push(currentDate);
@@ -135,6 +138,7 @@ export default function LogPage() {
         };
       });
 
+      // eslint-disable-next-line no-restricted-syntax
       for (const dateInRange of datesInRange) {
         const populatedLogsOnDate = populatedResults.filter((value) =>
           moment(dateInRange).isSame(moment(value.date), 'day'),
@@ -172,7 +176,7 @@ export default function LogPage() {
     setViewState('week');
   }
 
-  const [languageLocaleStorage, setLanguageLocalStorage] = useLocalStorage(
+  const [languageLocaleStorage] = useLocalStorage(
     LocalStorageKeysEnum.language,
     'en',
   );
@@ -233,13 +237,13 @@ export default function LogPage() {
             dayRangeHeaderFormat: (
               range: DateRange,
               culture?: Culture,
-              localizer?: DateLocalizer,
+              aLocalizer?: DateLocalizer,
             ) => {
-              return `${localizer?.format(
+              return `${aLocalizer?.format(
                 range.start,
                 'LLL d',
                 culture,
-              )}-${localizer?.format(range.end, 'LLL d', culture)}`;
+              )}-${aLocalizer?.format(range.end, 'LLL d', culture)}`;
             },
           }}
           onDoubleClickEvent={async (event) => {
@@ -258,6 +262,12 @@ export default function LogPage() {
                 setEditItemState(found);
               }
             }
+          }}
+          onSelectSlot={(slotInfo: { start: Date }) => {
+            setLogDrawerItem({
+              type: ItemTypeEnum.log,
+              date: slotInfo.start.toISOString(),
+            });
           }}
           events={eventsState}
           views={{ day: true, month: true, week: true }}
@@ -306,6 +316,15 @@ export default function LogPage() {
           </ModalBody>
         </ModalContent>
       </Modal>
+      <LogDrawer
+        item={logDrawerItem}
+        onResult={async (item: ItemInterface | null) => {
+          setLogDrawerItem(null);
+          if (item) {
+            await upsertLogInterface(item, collection ?? undefined);
+          }
+        }}
+      />
     </>
   );
 }

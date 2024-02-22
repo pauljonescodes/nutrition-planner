@@ -64,14 +64,13 @@ export function ValidatedDatetimeControl<T>(
           },
         }}
         closeOnSelect
-        onChange={(value: string | moment.Moment) => {
-          let formattedValue = value;
-          if (moment.isMoment(value)) {
-            formattedValue = value.toISOString();
+        onChange={(aValue: string | moment.Moment) => {
+          let formattedValue = aValue;
+          if (moment.isMoment(aValue)) {
+            formattedValue = aValue.toISOString();
           }
           formikProps.setFieldValue(name, formattedValue);
         }}
-        //
         value={value ?? ''}
       />
       {error && <FormErrorMessage>{error}</FormErrorMessage>}

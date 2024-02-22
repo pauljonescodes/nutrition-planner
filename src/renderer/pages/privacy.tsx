@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react';
 import { Box, Heading, Text } from '@chakra-ui/react';
 
-const PrivacyPage = () => {
+function PrivacyPage() {
   return (
     <Box p={4}>
       <Heading size="lg">Privacy Policy</Heading>
@@ -61,10 +62,11 @@ const PrivacyPage = () => {
         Contact Us
       </Heading>
       <Text mt={2}>
-        If you have any questions about this Privacy Policy, please contact paul.jones@adeptry.com
+        If you have any questions about this Privacy Policy, please contact
+        paul.jones@adeptry.com
       </Text>
     </Box>
   );
-};
+}
 
 export default PrivacyPage;

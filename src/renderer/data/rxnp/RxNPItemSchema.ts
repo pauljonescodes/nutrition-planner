@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { RxCollection, RxDocument, RxJsonSchema } from 'rxdb';
 import { dataid } from '../../utilities/dataid';
 import { itemZeroNutrition } from '../interfaces/ItemHelpers';
@@ -178,7 +179,7 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
       }
     }
 
-    return this.remove() != undefined;
+    return this.remove() !== undefined;
   },
 };
 
@@ -190,7 +191,7 @@ export async function recursivelyPopulateSubitemsOfItems(
   if (items.length > 0) {
     const populatedSubitems = await Promise.all(
       items.map(async (value) => {
-        return await value.recursivelyPopulateSubitems();
+        return value.recursivelyPopulateSubitems();
       }),
     );
 

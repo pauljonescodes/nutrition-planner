@@ -1,133 +1,4 @@
 import { ItemInterface } from './ItemInterface';
-import { SubitemInterface } from './SubitemInterface';
-
-
-
-export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
-  return data.reduce(function (
-    result: SubitemInterface[],
-    next: SubitemInterface,
-  ) {
-    result.push(next);
-    if (next.item?.subitems) {
-      result = result.concat(flattenSubitems(next.item.subitems));
-      next.item.subitems = [];
-    }
-    return result;
-  }, []);
-}
-
-export function getBaseItems(item: ItemInterface, depth: number = 0, parentCount: number = 1): string[] {
-  if (depth > 31 || !item) { // Prevent going beyond 32 levels
-    return [];
-  }
-
-  if (item.subitems && item.subitems.length > 0) {
-    let baseItems: string[] = [];
-    for (const subitem of item.subitems) {
-      if (subitem.item) {
-        const effectiveCount = subitem.count ? subitem.count * parentCount : parentCount;
-        baseItems = baseItems.concat(getBaseItems(subitem.item, depth + 1, effectiveCount));
-      }
-    }
-    return baseItems;
-  } else if (item.name) {
-    return [`${item.name} (${parentCount} x ${(item.massGrams ?? 0)}g)`]; // Include the parent count in the output
-  }
-
-  return [];
-}
-
-export function itemServingNutrition(
-  item: ItemInterface,
-  depth?: number,
-): ItemInterface {
-  const theDepth = depth ?? 0;
-
-  if (theDepth === 32) {
-    return itemZeroNutrition;
-  }
-
-  if (item.subitems && item.subitems.length > 0) {
-    const toSum = item.subitems.map((value) => {
-      if (value.item) {
-        const item = itemMultiplyNutrition(
-          itemServingNutrition(value.item!, theDepth + 1),
-          value.count!,
-        );
-        return item;
-      } else {
-        return itemZeroNutrition;
-      }
-    });
-
-    return itemDivideNutrition(itemSumNutrition(toSum), item.count ?? 1);
-  }
-
-  return item;
-}
-
-export function logServingNutrition(
-  item: ItemInterface,
-  depth?: number,
-): ItemInterface {
-  const theDepth = depth ?? 0;
-
-  if (theDepth === 32) {
-    return itemZeroNutrition;
-  }
-
-  if (item.subitems && item.subitems.length > 0) {
-    const toSum = item.subitems.map((value) => {
-      if (value.item) {
-        const item = itemDivideNutrition(
-          itemServingNutrition(value.item!, theDepth + 1),
-          value.count!,
-        );
-        return item;
-      } else {
-        return itemZeroNutrition;
-      }
-    });
-
-    return itemDivideNutrition(itemSumNutrition(toSum), item.count ?? 1);
-  }
-
-  return item;
-}
-
-export function itemServingPriceCents(
-  item: ItemInterface,
-  depth?: number,
-): number {
-  const theDepth = depth ?? 0;
-
-  if (theDepth === 32) {
-    return 0;
-  }
-
-  if (item.subitems && item.subitems.length > 0) {
-    return (
-      item.subitems
-        .map((value) => {
-          if (value.item) {
-            return (
-              itemServingPriceCents(value.item, theDepth + 1) *
-              (value.count ?? 1)
-            );
-          } else {
-            return 0;
-          }
-        })
-        .reduce((previous, current) => previous + current, 0) /
-      (item.count ?? 1)
-    );
-  }
-
-  const priceCents = (item.priceCents ?? 0) / (item.count ?? 1);
-
-  return priceCents;
-}
 
 export const itemZeroNutrition: ItemInterface = {
   massGrams: 0,
@@ -141,6 +12,22 @@ export const itemZeroNutrition: ItemInterface = {
   fiberGrams: 0,
   sugarGrams: 0,
   proteinGrams: 0,
+};
+
+export function itemEquals(rhs: ItemInterface, lhs: ItemInterface): boolean {
+  return (
+    rhs.massGrams === lhs.massGrams &&
+    rhs.energyKilocalories === lhs.energyKilocalories &&
+    rhs.fatGrams === lhs.fatGrams &&
+    rhs.saturatedFatGrams === lhs.saturatedFatGrams &&
+    rhs.transFatGrams === lhs.transFatGrams &&
+    rhs.cholesterolMilligrams === lhs.cholesterolMilligrams &&
+    rhs.sodiumMilligrams === lhs.sodiumMilligrams &&
+    rhs.carbohydrateGrams === lhs.carbohydrateGrams &&
+    rhs.fiberGrams === lhs.fiberGrams &&
+    rhs.sugarGrams === lhs.sugarGrams &&
+    rhs.proteinGrams === lhs.proteinGrams
+  );
 }
 
 export function itemAddNutrition(
@@ -164,22 +51,6 @@ export function itemAddNutrition(
     sugarGrams: (lhs.sugarGrams ?? 0) + (rhs.sugarGrams ?? 0),
     proteinGrams: (lhs.proteinGrams ?? 0) + (rhs.proteinGrams ?? 0),
   };
-}
-
-export function itemEquals(rhs: ItemInterface, lhs: ItemInterface): boolean {
-  return (
-    rhs.massGrams === lhs.massGrams &&
-    rhs.energyKilocalories === lhs.energyKilocalories &&
-    rhs.fatGrams === lhs.fatGrams &&
-    rhs.saturatedFatGrams === lhs.saturatedFatGrams &&
-    rhs.transFatGrams === lhs.transFatGrams &&
-    rhs.cholesterolMilligrams === lhs.cholesterolMilligrams &&
-    rhs.sodiumMilligrams === lhs.sodiumMilligrams &&
-    rhs.carbohydrateGrams === lhs.carbohydrateGrams &&
-    rhs.fiberGrams === lhs.fiberGrams &&
-    rhs.sugarGrams === lhs.sugarGrams &&
-    rhs.proteinGrams === lhs.proteinGrams
-  );
 }
 
 export function itemSumNutrition(info: Array<ItemInterface>): ItemInterface {
@@ -226,4 +97,124 @@ export function itemMultiplyNutrition(
     sugarGrams: Math.round((lhs?.sugarGrams ?? 0) * rhs),
     proteinGrams: Math.round((lhs?.proteinGrams ?? 0) * rhs),
   };
+}
+
+export function getBaseItems(
+  item: ItemInterface,
+  depth: number = 0,
+  parentCount: number = 1,
+): string[] {
+  if (depth > 31 || !item) {
+    // Prevent going beyond 32 levels
+    return [];
+  }
+
+  if (item.subitems && item.subitems.length > 0) {
+    let baseItems: string[] = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const subitem of item.subitems) {
+      if (subitem.item) {
+        const effectiveCount = subitem.count
+          ? subitem.count * parentCount
+          : parentCount;
+        baseItems = baseItems.concat(
+          getBaseItems(subitem.item, depth + 1, effectiveCount),
+        );
+      }
+    }
+    return baseItems;
+  }
+  if (item.name) {
+    return [`${item.name} (${parentCount} x ${item.massGrams ?? 0}g)`]; // Include the parent count in the output
+  }
+
+  return [];
+}
+
+export function itemServingNutrition(
+  item: ItemInterface,
+  depth?: number,
+): ItemInterface {
+  const theDepth = depth ?? 0;
+
+  if (theDepth === 32) {
+    return itemZeroNutrition;
+  }
+
+  if (item.subitems && item.subitems.length > 0) {
+    const toSum = item.subitems.map((value) => {
+      if (value.item) {
+        const anItem = itemMultiplyNutrition(
+          itemServingNutrition(value.item!, theDepth + 1),
+          value.count!,
+        );
+        return anItem;
+      }
+      return itemZeroNutrition;
+    });
+
+    return itemDivideNutrition(itemSumNutrition(toSum), item.count ?? 1);
+  }
+
+  return item;
+}
+
+export function logServingNutrition(
+  item: ItemInterface,
+  depth?: number,
+): ItemInterface {
+  const theDepth = depth ?? 0;
+
+  if (theDepth === 32) {
+    return itemZeroNutrition;
+  }
+
+  if (item.subitems && item.subitems.length > 0) {
+    const toSum = item.subitems.map((value) => {
+      if (value.item) {
+        const anItem = itemDivideNutrition(
+          itemServingNutrition(value.item!, theDepth + 1),
+          value.count!,
+        );
+        return anItem;
+      }
+      return itemZeroNutrition;
+    });
+
+    return itemDivideNutrition(itemSumNutrition(toSum), item.count ?? 1);
+  }
+
+  return item;
+}
+
+export function itemServingPriceCents(
+  item: ItemInterface,
+  depth?: number,
+): number {
+  const theDepth = depth ?? 0;
+
+  if (theDepth === 32) {
+    return 0;
+  }
+
+  if (item.subitems && item.subitems.length > 0) {
+    return (
+      item.subitems
+        .map((value) => {
+          if (value.item) {
+            return (
+              itemServingPriceCents(value.item, theDepth + 1) *
+              (value.count ?? 1)
+            );
+          }
+          return 0;
+        })
+        .reduce((previous, current) => previous + current, 0) /
+      (item.count ?? 1)
+    );
+  }
+
+  const priceCents = (item.priceCents ?? 0) / (item.count ?? 1);
+
+  return priceCents;
 }

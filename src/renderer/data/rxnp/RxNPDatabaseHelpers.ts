@@ -69,12 +69,14 @@ export async function upsertLogInterface(
     const findByOriginalIdsMap = await collection
       ?.findByIds(originalIds)
       .exec();
+    // eslint-disable-next-line no-restricted-syntax
     for (const [originalSubitemId, originalSubitem] of Array.from(
       findByOriginalIdsMap ?? [],
     )) {
+      // eslint-disable-next-line no-await-in-loop
       const newSubitem = await originalSubitem.recursivelyUpsertNewSubitems();
-      item.subitems.forEach(function (value, index) {
-        if (value.itemId == originalSubitemId) {
+      item.subitems.forEach((value, index) => {
+        if (value.itemId === originalSubitemId) {
           item.subitems![index].itemId = newSubitem.id;
           item.subitems![index].item = undefined;
         }
@@ -82,9 +84,8 @@ export async function upsertLogInterface(
     }
   }
 
-  if (item.subitems?.length == 1 && item.subitems![0].itemId == null) {
+  if (item.subitems?.length === 1 && item.subitems![0].itemId == null) {
     item.subitems![0].itemId = newItem?.id;
-  } else {
   }
 
   const log: any = {
@@ -120,10 +121,12 @@ export async function recursivelyPopulateSubitems(
   if (mutableThis.subitems && mutableThis.subitems.length > 0) {
     const ids = mutableThis.subitems.map((value) => value.itemId!) ?? [];
     const findByIdsMap = await collection?.findByIds(ids).exec();
+    // eslint-disable-next-line no-restricted-syntax
     for (const [subitemId, subitem] of Array.from(findByIdsMap ?? [])) {
+      // eslint-disable-next-line no-await-in-loop
       const populatedSubitem = await subitem.recursivelyPopulateSubitems();
-      mutableThis.subitems.forEach(function (value, index) {
-        if (value.itemId == subitemId) {
+      mutableThis.subitems.forEach((value, index) => {
+        if (value.itemId === subitemId) {
           mutableThis.subitems![index].item = populatedSubitem;
         }
       });

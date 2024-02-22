@@ -1,10 +1,10 @@
-import { Formik } from "formik";
-import { RefObject, useState } from "react";
-import { dataid } from "../../utilities/dataid";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
-import { yupItemSchema } from "../../data/yup/YupItemSchema";
-import PlanForm from "../form/PlanForm";
+import { Formik } from 'formik';
+import { RefObject, useState } from 'react';
+import { dataid } from '../../utilities/dataid';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
+import { yupItemSchema } from '../../data/yup/YupItemSchema';
+import PlanForm from '../form/PlanForm';
 
 export interface PlanFormProps {
   item: ItemInterface | null;
@@ -54,6 +54,7 @@ export function PlanFormik(props: PlanFormProps) {
       }}
       validateOnChange={false}
       validateOnBlur={false}
+      // eslint-disable-next-line react/no-unstable-nested-components
       component={(formikProps) => {
         return (
           <PlanForm

@@ -1,11 +1,12 @@
 import { Formik } from 'formik';
 import { RefObject, useState } from 'react';
+import moment from 'moment';
 import { dataid } from '../../utilities/dataid';
 import { ItemInterface } from '../../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
 import { yupItemSchema } from '../../data/yup/YupItemSchema';
+import { parseNutritionDictionary } from '../../utilities/parseNutritionDictionary';
 import LogForm from '../form/LogForm';
-import moment from 'moment';
 
 export interface LogFormProps {
   item: ItemInterface | null;
@@ -42,7 +43,8 @@ export function LogFormik(props: LogFormProps) {
     subitems: item?.subitems ?? [{ count: 1, itemId: undefined }],
   };
 
-  const [initialValuesState] = useState<ItemInterface>(initialLogValue);
+  const [initialValuesState, setInitialValuesState] =
+    useState<ItemInterface>(initialLogValue);
 
   return (
     <Formik<ItemInterface>
@@ -53,18 +55,20 @@ export function LogFormik(props: LogFormProps) {
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
         const dateString = values.date.toString();
+        console.log(dateString);
         if (moment(dateString, [moment.ISO_8601], true).isValid()) {
           onSubmit({
             ...values,
           });
           helpers.resetForm();
         } else {
-          helpers.setErrors({date: 'Invalid date'});
+          helpers.setErrors({ date: 'Invalid date' });
           helpers.setSubmitting(false);
         }
       }}
       validateOnChange={false}
       validateOnBlur={false}
+      // eslint-disable-next-line react/no-unstable-nested-components
       component={(formikProps) => {
         async function onPaste(text: string) {
           const parsedNutritionDictionary: { [key: string]: number } =
@@ -87,6 +91,7 @@ export function LogFormik(props: LogFormProps) {
         return (
           <LogForm
             formikProps={formikProps}
+            // eslint-disable-next-line react/jsx-no-bind
             onPaste={onPaste}
             firstInputFieldRef={firstInputFieldRef}
             onDelete={onDelete}

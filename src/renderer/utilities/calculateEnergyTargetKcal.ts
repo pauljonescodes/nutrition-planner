@@ -18,12 +18,18 @@ export function calculateEnergyTargetKcal(params: {
   } = params;
 
   if (
-    weightKilograms == undefined ||
-    sexIsMale == undefined ||
-    ageYears == undefined ||
-    heightCentimeters == undefined ||
-    goalWeightKilograms == undefined ||
-    goalDays == undefined
+    weightKilograms === null ||
+    weightKilograms === undefined ||
+    sexIsMale === null ||
+    sexIsMale === undefined ||
+    ageYears === null ||
+    ageYears === undefined ||
+    heightCentimeters === null ||
+    heightCentimeters === undefined ||
+    goalWeightKilograms === null ||
+    goalWeightKilograms === undefined ||
+    goalDays === null ||
+    goalDays === undefined
   ) {
     return undefined;
   }

@@ -14,6 +14,10 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     'import/prefer-default-export': 'off',
+    'react/require-default-props': 'off',
+    'react-hooks/exhaustive-deps': 'warn',
+    'react/jsx-props-no-spreading': 'warn',
+    'import/no-cycle': 'warn',
   },
   parserOptions: {
     ecmaVersion: 2022,

@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react';
 import { Box, Heading, Text } from '@chakra-ui/react';
 
-const TermsPage = () => {
+function TermsPage() {
   return (
     <Box p={4}>
       <Heading size="lg">Terms of Service</Heading>
@@ -56,10 +57,11 @@ const TermsPage = () => {
         Contact Us
       </Heading>
       <Text mt={2}>
-        If you have any questions about these Terms, please contact me: paul.jones@adeptry.com
+        If you have any questions about these Terms, please contact me:
+        paul.jones@adeptry.com
       </Text>
     </Box>
   );
-};
+}
 
 export default TermsPage;

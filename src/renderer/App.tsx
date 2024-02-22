@@ -24,6 +24,7 @@ import { MenuHStack } from './components/MenuHStack';
 import { LocalStorageKeysEnum } from './constants';
 import { initRxNPDatabase } from './data/rxnp/RxNPDatabaseHelpers';
 import { RxNPDatabaseType } from './data/rxnp/RxNPDatabaseType';
+import { RxNPItemDocument } from './data/rxnp/RxNPItemSchema';
 import LogPage from './pages';
 import GroupsPage from './pages/groups';
 import ItemsPage from './pages/items';
@@ -52,7 +53,7 @@ export default function App() {
     'en',
   );
   const [replicationState, setReplicationState] =
-    useState<RxCouchDBReplicationState | null>(null);
+    useState<RxCouchDBReplicationState<RxNPItemDocument> | null>(null);
 
   useEffect(() => {
     i18n.changeLanguage(languageLocalStorage);
@@ -76,6 +77,7 @@ export default function App() {
     } else if (replicationState !== null) {
       replicationState.cancel();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [couchDbUrlLocalStorage, database]);
 
   useEffect(() => {
@@ -84,6 +86,7 @@ export default function App() {
       addRxPlugin(RxDBQueryBuilderPlugin);
       addRxPlugin(RxDBJsonDumpPlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
+      // eslint-disable-next-line promise/catch-or-return
       initRxNPDatabase('nutrition-planner-db', getRxStorageDexie()).then(
         setDatabase,
       );

@@ -16,10 +16,11 @@ export function parseNutritionDictionary(text: string) {
   ];
 
   const numberedGroups: { [key: string]: number } = {};
+  // eslint-disable-next-line no-restricted-syntax
   for (const regExp of regExps) {
     const regExpMatchArray = regExp.exec(text);
     const matchedGroup = regExpMatchArray?.groups ?? {};
-    Object.keys(matchedGroup).forEach(function (key) {
+    Object.keys(matchedGroup).forEach((key) => {
       numberedGroups[key] = +matchedGroup[key];
     });
   }

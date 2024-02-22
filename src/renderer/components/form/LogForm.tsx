@@ -9,7 +9,7 @@ import {
   TabPanel,
 } from '@chakra-ui/react';
 import { Form, FormikProps } from 'formik';
-import { FormEvent, Fragment, RefObject, useState } from 'react';
+import { FormEvent, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ItemInterface } from '../../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
@@ -20,7 +20,6 @@ import { LogSubitemFormControls } from '../form-controls/LogSubitemFormControls'
 
 type LogFormProps = {
   formikProps: FormikProps<ItemInterface>;
-  firstInputFieldRef: RefObject<HTMLInputElement> | undefined;
   onDelete?: (item: ItemInterface | null) => void;
   onPaste: (text: string) => Promise<void>;
   onChangeType: (isLog: boolean) => void;
