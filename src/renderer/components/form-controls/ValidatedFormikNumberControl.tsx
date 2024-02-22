@@ -9,16 +9,16 @@ import {
   NumberInputField,
   NumberInputStepper,
   SpaceProps,
-} from "@chakra-ui/react";
-import { FormikProps } from "formik";
-import { ChangeEvent } from "react";
+} from '@chakra-ui/react';
+import { FormikProps } from 'formik';
+import { ChangeEvent } from 'react';
 
 interface ValidatedFormikNumberControlProps<T> {
   formikProps: FormikProps<T>;
   name: string;
   placeholder?: string;
-  value?: number; // props.formikProps.values.name as string | undefined
-  error?: string; // props.formikProps.errors.name
+  value?: number; // formikProps.values.name as string | undefined
+  error?: string; // formikProps.errors.name
   spaceProps?: SpaceProps;
   labelText?: string;
   helperText?: string;
@@ -30,60 +30,65 @@ interface ValidatedFormikNumberControlProps<T> {
 }
 
 export function ValidatedFormikNumberControl<T>(
-  props: ValidatedFormikNumberControlProps<T>
+  props: ValidatedFormikNumberControlProps<T>,
 ) {
+  const {
+    formikProps,
+    name,
+    placeholder,
+    value,
+    error,
+    spaceProps,
+    labelText,
+    helperText,
+    isRequired,
+    showStepper,
+    transform,
+    onPaste,
+    format,
+  } = props;
   return (
     <FormControl
-      {...props.spaceProps}
-      isInvalid={props.error !== undefined}
+      {...spaceProps}
+      isInvalid={error !== undefined}
       isRequired={
-        props.isRequired
-        // props.yupSchemaField.describe().tests[0].name === "required"
+        isRequired
+        // yupSchemaField.describe().tests[0].name === "required"
       }
     >
-      <FormLabel htmlFor={props.name}>
-        {props.labelText ?? props.placeholder}
-      </FormLabel>
-      <NumberInput
-        defaultValue={props.value}
-        isInvalid={props.error ? true : false}
-      >
+      <FormLabel htmlFor={name}>{labelText ?? placeholder}</FormLabel>
+      <NumberInput defaultValue={value} isInvalid={!!error}>
         <NumberInputField
           formNoValidate
-          name={props.name}
-          value={props.format ? props.format(props.value) : props.value}
+          name={name}
+          value={format ? format(value) : value}
           onPaste={(e) => {
             e.preventDefault();
-            if (props.onPaste) {
-              props.onPaste(e.clipboardData.getData("Text"));
+            if (onPaste) {
+              onPaste(e.clipboardData.getData('Text'));
             }
           }}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            if (props.transform) {
+            if (transform) {
               const valueFloat = parseFloat(e.currentTarget.value);
-              props.formikProps.setFieldValue(
-                props.name,
-                props.transform(valueFloat)
-              );
+              formikProps.setFieldValue(name, transform(valueFloat));
             } else {
-              props.formikProps.handleChange(e);
+              formikProps.handleChange(e);
             }
           }}
-          onBlur={props.formikProps.handleBlur}
-          placeholder={props.placeholder}
+          onBlur={formikProps.handleBlur}
+          placeholder={placeholder}
         />
-        {props.showStepper && (
+        {showStepper && (
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
           </NumberInputStepper>
         )}
       </NumberInput>
-      {props.helperText && <FormHelperText>{props.helperText}</FormHelperText>}
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
 
-      {props.error !== undefined && (
-        <FormErrorMessage>{props.error}</FormErrorMessage>
-      )}
+      {error !== undefined && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
 }

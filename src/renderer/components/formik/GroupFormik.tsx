@@ -1,11 +1,11 @@
-import { Formik } from "formik";
-import { RefObject } from "react";
-import { dataid } from "../../utilities/dataid";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
-import { yupItemSchema } from "../../data/yup/YupItemSchema";
+import { Formik } from 'formik';
+import { RefObject } from 'react';
+import { dataid } from '../../utilities/dataid';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
+import { yupItemSchema } from '../../data/yup/YupItemSchema';
 
-import GroupForm from "../form/GroupForm";
+import GroupForm from '../form/GroupForm';
 
 export interface GroupFormikProps {
   item: ItemInterface | null;
@@ -14,7 +14,9 @@ export interface GroupFormikProps {
 }
 
 export function GroupFormik(props: GroupFormikProps) {
-  const thisItemId = props.item?.id ?? dataid();
+  const { item, onSubmit, firstInputFieldRef } = props;
+
+  const thisItemId = item?.id ?? dataid();
 
   return (
     <Formik<ItemInterface>
@@ -22,10 +24,10 @@ export function GroupFormik(props: GroupFormikProps) {
         ...yupItemSchema.getDefault(),
         id: thisItemId,
         type: ItemTypeEnum.group,
-        name: props.item?.name,
-        date: props.item?.date ?? new Date().toISOString(),
+        name: item?.name,
+        date: item?.date ?? new Date().toISOString(),
         priceCents: 0,
-        count: props.item?.count,
+        count: item?.count,
         massGrams: 0,
         energyKilocalories: 0,
         fatGrams: 0,
@@ -37,11 +39,11 @@ export function GroupFormik(props: GroupFormikProps) {
         fiberGrams: 0,
         sugarGrams: 0,
         proteinGrams: 0,
-        subitems: props.item?.subitems ?? [{ count: 1, itemId: undefined }],
+        subitems: item?.subitems ?? [{ count: 1, itemId: undefined }],
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit(values);
+        onSubmit(values);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -50,7 +52,7 @@ export function GroupFormik(props: GroupFormikProps) {
         return (
           <GroupForm
             formikProps={formikProps}
-            firstInputFieldRef={props.firstInputFieldRef}
+            firstInputFieldRef={firstInputFieldRef}
           />
         );
       }}

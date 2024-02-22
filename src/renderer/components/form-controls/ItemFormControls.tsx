@@ -5,32 +5,22 @@ import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../../constants';
 import { ItemInterface } from '../../data/interfaces/ItemInterface';
-import { ValidatedFormikControl } from '../form-controls/ValidatedFormikControl';
-import { ValidatedFormikNumberControl } from '../form-controls/ValidatedFormikNumberControl';
+import { ValidatedFormikControl } from './ValidatedFormikControl';
+import { ValidatedFormikNumberControl } from './ValidatedFormikNumberControl';
 
 export default function ItemFormControls(props: {
   formikProps: FormikProps<ItemInterface>;
   onPaste: (text: string) => Promise<void>;
   firstInputFieldRef: RefObject<HTMLInputElement> | undefined;
 }) {
-  const { formikProps, onPaste } = props;
+  const { formikProps, onPaste, firstInputFieldRef } = props;
 
   const { t } = useTranslation();
-
-  const [languageLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.language,
-    'en',
-  );
 
   const [currencyLocalStorage] = useLocalStorage(
     LocalStorageKeysEnum.currency,
     'USD',
   );
-
-  const currencyFormatter = new Intl.NumberFormat(languageLocalStorage, {
-    style: 'currency',
-    currency: currencyLocalStorage,
-  });
 
   const currencyDenominator = currencyLocalStorage === 'JPY' ? 1 : 100;
 
@@ -44,7 +34,7 @@ export default function ItemFormControls(props: {
         placeholder={t('name')}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
-        inputFieldRef={props.firstInputFieldRef}
+        inputFieldRef={firstInputFieldRef}
       />
       <ValidatedFormikNumberControl
         isRequired
@@ -57,9 +47,7 @@ export default function ItemFormControls(props: {
         name="priceCents"
         placeholder={t('price')}
         transform={(value) => value * 100}
-        format={(value) =>
-            (value ?? 0) / currencyDenominator
-        }
+        format={(value) => (value ?? 0) / currencyDenominator}
         formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />

@@ -1,16 +1,15 @@
 import { Grid, GridItem, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { useLocalStorage } from 'usehooks-ts';
+import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { LocalStorageKeysEnum } from '../constants';
 
-type PriceNutritionGridProps = {
+export function PriceNutritionGrid(props: {
   nutritionInfo?: ItemInterface;
   priceCents?: number;
   priceLabel?: string;
-};
-
-export function PriceNutritionGrid(props: PriceNutritionGridProps) {
+}) {
+  const { nutritionInfo, priceCents, priceLabel } = props;
   const { t } = useTranslation();
   const subtleTextColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
@@ -35,38 +34,36 @@ export function PriceNutritionGrid(props: PriceNutritionGridProps) {
     <Grid templateColumns="repeat(6, 1fr)" pb={2} width="full">
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align="center">
-          {currencyFormatter.format(
-            (props.priceCents ?? 0) / currencyDenominator,
-          )}{' '}
-          {props.priceLabel}
+          {currencyFormatter.format((priceCents ?? 0) / currencyDenominator)}{' '}
+          {priceLabel}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align="center">
-          {props.nutritionInfo?.massGrams ?? 0}g
+          {nutritionInfo?.massGrams ?? 0}g
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align="center">
-          {props.nutritionInfo?.energyKilocalories ?? 0}
+          {nutritionInfo?.energyKilocalories ?? 0}
           {t('kcal')}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align="center">
-          {props.nutritionInfo?.fatGrams ?? 0}
+          {nutritionInfo?.fatGrams ?? 0}
           {t('massG')} {t('fat')}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align="center">
-          {props.nutritionInfo?.carbohydrateGrams ?? 0}
+          {nutritionInfo?.carbohydrateGrams ?? 0}
           {t('massG')} {t('carbs')}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor}>
         <Text fontSize="xs" align="center">
-          {props.nutritionInfo?.proteinGrams ?? 0}
+          {nutritionInfo?.proteinGrams ?? 0}
           {t('massG')} {t('protein')}
         </Text>
       </GridItem>

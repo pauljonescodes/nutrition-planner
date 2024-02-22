@@ -4,18 +4,18 @@ import {
   FormHelperText,
   FormLabel,
   SpaceProps,
-} from "@chakra-ui/react";
-import { FormikProps } from "formik";
-import moment from "moment";
-import { RefObject } from "react";
-import Datetime from "react-datetime";
+} from '@chakra-ui/react';
+import { FormikProps } from 'formik';
+import moment from 'moment';
+import { RefObject } from 'react';
+import Datetime from 'react-datetime';
 
 interface ValidatedDatetimeControlProps<T> {
   formikProps: FormikProps<T>;
   name: string;
   placeholder?: string;
-  value?: Date; // props.formikProps.values.name as string | undefined
-  error?: string; // props.formikProps.errors.name
+  value?: Date; // formikProps.values.name as string | undefined
+  error?: string; // formikProps.errors.name
   spaceProps?: SpaceProps;
   inputFieldRef?: RefObject<HTMLInputElement>;
   formLabelText?: string;
@@ -25,28 +25,41 @@ interface ValidatedDatetimeControlProps<T> {
 }
 
 export function ValidatedDatetimeControl<T>(
-  props: ValidatedDatetimeControlProps<T>
+  props: ValidatedDatetimeControlProps<T>,
 ) {
+  const {
+    formikProps,
+    name,
+    placeholder,
+    value,
+    error,
+    spaceProps,
+    inputFieldRef,
+    formLabelText,
+    helperText,
+    isRequired,
+    onPaste,
+  } = props;
   return (
     <FormControl
-      {...props.spaceProps}
-      isInvalid={props.error !== undefined}
+      {...spaceProps}
+      isInvalid={error !== undefined}
       isRequired={
-        props.isRequired
-        // props.yupSchemaField.describe().tests[0].name === "required"
+        isRequired
+        // yupSchemaField.describe().tests[0].name === "required"
       }
     >
-      <FormLabel>{props.formLabelText ?? props.placeholder}</FormLabel>
+      <FormLabel>{formLabelText ?? placeholder}</FormLabel>
       <Datetime
         inputProps={{
-          ref: props.inputFieldRef,
-          onChange: props.formikProps.handleChange,
-          onBlur: props.formikProps.handleBlur,
-          placeholder: props.placeholder,
-          name: props.name,
+          ref: inputFieldRef,
+          onChange: formikProps.handleChange,
+          onBlur: formikProps.handleBlur,
+          placeholder,
+          name,
           onPaste: (e) => {
-            if (props.onPaste) {
-              props.onPaste(e.clipboardData.getData("Text"));
+            if (onPaste) {
+              onPaste(e.clipboardData.getData('Text'));
             }
           },
         }}
@@ -54,15 +67,15 @@ export function ValidatedDatetimeControl<T>(
         onChange={(value: string | moment.Moment) => {
           let formattedValue = value;
           if (moment.isMoment(value)) {
-            formattedValue = value.toISOString(); 
+            formattedValue = value.toISOString();
           }
-          props.formikProps.setFieldValue(props.name, formattedValue);
+          formikProps.setFieldValue(name, formattedValue);
         }}
         //
-        value={props.value ?? ""}
+        value={value ?? ''}
       />
-      {props.error && <FormErrorMessage>{props.error}</FormErrorMessage>}
-      {props.helperText && <FormHelperText>{props.helperText}</FormHelperText>}
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }

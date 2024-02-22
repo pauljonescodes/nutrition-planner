@@ -1,9 +1,9 @@
-import { RxCollection, RxDocument, RxJsonSchema } from "rxdb";
-import { dataid } from "../../utilities/dataid";
-import { itemZeroNutrition } from "../interfaces/ItemHelpers";
-import { ItemInterface } from "../interfaces/ItemInterface";
-import { ItemTypeEnum } from "../interfaces/ItemTypeEnum";
-import { YupItemType } from "../yup/YupItemSchema";
+import { RxCollection, RxDocument, RxJsonSchema } from 'rxdb';
+import { dataid } from '../../utilities/dataid';
+import { itemZeroNutrition } from '../interfaces/ItemHelpers';
+import { ItemInterface } from '../interfaces/ItemInterface';
+import { ItemTypeEnum } from '../interfaces/ItemTypeEnum';
+import { YupItemType } from '../yup/YupItemSchema';
 
 export type RxNPItemDocumentMethods = {
   recursivelyPopulateSubitems: (depth?: number) => Promise<ItemInterface>;
@@ -19,73 +19,73 @@ export type RxNPItemCollection = RxCollection<
 >;
 export const rxnpItemSchema: RxJsonSchema<YupItemType> = {
   version: 0,
-  primaryKey: "id",
-  type: "object",
+  primaryKey: 'id',
+  type: 'object',
   properties: {
     id: {
-      type: "string",
+      type: 'string',
       maxLength: 6,
     },
     type: {
-      type: "string",
+      type: 'string',
     },
     date: {
-      format: "date-time",
-      type: "string",
+      format: 'date-time',
+      type: 'string',
     },
     name: {
-      type: "string",
+      type: 'string',
     },
     count: {
-      type: "number",
+      type: 'number',
     },
     priceCents: {
-      type: "number",
+      type: 'number',
     },
     massGrams: {
-      type: "number",
+      type: 'number',
     },
     energyKilocalories: {
-      type: "number",
+      type: 'number',
     },
     fatGrams: {
-      type: "number",
+      type: 'number',
     },
     saturatedFatGrams: {
-      type: "number",
+      type: 'number',
     },
     transFatGrams: {
-      type: "number",
+      type: 'number',
     },
     cholesterolMilligrams: {
-      type: "number",
+      type: 'number',
     },
     sodiumMilligrams: {
-      type: "number",
+      type: 'number',
     },
     carbohydrateGrams: {
-      type: "number",
+      type: 'number',
     },
     fiberGrams: {
-      type: "number",
+      type: 'number',
     },
     sugarGrams: {
-      type: "number",
+      type: 'number',
     },
     proteinGrams: {
-      type: "number",
+      type: 'number',
     },
     subitems: {
-      type: "array",
+      type: 'array',
       items: {
-        type: "object",
+        type: 'object',
         properties: {
           count: {
-            type: "number",
+            type: 'number',
           },
           itemId: {
-            ref: "item",
-            type: "string",
+            ref: 'item',
+            type: 'string',
           },
         },
       },
@@ -95,9 +95,9 @@ export const rxnpItemSchema: RxJsonSchema<YupItemType> = {
 };
 
 export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
-  recursivelyPopulateSubitems: async function (
+  async recursivelyPopulateSubitems(
     this: RxNPItemDocument,
-    depth?: number
+    depth?: number,
   ): Promise<ItemInterface> {
     const theDepth = depth ?? 0;
 
@@ -109,10 +109,10 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
 
     if (mutableThis.subitems && mutableThis.subitems.length > 0) {
       const ids = mutableThis.subitems.map((value) => value.itemId!) ?? [];
-      const findByIdsMap = await (this.collection.findByIds(ids).exec());
+      const findByIdsMap = await this.collection.findByIds(ids).exec();
       for (const [subitemId, subitem] of Array.from(findByIdsMap)) {
         const populatedSubitem = await subitem.recursivelyPopulateSubitems(
-          theDepth + 1
+          theDepth + 1,
         );
         mutableThis.subitems.forEach(function (value, index) {
           if (value.itemId == subitemId) {
@@ -122,12 +122,11 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
       }
     }
 
-
     return mutableThis;
   },
-  recursivelyUpsertNewSubitems: async function (
+  async recursivelyUpsertNewSubitems(
     this: RxNPItemDocument,
-    depth?: number
+    depth?: number,
   ): Promise<ItemInterface> {
     const theDepth = depth ?? 0;
 
@@ -139,9 +138,11 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
     if (mutableThis.subitems && mutableThis.subitems.length > 0) {
       const originalIds =
         mutableThis.subitems.map((value) => value.itemId!) ?? [];
-      const findByOriginalIdsMap = await this.collection.findByIds(originalIds).exec();
+      const findByOriginalIdsMap = await this.collection
+        .findByIds(originalIds)
+        .exec();
       for (const [originalId, originalSubitem] of Array.from(
-        findByOriginalIdsMap
+        findByOriginalIdsMap,
       )) {
         const newUpsertedSubitem =
           await originalSubitem.recursivelyUpsertNewSubitems(theDepth + 1);
@@ -160,9 +161,9 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
       type: ItemTypeEnum.copy,
     });
   },
-  recursivelyRemove: async function (
+  async recursivelyRemove(
     this: RxNPItemDocument,
-    depth?: number
+    depth?: number,
   ): Promise<boolean> {
     const theDepth = depth ?? 0;
 
@@ -171,7 +172,7 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
     }
     if (this.subitems && this.subitems.length > 0) {
       const ids = this.subitems.map((value) => value.itemId!) ?? [];
-      const findByIdsMap = await (this.collection.findByIds(ids).exec());
+      const findByIdsMap = await this.collection.findByIds(ids).exec();
       for (const [subitemId, subitem] of Array.from(findByIdsMap)) {
         await subitem.recursivelyRemove(theDepth + 1);
       }
@@ -182,20 +183,18 @@ export const rxnpItemDocumentMethods: RxNPItemDocumentMethods = {
 };
 
 export async function recursivelyPopulateSubitemsOfItems(
-  items: Array<RxNPItemDocument>
+  items: Array<RxNPItemDocument>,
 ): Promise<Array<ItemInterface>> {
   const returning: Array<ItemInterface> = [];
 
   if (items.length > 0) {
-    const populatedSubitems = (await Promise.all(
+    const populatedSubitems = await Promise.all(
       items.map(async (value) => {
         return await value.recursivelyPopulateSubitems();
-      })
-    ));
-
-    returning.push(
-      ...populatedSubitems
+      }),
     );
+
+    returning.push(...populatedSubitems);
   }
 
   return returning;

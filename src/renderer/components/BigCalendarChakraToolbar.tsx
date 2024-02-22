@@ -1,4 +1,4 @@
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import {
   Button,
   ButtonGroup,
@@ -8,12 +8,12 @@ import {
   Show,
   Spacer,
   Text,
-} from "@chakra-ui/react";
-import { ToolbarProps } from "react-big-calendar";
-import { dateIsToday } from "../utilities/dateIsToday";
+} from '@chakra-ui/react';
+import { ToolbarProps } from 'react-big-calendar';
 import { useTranslation } from 'react-i18next';
+import { dateIsToday } from '../utilities/dateIsToday';
 
-export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
+export function BigCalendarChakraToolbar(props: ToolbarProps) {
   const { t } = useTranslation();
   return (
     <HStack>
@@ -21,29 +21,29 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
         isAttached
         pb={3}
         pt={3}
-        width={{ base: "full", sm: "initial" }}
+        width={{ base: 'full', sm: 'initial' }}
       >
         <IconButton
-          onClick={() => toolbar.onNavigate("PREV")}
+          onClick={() => props.onNavigate('PREV')}
           icon={<ArrowBackIcon />}
-          aria-label={t("previous")}
+          aria-label={t('previous')}
           variant="outline"
-          flexGrow={{ base: 1, sm: "initial" }}
+          flexGrow={{ base: 1, sm: 'initial' }}
         />
         <Button
-          onClick={() => toolbar.onNavigate("TODAY")}
+          onClick={() => props.onNavigate('TODAY')}
           variant="outline"
-          flexGrow={{ base: 1, sm: "initial" }}
-          isActive={dateIsToday(toolbar.date)}
+          flexGrow={{ base: 1, sm: 'initial' }}
+          isActive={dateIsToday(props.date)}
         >
-          <Show below="sm">{toolbar.label}</Show>
-          <Show above="sm">{t("today")}</Show>
+          <Show below="sm">{props.label}</Show>
+          <Show above="sm">{t('today')}</Show>
         </Button>
         <IconButton
-          flexGrow={{ base: 1, sm: "initial" }}
-          onClick={() => toolbar.onNavigate("NEXT")}
+          flexGrow={{ base: 1, sm: 'initial' }}
+          onClick={() => props.onNavigate('NEXT')}
           icon={<ArrowForwardIcon />}
-          aria-label={t("next")}
+          aria-label={t('next')}
           variant="outline"
         />
       </ButtonGroup>
@@ -52,37 +52,37 @@ export const BigCalendarChakraToolbar = (toolbar: ToolbarProps) => {
       </Show>
       <Show above="sm">
         <Center>
-          <Text>{toolbar.label}</Text>
+          <Text>{props.label}</Text>
         </Center>
       </Show>
       <Show above="sm">
         <Spacer />
         <ButtonGroup isAttached pb={3} pt={3}>
           <Button
-            onClick={() => toolbar.onView("day")}
+            onClick={() => props.onView('day')}
             variant="outline"
-            isActive={toolbar.view === "day"}
+            isActive={props.view === 'day'}
           >
-            {t("day")}
+            {t('day')}
           </Button>
           <Button
-            onClick={() => toolbar.onView("week")}
+            onClick={() => props.onView('week')}
             variant="outline"
-            isActive={toolbar.view === "week"}
+            isActive={props.view === 'week'}
           >
-             {t("week")}
+            {t('week')}
           </Button>
           <Show above="md">
             <Button
-              onClick={() => toolbar.onView("month")}
+              onClick={() => props.onView('month')}
               variant="outline"
-              isActive={toolbar.view === "month"}
+              isActive={props.view === 'month'}
             >
-               {t("month")}
+              {t('month')}
             </Button>
           </Show>
         </ButtonGroup>
       </Show>
     </HStack>
   );
-};
+}

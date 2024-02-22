@@ -1,34 +1,33 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from '@chakra-ui/icons';
 import {
   HStack,
   IconButton,
   NumberInput,
   NumberInputField,
   VStack,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   AutoComplete,
   AutoCompleteInput,
   AutoCompleteItem,
   AutoCompleteList,
   Item,
-} from "@choc-ui/chakra-autocomplete";
-
-import { FieldArrayRenderProps, FormikProps } from "formik";
-import { useEffect, useState } from "react";
-import { useRxCollection, useRxQuery } from "rxdb-hooks";
+} from '@choc-ui/chakra-autocomplete';
+import { FieldArrayRenderProps, FormikProps } from 'formik';
+import { useEffect, useState } from 'react';
+import { useRxCollection, useRxQuery } from 'rxdb-hooks';
+import { useTranslation } from 'react-i18next';
 import {
   itemMultiplyNutrition,
   itemZeroNutrition,
   itemServingNutrition,
   itemServingPriceCents,
-} from "../../data/interfaces/ItemHelpers";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
-import { SubitemInterface } from "../../data/interfaces/SubitemInterface";
-import { RxNPItemDocument } from "../../data/rxnp/RxNPItemSchema";
-import { PriceNutritionGrid } from "../PriceNutritionGrid";
-import { useTranslation } from "react-i18next";
+} from '../../data/interfaces/ItemHelpers';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
+import { SubitemInterface } from '../../data/interfaces/SubitemInterface';
+import { RxNPItemDocument } from '../../data/rxnp/RxNPItemSchema';
+import { PriceNutritionGrid } from '../PriceNutritionGrid';
 
 interface SubitemAutoCompleteInputProps {
   value: SubitemInterface;
@@ -39,31 +38,33 @@ interface SubitemAutoCompleteInputProps {
 }
 
 export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
+  const { value, index, formikProps, fieldArrayHelpers, itemTypesIn } = props;
+
   const { t } = useTranslation();
-  const thisSubitem = props.formikProps.values.subitems![props.index];
+  const thisSubitem = formikProps.values.subitems![index];
 
   const [nameSearchState, setNameSearchState] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [subitemNameState, setSubitemNameState] = useState<string | null>(null);
   const [nutritionAndPriceState, setNutritionAndPriceState] = useState<{
     nutrition: ItemInterface;
     priceCents: number;
   } | null>(null);
-  const collection = useRxCollection<RxNPItemDocument>("item");
+  const collection = useRxCollection<RxNPItemDocument>('item');
   const { result } = useRxQuery(
     collection?.find({
       selector: {
         name: { $regex: `\\b${nameSearchState}.*` },
         type: {
-          $in: props.itemTypesIn,
+          $in: itemTypesIn,
         },
       },
     })!,
     {
       pageSize: 6,
-      pagination: "Traditional",
-    }
+      pagination: 'Traditional',
+    },
   );
 
   async function query() {
@@ -90,28 +91,26 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
 
   useEffect(() => {
     query();
-
-    return;
   }, [thisSubitem.count, thisSubitem.itemId, collection]);
 
   return (
-    <VStack key={props.index} align="stretch" spacing={0} pb={2}>
+    <VStack key={index} align="stretch" spacing={0} pb={2}>
       <HStack pb={1}>
         <NumberInput
           w="25%"
-          defaultValue={props.value.count}
+          defaultValue={value.count}
           min={-9999.99}
           max={9999.99}
         >
           <NumberInputField
-            px={"8px"}
-            pr={"8px"}
+            px="8px"
+            pr="8px"
             pattern="(-)?[0-9]*(.[0-9]+)?"
-            name={`subitems.${props.index}.count`}
-            value={props.value.count}
-            onChange={props.formikProps.handleChange}
-            onBlur={props.formikProps.handleBlur}
-            placeholder={t("servings")}
+            name={`subitems.${index}.count`}
+            value={value.count}
+            onChange={formikProps.handleChange}
+            onBlur={formikProps.handleBlur}
+            placeholder={t('servings')}
           />
         </NumberInput>
         <AutoComplete
@@ -120,20 +119,17 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
             const itemDocument = (item as Item)
               .originalValue as RxNPItemDocument;
 
-            props.formikProps.setFieldValue(
-              `subitems.${props.index}.itemId`,
-              itemDocument.id
+            formikProps.setFieldValue(
+              `subitems.${index}.itemId`,
+              itemDocument.id,
             );
-            props.formikProps.setFieldValue(
-              `subitems.${props.index}.item`,
-              undefined
-            );
+            formikProps.setFieldValue(`subitems.${index}.item`, undefined);
             setNameSearchState(undefined);
           }}
         >
           <AutoCompleteInput
-            placeholder={t("name")}
-            value={nameSearchState ?? subitemNameState ?? ""}
+            placeholder={t('name')}
+            value={nameSearchState ?? subitemNameState ?? ''}
             onChange={async (event) => {
               setNameSearchState(event.target.value);
             }}
@@ -157,9 +153,9 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
 
         <IconButton
           icon={<DeleteIcon />}
-          aria-label={t("delete")}
+          aria-label={t('delete')}
           onClick={() => {
-            props.fieldArrayHelpers.remove(props.index);
+            fieldArrayHelpers.remove(index);
           }}
         />
       </HStack>
@@ -169,7 +165,7 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
         }
         nutritionInfo={itemMultiplyNutrition(
           nutritionAndPriceState?.nutrition ?? itemZeroNutrition,
-          thisSubitem.count ?? 0
+          thisSubitem.count ?? 0,
         )}
       />
     </VStack>

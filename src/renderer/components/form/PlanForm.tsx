@@ -1,11 +1,11 @@
-import { Button, Center, VStack } from "@chakra-ui/react";
-import { Form, FormikProps } from "formik";
-import { FormEvent, RefObject } from "react";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
-import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
-import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
-import { useTranslation } from "react-i18next";
+import { Button, Center, VStack } from '@chakra-ui/react';
+import { Form, FormikProps } from 'formik';
+import { FormEvent, RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
+import { SubitemFieldArray } from '../form-controls/SubitemFieldArray';
+import { ValidatedFormikControl } from '../form-controls/ValidatedFormikControl';
 
 type PlanFormProps = {
   formikProps: FormikProps<ItemInterface>;
@@ -13,47 +13,40 @@ type PlanFormProps = {
 };
 
 export default function PlanForm(props: PlanFormProps) {
+  const { formikProps, firstInputFieldRef } = props;
   const { t } = useTranslation();
 
   return (
     <Form
-      noValidate={true}
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
-        props.formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
+        formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
       }}
     >
       <ValidatedFormikControl
-        isRequired={true}
-        value={props.formikProps.values.name}
-        error={props.formikProps.errors.name}
+        isRequired
+        value={formikProps.values.name}
+        error={formikProps.errors.name}
         name="name"
-        placeholder={t("name")}
-        formikProps={props.formikProps}
+        placeholder={t('name')}
+        formikProps={formikProps}
         spaceProps={{ pb: 2 }}
-        inputFieldRef={props.firstInputFieldRef}
+        inputFieldRef={firstInputFieldRef}
       />
 
       <SubitemFieldArray
-        formikProps={props.formikProps}
+        formikProps={formikProps}
         itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
-        name={"subitems"}
-        label={t("items")}
+        name="subitems"
+        label={t('items')}
       />
 
       <Center>
-        <VStack width={"full"}>
-          <Button
-            type="submit"
-            my={4}
-            isLoading={props.formikProps.isSubmitting}
-          >
-            {t("submit")}
+        <VStack width="full">
+          <Button type="submit" my={4} isLoading={formikProps.isSubmitting}>
+            {t('submit')}
           </Button>
-          {/* <PriceNutritionGrid
-            priceCents={totalPriceInCents}
-            nutritionInfo={totalNutritionInfo}
-          /> */}
         </VStack>
       </Center>
     </Form>

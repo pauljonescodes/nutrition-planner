@@ -1,14 +1,13 @@
-import { Button, Center, VStack } from "@chakra-ui/react";
+import { Button, Center, VStack } from '@chakra-ui/react';
 
-import { Form, FormikProps } from "formik";
-import { FormEvent, RefObject } from "react";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
-import { SubitemFieldArray } from "../form-controls/SubitemFieldArray";
-import { ValidatedFormikControl } from "../form-controls/ValidatedFormikControl";
-import { ValidatedFormikNumberControl } from "../form-controls/ValidatedFormikNumberControl";
-import { useTranslation } from "react-i18next";
-// import { PriceNutritionGrid } from "../PriceNutritionGrid";
+import { Form, FormikProps } from 'formik';
+import { FormEvent, RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
+import { SubitemFieldArray } from '../form-controls/SubitemFieldArray';
+import { ValidatedFormikControl } from '../form-controls/ValidatedFormikControl';
+import { ValidatedFormikNumberControl } from '../form-controls/ValidatedFormikNumberControl';
 
 type GroupFormProps = {
   formikProps: FormikProps<ItemInterface>;
@@ -16,56 +15,49 @@ type GroupFormProps = {
 };
 
 export default function GroupForm(props: GroupFormProps) {
+  const { formikProps, firstInputFieldRef } = props;
   const { t } = useTranslation();
   return (
     <Form
-      noValidate={true}
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
-        props.formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
+        formikProps.handleSubmit(e as FormEvent<HTMLFormElement>);
       }}
     >
       <ValidatedFormikControl
-        value={props.formikProps.values.name}
-        error={props.formikProps.errors.name}
-        isRequired={true}
+        value={formikProps.values.name}
+        error={formikProps.errors.name}
+        isRequired
         name="name"
-        placeholder={t("name")}
-        formikProps={props.formikProps}
+        placeholder={t('name')}
+        formikProps={formikProps}
         spaceProps={{ pb: 2 }}
-        inputFieldRef={props.firstInputFieldRef}
+        inputFieldRef={firstInputFieldRef}
       />
 
       <ValidatedFormikNumberControl
-        isRequired={true}
-        value={props.formikProps.values.count}
-        error={props.formikProps.errors.count}
+        isRequired
+        value={formikProps.values.count}
+        error={formikProps.errors.count}
         name="count"
-        placeholder={t("servings")}
-        formikProps={props.formikProps}
+        placeholder={t('servings')}
+        formikProps={formikProps}
         spaceProps={{ pb: 2 }}
       />
 
       <SubitemFieldArray
-        formikProps={props.formikProps}
+        formikProps={formikProps}
         itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
-        name={"subitems"}
-        label={t("items")}
+        name="subitems"
+        label={t('items')}
       />
 
       <Center>
-        <VStack width={"full"}>
-          <Button
-            type="submit"
-            my={4}
-            isLoading={props.formikProps.isSubmitting}
-          >
-            {t("submit")}
+        <VStack width="full">
+          <Button type="submit" my={4} isLoading={formikProps.isSubmitting}>
+            {t('submit')}
           </Button>
-          {/* <PriceNutritionGrid
-            priceCents={totalPriceInCents}
-            nutritionInfo={totalNutritionInfo}
-          /> */}
         </VStack>
       </Center>
     </Form>

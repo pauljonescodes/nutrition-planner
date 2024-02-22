@@ -1,10 +1,10 @@
-import { Formik } from "formik";
-import { RefObject, useState } from "react";
-import { dataid } from "../../utilities/dataid";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemTypeEnum } from "../../data/interfaces/ItemTypeEnum";
-import { yupItemSchema } from "../../data/yup/YupItemSchema";
-import LogForm from "../form/LogForm";
+import { Formik } from 'formik';
+import { RefObject, useState } from 'react';
+import { dataid } from '../../utilities/dataid';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
+import { yupItemSchema } from '../../data/yup/YupItemSchema';
+import LogForm from '../form/LogForm';
 
 export interface LogFormProps {
   item: ItemInterface | null;
@@ -14,15 +14,17 @@ export interface LogFormProps {
 }
 
 export function LogFormik(props: LogFormProps) {
-  const isEditing = props.item?.id != null;
-  const thisItemId = props.item?.id ?? dataid();
+  const { item, onSubmit, onDelete, firstInputFieldRef } = props;
+
+  const isEditing = item?.id != null;
+  const thisItemId = item?.id ?? dataid();
 
   const initialLogValue = {
     ...yupItemSchema.getDefault(),
     id: thisItemId,
     type: ItemTypeEnum.log,
-    date: props.item?.date ?? new Date().toISOString(),
-    name: props.item?.name ?? `log`,
+    date: item?.date ?? new Date().toISOString(),
+    name: item?.name ?? `log`,
     massGrams: 0,
     count: 1,
     priceCents: 0,
@@ -36,8 +38,8 @@ export function LogFormik(props: LogFormProps) {
     fiberGrams: 0,
     sugarGrams: 0,
     proteinGrams: 0,
-    subitems: props.item?.subitems ?? [{ count: 1, itemId: undefined }],
-  }
+    subitems: item?.subitems ?? [{ count: 1, itemId: undefined }],
+  };
 
   const [initialValuesState] = useState<ItemInterface>(initialLogValue);
 
@@ -49,7 +51,7 @@ export function LogFormik(props: LogFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit({
+        onSubmit({
           ...values,
         });
         helpers.resetForm();
@@ -79,14 +81,14 @@ export function LogFormik(props: LogFormProps) {
           <LogForm
             formikProps={formikProps}
             onPaste={onPaste}
-            firstInputFieldRef={props.firstInputFieldRef}
-            onDelete={props.onDelete}
+            firstInputFieldRef={firstInputFieldRef}
+            onDelete={onDelete}
             isEditing={isEditing}
             onChangeType={(isLog) => {
               if (isLog) {
-                formikProps.setFieldValue("name", "log");
+                formikProps.setFieldValue('name', 'log');
               } else {
-                formikProps.setFieldValue("name", "");
+                formikProps.setFieldValue('name', '');
               }
             }}
           />

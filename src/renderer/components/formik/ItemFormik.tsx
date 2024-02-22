@@ -14,26 +14,27 @@ export interface ItemFormProps {
 }
 
 export function ItemFormik(props: ItemFormProps) {
-  const thisItemId = props.item?.id ?? dataid();
+  const { item, onSubmit, firstInputFieldRef } = props;
+  const thisItemId = item?.id ?? dataid();
 
   const [initialValuesState, setInitialValuesState] = useState<ItemInterface>({
     id: thisItemId,
     type: ItemTypeEnum.item,
-    date: props.item?.date ?? new Date().toISOString(),
-    name: props.item?.name,
-    priceCents: props.item?.priceCents,
-    massGrams: props.item?.massGrams,
-    count: props.item?.count,
-    energyKilocalories: props.item?.energyKilocalories,
-    fatGrams: props.item?.fatGrams,
-    saturatedFatGrams: props.item?.saturatedFatGrams,
-    transFatGrams: props.item?.transFatGrams,
-    cholesterolMilligrams: props.item?.cholesterolMilligrams,
-    sodiumMilligrams: props.item?.sodiumMilligrams,
-    carbohydrateGrams: props.item?.carbohydrateGrams,
-    fiberGrams: props.item?.fiberGrams,
-    sugarGrams: props.item?.sugarGrams,
-    proteinGrams: props.item?.proteinGrams,
+    date: item?.date ?? new Date().toISOString(),
+    name: item?.name,
+    priceCents: item?.priceCents,
+    massGrams: item?.massGrams,
+    count: item?.count,
+    energyKilocalories: item?.energyKilocalories,
+    fatGrams: item?.fatGrams,
+    saturatedFatGrams: item?.saturatedFatGrams,
+    transFatGrams: item?.transFatGrams,
+    cholesterolMilligrams: item?.cholesterolMilligrams,
+    sodiumMilligrams: item?.sodiumMilligrams,
+    carbohydrateGrams: item?.carbohydrateGrams,
+    fiberGrams: item?.fiberGrams,
+    sugarGrams: item?.sugarGrams,
+    proteinGrams: item?.proteinGrams,
     subitems: [],
   });
 
@@ -45,7 +46,7 @@ export function ItemFormik(props: ItemFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={async (values, helpers) => {
-        props.onSubmit(values);
+        onSubmit(values);
         helpers.resetForm();
       }}
       validateOnChange={false}
@@ -72,7 +73,7 @@ export function ItemFormik(props: ItemFormProps) {
         return (
           <ItemForm
             onPaste={onPaste}
-            firstInputFieldRef={props.firstInputFieldRef}
+            firstInputFieldRef={firstInputFieldRef}
             formikProps={formikProps}
           />
         );

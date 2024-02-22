@@ -1,4 +1,4 @@
-import { ItemInterface } from "./ItemInterface";
+import { ItemInterface } from './ItemInterface';
 
 export interface SubitemInterface {
   itemId?: string;

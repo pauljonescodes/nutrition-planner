@@ -97,11 +97,13 @@ export default function LogPage() {
   );
 
   function formatTitle(priceCents: number, nutrition: ItemInterface) {
-    return `${currencyFormatter.format((priceCents ?? 0) / currencyDenominator)} | ${
-      nutrition.energyKilocalories
-    }kcal | ${nutrition.massGrams}g mass | ${nutrition.fatGrams}g fat | ${
-      nutrition.carbohydrateGrams
-    }g carbs | ${nutrition.proteinGrams}g protein`;
+    return `${currencyFormatter.format(
+      (priceCents ?? 0) / currencyDenominator,
+    )} | ${nutrition.energyKilocalories}kcal | ${nutrition.massGrams}g mass | ${
+      nutrition.fatGrams
+    }g fat | ${nutrition.carbohydrateGrams}g carbs | ${
+      nutrition.proteinGrams
+    }g protein`;
   }
 
   function titleForItemInterface(item: ItemInterface) {
@@ -139,9 +141,7 @@ export default function LogPage() {
         );
 
         const summedItem = itemSumNutrition(
-          populatedLogsOnDate.map((value) =>
-          logServingNutrition(value),
-          ),
+          populatedLogsOnDate.map((value) => logServingNutrition(value)),
         );
         const summedPrice = populatedLogsOnDate.reduce((previous, current) => {
           return previous + (itemServingPriceCents(current) ?? 0);

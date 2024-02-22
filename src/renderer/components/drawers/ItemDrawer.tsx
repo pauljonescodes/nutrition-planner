@@ -5,10 +5,10 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-} from "@chakra-ui/react";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { ItemFormik } from "../formik/ItemFormik";
-import { useTranslation } from "react-i18next";
+} from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { ItemFormik } from '../formik/ItemFormik';
 
 type ItemDrawerProps = {
   item: ItemInterface | null;
@@ -16,22 +16,23 @@ type ItemDrawerProps = {
 };
 
 export function ItemDrawer(props: ItemDrawerProps) {
+  const { item, onResult } = props;
   const { t } = useTranslation();
   return (
     <Drawer
-      isOpen={props.item !== null}
+      isOpen={item !== null}
       placement="left"
-      onClose={() => props.onResult(null)}
+      onClose={() => onResult(null)}
       finalFocusRef={undefined}
       size="md"
     >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{t("item")}</DrawerHeader>
+        <DrawerHeader>{t('item')}</DrawerHeader>
 
         <DrawerBody>
-          <ItemFormik item={props.item} onSubmit={props.onResult} />
+          <ItemFormik item={item} onSubmit={onResult} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

@@ -14,14 +14,16 @@ export async function initRxNPDatabase(
   name: string,
   storage: RxStorage<any, any>,
 ): Promise<RxNPDatabaseType | undefined> {
-  var database: RxNPDatabaseType | undefined;
+  let database: RxNPDatabaseType | undefined;
 
   try {
     database = await createRxDatabase<RxNPDatabaseCollections>({
-      name: name,
-      storage: storage,
+      name,
+      storage,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 
   await database?.addCollections({
     item: {
@@ -37,9 +39,9 @@ export async function upsertLogInterface(
   item: ItemInterface,
   collection?: RxCollection<RxNPItemDocument>,
 ) {
-  var newItem: ItemInterface | null = null;
+  let newItem: ItemInterface | null = null;
 
-  if (item.name != 'log') {
+  if (item.name !== 'log') {
     newItem = {
       id: dataid(),
       date: new Date(item.date) ?? new Date(),

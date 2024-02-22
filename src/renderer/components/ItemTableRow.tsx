@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocalStorage } from 'usehooks-ts';
 import {
   itemServingNutrition,
   itemServingPriceCents,
@@ -20,17 +21,14 @@ import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
 import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
 import { ServingOrTotalEnum } from '../data/interfaces/ServingOrTotalEnum';
 import { LocalStorageKeysEnum } from '../constants';
-import { useLocalStorage } from 'usehooks-ts';
 
-type ItemTableRowProps = {
+export function ItemTableRow(props: {
   document: RxNPItemDocument;
   priceType: ServingOrTotalEnum;
   onEdit: () => void;
-  onCopy: () => void;
   onDelete: () => void;
-};
-
-export function ItemTableRow(props: ItemTableRowProps) {
+}) {
+  const { document, priceType, onEdit, onDelete } = props;
   const { t } = useTranslation();
   const [nutritionState, setNutritionState] = useState<ItemInterface | null>(
     null,
@@ -38,8 +36,8 @@ export function ItemTableRow(props: ItemTableRowProps) {
   const [priceCentsState, setPriceCentsState] = useState<number | null>(null);
   const borderColorValue = useColorModeValue('gray.100', 'gray.700');
 
-  async function populate(document: RxNPItemDocument) {
-    const populatedItem = await document.recursivelyPopulateSubitems();
+  async function populate(aDocument: RxNPItemDocument) {
+    const populatedItem = await aDocument.recursivelyPopulateSubitems();
     setNutritionState(itemServingNutrition(populatedItem));
     setPriceCentsState(itemServingPriceCents(populatedItem));
   }
@@ -62,26 +60,26 @@ export function ItemTableRow(props: ItemTableRowProps) {
   });
 
   useEffect(() => {
-    populate(props.document);
-  }, [props.document.revision]);
+    populate(document);
+  }, [document]);
 
   const isLoaded = nutritionState !== null && priceCentsState !== null;
   let priceDenominator = 1;
   let priceMultiple = 1;
 
-  if (props.document.type === ItemTypeEnum.item) {
-    if (props.priceType === ServingOrTotalEnum.total) {
-      priceMultiple = props.document.count ?? 1;
+  if (document.type === ItemTypeEnum.item) {
+    if (priceType === ServingOrTotalEnum.total) {
+      priceMultiple = document.count ?? 1;
     }
   } else {
-    priceMultiple = props.document.count ?? 1;
-    if (props.priceType === ServingOrTotalEnum.serving) {
-      priceDenominator = props.document.count ?? 1;
+    priceMultiple = document.count ?? 1;
+    if (priceType === ServingOrTotalEnum.serving) {
+      priceDenominator = document.count ?? 1;
     }
   }
 
   return (
-    <Tr key={props.document.id} height="73px">
+    <Tr key={document.id} height="73px">
       <Td width="144px" borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
           <Center>
@@ -89,17 +87,17 @@ export function ItemTableRow(props: ItemTableRowProps) {
               <IconButton
                 icon={<EditIcon />}
                 aria-label="Edit"
-                onClick={props.onEdit}
+                onClick={onEdit}
               />
               {/* <IconButton
                 icon={<CopyIcon />}
                 aria-label="Duplicate"
-                onClick={props.onCopy}
+                onClick={onCopy}
               /> */}
               <IconButton
                 icon={<DeleteIcon />}
                 aria-label="Delete"
-                onClick={props.onDelete}
+                onClick={onDelete}
               />
             </ButtonGroup>
           </Center>
@@ -108,19 +106,22 @@ export function ItemTableRow(props: ItemTableRowProps) {
       <Td borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
           <Text minW="176px" maxW="448px" noOfLines={2} whiteSpace="initial">
-            {props.document.name}
+            {document.name}
           </Text>
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>
           {currencyFormatter.format(
-            ((priceCentsState ?? 999) / currencyDenominator / priceDenominator) * priceMultiple,
+            ((priceCentsState ?? 999) /
+              currencyDenominator /
+              priceDenominator) *
+              priceMultiple,
           )}
         </Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
-        <Skeleton isLoaded={isLoaded}>{props.document.count}</Skeleton>
+        <Skeleton isLoaded={isLoaded}>{document.count}</Skeleton>
       </Td>
       <Td isNumeric borderColor={borderColorValue}>
         <Skeleton isLoaded={isLoaded}>

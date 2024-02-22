@@ -1,4 +1,4 @@
-import { RxNPItemCollection } from "./RxNPItemSchema";
+import { RxNPItemCollection } from './RxNPItemSchema';
 
 export type RxNPDatabaseCollections = {
   item: RxNPItemCollection;

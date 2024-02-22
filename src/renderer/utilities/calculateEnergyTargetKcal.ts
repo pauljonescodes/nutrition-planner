@@ -1,5 +1,4 @@
-import { calculateBasalMetabolicRateKcal } from "./calculateBasalMetabolicRateKcal";
-
+import { calculateBasalMetabolicRateKcal } from './calculateBasalMetabolicRateKcal';
 
 export function calculateEnergyTargetKcal(params: {
   weightKilograms?: number;
@@ -10,24 +9,32 @@ export function calculateEnergyTargetKcal(params: {
   goalDays?: number;
 }): number | undefined {
   const {
-    weightKilograms, sexIsMale, ageYears, heightCentimeters, goalWeightKilograms, goalDays,
+    weightKilograms,
+    sexIsMale,
+    ageYears,
+    heightCentimeters,
+    goalWeightKilograms,
+    goalDays,
   } = params;
 
-  if (weightKilograms == undefined ||
+  if (
+    weightKilograms == undefined ||
     sexIsMale == undefined ||
     ageYears == undefined ||
     heightCentimeters == undefined ||
     goalWeightKilograms == undefined ||
-    goalDays == undefined) {
+    goalDays == undefined
+  ) {
     return undefined;
   }
 
-  const basalMetabolicRate = calculateBasalMetabolicRateKcal({
-    sexIsMale,
-    weightKilograms,
-    heightCentimeters,
-    ageYears,
-  }) ?? 0;
+  const basalMetabolicRate =
+    calculateBasalMetabolicRateKcal({
+      sexIsMale,
+      weightKilograms,
+      heightCentimeters,
+      ageYears,
+    }) ?? 0;
   const weightDifferenceKg = weightKilograms - goalWeightKilograms;
   const dailyCalorieDeficitSurplus = (weightDifferenceKg * 7700) / goalDays;
   return basalMetabolicRate - dailyCalorieDeficitSurplus;

@@ -11,7 +11,6 @@ import {
   Select,
   VStack,
   useColorMode,
-  useColorModeValue,
   useToast,
   FormControl,
   HStack,
@@ -35,7 +34,8 @@ type SettingsDrawerProps = {
 };
 
 export function SettingsDrawer(props: SettingsDrawerProps) {
-  const { t, i18n } = useTranslation();
+  const { isOpen, onClose } = props;
+  const { t } = useTranslation();
   const [importLoadingState, setImportLoadingState] = useState(false);
   const [showDeleteDialogState, setShowDeleteDialogState] = useState(false);
   const { toggleColorMode } = useColorMode();
@@ -60,8 +60,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const database = useRxDB();
   const collection = useRxCollection('item');
   const toast = useToast();
-
-  const subtleTextColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
   const {
     filesContent,
@@ -94,10 +92,10 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   return (
     <>
       <Drawer
-        isOpen={props.isOpen}
+        isOpen={isOpen}
         placement="right"
         size="md"
-        onClose={props.onClose}
+        onClose={onClose}
         finalFocusRef={undefined}
       >
         <DrawerOverlay />

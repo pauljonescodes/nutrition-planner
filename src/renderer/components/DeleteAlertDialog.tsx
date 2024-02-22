@@ -7,9 +7,9 @@ import {
   AlertDialogOverlay,
   Button,
   ButtonGroup,
-} from "@chakra-ui/react";
-import { LegacyRef, useRef } from "react";
-import { useTranslation } from "react-i18next";
+} from '@chakra-ui/react';
+import { LegacyRef, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type IngredientDrawerProps = {
   isOpen: boolean;
@@ -17,39 +17,38 @@ type IngredientDrawerProps = {
 };
 
 export function DeleteAlertDialog(props: IngredientDrawerProps) {
+  const { isOpen, onResult } = props;
   const cancelRef = useRef<HTMLButtonElement>(null);
   const { t } = useTranslation();
   return (
     <AlertDialog
-      isOpen={props.isOpen}
-      onClose={() => props.onResult(false)}
+      isOpen={isOpen}
+      onClose={() => onResult(false)}
       leastDestructiveRef={cancelRef}
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader>{t("delete")}</AlertDialogHeader>
+          <AlertDialogHeader>{t('delete')}</AlertDialogHeader>
 
-          <AlertDialogBody>
-            {t("areYouSure")}
-          </AlertDialogBody>
+          <AlertDialogBody>{t('areYouSure')}</AlertDialogBody>
 
           <AlertDialogFooter>
             <ButtonGroup>
               <Button
                 onClick={() => {
-                  props.onResult(false);
+                  onResult(false);
                 }}
                 ref={cancelRef as LegacyRef<HTMLButtonElement>}
               >
-                {t("cancel")}
+                {t('cancel')}
               </Button>
               <Button
                 colorScheme="red"
                 onClick={async () => {
-                  props.onResult(true);
+                  onResult(true);
                 }}
               >
-                {t("delete")}
+                {t('delete')}
               </Button>
             </ButtonGroup>
           </AlertDialogFooter>

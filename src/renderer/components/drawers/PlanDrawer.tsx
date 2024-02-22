@@ -16,12 +16,13 @@ type PlanDrawerProps = {
 };
 
 export function PlanDrawer(props: PlanDrawerProps) {
+  const { item, onResult } = props;
   const { t } = useTranslation();
   return (
     <Drawer
-      isOpen={props.item !== null}
+      isOpen={item !== null}
       placement="left"
-      onClose={() => props.onResult(null)}
+      onClose={() => onResult(null)}
       finalFocusRef={undefined}
       size="md"
     >
@@ -31,7 +32,7 @@ export function PlanDrawer(props: PlanDrawerProps) {
         <DrawerHeader>{t('plan')}</DrawerHeader>
 
         <DrawerBody>
-          <PlanFormik item={props.item} onSubmit={props.onResult} />
+          <PlanFormik item={item} onSubmit={onResult} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

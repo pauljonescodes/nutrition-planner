@@ -5,10 +5,10 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-} from "@chakra-ui/react";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { LogFormik } from "../formik/LogFormik";
-import { useTranslation } from "react-i18next";
+} from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { LogFormik } from '../formik/LogFormik';
 
 type LogDrawerProps = {
   item: ItemInterface | null;
@@ -17,26 +17,23 @@ type LogDrawerProps = {
 };
 
 export function LogDrawer(props: LogDrawerProps) {
+  const { item, onResult, onDelete } = props;
   const { t } = useTranslation();
   return (
     <Drawer
-      isOpen={props.item !== null}
+      isOpen={item !== null}
       placement="left"
-      onClose={() => props.onResult(null)}
+      onClose={() => onResult(null)}
       finalFocusRef={undefined}
       size="md"
     >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{t("log")}</DrawerHeader>
+        <DrawerHeader>{t('log')}</DrawerHeader>
 
         <DrawerBody>
-          <LogFormik
-            item={props.item}
-            onSubmit={props.onResult}
-            onDelete={props.onDelete}
-          />
+          <LogFormik item={item} onSubmit={onResult} onDelete={onDelete} />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

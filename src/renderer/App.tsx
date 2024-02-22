@@ -37,9 +37,10 @@ export default function App() {
   const [database, setDatabase] = useState<RxNPDatabaseType | undefined>(
     undefined,
   );
-  const [couchDbUrlLocalStorage, setCouchDbUrlLocalStorage] = useLocalStorage<
-    string | undefined
-  >(LocalStorageKeysEnum.couchdbUrl, undefined);
+  const [couchDbUrlLocalStorage] = useLocalStorage<string | undefined>(
+    LocalStorageKeysEnum.couchdbUrl,
+    undefined,
+  );
   const [languageLocalStorage] = useLocalStorage(
     LocalStorageKeysEnum.language,
     'en',

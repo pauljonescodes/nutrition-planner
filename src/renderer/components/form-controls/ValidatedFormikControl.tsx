@@ -5,16 +5,16 @@ import {
   FormLabel,
   Input,
   SpaceProps,
-} from "@chakra-ui/react";
-import { FormikProps } from "formik";
-import { RefObject } from "react";
+} from '@chakra-ui/react';
+import { FormikProps } from 'formik';
+import { RefObject } from 'react';
 
 interface ValidatedFormikControlProps<T> {
   formikProps: FormikProps<T>;
   placeholder: string;
   name: string;
-  value?: string; // props.formikProps.values.name as string | undefined
-  error?: string; // props.formikProps.errors.name
+  value?: string; // formikProps.values.name as string | undefined
+  error?: string; // formikProps.errors.name
   spaceProps?: SpaceProps;
   inputFieldRef?: RefObject<HTMLInputElement>;
   formLabelText?: string;
@@ -24,34 +24,47 @@ interface ValidatedFormikControlProps<T> {
 }
 
 export function ValidatedFormikControl<T>(
-  props: ValidatedFormikControlProps<T>
+  props: ValidatedFormikControlProps<T>,
 ) {
+  const {
+    formikProps,
+    placeholder,
+    name,
+    value,
+    error,
+    spaceProps,
+    inputFieldRef,
+    formLabelText,
+    helperText,
+    isRequired,
+    onPaste,
+  } = props;
   return (
     <FormControl
-      {...props.spaceProps}
-      isInvalid={props.error !== undefined}
+      {...spaceProps}
+      isInvalid={error !== undefined}
       isRequired={
-        props.isRequired
-        // props.yupSchemaField.describe().tests[0].name === "required"
+        isRequired
+        // yupSchemaField.describe().tests[0].name === "required"
       }
     >
-      <FormLabel>{props.formLabelText ?? props.placeholder}</FormLabel>
+      <FormLabel>{formLabelText ?? placeholder}</FormLabel>
       <Input
-        ref={props.inputFieldRef}
-        onChange={props.formikProps.handleChange}
-        onBlur={props.formikProps.handleBlur}
-        placeholder={props.placeholder}
-        name={props.name} 
-        value={props.value ?? ""}
-        isInvalid={props.error ? true : false}
+        ref={inputFieldRef}
+        onChange={formikProps.handleChange}
+        onBlur={formikProps.handleBlur}
+        placeholder={placeholder}
+        name={name}
+        value={value ?? ''}
+        isInvalid={!!error}
         onPaste={(e) => {
-          if (props.onPaste) {
-            props.onPaste(e.clipboardData.getData("Text"));
+          if (onPaste) {
+            onPaste(e.clipboardData.getData('Text'));
           }
         }}
       />
-      {props.error && <FormErrorMessage>{props.error}</FormErrorMessage>}
-      {props.helperText && <FormHelperText>{props.helperText}</FormHelperText>}
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }

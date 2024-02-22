@@ -6,10 +6,12 @@ export function calculateBasalMetabolicRateKcal(params: {
 }): number | undefined {
   const { sexIsMale, weightKilograms, heightCentimeters, ageYears } = params;
 
-  if (sexIsMale === undefined ||
+  if (
+    sexIsMale === undefined ||
     weightKilograms === undefined ||
     heightCentimeters === undefined ||
-    ageYears === undefined) {
+    ageYears === undefined
+  ) {
     return undefined;
   }
 

@@ -5,10 +5,10 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-} from "@chakra-ui/react";
-import { ItemInterface } from "../../data/interfaces/ItemInterface";
-import { GroupFormik } from "../formik/GroupFormik";
-import { useTranslation } from "react-i18next";
+} from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { GroupFormik } from '../formik/GroupFormik';
 
 type GroupDrawerProps = {
   item: ItemInterface | null;
@@ -16,27 +16,28 @@ type GroupDrawerProps = {
 };
 
 export function GroupDrawer(props: GroupDrawerProps) {
+  const { item, onResult } = props;
   const { t } = useTranslation();
   return (
     <Drawer
-      isOpen={props.item !== null}
+      isOpen={item !== null}
       placement="left"
       size="md"
       onClose={() => {
-        props.onResult(null);
+        onResult(null);
       }}
       finalFocusRef={undefined}
     >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{t("group")}</DrawerHeader>
+        <DrawerHeader>{t('group')}</DrawerHeader>
 
         <DrawerBody>
           <GroupFormik
-            item={props.item}
-            onSubmit={(item) => {
-              props.onResult(item);
+            item={item}
+            onSubmit={(anItem) => {
+              onResult(anItem);
             }}
           />
         </DrawerBody>

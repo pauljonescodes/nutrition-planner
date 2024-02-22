@@ -9,9 +9,11 @@ import {
 } from '@chakra-ui/react';
 import { Fragment, useState } from 'react';
 import { useRxCollection } from 'rxdb-hooks';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { dataid } from '../utilities/dataid';
 import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
-import { ItemInterface } from "../data/interfaces/ItemInterface";
+import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
 import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
 import { GroupDrawer } from './drawers/GroupDrawer';
@@ -19,10 +21,8 @@ import { ItemDrawer } from './drawers/ItemDrawer';
 import { LogDrawer } from './drawers/LogDrawer';
 import { PlanDrawer } from './drawers/PlanDrawer';
 import { SettingsDrawer } from './drawers/SettingsDrawer';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { InfoDrawer } from './drawers/InfoDrawer';
-import { useTranslation } from "react-i18next";
-import { PathEnum } from "../paths";
+import { PathEnum } from '../paths';
 
 export function MenuHStack() {
   const { t } = useTranslation();
@@ -48,12 +48,12 @@ export function MenuHStack() {
   const hStackBackgroundColor = useColorModeValue('gray.50', 'gray.900');
 
   return (
-    <Fragment>
+    <>
       <HStack
         p={3}
         pr={3}
         bg={hStackBackgroundColor}
-        width={'100vw'}
+        width="100vw"
         overflowX="scroll"
         position="fixed"
         zIndex={999}
@@ -66,7 +66,7 @@ export function MenuHStack() {
               navigate(PathEnum.log);
             }}
           >
-            {t("log")}
+            {t('log')}
           </Button>
           <IconButton
             onClick={() => {
@@ -75,7 +75,7 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label={t("add")}
+            aria-label={t('add')}
           />
         </ButtonGroup>
         <ButtonGroup isAttached>
@@ -85,7 +85,7 @@ export function MenuHStack() {
               navigate(PathEnum.items);
             }}
           >
-            {t("items")}
+            {t('items')}
           </Button>
           <IconButton
             onClick={() => {
@@ -95,7 +95,7 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label={t("add")}
+            aria-label={t('add')}
           />
         </ButtonGroup>
         <ButtonGroup isAttached>
@@ -105,7 +105,7 @@ export function MenuHStack() {
               navigate(PathEnum.groups);
             }}
           >
-            {t("groups")}
+            {t('groups')}
           </Button>
           <IconButton
             onClick={() => {
@@ -115,7 +115,7 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label={t("add")}
+            aria-label={t('add')}
           />
         </ButtonGroup>
         <ButtonGroup isAttached>
@@ -125,7 +125,7 @@ export function MenuHStack() {
               navigate(PathEnum.plans);
             }}
           >
-            {t("plans")}
+            {t('plans')}
           </Button>
           <IconButton
             onClick={() => {
@@ -135,7 +135,7 @@ export function MenuHStack() {
               });
             }}
             icon={<AddIcon />}
-            aria-label={t("add")}
+            aria-label={t('add')}
           />
         </ButtonGroup>
         <Spacer />
@@ -144,14 +144,14 @@ export function MenuHStack() {
             setInfoDrawerIsOpen(true);
           }}
           icon={<InfoIcon />}
-          aria-label={t("info")}
+          aria-label={t('info')}
         />
         <IconButton
           onClick={() => {
             setSettingsDrawerIsOpen(true);
           }}
           icon={<SettingsIcon />}
-          aria-label={t("settings")}
+          aria-label={t('settings')}
         />
       </HStack>
       <ItemDrawer
@@ -166,9 +166,6 @@ export function MenuHStack() {
       />
       <GroupDrawer
         item={groupDrawerItem}
-        onEdit={(item) => {
-          setGroupDrawerItem(item);
-        }}
         onResult={(item) => {
           setGroupDrawerItem(null);
           if (item) {
@@ -211,6 +208,6 @@ export function MenuHStack() {
         isOpen={infoDrawerIsOpen}
         onClose={() => setInfoDrawerIsOpen(false)}
       />
-    </Fragment>
+    </>
   );
 }

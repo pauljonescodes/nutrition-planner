@@ -28,7 +28,7 @@ type LogFormProps = {
 };
 
 export default function LogForm(props: LogFormProps) {
-  const { formikProps, onDelete, onPaste, isEditing } = props;
+  const { formikProps, onDelete, onPaste, isEditing, onChangeType } = props;
   const { t } = useTranslation();
   const [showDeleteState, setShowDeleteState] = useState<boolean>(false);
 
@@ -36,7 +36,7 @@ export default function LogForm(props: LogFormProps) {
     <SubitemFieldArray
       formikProps={formikProps}
       itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group, ItemTypeEnum.plan]}
-      name={'subitems'}
+      name="subitems"
     />
   );
 
@@ -63,29 +63,29 @@ export default function LogForm(props: LogFormProps) {
           spaceProps={{ pb: 2 }}
         />
 
-        {isEditing && (subitemFieldArray)}
-        {!isEditing && (<Tabs
-          onChange={(index) => {
-            props.onChangeType(index === 0);
-          }}
-        >
-          <TabList>
-            <Tab>{t("subitems")}</Tab>
-            <Tab>{t("item")}</Tab>
-          </TabList>
-          
-          <TabPanels>
-            <TabPanel>
-              {subitemFieldArray}
-            </TabPanel>
-            <TabPanel>
-              <LogSubitemFormControls
-                formikProps={formikProps}
-                onPaste={onPaste}
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>)}
+        {isEditing && subitemFieldArray}
+        {!isEditing && (
+          <Tabs
+            onChange={(index) => {
+              onChangeType(index === 0);
+            }}
+          >
+            <TabList>
+              <Tab>{t('subitems')}</Tab>
+              <Tab>{t('item')}</Tab>
+            </TabList>
+
+            <TabPanels>
+              <TabPanel>{subitemFieldArray}</TabPanel>
+              <TabPanel>
+                <LogSubitemFormControls
+                  formikProps={formikProps}
+                  onPaste={onPaste}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        )}
 
         <Center>
           <VStack width="full">

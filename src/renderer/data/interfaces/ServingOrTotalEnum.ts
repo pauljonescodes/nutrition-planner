@@ -1,15 +1,15 @@
 export enum ServingOrTotalEnum {
-  serving = "servingPrice",
-  total = "totalPrice",
+  serving = 'servingPrice',
+  total = 'totalPrice',
 }
 
 export function toggleServingOrTotal(
-  value: ServingOrTotalEnum
+  value: ServingOrTotalEnum,
 ): ServingOrTotalEnum {
   switch (value) {
     case ServingOrTotalEnum.serving:
       return ServingOrTotalEnum.total;
-    case ServingOrTotalEnum.total:
+    default:
       return ServingOrTotalEnum.serving;
   }
 }

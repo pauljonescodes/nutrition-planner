@@ -13,14 +13,16 @@ export interface PlanFormProps {
 }
 
 export function PlanFormik(props: PlanFormProps) {
-  const thisItemId = props.item?.id ?? dataid();
+  const { item, onSubmit, firstInputFieldRef } = props;
+
+  const thisItemId = item?.id ?? dataid();
 
   const [initialValuesState] = useState<ItemInterface>({
     ...yupItemSchema.getDefault(),
     id: thisItemId,
     type: ItemTypeEnum.plan,
-    name: props.item?.name,
-    date: props.item?.date ?? new Date().toISOString(),
+    name: item?.name,
+    date: item?.date ?? new Date().toISOString(),
     massGrams: 0,
     count: 1,
     priceCents: 0,
@@ -34,7 +36,7 @@ export function PlanFormik(props: PlanFormProps) {
     fiberGrams: 0,
     sugarGrams: 0,
     proteinGrams: 0,
-    subitems: props.item?.subitems ?? [{ count: 1, itemId: undefined }],
+    subitems: item?.subitems ?? [{ count: 1, itemId: undefined }],
   });
 
   return (
@@ -45,7 +47,7 @@ export function PlanFormik(props: PlanFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        props.onSubmit({
+        onSubmit({
           ...values,
         });
         helpers.resetForm();
@@ -56,7 +58,7 @@ export function PlanFormik(props: PlanFormProps) {
         return (
           <PlanForm
             formikProps={formikProps}
-            firstInputFieldRef={props.firstInputFieldRef}
+            firstInputFieldRef={firstInputFieldRef}
           />
         );
       }}

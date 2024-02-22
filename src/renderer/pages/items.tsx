@@ -1,28 +1,28 @@
-import { Fragment, useState } from "react";
-import { useRxCollection, useRxQuery } from "rxdb-hooks";
-import { DeleteAlertDialog } from "../components/DeleteAlertDialog";
-import { ItemInfiniteTableContainer } from "../components/ItemInfiniteTableContainer";
-import { ItemDrawer } from "../components/drawers/ItemDrawer";
-import { dataid } from "../utilities/dataid";
-import { ItemTypeEnum } from "../data/interfaces/ItemTypeEnum";
-import { RxNPItemDocument } from "../data/rxnp/RxNPItemSchema";
+import { Fragment, useState } from 'react';
+import { useRxCollection, useRxQuery } from 'rxdb-hooks';
+import { useTranslation } from 'react-i18next';
+import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
+import { ItemInfiniteTableContainer } from '../components/ItemInfiniteTableContainer';
+import { ItemDrawer } from '../components/drawers/ItemDrawer';
+import { dataid } from '../utilities/dataid';
+import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
+import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
 import {
   ServingOrTotalEnum,
   toggleServingOrTotal,
-} from "../data/interfaces/ServingOrTotalEnum";
-import { useTranslation } from "react-i18next";
+} from '../data/interfaces/ServingOrTotalEnum';
 
 export default function ItemsPage() {
   const { t } = useTranslation();
-  const [nameSearchState, setNameSearchState] = useState<string>("");
+  const [nameSearchState, setNameSearchState] = useState<string>('');
   const [drawerItemState, setEditItemState] = useState<RxNPItemDocument | null>(
-    null
+    null,
   );
   const [deleteItemState, setDeleteItemState] =
     useState<RxNPItemDocument | null>(null);
-  const collection = useRxCollection<RxNPItemDocument>("item");
+  const collection = useRxCollection<RxNPItemDocument>('item');
   const [servingOrTotalState, setServingOrTotalState] = useState(
-    ServingOrTotalEnum.serving
+    ServingOrTotalEnum.serving,
   );
   const query = useRxQuery(
     collection?.find({
@@ -33,19 +33,19 @@ export default function ItemsPage() {
     })!,
     {
       pageSize: 12,
-      pagination: "Infinite",
-    }
+      pagination: 'Infinite',
+    },
   );
 
   return (
-    <Fragment>
+    <>
       <ItemInfiniteTableContainer
         documents={query.result}
         fetchMore={query.fetchMore}
         isFetching={query.isFetching}
         isExhausted={query.isExhausted}
         nameSearch={nameSearchState}
-        emptyStateText={t("itemsEmpty")}
+        emptyStateText={t('itemsEmpty')}
         onNameSearchChange={(value: string) => {
           setNameSearchState(value);
         }}
@@ -85,6 +85,6 @@ export default function ItemsPage() {
           setDeleteItemState(null);
         }}
       />
-    </Fragment>
+    </>
   );
 }
