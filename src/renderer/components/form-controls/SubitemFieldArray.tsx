@@ -7,7 +7,7 @@ interface SubitemFieldArrayProps {
   formikProps: FormikProps<ItemInterface>;
   itemTypesIn: Array<ItemTypeEnum>;
   name: string;
-  label: string;
+  label?: string;
 }
 
 export function SubitemFieldArray(props: SubitemFieldArrayProps) {

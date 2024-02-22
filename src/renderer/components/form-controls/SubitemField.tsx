@@ -9,14 +9,14 @@ interface SubitemFieldProps {
   formikProps: FormikProps<ItemInterface>;
   fieldArrayHelpers: FieldArrayRenderProps;
   itemTypesIn: Array<ItemTypeEnum>;
-  label: string;
+  label?: string;
 }
 
 export function SubitemField(props: SubitemFieldProps) {
   const { formikProps, fieldArrayHelpers, itemTypesIn, label } = props;
   return (
     <VStack spacing={0} pb={2}>
-      <FormLabel>{label}</FormLabel>
+      {label && <FormLabel>{label}</FormLabel>}
       {formikProps.values.subitems?.map((value, index) => {
         return (
           <SubitemAutoCompleteInput
