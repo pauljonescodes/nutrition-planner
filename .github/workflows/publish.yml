@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     branches:
-      - main
+      - native
 
 jobs:
   publish:
