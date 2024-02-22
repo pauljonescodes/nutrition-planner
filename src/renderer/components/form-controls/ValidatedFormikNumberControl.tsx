@@ -63,8 +63,8 @@ export function ValidatedFormikNumberControl<T>(
           name={name}
           value={format ? format(value) : value}
           onPaste={(e) => {
-            e.preventDefault();
             if (onPaste) {
+              e.preventDefault();
               onPaste(e.clipboardData.getData('Text'));
             }
           }}

@@ -59,8 +59,8 @@ export default function LogPage() {
   const collection = useRxCollection<RxNPItemDocument>('item');
   const [viewState, setViewState] = useState<View>('week');
   const [dateRangeState, setDateRangeState] = useState<RangeType>({
-    start: moment().startOf('day').toDate(),
-    end: moment().endOf('day').toDate(),
+    start: moment().startOf(viewState).toDate(),
+    end: moment().endOf(viewState).toDate(),
   });
   const [eventsState, setEventsState] = useState<Event[] | undefined>([]);
   const [selectedEvent, setModalEvent] = useState<Event | null>(null);
@@ -207,8 +207,8 @@ export default function LogPage() {
           onRangeChange={(range: any) => {
             if (range.start && range.end) {
               setDateRangeState({
-                start: range.start,
-                end: range.end,
+                start: moment(range.start).toDate(),
+                end: moment(range.end).toDate(),
               });
             }
           }}

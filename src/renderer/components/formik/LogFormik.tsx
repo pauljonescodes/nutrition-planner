@@ -5,6 +5,7 @@ import { ItemInterface } from '../../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../../data/interfaces/ItemTypeEnum';
 import { yupItemSchema } from '../../data/yup/YupItemSchema';
 import LogForm from '../form/LogForm';
+import moment from 'moment';
 
 export interface LogFormProps {
   item: ItemInterface | null;
@@ -51,10 +52,16 @@ export function LogFormik(props: LogFormProps) {
       }}
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
-        onSubmit({
-          ...values,
-        });
-        helpers.resetForm();
+        const dateString = values.date.toString();
+        if (moment(dateString, [moment.ISO_8601], true).isValid()) {
+          onSubmit({
+            ...values,
+          });
+          helpers.resetForm();
+        } else {
+          helpers.setErrors({date: 'Invalid date'});
+          helpers.setSubmitting(false);
+        }
       }}
       validateOnChange={false}
       validateOnBlur={false}

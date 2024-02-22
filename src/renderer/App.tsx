@@ -9,12 +9,12 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
-import { RxCouchDBReplicationState, addRxPlugin } from 'rxdb';
+import { addRxPlugin } from 'rxdb';
 import { Provider as RxDbProvider } from 'rxdb-hooks';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
-import { replicateCouchDB } from 'rxdb/plugins/replication-couchdb';
+import { replicateCouchDB, RxCouchDBReplicationState } from 'rxdb/plugins/replication-couchdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { useLocalStorage } from 'usehooks-ts';
 import { MenuHStack } from './components/MenuHStack';

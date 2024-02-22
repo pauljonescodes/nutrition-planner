@@ -62,7 +62,6 @@ export function SubitemAutoCompleteInput(props: SubitemAutoCompleteInputProps) {
       },
     })!,
     {
-      pageSize: 6,
       pagination: 'Traditional',
     },
   );

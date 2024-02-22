@@ -1,0 +1,3158 @@
+{
+    "collections": [
+        {
+            "docs": [
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796721.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:59.860Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "-4Jl_o",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 3",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "NmRsZX"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "iJC4uN"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509205.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:58:23.051Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "-Hv3jJ",
+                    "massGrams": 0,
+                    "name": "Day 1 Breakfast",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "R1GD0r"
+                        },
+                        {
+                            "count": "2",
+                            "itemId": "Xu-R-n"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "NUK7SO"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509329.01
+                    },
+                    "carbohydrateGrams": 8,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:52:52.915Z",
+                    "energyKilocalories": 45,
+                    "fatGrams": 0.5,
+                    "fiberGrams": 3,
+                    "id": "-dx6YH",
+                    "massGrams": 148,
+                    "name": "Broccoli",
+                    "priceCents": 179,
+                    "proteinGrams": 4,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 80,
+                    "subitems": [],
+                    "sugarGrams": 2,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509303.01
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 0,
+                    "count": 10,
+                    "date": "2024-02-21T22:51:44.664Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 5,
+                    "fiberGrams": 1,
+                    "id": "0FKpBJ",
+                    "massGrams": "28",
+                    "name": "Hummus",
+                    "priceCents": 519,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 1,
+                    "sodiumMilligrams": 130,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556399860.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:59.860Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "0Smim9",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 3",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "hDDwh9"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "rgCdkX"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509249.03
+                    },
+                    "carbohydrateGrams": 17,
+                    "cholesterolMilligrams": 0,
+                    "count": "21",
+                    "date": "2024-02-21T22:46:19.777Z",
+                    "energyKilocalories": 60,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "1snCZb",
+                    "massGrams": 21,
+                    "name": "Honey",
+                    "priceCents": 729,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 17,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796653.04
+                    },
+                    "carbohydrateGrams": 23,
+                    "cholesterolMilligrams": 0,
+                    "count": "12",
+                    "date": "2024-02-21T22:43:56.716Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 4,
+                    "fiberGrams": 2,
+                    "id": "2g7yeD",
+                    "massGrams": 37,
+                    "name": "Bread",
+                    "priceCents": 499,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0.5,
+                    "sodiumMilligrams": 190,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509294.01
+                    },
+                    "carbohydrateGrams": 7,
+                    "cholesterolMilligrams": 0,
+                    "count": "5.25",
+                    "date": "2024-02-21T22:51:03.257Z",
+                    "energyKilocalories": 30,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "2x2PNR",
+                    "massGrams": 85,
+                    "name": "Baby carrots",
+                    "priceCents": 199,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 65,
+                    "subitems": [],
+                    "sugarGrams": 4,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555787130.01
+                    },
+                    "carbohydrateGrams": 9,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:49:47.130Z",
+                    "energyKilocalories": 210,
+                    "fatGrams": 19,
+                    "fiberGrams": 3,
+                    "id": "3yamm5",
+                    "massGrams": 199,
+                    "name": "Garden Salad",
+                    "priceCents": 799,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 2,
+                    "sodiumMilligrams": 210,
+                    "subitems": [],
+                    "sugarGrams": 3,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566235966.01
+                    },
+                    "carbohydrateGrams": 17,
+                    "cholesterolMilligrams": 0,
+                    "count": "4.25",
+                    "date": "2024-02-22T01:43:55.966Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "4HP8E0",
+                    "massGrams": 85,
+                    "name": "Sweet potato",
+                    "priceCents": 299,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 45,
+                    "subitems": [],
+                    "sugarGrams": 4,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555403356.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 185,
+                    "count": "12",
+                    "date": "2024-02-21T22:43:23.356Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 5,
+                    "fiberGrams": 0,
+                    "id": "4Wg91P",
+                    "massGrams": 50,
+                    "name": "Eggs",
+                    "priceCents": 599,
+                    "proteinGrams": 6,
+                    "saturatedFatGrams": 1.5,
+                    "sodiumMilligrams": 70,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509311.03
+                    },
+                    "carbohydrateGrams": 35,
+                    "cholesterolMilligrams": 0,
+                    "count": 4,
+                    "date": "2024-02-21T22:52:14.169Z",
+                    "energyKilocalories": 160,
+                    "fatGrams": 1,
+                    "fiberGrams": 1,
+                    "id": "4gH230",
+                    "massGrams": 64,
+                    "name": "Pita bread",
+                    "priceCents": 399,
+                    "proteinGrams": 6,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 310,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757836.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:49:20.060Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "4hTnPf",
+                    "massGrams": 0,
+                    "name": "Day 2 Snack 2",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "fYzOu1"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796685.06
+                    },
+                    "carbohydrateGrams": 7,
+                    "cholesterolMilligrams": 0,
+                    "count": "5.25",
+                    "date": "2024-02-21T22:51:03.257Z",
+                    "energyKilocalories": 30,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "5A1Mje",
+                    "massGrams": 85,
+                    "name": "Baby carrots",
+                    "priceCents": 199,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 65,
+                    "subitems": [],
+                    "sugarGrams": 4,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566591813.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:49:51.813Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "5Gj4zx",
+                    "massGrams": 0,
+                    "name": "Day 2 Dinner",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "MQvmaP"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "4HP8E0"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "Z7xA95"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "LFsPKY"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509390.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": 1,
+                    "date": "2024-02-21T23:00:39.178Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "5LR7n3",
+                    "massGrams": 0,
+                    "name": "Day 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "-Hv3jJ"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "MxkTmU"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "NMR2jN"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "x-x37u"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "7_9gdy"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "UUjYen"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708563146870.01
+                    },
+                    "carbohydrateGrams": 28,
+                    "cholesterolMilligrams": 0,
+                    "count": 6,
+                    "date": "2024-02-22T00:52:26.870Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 1,
+                    "fiberGrams": 1,
+                    "id": "5cu-yt",
+                    "massGrams": 61,
+                    "name": "English muffins",
+                    "priceCents": 499,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 240,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555904665.01
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 0,
+                    "count": 10,
+                    "date": "2024-02-21T22:51:44.664Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 5,
+                    "fiberGrams": 1,
+                    "id": "5kiizJ",
+                    "massGrams": "28",
+                    "name": "Hummus",
+                    "priceCents": 519,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 1,
+                    "sodiumMilligrams": 130,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556334769.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:58:54.769Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "6CCZsj",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 2",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "cWNJeN"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "5kiizJ"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "OC33kP"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555579777.01
+                    },
+                    "carbohydrateGrams": 17,
+                    "cholesterolMilligrams": 0,
+                    "count": "21",
+                    "date": "2024-02-21T22:46:19.777Z",
+                    "energyKilocalories": 60,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "6aKo6M",
+                    "massGrams": 21,
+                    "name": "Honey",
+                    "priceCents": 729,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 17,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757772.06
+                    },
+                    "carbohydrateGrams": 28,
+                    "cholesterolMilligrams": 0,
+                    "count": 6,
+                    "date": "2024-02-22T00:52:26.870Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 1,
+                    "fiberGrams": 1,
+                    "id": "728LXu",
+                    "massGrams": 61,
+                    "name": "English muffins",
+                    "priceCents": 499,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 240,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509355.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:37.219Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "7_9gdy",
+                    "massGrams": 0,
+                    "name": "Day 1 Dinner",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "-dx6YH"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "Rmoppj"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "sO5urK"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796699.01
+                    },
+                    "carbohydrateGrams": 8,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:52:52.915Z",
+                    "energyKilocalories": 45,
+                    "fatGrams": 0.5,
+                    "fiberGrams": 3,
+                    "id": "7sQsRG",
+                    "massGrams": 148,
+                    "name": "Broccoli",
+                    "priceCents": 179,
+                    "proteinGrams": 4,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 80,
+                    "subitems": [],
+                    "sugarGrams": 2,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796696.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:58:54.769Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "8GJR-E",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 2",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "5A1Mje"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "gBO3nh"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "Ld3dj0"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509267.05
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 65,
+                    "count": "5",
+                    "date": "2024-02-21T22:48:42.553Z",
+                    "energyKilocalories": 120,
+                    "fatGrams": 1.5,
+                    "fiberGrams": 0,
+                    "id": "8rK-HT",
+                    "massGrams": 113.4,
+                    "name": "Chicken breast",
+                    "priceCents": 1170,
+                    "proteinGrams": 26,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 75,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757876.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": 1,
+                    "date": "2024-02-22T17:00:13.059Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "Bwl2E8",
+                    "massGrams": 0,
+                    "name": "log",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "lm4EGD"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "log"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566497562.01
+                    },
+                    "carbohydrateGrams": 21,
+                    "cholesterolMilligrams": 0,
+                    "count": "2",
+                    "date": "2024-02-22T01:48:17.562Z",
+                    "energyKilocalories": 80,
+                    "fatGrams": 0,
+                    "fiberGrams": 4,
+                    "id": "DdjIDZ",
+                    "massGrams": 148,
+                    "name": "Blueberries",
+                    "priceCents": 699,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 15,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757803.04
+                    },
+                    "carbohydrateGrams": 20,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T00:54:00.616Z",
+                    "energyKilocalories": 80,
+                    "fatGrams": 0,
+                    "fiberGrams": 4,
+                    "id": "DqrdoC",
+                    "massGrams": 165,
+                    "name": "Orange",
+                    "priceCents": 99,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 14,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796672.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:01.724Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "EpS5t7",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "XypqFS"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "s0KAg6"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "P-GO_J"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757829.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:49:01.680Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "GNMCNr",
+                    "massGrams": 0,
+                    "name": "Day 2 Lunch",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "tj6JBk"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708563240689.01
+                    },
+                    "carbohydrateGrams": 20,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T00:54:00.616Z",
+                    "energyKilocalories": 80,
+                    "fatGrams": 0,
+                    "fiberGrams": 4,
+                    "id": "Hy5Asc",
+                    "massGrams": 165,
+                    "name": "Orange",
+                    "priceCents": 99,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 14,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796728.02
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": 1,
+                    "date": "2024-02-21T17:00:00.000Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "IRt6fU",
+                    "massGrams": 0,
+                    "name": "log",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "K_EvtN"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "log"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556044963.01
+                    },
+                    "carbohydrateGrams": 51,
+                    "cholesterolMilligrams": 0,
+                    "count": "2",
+                    "date": "2024-02-21T22:54:04.892Z",
+                    "energyKilocalories": 240,
+                    "fatGrams": 2,
+                    "fiberGrams": 3,
+                    "id": "JVIxlQ",
+                    "massGrams": "125",
+                    "name": "Brown rice",
+                    "priceCents": 229,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796705.03
+                    },
+                    "carbohydrateGrams": 51,
+                    "cholesterolMilligrams": 0,
+                    "count": "2",
+                    "date": "2024-02-21T22:54:04.892Z",
+                    "energyKilocalories": 240,
+                    "fatGrams": 2,
+                    "fiberGrams": 3,
+                    "id": "JfixRC",
+                    "massGrams": "125",
+                    "name": "Brown rice",
+                    "priceCents": 229,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566647794.02
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:50:47.711Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "JgccY3",
+                    "massGrams": 0,
+                    "name": "Day 2 Snack 3",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "tWDLCl"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "rgCdkX"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796724.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": 1,
+                    "date": "2024-02-21T23:00:39.178Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "K_EvtN",
+                    "massGrams": 0,
+                    "name": "Day 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "fvuOu8"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "EpS5t7"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "u94nqZ"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "8GJR-E"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "anrHWH"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "-4Jl_o"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566323222.01
+                    },
+                    "carbohydrateGrams": 6,
+                    "cholesterolMilligrams": 0,
+                    "count": "2",
+                    "date": "2024-02-22T01:45:23.222Z",
+                    "energyKilocalories": 25,
+                    "fatGrams": 0,
+                    "fiberGrams": 2,
+                    "id": "LFsPKY",
+                    "massGrams": 83,
+                    "name": "Green Beans",
+                    "priceCents": 599,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 3,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708549023809.01
+                    },
+                    "carbohydrateGrams": "9",
+                    "cholesterolMilligrams": "9",
+                    "count": "3",
+                    "date": "2024-02-21T20:56:52.214Z",
+                    "energyKilocalories": "9",
+                    "fatGrams": "9",
+                    "fiberGrams": "9",
+                    "id": "LIUvR4",
+                    "massGrams": "9",
+                    "name": "9",
+                    "priceCents": 900,
+                    "proteinGrams": "9",
+                    "saturatedFatGrams": "9",
+                    "sodiumMilligrams": "9",
+                    "sugarGrams": "9",
+                    "transFatGrams": "9",
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796692.04
+                    },
+                    "carbohydrateGrams": 35,
+                    "cholesterolMilligrams": 0,
+                    "count": 4,
+                    "date": "2024-02-21T22:52:14.169Z",
+                    "energyKilocalories": 160,
+                    "fatGrams": 1,
+                    "fiberGrams": 1,
+                    "id": "Ld3dj0",
+                    "massGrams": 64,
+                    "name": "Pita bread",
+                    "priceCents": 399,
+                    "proteinGrams": 6,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 310,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566162395.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 65,
+                    "count": "4",
+                    "date": "2024-02-22T01:42:42.395Z",
+                    "energyKilocalories": 260,
+                    "fatGrams": 18,
+                    "fiberGrams": 0,
+                    "id": "MQvmaP",
+                    "massGrams": 113,
+                    "name": "Steak",
+                    "priceCents": 2799,
+                    "proteinGrams": 23,
+                    "saturatedFatGrams": 7,
+                    "sodiumMilligrams": 60,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": "0",
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509258.02
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:01.724Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "MxkTmU",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "fMYveX"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "SMJ-vf"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "1snCZb"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566093643.01
+                    },
+                    "carbohydrateGrams": 23,
+                    "cholesterolMilligrams": 0,
+                    "count": "7.5",
+                    "date": "2024-02-22T01:41:33.643Z",
+                    "energyKilocalories": 90,
+                    "fatGrams": 0,
+                    "fiberGrams": 1,
+                    "id": "NE52cS",
+                    "massGrams": 126,
+                    "name": "Grapes",
+                    "priceCents": 838.0000000000001,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 15,
+                    "subitems": [],
+                    "sugarGrams": 20,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509285.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:57:57.734Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "NMR2jN",
+                    "massGrams": 0,
+                    "name": "Day 1 Lunch",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": "2",
+                            "itemId": "8rK-HT"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "bQ_njo"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556341750.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:01.724Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "NSKCq_",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "yvWvhm"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "lwcgNG"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "6aKo6M"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509189.04
+                    },
+                    "carbohydrateGrams": 23,
+                    "cholesterolMilligrams": 0,
+                    "count": "12",
+                    "date": "2024-02-21T22:43:56.716Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 4,
+                    "fiberGrams": 2,
+                    "id": "NUK7SO",
+                    "massGrams": 37,
+                    "name": "Bread",
+                    "priceCents": 499,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0.5,
+                    "sodiumMilligrams": 190,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796715.01
+                    },
+                    "carbohydrateGrams": 33,
+                    "cholesterolMilligrams": 0,
+                    "count": "7",
+                    "date": "2024-02-21T22:55:34.619Z",
+                    "energyKilocalories": 140,
+                    "fatGrams": 0,
+                    "fiberGrams": 4,
+                    "id": "NmRsZX",
+                    "massGrams": 46,
+                    "name": "Medjool dates",
+                    "priceCents": 999,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 30,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796679.04
+                    },
+                    "carbohydrateGrams": 9,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:49:47.130Z",
+                    "energyKilocalories": 210,
+                    "fatGrams": 19,
+                    "fiberGrams": 3,
+                    "id": "O8W9_V",
+                    "massGrams": 199,
+                    "name": "Garden Salad",
+                    "priceCents": 799,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 2,
+                    "sodiumMilligrams": 210,
+                    "subitems": [],
+                    "sugarGrams": 3,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555934169.01
+                    },
+                    "carbohydrateGrams": 35,
+                    "cholesterolMilligrams": 0,
+                    "count": 4,
+                    "date": "2024-02-21T22:52:14.169Z",
+                    "energyKilocalories": 160,
+                    "fatGrams": 1,
+                    "fiberGrams": 1,
+                    "id": "OC33kP",
+                    "massGrams": 64,
+                    "name": "Pita bread",
+                    "priceCents": 399,
+                    "proteinGrams": 6,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 310,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796676.05
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 65,
+                    "count": "5",
+                    "date": "2024-02-21T22:48:42.553Z",
+                    "energyKilocalories": 120,
+                    "fatGrams": 1.5,
+                    "fiberGrams": 0,
+                    "id": "OdABnf",
+                    "massGrams": 113.4,
+                    "name": "Chicken breast",
+                    "priceCents": 1170,
+                    "proteinGrams": 26,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 75,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796667.04
+                    },
+                    "carbohydrateGrams": 17,
+                    "cholesterolMilligrams": 0,
+                    "count": "21",
+                    "date": "2024-02-21T22:46:19.777Z",
+                    "energyKilocalories": 60,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "P-GO_J",
+                    "massGrams": 21,
+                    "name": "Honey",
+                    "priceCents": 729,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 17,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566524973.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:48:44.945Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "PAZpYH",
+                    "massGrams": 0,
+                    "name": "Day 2 Snack 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "lwcgNG"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "DdjIDZ"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509106.06
+                    },
+                    "carbohydrateGrams": 15,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:42:50.096Z",
+                    "energyKilocalories": 60,
+                    "fatGrams": 0,
+                    "fiberGrams": 2,
+                    "id": "R1GD0r",
+                    "massGrams": 154,
+                    "name": "Grapefruit",
+                    "priceCents": 150,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 11,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509337.03
+                    },
+                    "carbohydrateGrams": 51,
+                    "cholesterolMilligrams": 0,
+                    "count": "2",
+                    "date": "2024-02-21T22:54:04.892Z",
+                    "energyKilocalories": 240,
+                    "fatGrams": 2,
+                    "fiberGrams": 3,
+                    "id": "Rmoppj",
+                    "massGrams": "125",
+                    "name": "Brown rice",
+                    "priceCents": 229,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509240.03
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 10,
+                    "count": "5",
+                    "date": "2024-02-21T22:45:38.618Z",
+                    "energyKilocalories": 90,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "SMJ-vf",
+                    "massGrams": 170,
+                    "name": "Yogurt",
+                    "priceCents": 699,
+                    "proteinGrams": 18,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 65,
+                    "subitems": [],
+                    "sugarGrams": 5,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556277774.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:57:57.734Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "SdDpJ0",
+                    "massGrams": 0,
+                    "name": "Day 1 Lunch",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": "2",
+                            "itemId": "VfSbZ1"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "3yamm5"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757865.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:50:47.711Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "SkjaG9",
+                    "massGrams": 0,
+                    "name": "Day 2 Snack 3",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "wObe4N"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "ooUbVb"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757847.04
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:44:43.507Z",
+                    "energyKilocalories": 40,
+                    "fatGrams": 0.5,
+                    "fiberGrams": 3,
+                    "id": "TwA1PL",
+                    "massGrams": 142,
+                    "name": "Spinach",
+                    "priceCents": 649,
+                    "proteinGrams": 4,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 110,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509381.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:59.860Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "UUjYen",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 3",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "zX7W8Q"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "zD_riQ"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757844.03
+                    },
+                    "carbohydrateGrams": 17,
+                    "cholesterolMilligrams": 0,
+                    "count": "4.25",
+                    "date": "2024-02-22T01:43:55.966Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "VOs8bm",
+                    "massGrams": 85,
+                    "name": "Sweet potato",
+                    "priceCents": 299,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 45,
+                    "subitems": [],
+                    "sugarGrams": 4,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757818.04
+                    },
+                    "carbohydrateGrams": 21,
+                    "cholesterolMilligrams": 0,
+                    "count": "2",
+                    "date": "2024-02-22T01:48:17.562Z",
+                    "energyKilocalories": 80,
+                    "fatGrams": 0,
+                    "fiberGrams": 4,
+                    "id": "VcF4wv",
+                    "massGrams": 148,
+                    "name": "Blueberries",
+                    "priceCents": 699,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 15,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555722553.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 65,
+                    "count": "5",
+                    "date": "2024-02-21T22:48:42.553Z",
+                    "energyKilocalories": 120,
+                    "fatGrams": 1.5,
+                    "fiberGrams": 0,
+                    "id": "VfSbZ1",
+                    "massGrams": 113.4,
+                    "name": "Chicken breast",
+                    "priceCents": 1170,
+                    "proteinGrams": 26,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 75,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757811.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:47:25.073Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "Wl1bbi",
+                    "massGrams": 0,
+                    "name": "Day 2 Breakfast",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "728LXu"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "DqrdoC"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "qin3rv"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757822.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:48:44.945Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "X0jzR2",
+                    "massGrams": 0,
+                    "name": "Day 2 Snack 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "v5TvZd"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "VcF4wv"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509179.05
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 185,
+                    "count": "12",
+                    "date": "2024-02-21T22:43:23.356Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 5,
+                    "fiberGrams": 0,
+                    "id": "Xu-R-n",
+                    "massGrams": 50,
+                    "name": "Eggs",
+                    "priceCents": 599,
+                    "proteinGrams": 6,
+                    "saturatedFatGrams": 1.5,
+                    "sodiumMilligrams": 70,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796661.06
+                    },
+                    "carbohydrateGrams": 30,
+                    "cholesterolMilligrams": 0,
+                    "count": "6",
+                    "date": "2024-02-21T22:44:32.590Z",
+                    "energyKilocalories": 110,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "XypqFS",
+                    "massGrams": 126,
+                    "name": "Banana",
+                    "priceCents": 179,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 19,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566283507.01
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:44:43.507Z",
+                    "energyKilocalories": 40,
+                    "fatGrams": 0.5,
+                    "fiberGrams": 3,
+                    "id": "Z7xA95",
+                    "massGrams": 142,
+                    "name": "Spinach",
+                    "priceCents": 649,
+                    "proteinGrams": 4,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 110,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708548886438.01
+                    },
+                    "carbohydrateGrams": "9",
+                    "cholesterolMilligrams": "9",
+                    "count": "9",
+                    "date": "2024-02-21T20:51:57.960Z",
+                    "energyKilocalories": "9",
+                    "fatGrams": "9",
+                    "fiberGrams": "9",
+                    "id": "a5WgO5",
+                    "massGrams": "9",
+                    "name": "2024-02-21T20:51:57.960Z",
+                    "priceCents": 900,
+                    "proteinGrams": "9",
+                    "saturatedFatGrams": "9",
+                    "sodiumMilligrams": "9",
+                    "sugarGrams": "9",
+                    "transFatGrams": "9",
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796712.02
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:37.219Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "anrHWH",
+                    "massGrams": 0,
+                    "name": "Day 1 Dinner",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "7sQsRG"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "JfixRC"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "jEycoR"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566445116.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:47:25.073Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "avm_8o",
+                    "massGrams": 0,
+                    "name": "Day 2 Breakfast",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "5cu-yt"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "Hy5Asc"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "tmvxKr"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509276.03
+                    },
+                    "carbohydrateGrams": 9,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:49:47.130Z",
+                    "energyKilocalories": 210,
+                    "fatGrams": 19,
+                    "fiberGrams": 3,
+                    "id": "bQ_njo",
+                    "massGrams": 199,
+                    "name": "Garden Salad",
+                    "priceCents": 799,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 2,
+                    "sodiumMilligrams": 210,
+                    "subitems": [],
+                    "sugarGrams": 3,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555863257.01
+                    },
+                    "carbohydrateGrams": 7,
+                    "cholesterolMilligrams": 0,
+                    "count": "5.25",
+                    "date": "2024-02-21T22:51:03.257Z",
+                    "energyKilocalories": 30,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "cWNJeN",
+                    "massGrams": 85,
+                    "name": "Baby carrots",
+                    "priceCents": 199,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 65,
+                    "subitems": [],
+                    "sugarGrams": 4,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708548954723.01
+                    },
+                    "carbohydrateGrams": "9",
+                    "cholesterolMilligrams": "9",
+                    "count": "9",
+                    "date": "2024-02-21T20:55:41.650Z",
+                    "energyKilocalories": "9",
+                    "fatGrams": "9",
+                    "fiberGrams": "9",
+                    "id": "cxmuhN",
+                    "massGrams": "9",
+                    "name": "2024-02-21T20:55:41.650Z",
+                    "priceCents": 900,
+                    "proteinGrams": "9",
+                    "saturatedFatGrams": "9",
+                    "sodiumMilligrams": "9",
+                    "sugarGrams": "9",
+                    "transFatGrams": "9",
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555436717.01
+                    },
+                    "carbohydrateGrams": 23,
+                    "cholesterolMilligrams": 0,
+                    "count": "12",
+                    "date": "2024-02-21T22:43:56.716Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 4,
+                    "fiberGrams": 2,
+                    "id": "dUfZGs",
+                    "massGrams": 37,
+                    "name": "Bread",
+                    "priceCents": 499,
+                    "proteinGrams": 5,
+                    "saturatedFatGrams": 0.5,
+                    "sodiumMilligrams": 190,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566560060.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:49:20.060Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "edyFLj",
+                    "massGrams": 0,
+                    "name": "Day 2 Snack 2",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "NE52cS"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509231.01
+                    },
+                    "carbohydrateGrams": 30,
+                    "cholesterolMilligrams": 0,
+                    "count": "6",
+                    "date": "2024-02-21T22:44:32.590Z",
+                    "energyKilocalories": 110,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "fMYveX",
+                    "massGrams": 126,
+                    "name": "Banana",
+                    "priceCents": 179,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 19,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757833.01
+                    },
+                    "carbohydrateGrams": 23,
+                    "cholesterolMilligrams": 0,
+                    "count": "7.5",
+                    "date": "2024-02-22T01:41:33.643Z",
+                    "energyKilocalories": 90,
+                    "fatGrams": 0,
+                    "fiberGrams": 1,
+                    "id": "fYzOu1",
+                    "massGrams": 126,
+                    "name": "Grapes",
+                    "priceCents": 838.0000000000001,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 15,
+                    "subitems": [],
+                    "sugarGrams": 20,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796657.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:58:23.051Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "fvuOu8",
+                    "massGrams": 0,
+                    "name": "Day 1 Breakfast",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "jNUKt0"
+                        },
+                        {
+                            "count": "2",
+                            "itemId": "zLaECI"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "2g7yeD"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796689.04
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 0,
+                    "count": 10,
+                    "date": "2024-02-21T22:51:44.664Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 5,
+                    "fiberGrams": 1,
+                    "id": "gBO3nh",
+                    "massGrams": "28",
+                    "name": "Hummus",
+                    "priceCents": 519,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 1,
+                    "sodiumMilligrams": 130,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556134619.01
+                    },
+                    "carbohydrateGrams": 33,
+                    "cholesterolMilligrams": 0,
+                    "count": "7",
+                    "date": "2024-02-21T22:55:34.619Z",
+                    "energyKilocalories": 140,
+                    "fatGrams": 0,
+                    "fiberGrams": 4,
+                    "id": "hDDwh9",
+                    "massGrams": 46,
+                    "name": "Medjool dates",
+                    "priceCents": 999,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 30,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566541680.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:49:01.680Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "hp_w7P",
+                    "massGrams": 0,
+                    "name": "Day 2 Lunch",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "qsKetP"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796718.03
+                    },
+                    "carbohydrateGrams": 14,
+                    "cholesterolMilligrams": 0,
+                    "count": 2,
+                    "date": "2024-02-21T22:56:00.990Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 13,
+                    "fiberGrams": 3,
+                    "id": "iJC4uN",
+                    "massGrams": 30,
+                    "name": "Dark chocolate",
+                    "priceCents": 349,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 8,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 8,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796708.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 60,
+                    "count": "4",
+                    "date": "2024-02-21T22:55:03.320Z",
+                    "energyKilocalories": 104,
+                    "fatGrams": 1.5,
+                    "fiberGrams": 0,
+                    "id": "jEycoR",
+                    "massGrams": 113,
+                    "name": "Halibut",
+                    "priceCents": 3499,
+                    "proteinGrams": 21,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 77,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796610.03
+                    },
+                    "carbohydrateGrams": 15,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:42:50.096Z",
+                    "energyKilocalories": 60,
+                    "fatGrams": 0,
+                    "fiberGrams": 2,
+                    "id": "jNUKt0",
+                    "massGrams": 154,
+                    "name": "Grapefruit",
+                    "priceCents": 150,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 11,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555972915.01
+                    },
+                    "carbohydrateGrams": 8,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:52:52.915Z",
+                    "energyKilocalories": 45,
+                    "fatGrams": 0.5,
+                    "fiberGrams": 3,
+                    "id": "lAVysI",
+                    "massGrams": 148,
+                    "name": "Broccoli",
+                    "priceCents": 179,
+                    "proteinGrams": 4,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 80,
+                    "subitems": [],
+                    "sugarGrams": 2,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757871.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": 1,
+                    "date": "2024-02-22T01:51:01.315Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "lm4EGD",
+                    "massGrams": 0,
+                    "name": "Day 2",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "Wl1bbi"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "X0jzR2"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "GNMCNr"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "4hTnPf"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "oGRskA"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "SkjaG9"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555538618.01
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 10,
+                    "count": "5",
+                    "date": "2024-02-21T22:45:38.618Z",
+                    "energyKilocalories": 90,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "lwcgNG",
+                    "massGrams": 170,
+                    "name": "Yogurt",
+                    "priceCents": 699,
+                    "proteinGrams": 18,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 65,
+                    "subitems": [],
+                    "sugarGrams": 5,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556377219.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:59:37.219Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "mXcjvu",
+                    "massGrams": 0,
+                    "name": "Day 1 Dinner",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "lAVysI"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "JVIxlQ"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "oYUhAn"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757854.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-22T01:49:51.813Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "oGRskA",
+                    "massGrams": 0,
+                    "name": "Day 2 Dinner",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "w_xvWq"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "VOs8bm"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "TwA1PL"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "t0EOho"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556103320.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 60,
+                    "count": "4",
+                    "date": "2024-02-21T22:55:03.320Z",
+                    "energyKilocalories": 104,
+                    "fatGrams": 1.5,
+                    "fiberGrams": 0,
+                    "id": "oYUhAn",
+                    "massGrams": 113,
+                    "name": "Halibut",
+                    "priceCents": 3499,
+                    "proteinGrams": 21,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 77,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757862.04
+                    },
+                    "carbohydrateGrams": 14,
+                    "cholesterolMilligrams": 0,
+                    "count": 2,
+                    "date": "2024-02-21T22:56:00.990Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 13,
+                    "fiberGrams": 3,
+                    "id": "ooUbVb",
+                    "massGrams": 30,
+                    "name": "Dark chocolate",
+                    "priceCents": 349,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 8,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 8,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757807.03
+                    },
+                    "carbohydrateGrams": 7,
+                    "cholesterolMilligrams": 0,
+                    "count": "14",
+                    "date": "2024-02-22T01:47:15.046Z",
+                    "energyKilocalories": 190,
+                    "fatGrams": 16,
+                    "fiberGrams": 3,
+                    "id": "qin3rv",
+                    "massGrams": 32,
+                    "name": "Peanut Butter",
+                    "priceCents": 329,
+                    "proteinGrams": 8,
+                    "saturatedFatGrams": 2.3,
+                    "sodiumMilligrams": 100,
+                    "subitems": [],
+                    "sugarGrams": 2,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566008810.01
+                    },
+                    "carbohydrateGrams": 21,
+                    "cholesterolMilligrams": 60,
+                    "count": 2,
+                    "date": "2024-02-22T01:40:08.810Z",
+                    "energyKilocalories": "330",
+                    "fatGrams": 20,
+                    "fiberGrams": 4,
+                    "id": "qsKetP",
+                    "massGrams": "128",
+                    "name": "Turkey sandwich",
+                    "priceCents": 878.9999999999999,
+                    "proteinGrams": 20,
+                    "saturatedFatGrams": 9,
+                    "sodiumMilligrams": 570,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556160990.01
+                    },
+                    "carbohydrateGrams": 14,
+                    "cholesterolMilligrams": 0,
+                    "count": 2,
+                    "date": "2024-02-21T22:56:00.990Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 13,
+                    "fiberGrams": 3,
+                    "id": "rgCdkX",
+                    "massGrams": 30,
+                    "name": "Dark chocolate",
+                    "priceCents": 349,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 8,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 8,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796664.04
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 10,
+                    "count": "5",
+                    "date": "2024-02-21T22:45:38.618Z",
+                    "energyKilocalories": 90,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "s0KAg6",
+                    "massGrams": 170,
+                    "name": "Yogurt",
+                    "priceCents": 699,
+                    "proteinGrams": 18,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 65,
+                    "subitems": [],
+                    "sugarGrams": 5,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509346.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 60,
+                    "count": "4",
+                    "date": "2024-02-21T22:55:03.320Z",
+                    "energyKilocalories": 104,
+                    "fatGrams": 1.5,
+                    "fiberGrams": 0,
+                    "id": "sO5urK",
+                    "massGrams": 113,
+                    "name": "Halibut",
+                    "priceCents": 3499,
+                    "proteinGrams": 21,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 77,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757850.04
+                    },
+                    "carbohydrateGrams": 6,
+                    "cholesterolMilligrams": 0,
+                    "count": "2",
+                    "date": "2024-02-22T01:45:23.222Z",
+                    "energyKilocalories": 25,
+                    "fatGrams": 0,
+                    "fiberGrams": 2,
+                    "id": "t0EOho",
+                    "massGrams": 83,
+                    "name": "Green Beans",
+                    "priceCents": 599,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 3,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556439178.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": 1,
+                    "date": "2024-02-21T23:00:39.178Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "tFsQMg",
+                    "massGrams": 0,
+                    "name": "Day 1",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "x0oRWZ"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "NSKCq_"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "SdDpJ0"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "6CCZsj"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "mXcjvu"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "0Smim9"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "plan"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566359408.01
+                    },
+                    "carbohydrateGrams": 15,
+                    "cholesterolMilligrams": 0,
+                    "count": "4.4",
+                    "date": "2024-02-22T01:45:59.408Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 10,
+                    "fiberGrams": 3,
+                    "id": "tWDLCl",
+                    "massGrams": 28,
+                    "name": "Popcorn",
+                    "priceCents": 488.99999999999994,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 1,
+                    "sodiumMilligrams": 75,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757826.05
+                    },
+                    "carbohydrateGrams": 21,
+                    "cholesterolMilligrams": 60,
+                    "count": 2,
+                    "date": "2024-02-22T01:40:08.810Z",
+                    "energyKilocalories": "330",
+                    "fatGrams": 20,
+                    "fiberGrams": 4,
+                    "id": "tj6JBk",
+                    "massGrams": "128",
+                    "name": "Turkey sandwich",
+                    "priceCents": 878.9999999999999,
+                    "proteinGrams": 20,
+                    "saturatedFatGrams": 9,
+                    "sodiumMilligrams": 570,
+                    "subitems": [],
+                    "sugarGrams": 1,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566435046.01
+                    },
+                    "carbohydrateGrams": 7,
+                    "cholesterolMilligrams": 0,
+                    "count": "14",
+                    "date": "2024-02-22T01:47:15.046Z",
+                    "energyKilocalories": 190,
+                    "fatGrams": 16,
+                    "fiberGrams": 3,
+                    "id": "tmvxKr",
+                    "massGrams": 32,
+                    "name": "Peanut Butter",
+                    "priceCents": 329,
+                    "proteinGrams": 8,
+                    "saturatedFatGrams": 2.3,
+                    "sodiumMilligrams": 100,
+                    "subitems": [],
+                    "sugarGrams": 2,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796682.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:57:57.734Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "u94nqZ",
+                    "massGrams": 0,
+                    "name": "Day 1 Lunch",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": "2",
+                            "itemId": "OdABnf"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "O8W9_V"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757814.05
+                    },
+                    "carbohydrateGrams": 5,
+                    "cholesterolMilligrams": 10,
+                    "count": "5",
+                    "date": "2024-02-21T22:45:38.618Z",
+                    "energyKilocalories": 90,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "v5TvZd",
+                    "massGrams": 170,
+                    "name": "Yogurt",
+                    "priceCents": 699,
+                    "proteinGrams": 18,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 65,
+                    "subitems": [],
+                    "sugarGrams": 5,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757859.01
+                    },
+                    "carbohydrateGrams": 15,
+                    "cholesterolMilligrams": 0,
+                    "count": "4.4",
+                    "date": "2024-02-22T01:45:59.408Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 10,
+                    "fiberGrams": 3,
+                    "id": "wObe4N",
+                    "massGrams": 28,
+                    "name": "Popcorn",
+                    "priceCents": 488.99999999999994,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 1,
+                    "sodiumMilligrams": 75,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566757840.03
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 65,
+                    "count": "4",
+                    "date": "2024-02-22T01:42:42.395Z",
+                    "energyKilocalories": 260,
+                    "fatGrams": 18,
+                    "fiberGrams": 0,
+                    "id": "w_xvWq",
+                    "massGrams": 113,
+                    "name": "Steak",
+                    "priceCents": 2799,
+                    "proteinGrams": 23,
+                    "saturatedFatGrams": 7,
+                    "sodiumMilligrams": 60,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": "0",
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509320.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:58:54.769Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "x-x37u",
+                    "massGrams": 0,
+                    "name": "Day 1 Snack 2",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "2x2PNR"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "0FKpBJ"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "4gH230"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556303084.01
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:58:23.051Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "x0oRWZ",
+                    "massGrams": 0,
+                    "name": "Day 1 Breakfast",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "ywC-FC"
+                        },
+                        {
+                            "count": "2",
+                            "itemId": "4Wg91P"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "dUfZGs"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "group"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555472590.01
+                    },
+                    "carbohydrateGrams": 30,
+                    "cholesterolMilligrams": 0,
+                    "count": "6",
+                    "date": "2024-02-21T22:44:32.590Z",
+                    "energyKilocalories": 110,
+                    "fatGrams": 0,
+                    "fiberGrams": 3,
+                    "id": "yvWvhm",
+                    "massGrams": 126,
+                    "name": "Banana",
+                    "priceCents": 179,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 19,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708555370133.01
+                    },
+                    "carbohydrateGrams": 15,
+                    "cholesterolMilligrams": 0,
+                    "count": "1",
+                    "date": "2024-02-21T22:42:50.096Z",
+                    "energyKilocalories": 60,
+                    "fatGrams": 0,
+                    "fiberGrams": 2,
+                    "id": "ywC-FC",
+                    "massGrams": 154,
+                    "name": "Grapefruit",
+                    "priceCents": 150,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 11,
+                    "transFatGrams": 0,
+                    "type": "item"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509373.02
+                    },
+                    "carbohydrateGrams": 14,
+                    "cholesterolMilligrams": 0,
+                    "count": 2,
+                    "date": "2024-02-21T22:56:00.990Z",
+                    "energyKilocalories": 150,
+                    "fatGrams": 13,
+                    "fiberGrams": 3,
+                    "id": "zD_riQ",
+                    "massGrams": 30,
+                    "name": "Dark chocolate",
+                    "priceCents": 349,
+                    "proteinGrams": 2,
+                    "saturatedFatGrams": 8,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 8,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566796650.04
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 185,
+                    "count": "12",
+                    "date": "2024-02-21T22:43:23.356Z",
+                    "energyKilocalories": 70,
+                    "fatGrams": 5,
+                    "fiberGrams": 0,
+                    "id": "zLaECI",
+                    "massGrams": 50,
+                    "name": "Eggs",
+                    "priceCents": 599,
+                    "proteinGrams": 6,
+                    "saturatedFatGrams": 1.5,
+                    "sodiumMilligrams": 70,
+                    "subitems": [],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708556509364.02
+                    },
+                    "carbohydrateGrams": 33,
+                    "cholesterolMilligrams": 0,
+                    "count": "7",
+                    "date": "2024-02-21T22:55:34.619Z",
+                    "energyKilocalories": 140,
+                    "fatGrams": 0,
+                    "fiberGrams": 4,
+                    "id": "zX7W8Q",
+                    "massGrams": 46,
+                    "name": "Medjool dates",
+                    "priceCents": 999,
+                    "proteinGrams": 1,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [],
+                    "sugarGrams": 30,
+                    "transFatGrams": 0,
+                    "type": "copy"
+                },
+                {
+                    "_deleted": false,
+                    "_meta": {
+                        "lwt": 1708566661361.02
+                    },
+                    "carbohydrateGrams": 0,
+                    "cholesterolMilligrams": 0,
+                    "count": 1,
+                    "date": "2024-02-22T01:51:01.315Z",
+                    "energyKilocalories": 0,
+                    "fatGrams": 0,
+                    "fiberGrams": 0,
+                    "id": "zf7KH6",
+                    "massGrams": 0,
+                    "name": "Day 2",
+                    "priceCents": 0,
+                    "proteinGrams": 0,
+                    "saturatedFatGrams": 0,
+                    "sodiumMilligrams": 0,
+                    "subitems": [
+                        {
+                            "count": 1,
+                            "itemId": "avm_8o"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "PAZpYH"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "hp_w7P"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "edyFLj"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "5Gj4zx"
+                        },
+                        {
+                            "count": 1,
+                            "itemId": "JgccY3"
+                        }
+                    ],
+                    "sugarGrams": 0,
+                    "transFatGrams": 0,
+                    "type": "plan"
+                }
+            ],
+            "name": "item",
+            "schemaHash": "900964f93c291a40f49f07e1fe318455e7c83f73b2faa5dec5ecfbcde58dc9e3"
+        }
+    ],
+    "instanceToken": "mubwkhocek",
+    "name": "nutrition-planner-db"
+}
