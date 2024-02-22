@@ -44,7 +44,7 @@ export async function upsertLogInterface(
   if (item.name !== 'log') {
     newItem = {
       id: dataid(),
-      date: new Date(item.date) ?? new Date(),
+      date: item.date ? new Date(item.date) : new Date(),
       type: ItemTypeEnum.copy,
       name: item.name,
       priceCents: item.priceCents,
@@ -61,7 +61,7 @@ export async function upsertLogInterface(
       proteinGrams: item.proteinGrams,
       count: item.count,
     };
-    await collection?.upsert(newItem);
+    await collection?.upsert(newItem!);
   }
 
   if (item.subitems && item.subitems.length > 0) {
@@ -82,8 +82,8 @@ export async function upsertLogInterface(
     }
   }
 
-  if (item.subitems.length == 1 && item.subitems[0].itemId == null) {
-    item.subitems[0].itemId = newItem?.id;
+  if (item.subitems?.length == 1 && item.subitems![0].itemId == null) {
+    item.subitems![0].itemId = newItem?.id;
   } else {
   }
 

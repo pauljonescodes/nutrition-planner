@@ -17,7 +17,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 import FileSaver from 'file-saver';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRxCollection, useRxDB } from 'rxdb-hooks';
 import { useFilePicker } from 'use-file-picker';

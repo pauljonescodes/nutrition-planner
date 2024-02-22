@@ -10,8 +10,6 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react';
-
-import { Fragment } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useTranslation } from 'react-i18next';
 import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';

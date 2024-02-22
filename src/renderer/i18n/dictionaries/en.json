@@ -81,5 +81,8 @@
   "transFat": "Trans fat",
   "week": "Week",
   "weight": "Weight",
-  "subitems": "Subitems"
+  "subitems": "Subitems",
+  "edit": "Edit",
+  "copy": "Copy",
+  "copied": "Copied"
 }

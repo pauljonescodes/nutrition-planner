@@ -37,7 +37,7 @@ export default function PlanForm(props: PlanFormProps) {
 
       <SubitemFieldArray
         formikProps={formikProps}
-        itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group]}
+        itemTypesIn={[ItemTypeEnum.item, ItemTypeEnum.group, ItemTypeEnum.plan]}
         name="subitems"
         label={t('items')}
       />

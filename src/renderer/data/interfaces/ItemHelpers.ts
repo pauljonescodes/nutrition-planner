@@ -1,6 +1,8 @@
 import { ItemInterface } from './ItemInterface';
 import { SubitemInterface } from './SubitemInterface';
 
+
+
 export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
   return data.reduce(function (
     result: SubitemInterface[],
@@ -13,6 +15,27 @@ export function flattenSubitems(data: SubitemInterface[]): SubitemInterface[] {
     }
     return result;
   }, []);
+}
+
+export function getBaseItems(item: ItemInterface, depth: number = 0, parentCount: number = 1): string[] {
+  if (depth > 31 || !item) { // Prevent going beyond 32 levels
+    return [];
+  }
+
+  if (item.subitems && item.subitems.length > 0) {
+    let baseItems: string[] = [];
+    for (const subitem of item.subitems) {
+      if (subitem.item) {
+        const effectiveCount = subitem.count ? subitem.count * parentCount : parentCount;
+        baseItems = baseItems.concat(getBaseItems(subitem.item, depth + 1, effectiveCount));
+      }
+    }
+    return baseItems;
+  } else if (item.name) {
+    return [`${item.name} (${parentCount} x ${(item.massGrams ?? 0)}g)`]; // Include the parent count in the output
+  }
+
+  return [];
 }
 
 export function itemServingNutrition(

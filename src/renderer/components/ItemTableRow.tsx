@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon, CopyIcon } from '@chakra-ui/icons';
 import {
   ButtonGroup,
   Center,
@@ -8,11 +8,13 @@ import {
   Text,
   Tr,
   useColorModeValue,
+  useToast
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from 'usehooks-ts';
 import {
+  getBaseItems,
   itemServingNutrition,
   itemServingPriceCents,
 } from '../data/interfaces/ItemHelpers';
@@ -21,6 +23,8 @@ import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
 import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
 import { ServingOrTotalEnum } from '../data/interfaces/ServingOrTotalEnum';
 import { LocalStorageKeysEnum } from '../constants';
+
+
 
 export function ItemTableRow(props: {
   document: RxNPItemDocument;
@@ -35,6 +39,7 @@ export function ItemTableRow(props: {
   );
   const [priceCentsState, setPriceCentsState] = useState<number | null>(null);
   const borderColorValue = useColorModeValue('gray.100', 'gray.700');
+  const toast = useToast();
 
   async function populate(aDocument: RxNPItemDocument) {
     const populatedItem = await aDocument.recursivelyPopulateSubitems();
@@ -86,17 +91,24 @@ export function ItemTableRow(props: {
             <ButtonGroup isAttached size="sm">
               <IconButton
                 icon={<EditIcon />}
-                aria-label="Edit"
+                aria-label={t('edit')}
                 onClick={onEdit}
               />
-              {/* <IconButton
+              <IconButton
                 icon={<CopyIcon />}
-                aria-label="Duplicate"
-                onClick={onCopy}
-              /> */}
+                aria-label={t('copy')}
+                onClick={async () => {
+                  const baseItems = getBaseItems(await document.recursivelyPopulateSubitems());
+                  navigator.clipboard.writeText(baseItems.join("\n"));
+                  toast({
+                    title: t('copied'),
+                    status: 'success',
+                  });
+                }}
+              />
               <IconButton
                 icon={<DeleteIcon />}
-                aria-label="Delete"
+                aria-label={t("delete")}
                 onClick={onDelete}
               />
             </ButtonGroup>

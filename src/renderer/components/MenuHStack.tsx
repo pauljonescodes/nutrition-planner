@@ -7,7 +7,7 @@ import {
   Spacer,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { useRxCollection } from 'rxdb-hooks';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
