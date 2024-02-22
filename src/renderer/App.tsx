@@ -112,7 +112,7 @@ export default function App() {
     breakpoints,
     config,
     fonts: {
-      header: font,
+      heading: font,
       body: font,
     },
   });

@@ -7,14 +7,15 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  FormControl,
   FormLabel,
+  HStack,
+  Input,
+  Link,
   Select,
   VStack,
   useColorMode,
   useToast,
-  FormControl,
-  HStack,
-  Input,
 } from '@chakra-ui/react';
 import FileSaver from 'file-saver';
 import { useEffect, useState } from 'react';
@@ -23,10 +24,11 @@ import { useRxCollection, useRxDB } from 'rxdb-hooks';
 import { useFilePicker } from 'use-file-picker';
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../../constants';
-import { languages, languageNames } from '../../i18n/languages';
 import currencies from '../../i18n/currencies';
-import { DeleteAlertDialog } from '../DeleteAlertDialog';
+import { languageNames, languages } from '../../i18n/languages';
 import { isValidUrl } from '../../utilities/isValidUrl';
+import { DeleteAlertDialog } from '../DeleteAlertDialog';
+import { PathEnum } from '../../paths';
 
 type SettingsDrawerProps = {
   isOpen: boolean;
@@ -201,6 +203,9 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               >
                 {t('reset')}
               </Button>
+              <Link href={PathEnum.terms}>Terms</Link>
+              <Link href={PathEnum.privacy}>Privacy</Link>
+              <Link href={PathEnum.support}>Support</Link>
             </VStack>
           </DrawerBody>
         </DrawerContent>
