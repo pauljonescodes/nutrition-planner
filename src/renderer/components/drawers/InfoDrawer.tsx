@@ -191,7 +191,11 @@ export function InfoDrawer(props: InfoDrawerProps) {
             <Datetime
               closeOnSelect
               className="rdt-full-width"
-              value={new Date(birthdayLocalStorage)}
+              value={
+                birthdayLocalStorage
+                  ? new Date(birthdayLocalStorage)
+                  : undefined
+              }
               onChange={(value) => {
                 let formattedValue = value;
                 if (moment.isMoment(value)) {
@@ -206,7 +210,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
             </FormLabel>
             <NumberInput
               width="full"
-              value={weightKilogramsLocalStorage}
+              value={weightKilogramsLocalStorage ?? 0}
               onChange={(value, valueAsNumber) =>
                 setWeightKilogramsLocalStorage(valueAsNumber)
               }
@@ -223,7 +227,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
             </FormLabel>
             <NumberInput
               width="full"
-              value={heightCentimetersLocalStorage}
+              value={heightCentimetersLocalStorage ?? 0}
               onChange={(value, valueAsNumber) =>
                 setHeightCentimetersLocalStorage(valueAsNumber)
               }
@@ -240,7 +244,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
             </FormLabel>
             <NumberInput
               width="full"
-              value={goalWeightKilogramsLocalStorage}
+              value={goalWeightKilogramsLocalStorage ?? 0}
               onChange={(value, valueAsNumber) =>
                 setGoalWeightKilogramsLocalStorage(valueAsNumber)
               }
@@ -256,7 +260,11 @@ export function InfoDrawer(props: InfoDrawerProps) {
             <Datetime
               closeOnSelect
               className="rdt-full-width"
-              value={new Date(goalDateLocalStorage)}
+              value={
+                goalDateLocalStorage
+                  ? new Date(goalDateLocalStorage)
+                  : undefined
+              }
               onChange={(value) => {
                 let formattedValue = value;
                 if (moment.isMoment(value)) {
@@ -270,7 +278,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
             <Flex width="full">
               <NumberInput
                 width="full"
-                value={dietaryFatPercentLocalStorage}
+                value={dietaryFatPercentLocalStorage ?? 0}
                 onChange={(value, valueAsNumber) =>
                   setDietaryFatPercentLocalStorage(valueAsNumber)
                 }
