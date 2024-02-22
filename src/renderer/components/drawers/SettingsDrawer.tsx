@@ -11,13 +11,14 @@ import {
   FormLabel,
   HStack,
   Input,
-  Link,
+  Link as ChakraLink,
   Select,
   VStack,
   useColorMode,
   useToast,
 } from '@chakra-ui/react';
 import FileSaver from 'file-saver';
+import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRxCollection, useRxDB } from 'rxdb-hooks';
@@ -203,9 +204,29 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               >
                 {t('reset')}
               </Button>
-              <Link href={PathEnum.terms}>Terms</Link>
-              <Link href={PathEnum.privacy}>Privacy</Link>
-              <Link href={PathEnum.support}>Support</Link>
+              <HStack width="full" justify="space-between">
+                <ChakraLink
+                  as={RouterLink}
+                  to={PathEnum.terms}
+                  onClick={onClose}
+                >
+                  {t('terms')}
+                </ChakraLink>
+                <ChakraLink
+                  as={RouterLink}
+                  to={PathEnum.privacy}
+                  onClick={onClose}
+                >
+                  {t('privacy')}
+                </ChakraLink>
+                <ChakraLink
+                  as={RouterLink}
+                  to={PathEnum.support}
+                  onClick={onClose}
+                >
+                  {t('support')}
+                </ChakraLink>
+              </HStack>
             </VStack>
           </DrawerBody>
         </DrawerContent>
