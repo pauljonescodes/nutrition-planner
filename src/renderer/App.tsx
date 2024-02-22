@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { addRxPlugin } from 'rxdb';
 import { Provider as RxDbProvider } from 'rxdb-hooks';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
@@ -31,6 +31,9 @@ import { PathEnum } from './paths';
 import '../../styles/react-big-calendar.scss';
 import '../../styles/react-datetime.scss';
 import '../../styles/style.scss';
+import TermsPage from './pages/terms';
+import PrivacyPage from './pages/privacy';
+import SupportPage from './pages/support';
 
 export default function App() {
   const { i18n } = useTranslation();
@@ -109,7 +112,7 @@ export default function App() {
   });
 
   return (
-    <Router>
+    <BrowserRouter>
       <RxDbProvider db={database}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ChakraProvider theme={theme}>
@@ -121,11 +124,14 @@ export default function App() {
                 <Route path={PathEnum.plans} element={<PlansPage />} />
                 <Route path={PathEnum.items} element={<ItemsPage />} />
                 <Route path={PathEnum.groups} element={<GroupsPage />} />
+                <Route path={PathEnum.terms} element={<TermsPage />} />
+                <Route path={PathEnum.privacy} element={<PrivacyPage />} />
+                <Route path={PathEnum.support} element={<SupportPage />} />
               </Routes>
             </Box>
           </VStack>
         </ChakraProvider>
       </RxDbProvider>
-    </Router>
+    </BrowserRouter>
   );
 }
