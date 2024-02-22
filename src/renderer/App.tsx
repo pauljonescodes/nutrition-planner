@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, MemoryRouter, Routes } from 'react-router-dom';
 import { addRxPlugin } from 'rxdb';
 import { Provider as RxDbProvider } from 'rxdb-hooks';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
@@ -118,7 +118,7 @@ export default function App() {
   });
 
   return (
-    <BrowserRouter>
+    <MemoryRouter>
       <RxDbProvider db={database}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ChakraProvider theme={theme}>
@@ -138,6 +138,6 @@ export default function App() {
           </VStack>
         </ChakraProvider>
       </RxDbProvider>
-    </BrowserRouter>
+    </MemoryRouter>
   );
 }
