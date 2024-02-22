@@ -61,7 +61,7 @@ const PrivacyPage = () => {
         Contact Us
       </Heading>
       <Text mt={2}>
-        If you have any questions about this Privacy Policy, please contact us.
+        If you have any questions about this Privacy Policy, please contact paul.jones@adeptry.com
       </Text>
     </Box>
   );

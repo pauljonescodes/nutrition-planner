@@ -14,7 +14,10 @@ import { Provider as RxDbProvider } from 'rxdb-hooks';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
-import { replicateCouchDB, RxCouchDBReplicationState } from 'rxdb/plugins/replication-couchdb';
+import {
+  replicateCouchDB,
+  RxCouchDBReplicationState,
+} from 'rxdb/plugins/replication-couchdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { useLocalStorage } from 'usehooks-ts';
 import { MenuHStack } from './components/MenuHStack';
@@ -101,13 +104,16 @@ export default function App() {
     '2xl': '96em', // 1536
   };
 
+  const font = `-apple-system, BlinkMacSystemFont, "Segoe UI",
+  Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  "Helvetica Neue", sans-serif`;
+
   const theme = extendTheme({
     breakpoints,
     config,
     fonts: {
-      body: `-apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen-Sans, Ubuntu, Cantarell,
-          "Helvetica Neue", sans-serif`,
+      header: font,
+      body: font,
     },
   });
 
