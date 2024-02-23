@@ -88,5 +88,12 @@
   "transFat": "Trans fat",
   "USD": "United States Dollar",
   "week": "Week",
-  "weight": "Weight"
+  "weight": "Weight",
+  "totalEnergy": "Total energy",
+  "light": "Light",
+  "sedentary": "Sedentary",
+  "moderate": "Moderate",
+  "very": "Very",
+  "extra": "Extra",
+  "physicalActivityLevel": "Physical activity level"
 }

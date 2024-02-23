@@ -45,14 +45,6 @@ export default function PlansPage() {
         }}
         servingOrTotal={ServingOrTotalEnum.total}
         onEdit={(value) => setEditItemState(value)}
-        onCopy={(value) => {
-          const newValue = value.toMutableJSON();
-          const id = dataid();
-          newValue.id = id;
-          newValue.date = new Date().toISOString();
-          newValue.name = `$Copied ${newValue.name}`;
-          rxCollection?.upsert(newValue);
-        }}
         onDelete={(value) => setDeleteItemState(value)}
       />
       <PlanDrawer

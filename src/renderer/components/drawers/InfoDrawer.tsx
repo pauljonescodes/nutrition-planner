@@ -27,6 +27,12 @@ import moment from 'moment';
 import { LocalStorageKeysEnum } from '../../constants';
 import { calculateBasalMetabolicRateKcal } from '../../utilities/calculateBasalMetabolicRateKcal';
 import { calculateEnergyTargetKcal } from '../../utilities/calculateEnergyTargetKcal';
+import { calculateTotalDailyEnergyExpenditureKcal } from '../../utilities/calculateTotalDailyEnergyExpenditureKcal';
+import {
+  PhysicalActivityLevelEnum,
+  physicalActivityLevelValueForEnum,
+  enumForPhysicalActivityLevelValue,
+} from '../../data/interfaces/PhysicalActivityLevelEnum';
 
 type InfoDrawerProps = {
   isOpen: boolean;
@@ -89,19 +95,35 @@ export function InfoDrawer(props: InfoDrawerProps) {
     40,
   );
 
-  const basalMetabolicRate = calculateBasalMetabolicRateKcal({
+  const [
+    physicalActivityLevelNumberLocalStorage,
+    setPhysicalActivityLevelNumberLocalStorage,
+  ] = useLocalStorage<number | undefined>(
+    LocalStorageKeysEnum.physicalActivityLevelNumber,
+    1.4,
+  );
+
+  const basalMetabolicRateKcal = calculateBasalMetabolicRateKcal({
     sexIsMale: sexLocalStorage === 'male',
     weightKilograms: weightKilogramsLocalStorage,
     heightCentimeters: heightCentimetersLocalStorage,
     ageYears: moment().diff(birthdayLocalStorage, 'years'),
   });
-  const energyTarget = calculateEnergyTargetKcal({
+  const totalDailyEnergyExpenditureKcal = calculateTotalDailyEnergyExpenditureKcal({
+    weightKilograms: weightKilogramsLocalStorage,
+    sexIsMale: sexLocalStorage === 'male',
+    ageYears: moment().diff(birthdayLocalStorage, 'years'),
+    heightCentimeters: heightCentimetersLocalStorage,
+    physicalActivityLevelNumber: physicalActivityLevelNumberLocalStorage,
+  });
+  const energyTargetKcal = calculateEnergyTargetKcal({
     weightKilograms: weightKilogramsLocalStorage,
     sexIsMale: sexLocalStorage === 'male',
     ageYears: moment().diff(birthdayLocalStorage, 'years'),
     heightCentimeters: heightCentimetersLocalStorage,
     goalWeightKilograms: goalWeightKilogramsLocalStorage,
     goalDays: moment(goalDateLocalStorage).diff(moment(), 'days'),
+    physicalActivityLevelNumber: physicalActivityLevelNumberLocalStorage,
   });
 
   return (
@@ -122,58 +144,64 @@ export function InfoDrawer(props: InfoDrawerProps) {
               <Stat>
                 <StatLabel>{t('energyTarget')}</StatLabel>
                 <StatNumber>
-                  {energyTarget ? Math.round(energyTarget) : 'NA'}
+                  ~{energyTargetKcal ? Math.round(energyTargetKcal) : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('kcal')}</StatHelpText>
+                <StatHelpText>{t('kcal')} / {t('day').toLocaleLowerCase()}</StatHelpText>
               </Stat>
-
+              <Stat>
+                <StatLabel>{t('totalEnergy')}</StatLabel>
+                <StatNumber>
+                  {totalDailyEnergyExpenditureKcal ? Math.round(totalDailyEnergyExpenditureKcal) : 'NA'}
+                </StatNumber>
+                <StatHelpText>{t('kcal')} / {t('day').toLocaleLowerCase()}</StatHelpText>
+              </Stat>
               <Stat>
                 <StatLabel>{t('basalMetabolicRate')}</StatLabel>
                 <StatNumber>
-                  {basalMetabolicRate ? Math.round(basalMetabolicRate) : 'NA'}
+                  {basalMetabolicRateKcal ? Math.round(basalMetabolicRateKcal) : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('kcal')}</StatHelpText>
+                <StatHelpText>{t('kcal')} / {t('day').toLocaleLowerCase()}</StatHelpText>
               </Stat>
             </StatGroup>
             <StatGroup width="full" textAlign="center">
               <Stat>
                 <StatLabel>{t('fatTarget')}</StatLabel>
                 <StatNumber>
-                  {energyTarget && dietaryFatPercentLocalStorage
+                  ~{energyTargetKcal && dietaryFatPercentLocalStorage
                     ? Math.round(
-                        (energyTarget * (dietaryFatPercentLocalStorage / 100)) /
+                        (energyTargetKcal * (dietaryFatPercentLocalStorage / 100)) /
                           9,
                       )
                     : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('grams')}</StatHelpText>
+                <StatHelpText>{t('grams')} / {t('day').toLocaleLowerCase()}</StatHelpText>
               </Stat>
 
               <Stat>
                 <StatLabel>{t('carbohydrateTarget')}</StatLabel>
                 <StatNumber>
-                  {energyTarget && dietaryCarbohydratePercentLocalStorage
+                  ~{energyTargetKcal && dietaryCarbohydratePercentLocalStorage
                     ? Math.round(
-                        (energyTarget *
+                        (energyTargetKcal *
                           (dietaryCarbohydratePercentLocalStorage / 100)) /
                           4,
                       )
                     : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('grams')}</StatHelpText>
+                <StatHelpText>{t('grams')} / {t('day').toLocaleLowerCase()}</StatHelpText>
               </Stat>
               <Stat>
                 <StatLabel>{t('proteinTarget')}</StatLabel>
                 <StatNumber>
-                  {energyTarget && dietaryProteinPercentLocalStorage
+                  ~{energyTargetKcal && dietaryProteinPercentLocalStorage
                     ? Math.round(
-                        (energyTarget *
+                        (energyTargetKcal *
                           (dietaryProteinPercentLocalStorage / 100)) /
                           4,
                       )
                     : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('grams')}</StatHelpText>
+                <StatHelpText>{t('grams')} / {t('day').toLocaleLowerCase()}</StatHelpText>
               </Stat>
             </StatGroup>
 
@@ -201,7 +229,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
                 if (moment.isMoment(value)) {
                   formattedValue = value.toISOString();
                 }
-                setBirthdayLocalStorage(formattedValue);
+                setBirthdayLocalStorage(formattedValue as string);
               }}
             />
 
@@ -270,10 +298,30 @@ export function InfoDrawer(props: InfoDrawerProps) {
                 if (moment.isMoment(value)) {
                   formattedValue = value.toISOString();
                 }
-                setGoalDateLocalStorage(formattedValue);
+                setGoalDateLocalStorage(formattedValue as string);
               }}
             />
-
+            <FormLabel>
+              {t('physicalActivityLevel')}
+            </FormLabel>
+            <Select
+              value={enumForPhysicalActivityLevelValue(
+                physicalActivityLevelNumberLocalStorage,
+              )}
+              onChange={(event) => {
+                const enumValue: PhysicalActivityLevelEnum = event.target
+                  .value as PhysicalActivityLevelEnum;
+                const value: number =
+                  physicalActivityLevelValueForEnum(enumValue);
+                setPhysicalActivityLevelNumberLocalStorage(value);
+              }}
+            >
+              {Object.values(PhysicalActivityLevelEnum).map((value: string) => (
+                <option value={value} key={value}>
+                  {t(value)}
+                </option>
+              ))}
+            </Select>
             <FormLabel>{t('dietaryFatPercent')}</FormLabel>
             <Flex width="full">
               <NumberInput
@@ -294,7 +342,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
             <Flex width="full">
               <NumberInput
                 width="full"
-                value={dietaryCarbohydratePercentLocalStorage}
+                value={dietaryCarbohydratePercentLocalStorage ?? 0}
                 onChange={(value, valueAsNumber) =>
                   setDietaryCarbohydratePercentLocalStorage(valueAsNumber)
                 }
@@ -310,7 +358,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
             <Flex width="full">
               <NumberInput
                 width="full"
-                value={dietaryProteinPercentLocalStorage}
+                value={dietaryProteinPercentLocalStorage ?? 0}
                 onChange={(value, valueAsNumber) =>
                   setDietaryProteinPercentLocalStorage(valueAsNumber)
                 }
