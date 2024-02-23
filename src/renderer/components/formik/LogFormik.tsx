@@ -93,7 +93,6 @@ export function LogFormik(props: LogFormProps) {
             formikProps={formikProps}
             // eslint-disable-next-line react/jsx-no-bind
             onPaste={onPaste}
-            firstInputFieldRef={firstInputFieldRef}
             onDelete={onDelete}
             isEditing={isEditing}
             onChangeType={(isLog) => {
