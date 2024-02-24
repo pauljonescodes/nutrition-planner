@@ -70,13 +70,13 @@ export default function LogForm(props: LogFormProps) {
             }}
           >
             <TabList>
-              <Tab key='subitems-tab'>{t('subitems')}</Tab>
-              <Tab key='item'>{t('item')}</Tab>
+              <Tab key="subitems-tab">{t('subitems')}</Tab>
+              <Tab key="item">{t('item')}</Tab>
             </TabList>
 
             <TabPanels>
-              <TabPanel key='subitems-tabpanel'>{subitemFieldArray}</TabPanel>
-              <TabPanel key='items-tabpanel'>
+              <TabPanel key="subitems-tabpanel">{subitemFieldArray}</TabPanel>
+              <TabPanel key="items-tabpanel">
                 <LogSubitemFormControls
                   formikProps={formikProps}
                   onPaste={onPaste}

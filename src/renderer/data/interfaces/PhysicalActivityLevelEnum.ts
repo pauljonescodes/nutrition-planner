@@ -25,7 +25,9 @@ export function physicalActivityLevelValueForEnum(
   }
 }
 
-export function enumForPhysicalActivityLevelValue(value: number): PhysicalActivityLevelEnum {
+export function enumForPhysicalActivityLevelValue(
+  value: number,
+): PhysicalActivityLevelEnum {
   switch (value) {
     case 1.4:
       return PhysicalActivityLevelEnum.sedentary;

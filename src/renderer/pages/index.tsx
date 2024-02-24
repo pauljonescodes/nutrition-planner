@@ -48,8 +48,6 @@ import {
 } from '../data/rxnp/RxNPItemSchema';
 import { LocalStorageKeysEnum } from '../constants';
 import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
-import { useLocalStorage } from 'usehooks-ts';
-import { LocalStorageKeysEnum } from '../constants';
 
 export interface RangeType {
   start: Date;

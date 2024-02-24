@@ -16,6 +16,12 @@ export function calculateBasalMetabolicRateKcal(params: {
   }
 
   return sexIsMale
-    ? 9.99 * weightKilograms + (625 * heightCentimeters / 100) - 4.92 * ageYears + 5
-    : 9.99 * weightKilograms + (625 * heightCentimeters / 100) - 4.92 * ageYears - 161;
+    ? 9.99 * weightKilograms +
+        (625 * heightCentimeters) / 100 -
+        4.92 * ageYears +
+        5
+    : 9.99 * weightKilograms +
+        (625 * heightCentimeters) / 100 -
+        4.92 * ageYears -
+        161;
 }

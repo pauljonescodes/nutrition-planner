@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { RefObject, useState } from 'react';
+import { useState } from 'react';
 import moment from 'moment';
 import { dataid } from '../../utilities/dataid';
 import { ItemInterface } from '../../data/interfaces/ItemInterface';
@@ -12,11 +12,10 @@ export interface LogFormProps {
   item: ItemInterface | null;
   onSubmit: (item: ItemInterface) => void;
   onDelete?: (item: ItemInterface | null) => void;
-  firstInputFieldRef?: RefObject<HTMLInputElement>;
 }
 
 export function LogFormik(props: LogFormProps) {
-  const { item, onSubmit, onDelete, firstInputFieldRef } = props;
+  const { item, onSubmit, onDelete } = props;
 
   const isEditing = item?.id != null;
   const thisItemId = item?.id ?? dataid();

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
 import { ItemInfiniteTableContainer } from '../components/ItemInfiniteTableContainer';
 import { GroupDrawer } from '../components/drawers/GroupDrawer';
-import { dataid } from '../utilities/dataid';
 import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
 import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
 import {

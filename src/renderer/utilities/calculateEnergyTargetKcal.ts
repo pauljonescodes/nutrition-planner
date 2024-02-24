@@ -16,7 +16,7 @@ export function calculateEnergyTargetKcal(params: {
     heightCentimeters,
     goalWeightKilograms,
     goalDays,
-    physicalActivityLevelNumber
+    physicalActivityLevelNumber,
   } = params;
 
   if (

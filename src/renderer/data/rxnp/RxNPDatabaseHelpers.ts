@@ -44,7 +44,9 @@ export async function upsertLogInterface(
   if (item.name !== 'log') {
     newItem = {
       id: dataid(),
-      date: item.date ? new Date(item.date).toISOString() : new Date().toISOString(),
+      date: item.date
+        ? new Date(item.date).toISOString()
+        : new Date().toISOString(),
       type: ItemTypeEnum.copy,
       name: item.name,
       priceCents: item.priceCents,
