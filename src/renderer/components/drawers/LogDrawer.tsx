@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   Drawer,
   DrawerBody,
@@ -8,7 +9,14 @@ import {
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { ItemInterface } from '../../data/interfaces/ItemInterface';
-import { LogFormik } from '../formik/LogFormik';
+import { LogFormik as BaseLogFormik } from '../formik/LogFormik';
+
+const LogFormik = memo(BaseLogFormik, (prevProps, nextProps) => {
+  const itemsAreEqual = prevProps.item?.id === nextProps.item?.id;
+  const onSubmitAreEqual = prevProps.onSubmit === nextProps.onSubmit;
+  const onDeleteAreEqual = prevProps.onDelete === nextProps.onDelete;
+  return itemsAreEqual && onSubmitAreEqual && onDeleteAreEqual;
+});
 
 type LogDrawerProps = {
   item: ItemInterface | null;
@@ -19,12 +27,12 @@ type LogDrawerProps = {
 export function LogDrawer(props: LogDrawerProps) {
   const { item, onResult, onDelete } = props;
   const { t } = useTranslation();
+
   return (
     <Drawer
       isOpen={item !== null}
       placement="left"
       onClose={() => onResult(null)}
-      finalFocusRef={undefined}
       size="md"
     >
       <DrawerOverlay />

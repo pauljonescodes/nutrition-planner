@@ -18,7 +18,7 @@ import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import { Size } from 'electron';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Calendar,
   Culture,
@@ -48,6 +48,8 @@ import {
 } from '../data/rxnp/RxNPItemSchema';
 import { LocalStorageKeysEnum } from '../constants';
 import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
+import { useLocalStorage } from 'usehooks-ts';
+import { LocalStorageKeysEnum } from '../constants';
 
 export interface RangeType {
   start: Date;
@@ -58,16 +60,18 @@ export default function LogPage() {
   const [deleteItemState, setDeleteItemState] =
     useState<RxNPItemDocument | null>(null);
   const collection = useRxCollection<RxNPItemDocument>('item');
-  const [viewState, setViewState] = useState<View>('week');
+  const [viewState, setViewState] = useLocalStorage<View>(
+    LocalStorageKeysEnum.logViewState,
+    'week',
+  );
   const [dateRangeState, setDateRangeState] = useState<RangeType>({
     start: moment().startOf(viewState).toDate(),
     end: moment().endOf(viewState).toDate(),
   });
-  const [logDrawerItem, setLogDrawerItem] = useState<ItemInterface | null>(
-    null,
-  );
+  const [logDrawerItemState, setLogDrawerItemState] =
+    useState<ItemInterface | null>(null);
   const [eventsState, setEventsState] = useState<Event[] | undefined>([]);
-  const [selectedEvent, setModalEvent] = useState<Event | null>(null);
+  const [selectedEventState, setModalEventState] = useState<Event | null>(null);
   const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null,
   );
@@ -167,14 +171,38 @@ export default function LogPage() {
     calculate();
   }, [query.result, collection, dateRangeState]);
 
+  const handleItemResult = useCallback(
+    async (newItem: ItemInterface | null) => {
+      setLogDrawerItemState(null);
+      setEditItemState(null);
+      if (newItem) {
+        await upsertLogInterface(newItem, collection ?? undefined);
+      }
+    },
+    [collection],
+  );
+
+  const handleItemDelete = useCallback(
+    (item: ItemInterface | null) => {
+      setLogDrawerItemState(null);
+      setEditItemState(null);
+      if (item && collection) {
+        collection.findOne(item.id).remove();
+      }
+    },
+    [collection],
+  );
+
   const size: Size = useWindowSize();
-  if (size.width < 480) {
-    if (viewState !== 'day') {
-      setViewState('day');
+  useEffect(() => {
+    if (size.width < 480) {
+      if (viewState !== 'day') {
+        setViewState('day');
+      }
+    } else if (size.width < 768 && viewState === 'month') {
+      setViewState('week');
     }
-  } else if (size.width < 768 && viewState === 'month') {
-    setViewState('week');
-  }
+  }, [size]);
 
   const [languageLocaleStorage] = useLocalStorage(
     LocalStorageKeysEnum.language,
@@ -253,7 +281,7 @@ export default function LogPage() {
           }}
           onSelectEvent={(event) => {
             if (event.allDay) {
-              setModalEvent(event);
+              setModalEventState(event);
             } else if (event.resource) {
               const found = query.result.find(
                 (value) => value.id === event.resource.id,
@@ -264,7 +292,7 @@ export default function LogPage() {
             }
           }}
           onSelectSlot={(slotInfo: { start: Date }) => {
-            setLogDrawerItem({
+            setLogDrawerItemState({
               type: ItemTypeEnum.log,
               date: slotInfo.start.toISOString(),
             });
@@ -287,44 +315,26 @@ export default function LogPage() {
           setDeleteItemState(null);
         }}
       />
-      <LogDrawer
-        item={editItemState != null ? editItemState?.toMutableJSON() : null}
-        onResult={(item) => {
-          setEditItemState(null);
-          if (item) {
-            collection?.upsert(item);
-          }
-        }}
-        onDelete={(item) => {
-          setEditItemState(null);
-          if (item) {
-            collection?.findOne(item.id).remove();
-          }
-        }}
-      />
       <Modal
-        isOpen={selectedEvent !== null}
-        onClose={() => setModalEvent(null)}
+        isOpen={selectedEventState !== null}
+        onClose={() => setModalEventState(null)}
         isCentered
       >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            {selectedEvent?.resource &&
-              titleForItemInterface(selectedEvent.resource)}
+            {selectedEventState?.resource &&
+              titleForItemInterface(selectedEventState.resource)}
           </ModalBody>
         </ModalContent>
       </Modal>
       <LogDrawer
-        item={logDrawerItem}
-        onResult={async (item: ItemInterface | null) => {
-          setLogDrawerItem(null);
-          if (item) {
-            await upsertLogInterface(item, collection ?? undefined);
-          }
-        }}
+        item={editItemState != null ? editItemState?.toMutableJSON() : null}
+        onResult={handleItemResult}
+        onDelete={handleItemDelete}
       />
+      <LogDrawer item={logDrawerItemState} onResult={handleItemResult} />
     </>
   );
 }

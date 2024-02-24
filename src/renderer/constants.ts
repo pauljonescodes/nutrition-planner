@@ -12,4 +12,5 @@ export enum LocalStorageKeysEnum {
   dietaryCarbohydratePercent = 'nutrition-planner-carbohydrate-target',
   dietaryProteinPercent = 'nutrition-planner-protein-target',
   physicalActivityLevelNumber = 'nutrition-planner-physical-activity-level',
+  logViewState = 'nutrition-planner-log-view-state',
 }

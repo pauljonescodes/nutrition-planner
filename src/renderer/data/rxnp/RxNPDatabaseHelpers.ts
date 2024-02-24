@@ -89,7 +89,7 @@ export async function upsertLogInterface(
   }
 
   const log: any = {
-    id: dataid(),
+    id: item.id ?? dataid(),
     date: item.date ?? new Date().toISOString(),
     type: ItemTypeEnum.log,
     subitems: item.subitems,

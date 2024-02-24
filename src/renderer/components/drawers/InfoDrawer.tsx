@@ -109,13 +109,14 @@ export function InfoDrawer(props: InfoDrawerProps) {
     heightCentimeters: heightCentimetersLocalStorage,
     ageYears: moment().diff(birthdayLocalStorage, 'years'),
   });
-  const totalDailyEnergyExpenditureKcal = calculateTotalDailyEnergyExpenditureKcal({
-    weightKilograms: weightKilogramsLocalStorage,
-    sexIsMale: sexLocalStorage === 'male',
-    ageYears: moment().diff(birthdayLocalStorage, 'years'),
-    heightCentimeters: heightCentimetersLocalStorage,
-    physicalActivityLevelNumber: physicalActivityLevelNumberLocalStorage,
-  });
+  const totalDailyEnergyExpenditureKcal =
+    calculateTotalDailyEnergyExpenditureKcal({
+      weightKilograms: weightKilogramsLocalStorage,
+      sexIsMale: sexLocalStorage === 'male',
+      ageYears: moment().diff(birthdayLocalStorage, 'years'),
+      heightCentimeters: heightCentimetersLocalStorage,
+      physicalActivityLevelNumber: physicalActivityLevelNumberLocalStorage,
+    });
   const energyTargetKcal = calculateEnergyTargetKcal({
     weightKilograms: weightKilogramsLocalStorage,
     sexIsMale: sexLocalStorage === 'male',
@@ -142,66 +143,83 @@ export function InfoDrawer(props: InfoDrawerProps) {
           <VStack alignItems="start">
             <StatGroup width="full" textAlign="center">
               <Stat>
-                <StatLabel>{t('energyTarget')}</StatLabel>
+                <StatLabel>{t('targetEnergy')}</StatLabel>
                 <StatNumber>
-                  ~{energyTargetKcal ? Math.round(energyTargetKcal) : 'NA'}
+                  {energyTargetKcal ? `~${Math.round(energyTargetKcal)}` : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('kcal')} / {t('day').toLocaleLowerCase()}</StatHelpText>
+                <StatHelpText>
+                  {t('kcal')} / {t('day').toLocaleLowerCase()}
+                </StatHelpText>
               </Stat>
               <Stat>
                 <StatLabel>{t('totalEnergy')}</StatLabel>
                 <StatNumber>
-                  {totalDailyEnergyExpenditureKcal ? Math.round(totalDailyEnergyExpenditureKcal) : 'NA'}
+                  {totalDailyEnergyExpenditureKcal
+                    ? Math.round(totalDailyEnergyExpenditureKcal)
+                    : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('kcal')} / {t('day').toLocaleLowerCase()}</StatHelpText>
+                <StatHelpText>
+                  {t('kcal')} / {t('day').toLocaleLowerCase()}
+                </StatHelpText>
               </Stat>
               <Stat>
-                <StatLabel>{t('basalMetabolicRate')}</StatLabel>
+                <StatLabel>{t('baseEnergy')}</StatLabel>
                 <StatNumber>
-                  {basalMetabolicRateKcal ? Math.round(basalMetabolicRateKcal) : 'NA'}
+                  {basalMetabolicRateKcal
+                    ? Math.round(basalMetabolicRateKcal)
+                    : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('kcal')} / {t('day').toLocaleLowerCase()}</StatHelpText>
+                <StatHelpText>
+                  {t('kcal')} / {t('day').toLocaleLowerCase()}
+                </StatHelpText>
               </Stat>
             </StatGroup>
             <StatGroup width="full" textAlign="center">
               <Stat>
                 <StatLabel>{t('fatTarget')}</StatLabel>
                 <StatNumber>
-                  ~{energyTargetKcal && dietaryFatPercentLocalStorage
-                    ? Math.round(
-                        (energyTargetKcal * (dietaryFatPercentLocalStorage / 100)) /
+                  {energyTargetKcal && dietaryFatPercentLocalStorage
+                    ? `~${Math.round(
+                        (energyTargetKcal *
+                          (dietaryFatPercentLocalStorage / 100)) /
                           9,
-                      )
+                      )}`
                     : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('grams')} / {t('day').toLocaleLowerCase()}</StatHelpText>
+                <StatHelpText>
+                  {t('grams')} / {t('day').toLocaleLowerCase()}
+                </StatHelpText>
               </Stat>
 
               <Stat>
                 <StatLabel>{t('carbohydrateTarget')}</StatLabel>
                 <StatNumber>
-                  ~{energyTargetKcal && dietaryCarbohydratePercentLocalStorage
-                    ? Math.round(
+                  {energyTargetKcal && dietaryCarbohydratePercentLocalStorage
+                    ? `~${Math.round(
                         (energyTargetKcal *
                           (dietaryCarbohydratePercentLocalStorage / 100)) /
                           4,
-                      )
+                      )}`
                     : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('grams')} / {t('day').toLocaleLowerCase()}</StatHelpText>
+                <StatHelpText>
+                  {t('grams')} / {t('day').toLocaleLowerCase()}
+                </StatHelpText>
               </Stat>
               <Stat>
                 <StatLabel>{t('proteinTarget')}</StatLabel>
                 <StatNumber>
-                  ~{energyTargetKcal && dietaryProteinPercentLocalStorage
-                    ? Math.round(
+                  {energyTargetKcal && dietaryProteinPercentLocalStorage
+                    ? `~${Math.round(
                         (energyTargetKcal *
                           (dietaryProteinPercentLocalStorage / 100)) /
                           4,
-                      )
+                      )}`
                     : 'NA'}
                 </StatNumber>
-                <StatHelpText>{t('grams')} / {t('day').toLocaleLowerCase()}</StatHelpText>
+                <StatHelpText>
+                  {t('grams')} / {t('day').toLocaleLowerCase()}
+                </StatHelpText>
               </Stat>
             </StatGroup>
 
@@ -219,6 +237,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
             <Datetime
               closeOnSelect
               className="rdt-full-width"
+              initialViewMode="years"
               value={
                 birthdayLocalStorage
                   ? new Date(birthdayLocalStorage)
@@ -301,9 +320,7 @@ export function InfoDrawer(props: InfoDrawerProps) {
                 setGoalDateLocalStorage(formattedValue as string);
               }}
             />
-            <FormLabel>
-              {t('physicalActivityLevel')}
-            </FormLabel>
+            <FormLabel>{t('physicalActivityLevel')}</FormLabel>
             <Select
               value={enumForPhysicalActivityLevelValue(
                 physicalActivityLevelNumberLocalStorage,

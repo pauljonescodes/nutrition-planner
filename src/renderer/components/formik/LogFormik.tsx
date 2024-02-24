@@ -55,7 +55,6 @@ export function LogFormik(props: LogFormProps) {
       validationSchema={yupItemSchema}
       onSubmit={(values, helpers) => {
         const dateString = values.date?.toString() ?? undefined;
-        console.log(dateString);
         if (moment(dateString, [moment.ISO_8601], true).isValid()) {
           onSubmit({
             ...values,
@@ -87,7 +86,6 @@ export function LogFormik(props: LogFormProps) {
             },
           });
         }
-
         return (
           <LogForm
             formikProps={formikProps}

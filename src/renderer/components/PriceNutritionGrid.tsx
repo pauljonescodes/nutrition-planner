@@ -52,19 +52,19 @@ export function PriceNutritionGrid(props: {
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align="center">
           {nutritionInfo?.fatGrams ?? 0}
-          {t('massG')} {t('fat')}
+          {t('massG')} {t('fat').toLocaleLowerCase()}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor} fontSize="xs">
         <Text fontSize="xs" align="center">
           {nutritionInfo?.carbohydrateGrams ?? 0}
-          {t('massG')} {t('carbs')}
+          {t('massG')} {t('carbs').toLocaleLowerCase()}
         </Text>
       </GridItem>
       <GridItem color={subtleTextColor}>
         <Text fontSize="xs" align="center">
           {nutritionInfo?.proteinGrams ?? 0}
-          {t('massG')} {t('protein')}
+          {t('massG')} {t('protein').toLocaleLowerCase()}
         </Text>
       </GridItem>
     </Grid>
