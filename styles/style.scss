@@ -2,6 +2,28 @@
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
 }
+
 *::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
+}
+
+.menu-hstack-angle-0 {
+  padding-top: calc(12px + env(safe-area-inset-top)) !important;
+}
+
+.menu-hstack-angle--90,
+.menu-hstack-angle-90 {
+  padding-top: calc(env(safe-area-inset-top)) !important;
+}
+
+.main-box-angle-0 {
+  min-height: 100vh;
+  padding-top: calc(64px + env(safe-area-inset-top));
+}
+
+.main-box-angle--90,
+.main-box-angle-90 {
+  padding-top: 64px;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
