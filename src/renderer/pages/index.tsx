@@ -8,17 +8,17 @@ import {
 } from '@chakra-ui/react';
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
-import enUS from 'date-fns/locale/en-US';
-import zhCN from 'date-fns/locale/zh-CN';
 import arSA from 'date-fns/locale/ar-SA';
+import enUS from 'date-fns/locale/en-US';
 import es from 'date-fns/locale/es';
 import fr from 'date-fns/locale/fr';
 import hi from 'date-fns/locale/hi';
+import zhCN from 'date-fns/locale/zh-CN';
 import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import { Size } from 'electron';
 import moment from 'moment';
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Calendar,
   Culture,
@@ -29,25 +29,25 @@ import {
   dateFnsLocalizer,
 } from 'react-big-calendar';
 import { useRxCollection, useRxQuery } from 'rxdb-hooks';
-import { useWindowSize, useLocalStorage } from 'usehooks-ts';
+import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 import { BigCalendarChakraToolbar } from '../components/BigCalendarChakraToolbar';
 import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
 import { LogDrawer } from '../components/drawers/LogDrawer';
+import { LocalStorageKeysEnum } from '../constants';
 import {
   itemEquals,
+  itemServingPriceCents,
   itemSumNutrition,
   itemZeroNutrition,
   logServingNutrition,
-  itemServingPriceCents,
 } from '../data/interfaces/ItemHelpers';
 import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
+import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
 import {
   RxNPItemDocument,
   recursivelyPopulateSubitemsOfItems,
 } from '../data/rxnp/RxNPItemSchema';
-import { LocalStorageKeysEnum } from '../constants';
-import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
 
 export interface RangeType {
   start: Date;
@@ -225,7 +225,11 @@ export default function LogPage() {
 
   return (
     <>
-      <Box height="calc(100vh - 76px)" overflow="scroll" px={3}>
+      <Box
+        height="calc(100vh - 76px - env(safe-area-inset-top))"
+        overflow="scroll"
+        px={3}
+      >
         <Calendar
           view={viewState}
           onView={(view: View) => {

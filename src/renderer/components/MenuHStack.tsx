@@ -7,27 +7,29 @@ import {
   Spacer,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { useOrientation } from '@uidotdev/usehooks';
 import { useState } from 'react';
-import { useRxCollection } from 'rxdb-hooks';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { dataid } from '../utilities/dataid';
-import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRxCollection } from 'rxdb-hooks';
 import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
+import { upsertLogInterface } from '../data/rxnp/RxNPDatabaseHelpers';
 import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
+import { PathEnum } from '../paths';
+import { dataid } from '../utilities/dataid';
 import { GroupDrawer } from './drawers/GroupDrawer';
+import { InfoDrawer } from './drawers/InfoDrawer';
 import { ItemDrawer } from './drawers/ItemDrawer';
 import { LogDrawer } from './drawers/LogDrawer';
 import { PlanDrawer } from './drawers/PlanDrawer';
 import { SettingsDrawer } from './drawers/SettingsDrawer';
-import { InfoDrawer } from './drawers/InfoDrawer';
-import { PathEnum } from '../paths';
 
 export function MenuHStack() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const { angle: orientationAngle } = useOrientation();
   const [itemDrawerItem, setItemDrawerItem] = useState<ItemInterface | null>(
     null,
   );
@@ -57,7 +59,7 @@ export function MenuHStack() {
         overflowX="scroll"
         position="fixed"
         zIndex={999}
-        className="hide-scrollbar"
+        className={`hide-scrollbar menu-hstack-angle-${orientationAngle}`}
       >
         <ButtonGroup isAttached>
           <Button

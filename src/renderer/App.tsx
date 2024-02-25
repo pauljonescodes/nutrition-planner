@@ -1,3 +1,4 @@
+import { drawerAnatomy as parts } from '@chakra-ui/anatomy';
 import {
   Box,
   ChakraProvider,
@@ -6,17 +7,19 @@ import {
   extendTheme,
   type ThemeConfig,
 } from '@chakra-ui/react';
+import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
+import { useOrientation } from '@uidotdev/usehooks';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { addRxPlugin } from 'rxdb';
 import { Provider as RxDbProvider } from 'rxdb-hooks';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import {
-  replicateCouchDB,
   RxCouchDBReplicationState,
+  replicateCouchDB,
 } from 'rxdb/plugins/replication-couchdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { useLocalStorage } from 'usehooks-ts';
@@ -31,16 +34,16 @@ import ItemsPage from './pages/items';
 import PlansPage from './pages/plans';
 import { PathEnum } from './paths';
 // import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
-
 import '../../styles/react-big-calendar.scss';
 import '../../styles/react-datetime.scss';
 import '../../styles/style.scss';
-import TermsPage from './pages/terms';
 import PrivacyPage from './pages/privacy';
 import SupportPage from './pages/support';
+import TermsPage from './pages/terms';
 
 export default function App() {
   const { i18n } = useTranslation();
+  const { angle: orientationAngle } = useOrientation();
   const [database, setDatabase] = useState<RxNPDatabaseType | undefined>(
     undefined,
   );
@@ -72,6 +75,7 @@ export default function App() {
           }),
         );
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
       }
     } else if (replicationState !== null) {
@@ -111,7 +115,26 @@ export default function App() {
   Roboto, Oxygen-Sans, Ubuntu, Cantarell,
   "Helvetica Neue", sans-serif`;
 
+  const { definePartsStyle, defineMultiStyleConfig } =
+    createMultiStyleConfigHelpers(parts.keys);
+
+  const baseStyle = definePartsStyle({
+    dialog: {
+      mt: 'env(safe-area-inset-top)',
+      mb: 'env(safe-area-inset-bottom)',
+      ms: 'env(safe-area-inset-left)',
+      me: 'env(safe-area-inset-right)',
+    },
+  });
+
+  const drawerTheme = defineMultiStyleConfig({
+    baseStyle,
+  });
+
   const theme = extendTheme({
+    components: {
+      Drawer: drawerTheme,
+    },
     breakpoints,
     config,
     fonts: {
@@ -127,7 +150,7 @@ export default function App() {
         <ChakraProvider theme={theme}>
           <VStack spacing={0} align="stretch" minH="100vh">
             <MenuHStack />
-            <Box pt="64px" minH="100vh">
+            <Box className={`main-box-angle-${orientationAngle}`}>
               <Routes>
                 <Route path={PathEnum.log} element={<LogPage />} />
                 <Route path={PathEnum.plans} element={<PlansPage />} />

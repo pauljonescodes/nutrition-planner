@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import {
   Drawer,
   DrawerBody,
@@ -7,6 +6,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from '@chakra-ui/react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ItemInterface } from '../../data/interfaces/ItemInterface';
 import { LogFormik as BaseLogFormik } from '../formik/LogFormik';
