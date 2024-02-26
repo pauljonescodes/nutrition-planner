@@ -1,4 +1,5 @@
 import { Box, ChakraProvider, ColorModeScript, VStack } from '@chakra-ui/react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Provider as RxDbProvider } from 'rxdb-hooks';
 import '../../styles/react-big-calendar.scss';
@@ -6,6 +7,7 @@ import '../../styles/react-datetime.scss';
 import '../../styles/style.scss';
 import { Configuration } from './Configuration';
 import { Router } from './Router';
+import { theme } from './Theme';
 import { MenuHStack } from './components/MenuHStack';
 import { useRxNPDatabase } from './data/rxnp/useRxNPDatabase';
 import LogPage from './pages';
@@ -16,7 +18,6 @@ import PrivacyPage from './pages/privacy';
 import SupportPage from './pages/support';
 import TermsPage from './pages/terms';
 import { PathEnum } from './paths';
-import { theme } from './theme';
 
 export default function App() {
   const { database } = useRxNPDatabase();
