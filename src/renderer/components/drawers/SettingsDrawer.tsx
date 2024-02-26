@@ -176,12 +176,12 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                     const result = await Filesystem.writeFile({
                       path: filename,
                       data: jsonString,
-                      directory: Directory.Data,
+                      directory: Directory.External,
                       encoding: Encoding.UTF8,
                     });
                     if (result.uri) {
                       toast({
-                        title: t('success'),
+                        title: `${t('success')} ${result.uri}`,
                         status: 'success',
                       });
                     } else {
