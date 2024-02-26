@@ -181,7 +181,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                     });
                     if (result.uri) {
                       toast({
-                        title: `${t('success')} ${result.uri}`,
+                        title: t('success'),
                         status: 'success',
                       });
                     } else {
