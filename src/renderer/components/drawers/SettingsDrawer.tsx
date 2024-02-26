@@ -1,3 +1,5 @@
+import { Capacitor } from '@capacitor/core';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import {
   Button,
@@ -48,9 +50,9 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const [couchDbUrlLocalStorage, setCouchDbUrlLocalStorage] = useLocalStorage<
     string | undefined
   >(LocalStorageKeysEnum.couchdbUrl, undefined);
-  const [couchDbStringState, setCouchDbStringState] = useState<string | null>(
-    couchDbUrlLocalStorage,
-  );
+  const [couchDbStringState, setCouchDbStringState] = useState<
+    string | undefined
+  >(couchDbUrlLocalStorage);
 
   const [languageLocalStorage, setLanguageLocalStorage] =
     useLanguageLocalStorage();
@@ -151,7 +153,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                       ) {
                         setCouchDbUrlLocalStorage(couchDbStringState);
                       } else {
-                        setCouchDbUrlLocalStorage(null);
+                        setCouchDbUrlLocalStorage(undefined);
                       }
                     }}
                   >
@@ -165,15 +167,37 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 disabled={loading}
                 leftIcon={<DownloadIcon />}
                 onClick={async () => {
-                  const json = await database.exportJSON();
-                  const blob = new Blob([JSON.stringify(json)], {
-                    type: 'text/plain;charset=utf-8',
-                  });
-
-                  FileSaver.saveAs(
-                    blob,
-                    `nutrition_export_${new Date().toJSON()}.json`,
+                  const jsonString = JSON.stringify(
+                    await database.exportJSON(),
                   );
+                  const filename = `nutrition_export_${new Date().toJSON()}.json`;
+
+                  if (Capacitor.isNativePlatform()) {
+                    const result = await Filesystem.writeFile({
+                      path: filename,
+                      data: jsonString,
+                      directory: Directory.Data,
+                      encoding: Encoding.UTF8,
+                    });
+                    if (result.uri) {
+                      toast({
+                        title: t('success'),
+                        status: 'success',
+                      });
+                    } else {
+                      toast({
+                        title: t('error'),
+                        status: 'error',
+                      });
+                    }
+                  } else {
+                    FileSaver.saveAs(
+                      new Blob([jsonString], {
+                        type: 'text/plain;charset=utf-8',
+                      }),
+                      filename,
+                    );
+                  }
                 }}
               >
                 {t('exportJson')}

@@ -1,5 +1,4 @@
 import { Box, ChakraProvider, ColorModeScript, VStack } from '@chakra-ui/react';
-import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Provider as RxDbProvider } from 'rxdb-hooks';
 import '../../styles/react-big-calendar.scss';
