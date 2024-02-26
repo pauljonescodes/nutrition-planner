@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon, CopyIcon } from '@chakra-ui/icons';
+import { CopyIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   ButtonGroup,
   Center,
@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocalStorage } from 'usehooks-ts';
 import {
   getBaseItems,
   itemServingNutrition,
@@ -20,9 +19,12 @@ import {
 } from '../data/interfaces/ItemHelpers';
 import { ItemInterface } from '../data/interfaces/ItemInterface';
 import { ItemTypeEnum } from '../data/interfaces/ItemTypeEnum';
-import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
 import { ServingOrTotalEnum } from '../data/interfaces/ServingOrTotalEnum';
-import { LocalStorageKeysEnum } from '../constants';
+import { RxNPItemDocument } from '../data/rxnp/RxNPItemSchema';
+import {
+  useCurrencyLocalStorage,
+  useLanguageLocalStorage,
+} from '../utilities/useLocalStorageKey';
 
 export function ItemTableRow(props: {
   document: RxNPItemDocument;
@@ -45,15 +47,9 @@ export function ItemTableRow(props: {
     setPriceCentsState(itemServingPriceCents(populatedItem));
   }
 
-  const [languageLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.language,
-    'en',
-  );
+  const [languageLocalStorage] = useLanguageLocalStorage();
 
-  const [currencyLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.currency,
-    'USD',
-  );
+  const [currencyLocalStorage] = useCurrencyLocalStorage();
 
   const currencyDenominator = currencyLocalStorage === 'JPY' ? 1 : 100;
 

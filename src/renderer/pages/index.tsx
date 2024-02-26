@@ -33,7 +33,6 @@ import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 import { BigCalendarChakraToolbar } from '../components/BigCalendarChakraToolbar';
 import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
 import { LogDrawer } from '../components/drawers/LogDrawer';
-import { LocalStorageKeysEnum } from '../constants';
 import {
   itemEquals,
   itemServingPriceCents,
@@ -48,6 +47,11 @@ import {
   RxNPItemDocument,
   recursivelyPopulateSubitemsOfItems,
 } from '../data/rxnp/RxNPItemSchema';
+import {
+  LocalStorageKeysEnum,
+  useCurrencyLocalStorage,
+  useLanguageLocalStorage,
+} from '../utilities/useLocalStorageKey';
 
 export interface RangeType {
   start: Date;
@@ -73,15 +77,9 @@ export default function LogPage() {
   const [editItemState, setEditItemState] = useState<RxNPItemDocument | null>(
     null,
   );
-  const [languageLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.language,
-    'en',
-  );
+  const [languageLocalStorage] = useLanguageLocalStorage();
 
-  const [currencyLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.currency,
-    'USD',
-  );
+  const [currencyLocalStorage] = useCurrencyLocalStorage();
 
   const currencyFormatter = new Intl.NumberFormat(languageLocalStorage, {
     style: 'currency',
@@ -167,6 +165,7 @@ export default function LogPage() {
     }
 
     calculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query.result, collection, dateRangeState]);
 
   const handleItemResult = useCallback(
@@ -200,6 +199,7 @@ export default function LogPage() {
     } else if (size.width < 768 && viewState === 'month') {
       setViewState('week');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [size]);
 
   const [languageLocaleStorage] = useLocalStorage(
@@ -207,20 +207,19 @@ export default function LogPage() {
     'en',
   );
 
-  const locales = {
-    en: enUS,
-    cmn: zhCN,
-    ar: arSA,
-    fr,
-    hi,
-    es,
-  };
   const localizer = dateFnsLocalizer({
     format,
     parse,
     startOfWeek,
     getDay,
-    locales,
+    locales: {
+      en: enUS,
+      cmn: zhCN,
+      ar: arSA,
+      fr,
+      hi,
+      es,
+    },
   });
 
   return (

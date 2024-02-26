@@ -9,7 +9,7 @@ import {
 } from 'rxdb/plugins/replication-couchdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { useLocalStorage } from 'usehooks-ts';
-import { LocalStorageKeysEnum } from '../../constants';
+import { LocalStorageKeysEnum } from '../../utilities/useLocalStorageKey';
 import { initRxNPDatabase } from './RxNPDatabaseHelpers';
 import { RxNPDatabaseType } from './RxNPDatabaseType';
 import { RxNPItemDocument } from './RxNPItemSchema';

@@ -1,9 +1,8 @@
 import { FormikProps } from 'formik';
 import { RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocalStorage } from 'usehooks-ts';
-import { LocalStorageKeysEnum } from '../../constants';
 import { ItemInterface } from '../../data/interfaces/ItemInterface';
+import { useCurrencyLocalStorage } from '../../utilities/useLocalStorageKey';
 import { ValidatedFormikControl } from './ValidatedFormikControl';
 import { ValidatedFormikNumberControl } from './ValidatedFormikNumberControl';
 
@@ -16,10 +15,7 @@ export function LogSubitemFormControls(props: {
 
   const { t } = useTranslation();
 
-  const [currencyLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.currency,
-    'USD',
-  );
+  const [currencyLocalStorage] = useCurrencyLocalStorage();
 
   const currencyDenominator = currencyLocalStorage === 'JPY' ? 1 : 100;
 

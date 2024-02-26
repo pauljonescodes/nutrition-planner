@@ -8,4 +8,10 @@ const languageNames = {
   fr: 'Français', // French
   hi: 'हिन्दी', // Hindi
 };
-export { languages, languageNames };
+
+const getDefaultLanguage = () => {
+  const language = navigator.language.split('-')[0];
+  return languages.includes(language) ? language : 'en';
+};
+
+export { getDefaultLanguage, languageNames, languages };

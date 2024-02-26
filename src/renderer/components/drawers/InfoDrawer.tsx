@@ -20,19 +20,19 @@ import {
   StatNumber,
   VStack,
 } from '@chakra-ui/react';
+import moment from 'moment';
 import Datetime from 'react-datetime';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from 'usehooks-ts';
-import moment from 'moment';
-import { LocalStorageKeysEnum } from '../../constants';
+import {
+  PhysicalActivityLevelEnum,
+  enumForPhysicalActivityLevelValue,
+  physicalActivityLevelValueForEnum,
+} from '../../data/interfaces/PhysicalActivityLevelEnum';
 import { calculateBasalMetabolicRateKcal } from '../../utilities/calculateBasalMetabolicRateKcal';
 import { calculateEnergyTargetKcal } from '../../utilities/calculateEnergyTargetKcal';
 import { calculateTotalDailyEnergyExpenditureKcal } from '../../utilities/calculateTotalDailyEnergyExpenditureKcal';
-import {
-  PhysicalActivityLevelEnum,
-  physicalActivityLevelValueForEnum,
-  enumForPhysicalActivityLevelValue,
-} from '../../data/interfaces/PhysicalActivityLevelEnum';
+import { LocalStorageKeysEnum } from '../../utilities/useLocalStorageKey';
 
 type InfoDrawerProps = {
   isOpen: boolean;

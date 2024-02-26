@@ -23,11 +23,15 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useRxCollection, useRxDB } from 'rxdb-hooks';
 import { useFilePicker } from 'use-file-picker';
 import { useLocalStorage } from 'usehooks-ts';
-import { LocalStorageKeysEnum } from '../../constants';
 import currencies from '../../i18n/currencies';
 import { languageNames, languages } from '../../i18n/languages';
 import { PathEnum } from '../../paths';
 import { isValidUrl } from '../../utilities/isValidUrl';
+import {
+  LocalStorageKeysEnum,
+  useCurrencyLocalStorage,
+  useLanguageLocalStorage,
+} from '../../utilities/useLocalStorageKey';
 import { DeleteAlertDialog } from '../DeleteAlertDialog';
 
 type SettingsDrawerProps = {
@@ -48,15 +52,11 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
     couchDbUrlLocalStorage,
   );
 
-  const [languageLocalStorage, setLanguageLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.language,
-    'en',
-  );
+  const [languageLocalStorage, setLanguageLocalStorage] =
+    useLanguageLocalStorage();
 
-  const [currencyLocalStorage, setCurrencyLocalStorage] = useLocalStorage(
-    LocalStorageKeysEnum.currency,
-    'USD',
-  );
+  const [currencyLocalStorage, setCurrencyLocalStorage] =
+    useCurrencyLocalStorage();
 
   const database = useRxDB();
   const collection = useRxCollection('item');

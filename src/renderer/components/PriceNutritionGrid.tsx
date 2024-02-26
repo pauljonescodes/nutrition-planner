@@ -2,7 +2,7 @@ import { Grid, GridItem, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from 'usehooks-ts';
 import { ItemInterface } from '../data/interfaces/ItemInterface';
-import { LocalStorageKeysEnum } from '../constants';
+import { LocalStorageKeysEnum } from '../utilities/useLocalStorageKey';
 
 export function PriceNutritionGrid(props: {
   nutritionInfo?: ItemInterface;
