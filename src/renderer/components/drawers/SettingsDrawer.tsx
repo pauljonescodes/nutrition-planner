@@ -1,6 +1,7 @@
 import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import {
   Button,
+  Link as ChakraLink,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -11,25 +12,23 @@ import {
   FormLabel,
   HStack,
   Input,
-  Link as ChakraLink,
   Select,
   VStack,
-  useColorMode,
   useToast,
 } from '@chakra-ui/react';
 import FileSaver from 'file-saver';
-import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import { useRxCollection, useRxDB } from 'rxdb-hooks';
 import { useFilePicker } from 'use-file-picker';
 import { useLocalStorage } from 'usehooks-ts';
 import { LocalStorageKeysEnum } from '../../constants';
 import currencies from '../../i18n/currencies';
 import { languageNames, languages } from '../../i18n/languages';
+import { PathEnum } from '../../paths';
 import { isValidUrl } from '../../utilities/isValidUrl';
 import { DeleteAlertDialog } from '../DeleteAlertDialog';
-import { PathEnum } from '../../paths';
 
 type SettingsDrawerProps = {
   isOpen: boolean;
@@ -41,7 +40,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const { t } = useTranslation();
   const [importLoadingState, setImportLoadingState] = useState(false);
   const [showDeleteDialogState, setShowDeleteDialogState] = useState(false);
-  const { toggleColorMode } = useColorMode();
 
   const [couchDbUrlLocalStorage, setCouchDbUrlLocalStorage] = useLocalStorage<
     string | undefined
@@ -88,6 +86,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
 
   useEffect(() => {
     importFile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filesContent]);
 
   const loading = filesLoading || importLoadingState;
@@ -160,9 +159,6 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   </Button>
                 </HStack>
               </FormControl>
-              <Button onClick={toggleColorMode} width="full">
-                {t('toggleColorMode')}
-              </Button>
 
               <Button
                 width="full"

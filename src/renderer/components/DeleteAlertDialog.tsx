@@ -23,6 +23,7 @@ export function DeleteAlertDialog(props: IngredientDrawerProps) {
   return (
     <AlertDialog
       isOpen={isOpen}
+      isCentered
       onClose={() => onResult(false)}
       leastDestructiveRef={cancelRef}
     >

@@ -7,7 +7,6 @@ import {
   Spacer,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useOrientation } from '@uidotdev/usehooks';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,7 +28,6 @@ export function MenuHStack() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { angle: orientationAngle } = useOrientation();
   const [itemDrawerItem, setItemDrawerItem] = useState<ItemInterface | null>(
     null,
   );
@@ -53,13 +51,15 @@ export function MenuHStack() {
     <>
       <HStack
         p={3}
-        pr={3}
+        pt="calc(12px + env(safe-area-inset-top))"
+        pl="calc(12px + env(safe-area-inset-left))"
+        pr="calc(12px + env(safe-area-inset-right))"
         bg={hStackBackgroundColor}
         width="100vw"
         overflowX="scroll"
         position="fixed"
         zIndex={999}
-        className={`hide-scrollbar menu-hstack-angle-${orientationAngle}`}
+        className="hide-scrollbar"
       >
         <ButtonGroup isAttached>
           <Button
