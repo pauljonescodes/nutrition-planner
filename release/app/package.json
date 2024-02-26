@@ -4,6 +4,10 @@
   "description": "A simple calculator for nutrition",
   "license": "MIT",
   "main": "./dist/main/main.js",
+  "author": {
+    "name": "Paul Jones",
+    "email": "paul.jones@adeptry.com"
+  },
   "scripts": {
     "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
     "postinstall": "npm run rebuild && npm run link-modules",

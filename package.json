@@ -29,6 +29,8 @@
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "cross-env NODE_ENV=development eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never && npm run build:dll",
+    "package:mas": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --mac mas --publish never",
+    "clean": "ts-node ./.erb/scripts/clean.js",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
@@ -210,6 +212,16 @@
       "entitlements": "assets/entitlements.mac.plist",
       "entitlementsInherit": "assets/entitlements.mac.plist",
       "gatekeeperAssess": false
+    },
+    "mas": {
+      "type": "distribution",
+      "category": "public.app-category.healthcare-fitness",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mas.plist",
+      "entitlementsInherit": "assets/entitlements.mas.plist",
+      "gatekeeperAssess": true,
+      "provisioningProfile": "Nutrition_Planner_MAS_Distribution_PP.provisionprofile",
+      "darkModeSupport": true
     },
     "dmg": {
       "contents": [

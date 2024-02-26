@@ -65,3 +65,4 @@ google-services.json
 *.hprof
 
 resources/ios/**/*
+*.provisionprofile
