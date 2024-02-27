@@ -66,3 +66,5 @@ google-services.json
 
 resources/ios/**/*
 *.provisionprofile
+.env
+sign.sh

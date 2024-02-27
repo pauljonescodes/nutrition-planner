@@ -1,6 +1,6 @@
 {
   "description": "An offline first nutrition planner",
-  "version": "1.0.5",
+  "version": "1.0.10",
   "keywords": [
     "nutrition"
   ],
@@ -30,6 +30,7 @@
     "lint:fix": "cross-env NODE_ENV=development eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never && npm run build:dll",
     "package:mas": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --mac mas --publish never",
+    "package:mas-dev": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --mac mas-dev --publish never",
     "clean": "ts-node ./.erb/scripts/clean.js",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
@@ -216,11 +217,26 @@
     "mas": {
       "type": "distribution",
       "category": "public.app-category.healthcare-fitness",
-      "hardenedRuntime": true,
+      "hardenedRuntime": false,
       "entitlements": "assets/entitlements.mas.plist",
-      "entitlementsInherit": "assets/entitlements.mas.plist",
-      "gatekeeperAssess": true,
-      "provisioningProfile": "Nutrition_Planner_MAS_Distribution_PP.provisionprofile",
+      "entitlementsInherit": "assets/entitlements.mas.inherit.plist",
+      "entitlementsLoginHelper": "assets/entitlements.mas.loginhelper.plist",
+      "gatekeeperAssess": false,
+      "provisioningProfile": "assets/distribution.provisionprofile",
+      "darkModeSupport": true
+    },
+    "masDev": {
+      "type": "development",
+      "category": "public.app-category.healthcare-fitness",
+      "hardenedRuntime": false,
+      "electronLanguages": [
+        "en"
+      ],
+      "entitlements": "assets/entitlements.mas.plist",
+      "entitlementsInherit": "assets/entitlements.mas.inherit.plist",
+      "entitlementsLoginHelper": "assets/entitlements.mas.loginhelper.plist",
+      "gatekeeperAssess": false,
+      "provisioningProfile": "assets/development.provisionprofile",
       "darkModeSupport": true
     },
     "dmg": {
