@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { addRxPlugin } from 'rxdb';
+import { RxDBCleanupPlugin } from 'rxdb/plugins/cleanup';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
@@ -28,7 +29,11 @@ export const useRxNPDatabase = () => {
 
   useEffect(() => {
     async function replicate() {
-      if (couchDbUrlLocalStorage != null && database != null) {
+      if (
+        couchDbUrlLocalStorage != null &&
+        couchDbUrlLocalStorage.length > 0 &&
+        database != null
+      ) {
         try {
           setReplicationState(
             replicateCouchDB({
@@ -46,8 +51,10 @@ export const useRxNPDatabase = () => {
           // eslint-disable-next-line no-console
           console.log(error);
         }
-      } else if (replicationState !== null) {
+      } else if (replicationState != null) {
         replicationState.cancel();
+        // eslint-disable-next-line no-console
+        console.log('Replication cancelled');
       }
     }
     replicate();
@@ -56,10 +63,11 @@ export const useRxNPDatabase = () => {
 
   useEffect(() => {
     if (!database) {
-      // addRxPlugin(RxDBDevModePlugin);
+      //addRxPlugin(RxDBDevModePlugin);
       addRxPlugin(RxDBQueryBuilderPlugin);
       addRxPlugin(RxDBJsonDumpPlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
+      addRxPlugin(RxDBCleanupPlugin);
       // eslint-disable-next-line promise/catch-or-return
       initRxNPDatabase('nutrition-planner-db', getRxStorageDexie()).then(
         setDatabase,

@@ -1,4 +1,4 @@
-import { app, Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
+import { BrowserWindow, Menu, MenuItemConstructorOptions, app } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -126,6 +126,13 @@ export default class MenuBuilder {
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
+          },
+        },
+        {
+          label: 'Toggle Developer Tools',
+          accelerator: 'Alt+Command+I',
+          click: () => {
+            this.mainWindow.webContents.toggleDevTools();
           },
         },
       ],

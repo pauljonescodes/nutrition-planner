@@ -1,14 +1,14 @@
-import { createRxDatabase, RxStorage, RxCollection } from 'rxdb';
+import { RxCollection, RxStorage, createRxDatabase } from 'rxdb';
+import { dataid } from '../../utilities/dataid';
+import { ItemInterface } from '../interfaces/ItemInterface';
+import { ItemTypeEnum } from '../interfaces/ItemTypeEnum';
+import { RxNPDatabaseCollections } from './RxNPDatabaseCollections';
+import { RxNPDatabaseType } from './RxNPDatabaseType';
 import {
   RxNPItemDocument,
   rxnpItemDocumentMethods,
   rxnpItemSchema,
 } from './RxNPItemSchema';
-import { RxNPDatabaseCollections } from './RxNPDatabaseCollections';
-import { RxNPDatabaseType } from './RxNPDatabaseType';
-import { ItemInterface } from '../interfaces/ItemInterface';
-import { dataid } from '../../utilities/dataid';
-import { ItemTypeEnum } from '../interfaces/ItemTypeEnum';
 
 export async function initRxNPDatabase(
   name: string,
@@ -20,8 +20,16 @@ export async function initRxNPDatabase(
     database = await createRxDatabase<RxNPDatabaseCollections>({
       name,
       storage,
+      cleanupPolicy: {
+        minimumDeletedTime: 1000 * 60 * 60 * 24 * 31, // one month,
+        minimumCollectionAge: 1000 * 60, // 60 seconds
+        runEach: 1000 * 60 * 5, // 5 minutes
+        awaitReplicationsInSync: true,
+        waitForLeadership: true,
+      },
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 

@@ -1,6 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
+import { DeleteIcon, DownloadIcon, WarningIcon } from '@chakra-ui/icons';
 import {
   Button,
   Link as ChakraLink,
@@ -44,7 +44,14 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
   const { isOpen, onClose } = props;
   const { t } = useTranslation();
   const [importLoadingState, setImportLoadingState] = useState(false);
-  const [showDeleteDialogState, setShowDeleteDialogState] = useState(false);
+  const [
+    showRemoveDeleteAlertDialogState,
+    setShowRemoveDeleteAlertDialogState,
+  ] = useState(false);
+  const [
+    showDeleteDeleteAlertDialogState,
+    setShowDeleteDeleteAlertDialogState,
+  ] = useState(false);
 
   const [couchDbUrlLocalStorage, setCouchDbUrlLocalStorage] = useLocalStorage<
     string | undefined
@@ -206,14 +213,48 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
               </Button>
               <Button
                 width="full"
+                disabled={loading}
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                {t('reload')}
+              </Button>
+              <Button
+                width="full"
+                colorScheme="yellow"
+                disabled={loading}
+                onClick={async () => {
+                  await collection?.cleanup(0);
+                  toast({
+                    title: t('success'),
+                    status: 'success',
+                  });
+                }}
+              >
+                {t('cleanup')}
+              </Button>
+              <Button
+                width="full"
+                colorScheme="orange"
+                disabled={loading}
+                leftIcon={<WarningIcon />}
+                onClick={() => {
+                  setShowRemoveDeleteAlertDialogState(true);
+                }}
+              >
+                {t('remove')}
+              </Button>
+              <Button
+                width="full"
                 colorScheme="red"
                 disabled={loading}
                 leftIcon={<DeleteIcon />}
                 onClick={() => {
-                  setShowDeleteDialogState(true);
+                  setShowDeleteDeleteAlertDialogState(true);
                 }}
               >
-                {t('reset')}
+                {t('delete')}
               </Button>
               <HStack width="full" justify="space-between">
                 <ChakraLink
@@ -243,15 +284,32 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
         </DrawerContent>
       </Drawer>
       <DeleteAlertDialog
-        isOpen={showDeleteDialogState}
+        isOpen={showRemoveDeleteAlertDialogState}
         onResult={async (result) => {
-          setShowDeleteDialogState(false);
+          setShowRemoveDeleteAlertDialogState(false);
           if (result) {
             await collection?.find().remove();
             toast({
               title: t('success'),
               status: 'success',
             });
+          }
+        }}
+      />
+      <DeleteAlertDialog
+        isOpen={showDeleteDeleteAlertDialogState}
+        onResult={async (result) => {
+          setShowDeleteDeleteAlertDialogState(false);
+          if (result) {
+            const databases = await indexedDB.databases();
+
+            // Iterate through the databases and delete them
+            databases.forEach((db) => {
+              if (db.name) {
+                indexedDB.deleteDatabase(db.name);
+              }
+            });
+            window.location.reload();
           }
         }}
       />
