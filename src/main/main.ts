@@ -8,10 +8,10 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import { BrowserWindow, app, ipcMain, shell } from 'electron';
-import log from 'electron-log';
-import { autoUpdater } from 'electron-updater';
 import path from 'path';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -81,7 +81,7 @@ const createWindow = async () => {
     },
   });
 
-  mainWindow.loadURL(resolveHtmlPath('./index.html'));
+  mainWindow.loadURL(resolveHtmlPath('/index.html'));
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -117,7 +117,11 @@ const createWindow = async () => {
  */
 
 app.on('window-all-closed', () => {
-  app.quit();
+  // Respect the OSX convention of having the application in memory even
+  // after all windows have been closed
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app
@@ -127,9 +131,7 @@ app
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) {
-        createWindow();
-      }
+      if (mainWindow === null) createWindow();
     });
   })
   .catch(console.log);
