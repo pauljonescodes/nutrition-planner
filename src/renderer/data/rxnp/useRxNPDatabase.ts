@@ -6,7 +6,6 @@ import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import {
   RxCouchDBReplicationState,
   replicateCouchDB,
-  getFetchWithCouchDBAuthorization,
 } from 'rxdb/plugins/replication-couchdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { useLocalStorage } from 'usehooks-ts';
@@ -14,7 +13,7 @@ import { LocalStorageKeysEnum } from '../../utilities/useLocalStorageKey';
 import { initRxNPDatabase } from './RxNPDatabaseHelpers';
 import { RxNPDatabaseType } from './RxNPDatabaseType';
 import { RxNPItemDocument } from './RxNPItemSchema';
-import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
+// import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 
 export const useRxNPDatabase = () => {
   const [database, setDatabase] = useState<RxNPDatabaseType | undefined>(
@@ -57,7 +56,7 @@ export const useRxNPDatabase = () => {
 
   useEffect(() => {
     if (!database) {
-      addRxPlugin(RxDBDevModePlugin);
+      // addRxPlugin(RxDBDevModePlugin);
       addRxPlugin(RxDBQueryBuilderPlugin);
       addRxPlugin(RxDBJsonDumpPlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
@@ -75,6 +74,7 @@ export const useRxNPDatabase = () => {
     // replicationState?.sent$.subscribe((doc) => console.dir(doc));
 
     // emits all errors that happen when running the push- & pull-handlers.
+    // eslint-disable-next-line no-console
     replicationState?.error$.subscribe((error) => console.dir(error));
 
     // // emits true when the replication was canceled, false when not.

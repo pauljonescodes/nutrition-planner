@@ -28,7 +28,6 @@ import { useLocalStorage } from 'usehooks-ts';
 import currencies from '../../i18n/currencies';
 import { languageNames, languages } from '../../i18n/languages';
 import { PathEnum } from '../../paths';
-import { isValidUrl } from '../../utilities/isValidUrl';
 import {
   LocalStorageKeysEnum,
   useCurrencyLocalStorage,
@@ -138,7 +137,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                 <FormLabel>{t('couchDbUrl')}</FormLabel>
                 <HStack>
                   <Input
-                    value={couchDbStringState ?? undefined}
+                    value={couchDbStringState ?? ''}
                     onChange={(e) => {
                       setCouchDbStringState(e.target.value);
                     }}
@@ -146,15 +145,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   <Button
                     w="30%"
                     onClick={async () => {
-                      // if (
-                      //   couchDbStringState !== null &&
-                      //   collection !== null &&
-                      //   isValidUrl(couchDbStringState ?? undefined)
-                      // ) {
-                        setCouchDbUrlLocalStorage(couchDbStringState);
-                      // } else {
-                      //   setCouchDbUrlLocalStorage(undefined);
-                      // }
+                      setCouchDbUrlLocalStorage(couchDbStringState);
                     }}
                   >
                     {t('submit')}

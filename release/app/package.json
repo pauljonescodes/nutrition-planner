@@ -1,6 +1,6 @@
 {
   "name": "nutrition-planner",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A simple calculator for nutrition",
   "license": "MIT",
   "main": "./dist/main/main.js",
