@@ -63,7 +63,7 @@ export const useRxNPDatabase = () => {
 
   useEffect(() => {
     if (!database) {
-      //addRxPlugin(RxDBDevModePlugin);
+      // addRxPlugin(RxDBDevModePlugin);
       addRxPlugin(RxDBQueryBuilderPlugin);
       addRxPlugin(RxDBJsonDumpPlugin);
       addRxPlugin(RxDBLeaderElectionPlugin);
