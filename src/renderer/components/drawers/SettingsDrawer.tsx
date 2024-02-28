@@ -146,15 +146,15 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
                   <Button
                     w="30%"
                     onClick={async () => {
-                      if (
-                        couchDbStringState !== null &&
-                        collection !== null &&
-                        isValidUrl(couchDbStringState ?? undefined)
-                      ) {
+                      // if (
+                      //   couchDbStringState !== null &&
+                      //   collection !== null &&
+                      //   isValidUrl(couchDbStringState ?? undefined)
+                      // ) {
                         setCouchDbUrlLocalStorage(couchDbStringState);
-                      } else {
-                        setCouchDbUrlLocalStorage(undefined);
-                      }
+                      // } else {
+                      //   setCouchDbUrlLocalStorage(undefined);
+                      // }
                     }}
                   >
                     {t('submit')}
