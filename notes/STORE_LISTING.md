@@ -1,6 +1,6 @@
 # Store listing
 
-Nutrition Planner simplifies tracking and planning your diet. It's essentially a nutritional calculator, helping users to record nutritional details, costs, and recipes for their food.
+Nutrition Planner simplifies tracking and planning your diet. It's a nutrition and cost calculator, helping users to record nutritional details, prices, and recipes for their food.
 
 **Key Features:**
 
