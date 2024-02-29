@@ -11,7 +11,9 @@ item*. With just these 2 data structures, this app implements a **log**, a
 your other devices for
 [iOS+](https://apps.apple.com/us/app/nutrition-planner/id6478449486),
 [Android](https://play.google.com/store/apps/details?id=com.adeptry.nutritionplanner),
-Windows, Linux, and [Web](https://nutritionplanner.app) using
+[Windows](https://github.com/pauljonescodes/nutrition-planner/releases/download/v1.0.13/Nutrition-Planner-Setup-1.0.13.exe), 
+[Linux](https://github.com/pauljonescodes/nutrition-planner/releases/download/v1.0.13/Nutrition-Planner-1.0.13.AppImage), 
+and [Web](https://nutritionplanner.app) using
 [React](https://react.dev/), [Electron](https://www.electronjs.org/),
 [Capacitor](https://capacitorjs.com/), [Chakra](https://chakra-ui.com/),
 [RxDB](https://rxdb.info/), and [CouchDB](https://couchdb.apache.org/). It's
