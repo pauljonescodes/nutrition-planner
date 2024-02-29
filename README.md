@@ -17,7 +17,7 @@ and [Web](https://nutritionplanner.app) using
 [React](https://react.dev/), [Electron](https://www.electronjs.org/),
 [Capacitor](https://capacitorjs.com/), [Chakra](https://chakra-ui.com/),
 [RxDB](https://rxdb.info/), and [CouchDB](https://couchdb.apache.org/). It's
-translated Arabic, Chinese, English, Spenish, French, and Hindi, and can display
+translated into Arabic, Chinese, English, Spenish, French, and Hindi, and can display
 money formatted in USD, CAD, AUD, GBP, CHF, CNY, JPY, and EUR. You can find more
 information about the development process
 [here](https://pauljones.codes/2024/02/16/experimental-frontend-application-development/).
