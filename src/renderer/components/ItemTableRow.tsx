@@ -13,7 +13,8 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  getBaseItems,
+  buildList,
+  prettyPrintItems,
   itemServingNutrition,
   itemServingPriceCents,
 } from '../data/interfaces/ItemHelpers';
@@ -92,10 +93,10 @@ export function ItemTableRow(props: {
                 icon={<CopyIcon />}
                 aria-label={t('copy')}
                 onClick={async () => {
-                  const baseItems = getBaseItems(
-                    await document.recursivelyPopulateSubitems(),
+                  const items = prettyPrintItems(
+                    buildList(await document.recursivelyPopulateSubitems()),
                   );
-                  navigator.clipboard.writeText(baseItems.join('\n'));
+                  navigator.clipboard.writeText(items);
                   toast({
                     title: t('copied'),
                     status: 'success',

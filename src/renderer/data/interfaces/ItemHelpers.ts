@@ -99,13 +99,93 @@ export function itemMultiplyNutrition(
   };
 }
 
+export function prettyPrintItem(item: ItemInterface) {
+  return `${item.count} x ${item.name}`;
+}
+
+export function prettyPrintItems(items: ItemInterface[]) {
+  return items.map(prettyPrintItem).join('\n');
+}
+
+function findItemById(
+  id: string,
+  root: ItemInterface,
+  depth = 0,
+): ItemInterface | null {
+  if (!root || depth > 31) return null;
+  if (root.id === id) return root;
+  if (!root.subitems?.length) return null;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const sub of root.subitems) {
+    if (sub.item) {
+      const found = findItemById(id, sub.item, depth + 1);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+function gatherUsageUnits(
+  item: ItemInterface,
+  parentMultiplier = 1, // how many times the parent is repeated
+  depth = 0,
+): Record<string, number> {
+  if (!item || depth > 31) return {};
+
+  if (item.subitems?.length) {
+    const usageMap: Record<string, number> = {};
+    // eslint-disable-next-line no-restricted-syntax
+    for (const sub of item.subitems) {
+      // eslint-disable-next-line no-continue
+      if (!sub.item) continue;
+      const effectiveCount = parentMultiplier * (sub.count ?? 1);
+
+      const subUsage = gatherUsageUnits(sub.item, effectiveCount, depth + 1);
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [id, usedUnits] of Object.entries(subUsage)) {
+        usageMap[id] = (usageMap[id] ?? 0) + usedUnits;
+      }
+    }
+    return usageMap;
+  }
+
+  if (!item.id) return {};
+
+  const leafId = item.id;
+  const usageMap: Record<string, number> = {};
+  usageMap[leafId] = (usageMap[leafId] ?? 0) + parentMultiplier;
+  return usageMap;
+}
+
+export function buildList(rootItem: ItemInterface): ItemInterface[] {
+  const usageMap = gatherUsageUnits(rootItem);
+  const results: ItemInterface[] = [];
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [id, usedUnits] of Object.entries(usageMap)) {
+    const originalItem = findItemById(id, rootItem);
+    if (!originalItem) {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    results.push({
+      ...originalItem,
+      count: Math.ceil(usedUnits / (originalItem.count ?? 1)),
+    });
+  }
+
+  return results;
+}
+
 export function getBaseItems(
   item: ItemInterface,
   depth: number = 0,
   parentCount: number = 1,
 ): string[] {
   if (depth > 31 || !item) {
-    // Prevent going beyond 32 levels
     return [];
   }
 
